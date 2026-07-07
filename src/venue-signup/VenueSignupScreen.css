@@ -1,0 +1,561 @@
+.livey-venue-signup-screen {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top, rgba(255, 91, 50, 0.14), transparent 32rem),
+    #2b2926;
+  color: #e8e2da;
+  padding: calc(env(safe-area-inset-top) + 24px) 18px
+    calc(env(safe-area-inset-bottom) + 32px);
+}
+
+.livey-venue-signup-hero {
+  width: min(100%, 620px);
+  margin: 0 auto 38px;
+  padding-top: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.livey-venue-signup-logo {
+  display: block;
+  width: clamp(140px, 28vw, 170px);
+  height: clamp(140px, 28vw, 170px);
+  object-fit: contain;
+  margin: 0 0 -8px;
+}
+
+.livey-venue-signup-hero h1 {
+  width: 100%;
+  margin: 0 0 20px;
+  text-align: center;
+  font-size: clamp(2.1rem, 12vw, 4.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+.livey-venue-signup-eyebrow {
+  margin: 0 0 20px;
+  color: #ff5b32;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.livey-venue-signup-hero p:not(.livey-venue-signup-eyebrow) {
+  margin: 0 auto;
+  max-width: 34rem;
+  text-align: center;
+  color: rgba(232, 226, 218, 0.74);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.livey-venue-signup-form {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+.livey-venue-signup-section {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(232, 226, 218, 0.12);
+  border-radius: 28px;
+  background: rgba(232, 226, 218, 0.07);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(22px);
+  animation: livey-card-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 38%;
+}
+
+.livey-venue-signup-section h2 {
+  margin: 6px 0 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.04em;
+}
+
+.livey-venue-signup-section-note {
+  margin: 8px 0 0;
+  color: rgba(232, 226, 218, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.livey-venue-signup-section label {
+  display: grid;
+  gap: 8px;
+  color: rgba(232, 226, 218, 0.82);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.livey-venue-signup-section input,
+.livey-venue-signup-section select,
+.livey-venue-signup-section textarea {
+  width: 100%;
+  border: 1px solid rgba(232, 226, 218, 0.14);
+  border-radius: 18px;
+  background: rgba(232, 226, 218, 0.1);
+  color: #e8e2da;
+  font: inherit;
+  font-weight: 650;
+  outline: none;
+  padding: 14px 15px;
+}
+
+.livey-venue-signup-section textarea {
+  resize: vertical;
+  min-height: 104px;
+}
+
+.livey-venue-signup-section select {
+  appearance: none;
+}
+
+.livey-venue-signup-section input::placeholder,
+.livey-venue-signup-section textarea::placeholder {
+  color: rgba(232, 226, 218, 0.38);
+}
+
+.livey-venue-signup-section input:focus,
+.livey-venue-signup-section select:focus,
+.livey-venue-signup-section textarea:focus {
+  border-color: rgba(255, 91, 50, 0.7);
+  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.13);
+}
+
+.livey-venue-time-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.livey-venue-closed-days {
+  display: grid;
+  gap: 10px;
+}
+
+.livey-venue-closed-days p {
+  margin: 0;
+  color: rgba(232, 226, 218, 0.82);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.livey-venue-closed-day-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.livey-venue-closed-day {
+  min-height: 44px;
+  border: 1px solid rgba(232, 226, 218, 0.14);
+  border-radius: 16px;
+  background: rgba(232, 226, 218, 0.08);
+  color: rgba(232, 226, 218, 0.78);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.livey-venue-closed-day.selected {
+  border-color: rgba(255, 91, 50, 0.74);
+  background: rgba(255, 91, 50, 0.18);
+  color: #e8e2da;
+}
+
+.livey-venue-logo-upload-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 15px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(232, 226, 218, 0.14);
+  border-radius: 24px;
+  background: rgba(232, 226, 218, 0.08);
+}
+
+.livey-venue-logo-preview {
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
+  background: rgba(255, 91, 50, 0.16);
+  border: 1px solid rgba(255, 91, 50, 0.24);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #ff5b32;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.livey-venue-logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.livey-venue-logo-upload-copy {
+  min-width: 0;
+}
+
+.livey-venue-logo-upload-copy h3 {
+  margin: 0 0 5px;
+  color: #e8e2da;
+  font-size: 1rem;
+  letter-spacing: -0.04em;
+}
+
+.livey-venue-logo-upload-copy p {
+  margin: 0 0 12px;
+  color: rgba(232, 226, 218, 0.58);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.livey-venue-logo-upload-button {
+  width: fit-content;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ff5b32;
+  border: 1px solid rgba(255, 91, 50, 0.24);
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.livey-venue-logo-upload-button input {
+  display: none;
+}
+
+.livey-venue-signup-alert {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 0.94rem;
+  font-weight: 750;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.livey-venue-signup-alert.error {
+  color: #ffded6;
+  background: rgba(255, 91, 50, 0.18);
+  border: 1px solid rgba(255, 91, 50, 0.28);
+}
+
+.livey-venue-signup-alert.success {
+  color: #e8e2da;
+  background: rgba(232, 226, 218, 0.1);
+  border: 1px solid rgba(232, 226, 218, 0.16);
+}
+
+.livey-venue-signup-submit {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-radius: 22px;
+  background: #ff5b32;
+  color: #2b2926;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  box-shadow: 0 18px 48px rgba(255, 91, 50, 0.24);
+}
+
+.livey-venue-signup-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.livey-venue-signup-disclaimer {
+  margin: 0;
+  color: rgba(232, 226, 218, 0.52);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.livey-location-detection-card {
+  display: grid;
+  gap: 5px;
+  padding: 14px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(232, 226, 218, 0.13);
+  background: rgba(232, 226, 218, 0.08);
+}
+
+.livey-location-detection-card.detected,
+.livey-location-detection-card.resolved {
+  border-color: rgba(255, 91, 50, 0.28);
+  background: rgba(255, 91, 50, 0.12);
+}
+
+.livey-location-detection-card.checking {
+  border-color: rgba(232, 226, 218, 0.18);
+  background: rgba(232, 226, 218, 0.1);
+}
+
+.livey-location-detection-card p {
+  margin: 0;
+  color: #e8e2da;
+  font-size: 0.94rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.livey-location-detection-card span {
+  color: rgba(232, 226, 218, 0.62);
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.livey-venue-next-card {
+  background:
+    linear-gradient(145deg, rgba(255, 91, 50, 0.12), transparent 48%),
+    rgba(232, 226, 218, 0.07);
+}
+
+.livey-venue-next-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.livey-venue-next-steps div {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(232, 226, 218, 0.07);
+  border: 1px solid rgba(232, 226, 218, 0.1);
+}
+
+.livey-venue-next-steps strong {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ff5b32;
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.livey-venue-next-steps span {
+  color: rgba(232, 226, 218, 0.76);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.livey-venue-confirmation-row {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(232, 226, 218, 0.08);
+  border: 1px solid rgba(232, 226, 218, 0.12);
+}
+
+.livey-venue-confirmation-row input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: #ff5b32;
+}
+
+.livey-venue-confirmation-row span {
+  color: rgba(232, 226, 218, 0.78);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  font-weight: 750;
+}
+
+.livey-venue-signup-footer {
+  width: min(100%, 620px);
+  margin: 34px auto 0;
+  padding: 34px 22px;
+  border: 1px solid rgba(232, 226, 218, 0.12);
+  border-radius: 34px;
+  background: rgba(232, 226, 218, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(22px);
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.livey-venue-signup-footer-logo {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+}
+
+.livey-venue-signup-footer p {
+  margin: 0;
+  color: rgba(232, 226, 218, 0.68);
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.livey-venue-signup-footer-email {
+  color: #ff5b32;
+  font-size: 0.95rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.livey-venue-signup-footer-email:hover {
+  text-decoration: underline;
+}
+
+.livey-venue-signup-footer-links {
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(232, 226, 218, 0.1);
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.livey-venue-signup-footer-links a {
+  color: rgba(232, 226, 218, 0.72);
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.livey-venue-signup-footer-links a:hover {
+  color: #ff5b32;
+}
+
+.livey-venue-signup-footer small {
+  color: rgba(232, 226, 218, 0.46);
+  font-size: 0.8rem;
+}
+
+.livey-venue-thank-you-card {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  min-height: calc(100dvh - 220px);
+  padding: 34px 22px;
+  border: 1px solid rgba(232, 226, 218, 0.12);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at top, rgba(255, 91, 50, 0.16), transparent 28rem),
+    rgba(232, 226, 218, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  animation: livey-card-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.livey-venue-thank-you-logo {
+  width: clamp(140px, 28vw, 170px);
+  height: clamp(140px, 28vw, 170px);
+  object-fit: contain;
+  margin-bottom: -8px;
+}
+
+.livey-venue-thank-you-card h1 {
+  margin: 0;
+  color: #e8e2da;
+  font-size: clamp(2.2rem, 11vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+}
+
+.livey-venue-thank-you-card p {
+  margin: 0;
+  max-width: 32rem;
+  color: rgba(232, 226, 218, 0.74);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.livey-venue-thank-you-card span {
+  max-width: 30rem;
+  color: rgba(232, 226, 218, 0.52);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+@keyframes livey-card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(46px) scale(0.98);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (min-width: 560px) {
+  .livey-venue-time-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .livey-venue-closed-day-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 760px) {
+  .livey-venue-signup-screen {
+    padding-inline: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-signup-section,
+  .livey-venue-thank-you-card {
+    animation: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .livey-venue-logo-upload-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .livey-venue-logo-preview {
+    margin: 0 auto;
+  }
+
+  .livey-venue-logo-upload-button {
+    margin: 0 auto;
+  }
+}

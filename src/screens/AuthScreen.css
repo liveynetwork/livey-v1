@@ -1,0 +1,323 @@
+.livey-auth-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    16px
+    max(18px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 91, 50, 0.12), transparent 34%),
+    linear-gradient(180deg, #eee8df 0%, var(--livey-cream) 50%, #ddd5ca 100%);
+}
+
+.livey-auth-card {
+  width: min(100%, 430px);
+  max-height: calc(100dvh - 36px);
+  padding: 34px 26px 28px;
+  border-radius: 36px;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(43, 41, 38, 0.1);
+  box-shadow: 0 28px 80px rgba(43, 41, 38, 0.16);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.livey-auth-logo {
+  width: 112px;
+  height: auto;
+  display: block;
+  margin: 0 auto 28px;
+  object-fit: contain;
+}
+
+.livey-auth-copy {
+  margin-bottom: 26px;
+  text-align: center;
+}
+
+.livey-auth-copy h1 {
+  max-width: 330px;
+  margin: 0 auto;
+  color: var(--livey-dark);
+  font-family:
+    "SF Pro Display",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: clamp(1.9rem, 7vw, 2.65rem);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.livey-auth-form {
+  display: grid;
+  gap: 13px;
+  transition: gap 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.livey-auth-form[data-mode="create-account"] {
+  gap: 12px;
+}
+
+.livey-auth-field {
+  display: grid;
+  gap: 8px;
+}
+
+.livey-auth-field span {
+  padding-left: 3px;
+  color: rgba(43, 41, 38, 0.72);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: left;
+}
+
+.livey-auth-field input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid rgba(43, 41, 38, 0.1);
+  border-radius: 18px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--livey-dark);
+  font-size: 0.96rem;
+  font-weight: 700;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.livey-auth-field input::placeholder {
+  color: rgba(43, 41, 38, 0.34);
+}
+
+.livey-auth-field input:focus {
+  border-color: rgba(255, 91, 50, 0.42);
+  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.1);
+}
+
+.livey-auth-password-strength {
+  max-height: 0;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.livey-auth-password-strength-visible {
+  max-height: 42px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.livey-auth-password-strength strong {
+  display: block;
+  font: inherit;
+}
+
+.livey-auth-password-strength span {
+  display: block;
+  color: rgba(43, 41, 38, 0.54);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.livey-auth-password-strength-weak strong {
+  color: #b33419;
+}
+
+.livey-auth-password-strength-strong strong {
+  color: var(--livey-orange);
+}
+
+.livey-auth-password-wrap {
+  position: relative;
+}
+
+.livey-auth-password-wrap input {
+  padding-right: 52px;
+}
+
+.livey-auth-eye {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(43, 41, 38, 0.48);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-auth-eye:active {
+  background: rgba(43, 41, 38, 0.06);
+  color: rgba(43, 41, 38, 0.72);
+}
+
+.livey-auth-confirm-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    grid-template-rows 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.livey-auth-confirm-wrap-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.livey-auth-confirm-field {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.livey-auth-primary {
+  min-height: 56px;
+  margin-top: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--livey-orange);
+  color: white;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  box-shadow: 0 16px 36px rgba(255, 91, 50, 0.24);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-auth-primary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.livey-auth-primary:disabled {
+  cursor: default;
+  opacity: 0.54;
+  box-shadow: none;
+}
+
+.livey-auth-switch {
+  width: 100%;
+  margin-top: 18px;
+  border: 0;
+  background: transparent;
+  color: rgba(43, 41, 38, 0.68);
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-auth-switch:active {
+  color: var(--livey-orange);
+}
+
+.livey-auth-error,
+.livey-auth-message {
+  width: 100%;
+  margin: 4px auto 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.livey-auth-error {
+  background: rgba(255, 91, 50, 0.1);
+  color: #b33419;
+}
+
+.livey-auth-message {
+  background: rgba(43, 41, 38, 0.055);
+  color: rgba(43, 41, 38, 0.62);
+}
+
+@media (hover: hover) {
+  .livey-auth-eye:hover {
+    background: rgba(43, 41, 38, 0.06);
+    color: rgba(43, 41, 38, 0.72);
+  }
+
+  .livey-auth-switch:hover {
+    color: var(--livey-orange);
+  }
+}
+
+@media (max-height: 700px) {
+  .livey-auth-screen {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      14px
+      max(12px, env(safe-area-inset-bottom));
+  }
+
+  .livey-auth-card {
+    max-height: calc(100dvh - 24px);
+    padding: 24px 20px 22px;
+    border-radius: 30px;
+  }
+
+  .livey-auth-logo {
+    width: 94px;
+    margin-bottom: 20px;
+  }
+
+  .livey-auth-copy {
+    margin-bottom: 20px;
+  }
+
+  .livey-auth-copy h1 {
+    font-size: clamp(1.65rem, 7vw, 2.2rem);
+  }
+
+  .livey-auth-field input {
+    min-height: 50px;
+    border-radius: 17px;
+  }
+
+  .livey-auth-primary {
+    min-height: 52px;
+  }
+}

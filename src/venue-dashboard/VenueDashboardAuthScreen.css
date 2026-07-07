@@ -1,0 +1,380 @@
+.venue-dashboard-auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    16px
+    max(18px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 91, 50, 0.16), transparent 34%),
+    linear-gradient(145deg, #11100f 0%, #191715 48%, #0d0d0d 100%);
+  color: #f7f1ea;
+}
+
+.venue-dashboard-auth-card {
+  width: min(100%, 430px);
+  max-height: calc(100dvh - 36px);
+  padding: 34px 26px 28px;
+  border-radius: 36px;
+  background: rgba(25, 23, 21, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  text-align: center;
+}
+
+.venue-dashboard-auth-logo {
+  width: 112px;
+  height: auto;
+  display: block;
+  margin: 0 auto 28px;
+  object-fit: contain;
+}
+
+.venue-dashboard-auth-copy {
+  margin-bottom: 26px;
+  text-align: center;
+}
+
+.venue-dashboard-auth-copy h1 {
+  max-width: 330px;
+  margin: 0 auto;
+  color: #f7f1ea;
+  font-family:
+    "SF Pro Display",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: clamp(1.9rem, 7vw, 2.65rem);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.venue-dashboard-auth-form {
+  display: grid;
+  gap: 13px;
+  transition: gap 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.venue-dashboard-auth-form[data-mode="create-account"] {
+  gap: 12px;
+}
+
+.venue-dashboard-auth-field {
+  display: grid;
+  gap: 8px;
+}
+
+.venue-dashboard-auth-field span {
+  padding-left: 3px;
+  color: rgba(247, 241, 234, 0.72);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-align: left;
+}
+
+.venue-dashboard-auth-field input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.065);
+  color: #f7f1ea;
+  font-size: 0.96rem;
+  font-weight: 750;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.venue-dashboard-auth-field input::placeholder {
+  color: rgba(247, 241, 234, 0.34);
+}
+
+.venue-dashboard-auth-field input:focus {
+  border-color: rgba(255, 91, 50, 0.48);
+  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.12);
+}
+
+.venue-dashboard-claim-wrap,
+.venue-dashboard-account-fields-wrap,
+.venue-dashboard-confirm-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    grid-template-rows 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.venue-dashboard-claim-wrap-open,
+.venue-dashboard-account-fields-wrap-open,
+.venue-dashboard-confirm-wrap-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.venue-dashboard-claim-card,
+.venue-dashboard-account-fields,
+.venue-dashboard-confirm-field {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.venue-dashboard-claim-card {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.venue-dashboard-account-fields {
+  display: grid;
+  gap: 13px;
+}
+
+.venue-dashboard-claim-button {
+  min-height: 50px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+  font-size: 0.9rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.venue-dashboard-claim-button:disabled {
+  opacity: 0.58;
+  cursor: default;
+}
+
+.venue-dashboard-password-wrap {
+  position: relative;
+}
+
+.venue-dashboard-password-wrap input {
+  padding-right: 52px;
+}
+
+.venue-dashboard-auth-eye {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.48);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.venue-dashboard-auth-eye:active {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(247, 241, 234, 0.76);
+}
+
+.venue-dashboard-password-strength {
+  max-height: 0;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-password-strength-visible {
+  max-height: 42px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.venue-dashboard-password-strength strong {
+  display: block;
+  font: inherit;
+}
+
+.venue-dashboard-password-strength span {
+  display: block;
+  color: rgba(247, 241, 234, 0.54);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.venue-dashboard-password-strength-weak strong {
+  color: #ffb8b8;
+}
+
+.venue-dashboard-password-strength-strong strong {
+  color: #ff8a68;
+}
+
+.venue-dashboard-auth-primary {
+  min-height: 56px;
+  margin-top: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: #ff5b32;
+  color: white;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  box-shadow: 0 16px 36px rgba(255, 91, 50, 0.2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.venue-dashboard-auth-primary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.venue-dashboard-auth-primary:disabled {
+  cursor: default;
+  opacity: 0.54;
+  box-shadow: none;
+}
+
+.venue-dashboard-auth-switch {
+  width: 100%;
+  margin-top: 18px;
+  border: 0;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.64);
+  font-size: 0.88rem;
+  font-weight: 850;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.venue-dashboard-auth-switch:active {
+  color: #ff8a68;
+}
+
+.venue-dashboard-auth-error,
+.venue-dashboard-auth-success {
+  width: 100%;
+  margin: 4px auto 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.venue-dashboard-auth-error {
+  background: rgba(255, 70, 70, 0.13);
+  color: #ffb8b8;
+}
+
+.venue-dashboard-auth-success {
+  background: rgba(56, 211, 159, 0.12);
+  color: #b9f4df;
+}
+
+.venue-dashboard-auth-help {
+  margin: 20px auto 0;
+  max-width: 320px;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.venue-dashboard-auth-help a {
+  color: #ff9b7e;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .venue-dashboard-auth-switch:hover {
+    color: #ff8a68;
+  }
+
+  .venue-dashboard-claim-button:hover {
+    background: rgba(255, 91, 50, 0.22);
+  }
+
+  .venue-dashboard-auth-eye:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(247, 241, 234, 0.76);
+  }
+}
+
+@media (max-height: 700px) {
+  .venue-dashboard-auth-page {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      14px
+      max(12px, env(safe-area-inset-bottom));
+  }
+
+  .venue-dashboard-auth-card {
+    max-height: calc(100dvh - 24px);
+    padding: 24px 20px 22px;
+    border-radius: 30px;
+  }
+
+  .venue-dashboard-auth-logo {
+    width: 94px;
+    margin-bottom: 20px;
+  }
+
+  .venue-dashboard-auth-copy {
+    margin-bottom: 20px;
+  }
+
+  .venue-dashboard-auth-copy h1 {
+    font-size: clamp(1.65rem, 7vw, 2.2rem);
+  }
+
+  .venue-dashboard-auth-field input {
+    min-height: 50px;
+    border-radius: 17px;
+  }
+
+  .venue-dashboard-auth-primary {
+    min-height: 52px;
+  }
+}

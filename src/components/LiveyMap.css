@@ -1,0 +1,882 @@
+:root {
+  --livey-cream: #e8e2da;
+  --livey-cream-soft: rgba(232, 226, 218, 0.92);
+  --livey-grey: #626262;
+  --livey-orange: #ff5b32;
+  --livey-dark: #2b2926;
+  --livey-border: rgba(255, 255, 255, 0.76);
+  --livey-shadow: rgba(43, 41, 38, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: var(--livey-cream);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-map-screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--livey-cream);
+}
+
+.livey-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Top map UI */
+
+.livey-map-header {
+  position: absolute;
+  z-index: 10;
+  top: 12px;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.livey-search-bar {
+  height: 52px;
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 14px 0 17px;
+  border-radius: 999px;
+  background: rgba(232, 226, 218, 0.94);
+  border: 1px solid var(--livey-border);
+  box-shadow: 0 16px 38px var(--livey-shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.livey-search-left {
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.livey-search-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: rgba(43, 41, 38, 0.62);
+  display: block;
+}
+
+.livey-search-input {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--livey-dark);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  padding: 0;
+}
+
+.livey-search-input::placeholder {
+  color: rgba(43, 41, 38, 0.54);
+  opacity: 1;
+}
+
+.livey-search-logo {
+  width: 85px;
+  height: 42px;
+  flex: 0 0 85px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Category filters */
+
+.livey-category-row {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 12px 4px;
+  pointer-events: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.livey-category-row::-webkit-scrollbar {
+  display: none;
+}
+
+.livey-category-pill {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background: rgba(232, 226, 218, 0.38);
+  color: rgba(43, 41, 38, 0.72);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  cursor: pointer;
+}
+
+.livey-category-pill-active {
+  color: var(--livey-dark);
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.1);
+}
+
+/* Live / All centered switch */
+
+.livey-mode-switch {
+  width: fit-content;
+  height: 38px;
+  margin: 7px auto 0;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  background: rgba(232, 226, 218, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  box-shadow: 0 14px 30px rgba(43, 41, 38, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.livey-mode-option {
+  height: 30px;
+  min-width: 66px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(43, 41, 38, 0.64);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+}
+
+.livey-mode-option-active {
+  background: var(--livey-orange);
+  color: #fffaf6;
+  box-shadow: 0 8px 18px rgba(255, 91, 50, 0.2);
+}
+
+/* Venue logo markers */
+
+.livey-venue-marker {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 3px solid rgba(232, 226, 218, 0.96);
+  background: rgba(232, 226, 218, 0.96);
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--livey-dark);
+  font-size: 17px;
+  font-weight: 850;
+  box-shadow:
+    0 12px 28px rgba(43, 41, 38, 0.2),
+    0 0 0 1px rgba(98, 98, 98, 0.12);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.livey-venue-marker img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.livey-venue-marker-live {
+  border-color: var(--livey-orange);
+  box-shadow:
+    0 12px 28px rgba(43, 41, 38, 0.22),
+    0 0 0 6px rgba(255, 91, 50, 0.16);
+}
+
+.livey-venue-marker-selected {
+  transform: scale(1.14);
+  z-index: 2;
+  border-color: var(--livey-orange);
+  box-shadow:
+    0 16px 34px rgba(43, 41, 38, 0.24),
+    0 0 0 7px rgba(255, 91, 50, 0.18);
+}
+
+.livey-venue-marker:hover {
+  transform: scale(1.07);
+}
+
+.livey-venue-marker-fallback {
+  background: var(--livey-cream);
+}
+
+/* User location */
+
+.livey-location-button {
+  position: absolute;
+  z-index: 14;
+  right: 14px;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 999px;
+  background: rgba(232, 226, 218, 0.96);
+  color: var(--livey-dark);
+  box-shadow: 0 18px 42px rgba(43, 41, 38, 0.14);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: pointer;
+  padding: 0;
+}
+
+.livey-location-button:disabled {
+  cursor: wait;
+  opacity: 0.84;
+}
+
+.livey-location-icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+  transform: translateY(1px);
+}
+
+.livey-location-loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(43, 41, 38, 0.22);
+  border-top-color: var(--livey-orange);
+  border-radius: 999px;
+  animation: liveyLocationSpin 700ms linear infinite;
+}
+
+@keyframes liveyLocationSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.livey-user-location-marker {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  border-radius: 999px;
+  background: rgba(232, 226, 218, 0.98);
+  border: 2px solid rgba(255, 250, 246, 0.96);
+  box-shadow:
+    0 8px 20px rgba(43, 41, 38, 0.18),
+    0 0 0 1px rgba(43, 41, 38, 0.06);
+}
+
+.livey-user-location-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--livey-orange);
+  border: none;
+  box-shadow: inset 0 0 0 1px rgba(43, 41, 38, 0.08);
+  transform: translate(-50%, -50%);
+}
+
+/* Bottom venue sheet */
+
+.livey-venue-sheet {
+  position: absolute;
+  z-index: 40;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 8px 12px 12px;
+  border-radius: 30px;
+  background: rgba(232, 226, 218, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  box-shadow: 0 24px 60px rgba(43, 41, 38, 0.2);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  animation: liveySheetEnter 240ms ease both;
+  transition: transform 180ms ease;
+  touch-action: none;
+}
+
+.livey-venue-sheet-dragging {
+  animation: none;
+  transition: none;
+}
+
+@keyframes liveySheetEnter {
+  from {
+    transform: translateY(calc(100% + 28px));
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.livey-sheet-handle-button {
+  width: 100%;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.livey-sheet-handle-button:active {
+  cursor: grabbing;
+}
+
+.livey-sheet-handle {
+  width: 42px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(43, 41, 38, 0.2);
+  display: block;
+}
+
+.livey-sheet-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.livey-sheet-logo {
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.livey-sheet-heading {
+  min-width: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.livey-sheet-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.livey-sheet-title-row h2 {
+  margin: 0;
+  color: var(--livey-dark);
+  font-size: 18px;
+  line-height: 1.1;
+  font-weight: 850;
+  letter-spacing: -0.035em;
+}
+
+.livey-verified-badge {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 91, 50, 0.14);
+  color: var(--livey-orange);
+  border: 1px solid rgba(255, 91, 50, 0.24);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.livey-sheet-meta {
+  margin: 5px 0 0;
+  color: rgba(43, 41, 38, 0.58);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.livey-travel-row {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.livey-travel-pill {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.44);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: var(--livey-dark);
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.livey-distance-pill {
+  grid-column: 1 / -1;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(43, 41, 38, 0.055);
+  color: rgba(43, 41, 38, 0.66);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.livey-travel-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.livey-moment-card {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.livey-moment-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.livey-status-pill {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(43, 41, 38, 0.08);
+  color: rgba(43, 41, 38, 0.72);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.livey-status-pill-live {
+  background: var(--livey-orange);
+  color: #fffaf6;
+}
+
+.livey-sheet-time {
+  color: rgba(43, 41, 38, 0.62);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.livey-moment-card h3 {
+  margin: 10px 0 0;
+  color: var(--livey-dark);
+  font-size: 16px;
+  line-height: 1.15;
+  font-weight: 850;
+  letter-spacing: -0.025em;
+}
+
+.livey-moment-card p {
+  margin: 6px 0 0;
+  color: rgba(43, 41, 38, 0.66);
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.livey-hours-row {
+  margin-top: 10px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(43, 41, 38, 0.055);
+  color: rgba(43, 41, 38, 0.68);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.livey-hours-row strong {
+  color: var(--livey-dark);
+  font-weight: 850;
+}
+
+.livey-sheet-actions {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.livey-primary-action,
+.livey-secondary-action {
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.livey-primary-action:active,
+.livey-secondary-action:active {
+  transform: scale(0.96);
+}
+
+.livey-primary-action:disabled,
+.livey-secondary-action:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.livey-primary-action {
+  background: var(--livey-orange);
+  color: #fffaf6;
+  box-shadow: 0 10px 22px rgba(255, 91, 50, 0.16);
+}
+
+.livey-secondary-action {
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--livey-dark);
+  border: 1px solid rgba(255, 255, 255, 0.66);
+}
+
+.livey-secondary-action-following {
+  background: rgba(255, 91, 50, 0.12);
+  color: var(--livey-orange);
+  border-color: rgba(255, 91, 50, 0.22);
+}
+
+/* Hide all Mapbox controls */
+.mapboxgl-control-container {
+  display: none;
+}
+
+.livey-details-action {
+  grid-column: 1 / -1;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(43, 41, 38, 0.08);
+  background: rgba(43, 41, 38, 0.06);
+  color: var(--livey-dark);
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    transform 150ms ease,
+    background 150ms ease;
+}
+
+.livey-details-action:active {
+  transform: scale(0.97);
+  background: rgba(43, 41, 38, 0.09);
+}
+
+.livey-details-backdrop {
+  position: absolute;
+  z-index: 70;
+  inset: 0;
+  display: grid;
+  place-items: end center;
+  padding: 16px 12px calc(16px + env(safe-area-inset-bottom));
+  background: rgba(43, 41, 38, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: liveyDetailsBackdropEnter 180ms ease both;
+}
+
+.livey-details-card {
+  width: min(100%, 430px);
+  max-height: min(84dvh, 720px);
+  overflow-y: auto;
+  padding: 16px 16px 18px;
+  border-radius: 36px;
+  background: rgba(232, 226, 218, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 30px 90px rgba(43, 41, 38, 0.26);
+  -webkit-overflow-scrolling: touch;
+  animation: liveyDetailsCardEnter 220ms ease both;
+}
+
+@keyframes liveyDetailsBackdropEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes liveyDetailsCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.livey-details-header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.livey-details-logo-wrap {
+  width: 78px;
+  height: 78px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.52);
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  box-shadow: 0 14px 34px rgba(43, 41, 38, 0.12);
+}
+
+.livey-details-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.livey-details-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.48);
+  color: rgba(43, 41, 38, 0.68);
+  cursor: pointer;
+}
+
+.livey-details-title {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.livey-details-title h2 {
+  margin: 10px auto 0;
+  max-width: 330px;
+  color: var(--livey-dark);
+  font-size: 28px;
+  line-height: 0.96;
+  font-weight: 950;
+  letter-spacing: -0.07em;
+}
+
+.livey-details-title p {
+  margin: 7px 0 0;
+  color: rgba(43, 41, 38, 0.6);
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.livey-details-verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: rgba(255, 91, 50, 0.13);
+  color: var(--livey-orange);
+  border: 1px solid rgba(255, 91, 50, 0.24);
+}
+
+.livey-details-info-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.livey-details-info-grid div {
+  min-height: 72px;
+  padding: 12px;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.44);
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  text-align: center;
+}
+
+.livey-details-info-grid .livey-details-info-wide {
+  grid-column: 1 / -1;
+  min-height: 54px;
+}
+
+.livey-details-info-grid span {
+  color: rgba(43, 41, 38, 0.52);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+
+.livey-details-info-grid strong {
+  color: var(--livey-dark);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.livey-details-moment {
+  margin-top: 14px;
+  padding: 16px 14px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  text-align: center;
+}
+
+.livey-details-moment h3 {
+  margin: 10px 0 0;
+  color: var(--livey-dark);
+  font-size: 19px;
+  line-height: 1.12;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.livey-details-moment p {
+  margin: 7px 0 0;
+  color: rgba(43, 41, 38, 0.66);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.livey-details-actions {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 390px) {
+  .livey-search-logo {
+    width: 78px;
+    height: 40px;
+    flex-basis: 78px;
+  }
+
+  .livey-category-pill {
+    height: 33px;
+    padding: 0 13px;
+    font-size: 12.5px;
+  }
+
+  .livey-mode-switch {
+    height: 36px;
+  }
+
+  .livey-mode-option {
+    height: 28px;
+    min-width: 62px;
+    padding: 0 14px;
+  }
+
+  .livey-venue-sheet {
+    border-radius: 28px;
+  }
+}

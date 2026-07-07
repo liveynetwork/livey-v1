@@ -1,0 +1,477 @@
+.livey-onboarding-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding:
+    max(16px, env(safe-area-inset-top))
+    14px
+    max(16px, env(safe-area-inset-bottom));
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 91, 50, 0.12), transparent 34%),
+    linear-gradient(180deg, #eee8df 0%, var(--livey-cream) 52%, #ddd5ca 100%);
+}
+
+.livey-onboarding-card {
+  width: min(100%, 420px);
+  min-height: min(590px, calc(100dvh - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 24px 20px max(24px, env(safe-area-inset-bottom));
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(43, 41, 38, 0.1);
+  box-shadow: 0 24px 70px rgba(43, 41, 38, 0.16);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.livey-onboarding-progress {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.livey-onboarding-progress-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(43, 41, 38, 0.16);
+  transition:
+    width 220ms ease,
+    background 220ms ease;
+}
+
+.livey-onboarding-progress-dot-active {
+  width: 22px;
+  background: var(--livey-orange);
+}
+
+.livey-onboarding-logo {
+  width: 92px;
+  height: auto;
+  margin: 0 auto 20px;
+  object-fit: contain;
+}
+
+.livey-onboarding-step {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.livey-onboarding-form {
+  flex: 1;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.livey-onboarding-copy {
+  text-align: center;
+}
+
+.livey-onboarding-copy p {
+  margin: 0 0 7px;
+  color: var(--livey-orange);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.livey-onboarding-copy h1 {
+  max-width: 340px;
+  margin: 0 auto;
+  color: var(--livey-dark);
+  font-family:
+    "SF Pro Display",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: clamp(1.85rem, 9vw, 2.35rem);
+  line-height: 0.98;
+  font-weight: 950;
+  letter-spacing: -0.07em;
+}
+
+.livey-onboarding-copy span {
+  display: block;
+  max-width: 320px;
+  margin: 14px auto 0;
+  color: rgba(43, 41, 38, 0.66);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: -0.025em;
+}
+
+.livey-onboarding-field {
+  display: grid;
+  gap: 7px;
+}
+
+.livey-onboarding-field span {
+  padding-left: 3px;
+  color: rgba(43, 41, 38, 0.72);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.livey-onboarding-field input,
+.livey-onboarding-select-wrap select {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 15px;
+  border: 1px solid rgba(43, 41, 38, 0.1);
+  border-radius: 17px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--livey-dark);
+  font-size: 0.94rem;
+  font-weight: 700;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.livey-onboarding-field input::placeholder {
+  color: rgba(43, 41, 38, 0.34);
+}
+
+.livey-onboarding-field input:focus,
+.livey-onboarding-select-wrap:focus-within select {
+  border-color: rgba(255, 91, 50, 0.42);
+  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.1);
+}
+
+.livey-onboarding-username-wrap {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(43, 41, 38, 0.1);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.66);
+  overflow: hidden;
+}
+
+.livey-onboarding-username-wrap:focus-within {
+  border-color: rgba(255, 91, 50, 0.42);
+  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.1);
+}
+
+.livey-onboarding-username-wrap strong {
+  padding-left: 15px;
+  color: rgba(43, 41, 38, 0.46);
+  font-size: 0.94rem;
+  font-weight: 900;
+}
+
+.livey-onboarding-username-wrap input {
+  min-height: 50px;
+  padding: 0 15px 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.livey-onboarding-username-wrap input:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.livey-onboarding-select-wrap {
+  position: relative;
+}
+
+.livey-onboarding-select-wrap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid rgba(43, 41, 38, 0.42);
+  border-bottom: 2px solid rgba(43, 41, 38, 0.42);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+.livey-onboarding-select-wrap select {
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.livey-onboarding-id-preview {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(43, 41, 38, 0.055);
+  border: 1px solid rgba(43, 41, 38, 0.07);
+  text-align: center;
+}
+
+.livey-onboarding-id-preview small,
+.livey-onboarding-avatar-preview small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(43, 41, 38, 0.58);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.livey-onboarding-id-preview strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--livey-orange);
+  font-size: 0.96rem;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-align: center;
+}
+
+.livey-onboarding-avatar-preview {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 2px;
+  padding: 13px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid rgba(43, 41, 38, 0.08);
+}
+
+.livey-onboarding-avatar {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--livey-orange);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+    0 14px 28px rgba(255, 91, 50, 0.16);
+}
+
+.livey-onboarding-avatar span {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: white;
+  box-shadow:
+    0 0 0 7px rgba(255, 255, 255, 0.18),
+    0 0 0 14px rgba(255, 255, 255, 0.08);
+}
+
+.livey-onboarding-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.livey-onboarding-avatar-preview div:last-child {
+  min-width: 0;
+}
+
+.livey-onboarding-avatar-preview div:last-child strong {
+  display: block;
+  color: var(--livey-dark);
+  font-size: 0.96rem;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.livey-onboarding-avatar-preview div:last-child strong,
+.livey-onboarding-avatar-preview div:last-child small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.livey-onboarding-photo-button {
+  min-height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 91, 50, 0.36);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.46);
+  color: var(--livey-orange);
+  font-size: 0.86rem;
+  font-weight: 900;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-onboarding-photo-button:active {
+  background: rgba(255, 91, 50, 0.08);
+}
+
+.livey-onboarding-photo-button input {
+  display: none;
+}
+
+.livey-onboarding-actions {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.livey-onboarding-primary,
+.livey-onboarding-secondary {
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.94rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.livey-onboarding-primary {
+  margin-top: auto;
+  background: var(--livey-orange);
+  color: white;
+  box-shadow: 0 14px 30px rgba(255, 91, 50, 0.22);
+}
+
+.livey-onboarding-secondary {
+  background: rgba(43, 41, 38, 0.08);
+  color: rgba(43, 41, 38, 0.7);
+}
+
+.livey-onboarding-primary:active:not(:disabled),
+.livey-onboarding-secondary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.livey-onboarding-primary:disabled,
+.livey-onboarding-secondary:disabled {
+  cursor: default;
+  opacity: 0.54;
+  box-shadow: none;
+}
+
+.livey-onboarding-error {
+  margin: 2px 0 0;
+  padding: 11px 13px;
+  border-radius: 15px;
+  background: rgba(255, 91, 50, 0.1);
+  color: #b33419;
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+@media (hover: hover) {
+  .livey-onboarding-photo-button:hover {
+    background: rgba(255, 91, 50, 0.08);
+  }
+}
+
+@media (min-width: 560px) {
+  .livey-onboarding-card {
+    width: min(100%, 420px);
+    min-height: min(590px, calc(100dvh - 56px));
+    max-height: calc(100dvh - 56px);
+    padding: 26px 22px max(26px, env(safe-area-inset-bottom));
+  }
+
+  .livey-onboarding-form {
+    margin-top: 28px;
+    gap: 13px;
+  }
+
+  .livey-onboarding-field input,
+  .livey-onboarding-select-wrap select,
+  .livey-onboarding-username-wrap {
+    min-height: 54px;
+  }
+
+  .livey-onboarding-username-wrap input {
+    min-height: 52px;
+  }
+
+  .livey-onboarding-avatar {
+    width: 62px;
+    height: 62px;
+  }
+
+  .livey-onboarding-primary,
+  .livey-onboarding-secondary {
+    min-height: 56px;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .livey-onboarding-screen {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      12px
+      max(10px, env(safe-area-inset-bottom));
+  }
+
+  .livey-onboarding-card {
+    min-height: min(540px, calc(100dvh - 20px));
+    max-height: calc(100dvh - 20px);
+    padding: 18px 18px max(18px, env(safe-area-inset-bottom));
+    border-radius: 30px;
+  }
+
+  .livey-onboarding-logo {
+    width: 78px;
+    margin-bottom: 14px;
+  }
+
+  .livey-onboarding-progress {
+    margin-bottom: 12px;
+  }
+
+  .livey-onboarding-copy h1 {
+    font-size: clamp(1.65rem, 8vw, 2.1rem);
+  }
+
+  .livey-onboarding-copy span {
+    margin-top: 9px;
+    font-size: 0.82rem;
+  }
+
+  .livey-onboarding-form {
+    margin-top: 18px;
+    gap: 9px;
+  }
+
+  .livey-onboarding-field input,
+  .livey-onboarding-select-wrap select,
+  .livey-onboarding-username-wrap {
+    min-height: 48px;
+  }
+
+  .livey-onboarding-username-wrap input {
+    min-height: 46px;
+  }
+
+  .livey-onboarding-photo-button,
+  .livey-onboarding-primary,
+  .livey-onboarding-secondary {
+    min-height: 48px;
+  }
+}
