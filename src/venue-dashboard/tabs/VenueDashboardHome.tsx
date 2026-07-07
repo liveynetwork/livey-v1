@@ -21,107 +21,101 @@ export function VenueDashboardHome({
   activeEvents,
   liveEventCount,
   visibleEventCount,
-  historyEventCount,
   isCreatingEvent,
   onCreateEvent,
   onSelectEvent,
   onSectionChange,
 }: VenueDashboardHomeProps) {
+  const nextActivity = activeEvents[0] ?? null;
+
   return (
-    <section className="venue-dashboard-home">
-      <section className="venue-dashboard-hero-card">
-        <div>
-          <p className="venue-dashboard-eyebrow">Approved venue</p>
-          <h2>{activeVenue?.name}</h2>
-          <p>
-            {activeVenue?.description ||
-              "Your Livey venue is connected and ready to manage."}
-          </p>
-        </div>
+    <section className="venue-dashboard-home venue-dashboard-home-simple">
+      <section className="venue-dashboard-hero-card venue-dashboard-overview-card">
+        <div className="venue-dashboard-overview-main">
+          <p className="venue-dashboard-eyebrow">Venue overview</p>
 
-        <div className="venue-dashboard-hero-badges">
-          <span>{activeVenue?.category || "Venue"}</span>
-          <span>{activeVenue?.area || activeVenue?.city || "Cyprus"}</span>
-          <span>{activeVenue?.open_status || "Open status not set"}</span>
-        </div>
-      </section>
+          <h2>{activeVenue?.name || "Your venue"}</h2>
 
-      <section className="venue-dashboard-stats-grid">
-        <div className="venue-dashboard-stat-card">
-          <span>Upcoming / active</span>
-          <strong>{activeEvents.length}</strong>
-        </div>
-
-        <div className="venue-dashboard-stat-card">
-          <span>Visible on Livey</span>
-          <strong>{visibleEventCount}</strong>
-        </div>
-
-        <div className="venue-dashboard-stat-card">
-          <span>Live now</span>
-          <strong>{liveEventCount}</strong>
-        </div>
-
-        <div className="venue-dashboard-stat-card">
-          <span>History</span>
-          <strong>{historyEventCount}</strong>
-        </div>
-      </section>
-
-      <section className="venue-dashboard-card">
-        <div className="venue-dashboard-section-heading">
-          <p className="venue-dashboard-eyebrow">Quick actions</p>
-          <h2>Control what people see in Livey</h2>
-        </div>
-
-        <div className="venue-dashboard-quick-actions">
-          <button type="button" onClick={() => onSectionChange("activity")}>
-            Edit activity
-          </button>
-
-          <button type="button" onClick={onCreateEvent} disabled={isCreatingEvent}>
-            {isCreatingEvent ? "Creating..." : "Create activity"}
-          </button>
-
-          <button type="button" onClick={() => onSectionChange("history")}>
-            View history
-          </button>
-        </div>
-      </section>
-
-      <section className="venue-dashboard-card">
-        <div className="venue-dashboard-section-heading">
-          <p className="venue-dashboard-eyebrow">Recent activity</p>
-          <h2>Upcoming and active events</h2>
-        </div>
-
-        {activeEvents.length === 0 ? (
-          <p className="venue-dashboard-muted">
-            No upcoming or active activity exists for this venue.
-          </p>
-        ) : (
-          <div className="venue-dashboard-event-table">
-            {activeEvents.map((event) => (
-              <button
-                key={event.id}
-                type="button"
-                onClick={() => onSelectEvent(event)}
-              >
-                <span>{event.title}</span>
-
-                <small
-                  className={
-                    event.is_active === false
-                      ? "venue-dashboard-status-pill is-hidden"
-                      : "venue-dashboard-status-pill"
-                  }
-                >
-                  {event.is_active === false ? "Hidden" : event.status}
-                </small>
-              </button>
-            ))}
+          <div className="venue-dashboard-hero-badges">
+            <span>{activeVenue?.category || "Venue"}</span>
+            <span>{activeVenue?.area || activeVenue?.city || "Cyprus"}</span>
+            <span>{activeVenue?.open_status || "Status not set"}</span>
           </div>
-        )}
+        </div>
+      </section>
+
+      <section className="venue-dashboard-home-overview-grid">
+        <section className="venue-dashboard-card venue-dashboard-now-card">
+          <p className="venue-dashboard-eyebrow">Activity</p>
+
+          {nextActivity ? (
+            <button
+              className="venue-dashboard-next-activity"
+              type="button"
+              onClick={() => onSelectEvent(nextActivity)}
+            >
+              <div>
+                <h2>{nextActivity.title}</h2>
+                <p>{nextActivity.display_time || nextActivity.status}</p>
+              </div>
+
+              <span
+                className={
+                  nextActivity.is_active === false
+                    ? "venue-dashboard-status-pill is-hidden"
+                    : "venue-dashboard-status-pill"
+                }
+              >
+                {nextActivity.is_active === false
+                  ? "Hidden"
+                  : nextActivity.status}
+              </span>
+            </button>
+          ) : (
+            <div className="venue-dashboard-empty-overview">
+              <h2>No activity live yet</h2>
+<p>Create what people should see on Livey.</p>
+
+              <button
+                className="venue-dashboard-primary-action"
+                type="button"
+                onClick={onCreateEvent}
+                disabled={isCreatingEvent}
+              >
+                {isCreatingEvent ? "Creating..." : "Create activity"}
+              </button>
+            </div>
+          )}
+        </section>
+
+        <section className="venue-dashboard-card venue-dashboard-status-card">
+          <p className="venue-dashboard-eyebrow">Status</p>
+
+          <div className="venue-dashboard-status-list">
+            <div>
+              <span>Visible</span>
+              <strong>{visibleEventCount}</strong>
+            </div>
+
+            <div>
+              <span>Live now</span>
+              <strong>{liveEventCount}</strong>
+            </div>
+
+            <div>
+              <span>Venue</span>
+              <strong>Approved</strong>
+            </div>
+          </div>
+
+          <button
+            className="venue-dashboard-secondary-button"
+            type="button"
+            onClick={() => onSectionChange("activity")}
+          >
+            Manage activity
+          </button>
+        </section>
       </section>
     </section>
   );

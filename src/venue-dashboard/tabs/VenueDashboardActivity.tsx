@@ -1,4 +1,7 @@
-import type { VenueActivityStatus, VenueDashboardEvent } from "../venueDashboardService";
+import type {
+  VenueActivityStatus,
+  VenueDashboardEvent,
+} from "../venueDashboardService";
 
 export type EditingEventState = {
   id: string;
@@ -51,26 +54,25 @@ export function VenueDashboardActivity({
   getPreviewTiming,
 }: VenueDashboardActivityProps) {
   return (
-    <section className="venue-dashboard-grid">
-      <aside className="venue-dashboard-card">
+    <section className="venue-dashboard-grid venue-dashboard-activity-layout">
+      <aside className="venue-dashboard-card venue-dashboard-activity-list-card">
         <div className="venue-dashboard-section-heading">
           <p className="venue-dashboard-eyebrow">Activities</p>
-          <h2>Livey display</h2>
+          <h2>Livey activity</h2>
         </div>
 
         {activeEvents.length === 0 ? (
-          <div className="venue-dashboard-empty-activity">
-            <p className="venue-dashboard-muted">
-              No upcoming or active activity exists for this venue.
-            </p>
+          <div className="venue-dashboard-empty-activity venue-dashboard-activity-empty-state">
+            <h3>No activity yet</h3>
+            <p>Create what people should see on Livey.</p>
 
             <button
-              className="venue-dashboard-secondary-button"
+              className="venue-dashboard-primary-action"
               type="button"
               onClick={onCreateEvent}
               disabled={isCreatingEvent}
             >
-              {isCreatingEvent ? "Creating..." : "Create first activity"}
+              {isCreatingEvent ? "Creating..." : "Create activity"}
             </button>
           </div>
         ) : (
@@ -87,12 +89,20 @@ export function VenueDashboardActivity({
                   type="button"
                   onClick={() => onSelectEvent(event)}
                 >
-                  <strong>{event.title}</strong>
-                  <span>
-                    {event.is_active === false
-                      ? "Hidden from Livey"
-                      : event.status}
-                  </span>
+                  <div>
+                    <strong>{event.title}</strong>
+                    <span>{event.display_time || event.status}</span>
+                  </div>
+
+                  <small
+                    className={
+                      event.is_active === false
+                        ? "venue-dashboard-status-pill is-hidden"
+                        : "venue-dashboard-status-pill"
+                    }
+                  >
+                    {event.is_active === false ? "Hidden" : event.status}
+                  </small>
                 </button>
               ))}
             </div>
@@ -103,28 +113,29 @@ export function VenueDashboardActivity({
               onClick={onCreateEvent}
               disabled={isCreatingEvent}
             >
-              {isCreatingEvent ? "Creating..." : "Add another activity"}
+              {isCreatingEvent ? "Creating..." : "Add activity"}
             </button>
           </>
         )}
       </aside>
 
-      <section className="venue-dashboard-card venue-dashboard-editor-card">
+      <section className="venue-dashboard-card venue-dashboard-editor-card venue-dashboard-activity-editor-card">
         <div className="venue-dashboard-section-heading">
-          <p className="venue-dashboard-eyebrow">Edit activity</p>
-          <h2>What appears in the Livey app</h2>
+          <p className="venue-dashboard-eyebrow">Editor</p>
+          <h2>{editingEvent ? "Edit Livey display" : "Activity editor"}</h2>
         </div>
 
         {editingEvent ? (
-          <div className="venue-dashboard-form">
+          <div className="venue-dashboard-form venue-dashboard-activity-form">
             <section className="venue-dashboard-visibility-card">
               <div>
                 <strong>
-                  {editingEvent.isActive ? "Visible on Livey" : "Hidden from Livey"}
+                  {editingEvent.isActive ? "Visible on Livey" : "Hidden"}
                 </strong>
                 <span>
-                  Hidden activities stay saved, but they should not be shown to
-                  users.
+                  {editingEvent.isActive
+                    ? "People can see this activity in the Livey app."
+                    : "This activity is saved but not shown to users."}
                 </span>
               </div>
 
@@ -137,7 +148,9 @@ export function VenueDashboardActivity({
                 type="button"
                 onClick={() =>
                   onEditingEventChange((current) =>
-                    current ? { ...current, isActive: !current.isActive } : current
+                    current
+                      ? { ...current, isActive: !current.isActive }
+                      : current
                   )
                 }
                 aria-pressed={editingEvent.isActive}
@@ -146,18 +159,28 @@ export function VenueDashboardActivity({
               </button>
             </section>
 
-            <label>
-              Activity title
-              <input
-                value={editingEvent.title}
-                onChange={(event) =>
-                  onEditingEventChange((current) =>
-                    current ? { ...current, title: event.target.value } : current
-                  )
-                }
-                placeholder="Tonight at the venue"
-              />
-            </label>
+            <div className="venue-dashboard-form-row">
+              <label>
+                Activity title
+                <input
+                  value={editingEvent.title}
+                  onChange={(event) =>
+                    onEditingEventChange((current) =>
+                      current
+                        ? { ...current, title: event.target.value }
+                        : current
+                    )
+                  }
+                  placeholder="Tonight at the venue"
+                />
+              </label>
+
+              <div className="venue-dashboard-derived-timing">
+                <span>Livey shows</span>
+                <strong>{editingEvent.status}</strong>
+                <small>{editingEvent.displayTime}</small>
+              </div>
+            </div>
 
             <label>
               Description
@@ -177,49 +200,51 @@ export function VenueDashboardActivity({
               />
             </label>
 
-            <div className="venue-dashboard-derived-timing">
-              <span>Livey will display</span>
-              <strong>{editingEvent.status}</strong>
-              <small>{editingEvent.displayTime}</small>
+            <div className="venue-dashboard-form-row">
+              <label>
+                Starts
+                <input
+                  type="datetime-local"
+                  value={editingEvent.startsAt}
+                  onChange={(event) =>
+                    onEditingEventChange((current) =>
+                      current
+                        ? {
+                            ...current,
+                            startsAt: event.target.value,
+                            ...getPreviewTiming(
+                              event.target.value,
+                              current.endsAt
+                            ),
+                          }
+                        : current
+                    )
+                  }
+                />
+              </label>
+
+              <label>
+                Ends
+                <input
+                  type="datetime-local"
+                  value={editingEvent.endsAt}
+                  onChange={(event) =>
+                    onEditingEventChange((current) =>
+                      current
+                        ? {
+                            ...current,
+                            endsAt: event.target.value,
+                            ...getPreviewTiming(
+                              current.startsAt,
+                              event.target.value
+                            ),
+                          }
+                        : current
+                    )
+                  }
+                />
+              </label>
             </div>
-
-            <label>
-              Activity starts
-              <input
-                type="datetime-local"
-                value={editingEvent.startsAt}
-                onChange={(event) =>
-                  onEditingEventChange((current) =>
-                    current
-                      ? {
-                          ...current,
-                          startsAt: event.target.value,
-                          ...getPreviewTiming(event.target.value, current.endsAt),
-                        }
-                      : current
-                  )
-                }
-              />
-            </label>
-
-            <label>
-              Activity ends
-              <input
-                type="datetime-local"
-                value={editingEvent.endsAt}
-                onChange={(event) =>
-                  onEditingEventChange((current) =>
-                    current
-                      ? {
-                          ...current,
-                          endsAt: event.target.value,
-                          ...getPreviewTiming(current.startsAt, event.target.value),
-                        }
-                      : current
-                  )
-                }
-              />
-            </label>
 
             {errorMessage ? (
               <p className="venue-dashboard-error">{errorMessage}</p>
@@ -245,12 +270,26 @@ export function VenueDashboardActivity({
                 onClick={onDeleteEvent}
                 disabled={isDeletingEvent}
               >
-                {isDeletingEvent ? "Removing..." : "Remove activity"}
+                {isDeletingEvent ? "Removing..." : "Remove"}
               </button>
             </div>
           </div>
         ) : (
-          <p className="venue-dashboard-muted">Select an activity to edit.</p>
+          <div className="venue-dashboard-empty-editor">
+            <h2>Create or select activity</h2>
+            <p>
+              Activities control what people see for this venue inside Livey.
+            </p>
+
+            <button
+              className="venue-dashboard-primary-action"
+              type="button"
+              onClick={onCreateEvent}
+              disabled={isCreatingEvent}
+            >
+              {isCreatingEvent ? "Creating..." : "Create activity"}
+            </button>
+          </div>
         )}
       </section>
     </section>

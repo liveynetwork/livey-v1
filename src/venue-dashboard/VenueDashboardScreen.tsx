@@ -377,8 +377,13 @@ export function VenueDashboardScreen() {
       <section className="venue-dashboard-main">
         <header className="venue-dashboard-topbar">
           <div>
-            <p className="venue-dashboard-eyebrow">Livey for venues</p>
-            <h1>{getSectionTitle(activeSection)}</h1>
+            <img
+  className="venue-dashboard-topbar-logo"
+  src="/Livey-Logo.png"
+  alt="Livey"
+/>
+
+<h1>{getSectionTitle(activeSection)}</h1>
           </div>
 
           <button
@@ -495,7 +500,7 @@ export function VenueDashboardScreen() {
 }
 
 function getSectionTitle(section: DashboardSection) {
-  if (section === "home") return "Dashboard home";
+  if (section === "home") return "Control Center";
   if (section === "activity") return "Activity";
   if (section === "analytics") return "Analytics";
   if (section === "history") return "History";
