@@ -189,6 +189,7 @@ export function VenueSignupScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
   const [locationPreviewState, setLocationPreviewState] =
     useState<LocationPreviewState>("idle");
@@ -301,9 +302,17 @@ export function VenueSignupScreen() {
 
   function handleLogoPreview(file: File | null) {
     setSubmitError(null);
+    setLogoFile(null);
 
     if (!file) {
-      setLogoPreviewUrl(null);
+      setLogoPreviewUrl((currentPreviewUrl) => {
+        if (currentPreviewUrl) {
+          URL.revokeObjectURL(currentPreviewUrl);
+        }
+
+        return null;
+      });
+
       return;
     }
 
@@ -311,6 +320,8 @@ export function VenueSignupScreen() {
       setSubmitError("Please upload an image file for your venue logo.");
       return;
     }
+
+    setLogoFile(file);
 
     const previewUrl = URL.createObjectURL(file);
 
@@ -359,9 +370,13 @@ export function VenueSignupScreen() {
     setIsSubmitting(true);
 
     try {
-      await submitVenueRequest(form);
+      await submitVenueRequest({
+        ...form,
+        logoFile,
+      });
 
       setForm(initialForm);
+      setLogoFile(null);
       setLocationPreviewState("idle");
       setHasSubmitted(true);
 

@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabase";
 import { extractGoogleMapsCoordinates } from "../utils/googleMapsLink";
+import { uploadVenueLogo } from "./venueLogoUpload";
 
 export type VenueRequestCategory =
   | "Cafes"
@@ -62,6 +63,7 @@ export type SubmitVenueRequestInput = {
   venueName: string;
   category: VenueRequestCategory;
   description: string;
+  logoFile: File | null;
 
   city: VenueRequestCity;
   area: string;
@@ -273,6 +275,7 @@ export async function submitVenueRequest(input: SubmitVenueRequestInput) {
   const hasFirstEvent = input.firstEventTitle.trim().length > 0;
   const openingHours = formatOpeningHours(input);
   const resolvedLocation = await resolveVenueLocation(input.googleMapsUrl);
+  const logoUrl = input.logoFile ? await uploadVenueLogo(input.logoFile) : null;
 
   const { error } = await supabase.from("venue_requests").insert({
     owner_user_id: user?.id ?? null,
@@ -280,6 +283,7 @@ export async function submitVenueRequest(input: SubmitVenueRequestInput) {
     venue_name: input.venueName.trim(),
     category: input.category,
     description: cleanOptional(input.description),
+    logo_url: logoUrl,
 
     city: input.city,
     area: cleanOptional(input.area),

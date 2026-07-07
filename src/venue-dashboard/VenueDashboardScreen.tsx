@@ -6,6 +6,7 @@ import {
   getVenueDashboardData,
   restoreVenueEvent,
   updateVenueEvent,
+  updateVenueProfile,
   type VenueActivityStatus,
   type VenueDashboardData,
   type VenueDashboardEvent,
@@ -38,6 +39,7 @@ export function VenueDashboardScreen() {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const [isDeletingEvent, setIsDeletingEvent] = useState(false);
   const [isRestoringEvent, setIsRestoringEvent] = useState(false);
+  const [isUpdatingVenueProfile, setIsUpdatingVenueProfile] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -349,6 +351,44 @@ export function VenueDashboardScreen() {
       setIsRestoringEvent(false);
     }
   }
+  
+  async function handleUpdateVenueProfile(input: {
+  name: string;
+  description: string;
+  area: string;
+  address: string;
+  openStatus: string;
+  openingHours: string;
+  logoFile: File | null;
+}) {
+  if (!activeVenue) return;
+
+  try {
+    setIsUpdatingVenueProfile(true);
+    setStatusMessage("");
+    setErrorMessage("");
+
+    await updateVenueProfile({
+      venueId: activeVenue.id,
+      name: input.name,
+      description: input.description,
+      area: input.area,
+      address: input.address,
+      openStatus: input.openStatus,
+      openingHours: input.openingHours,
+      logoFile: input.logoFile,
+    });
+
+    await refreshDashboard();
+
+    setStatusMessage("Venue profile updated successfully.");
+  } catch (error) {
+    console.error("Failed to update venue profile:", error);
+    setErrorMessage("We could not update your venue profile. Please try again.");
+  } finally {
+    setIsUpdatingVenueProfile(false);
+  }
+}
 
   async function handleSignOut() {
     const shouldSignOut = window.confirm(
@@ -487,10 +527,12 @@ export function VenueDashboardScreen() {
 
             {activeSection === "account" ? (
               <VenueDashboardAccount
-                currentUser={currentUser}
-                activeVenue={activeVenue}
-                onSignOut={handleSignOut}
-              />
+  currentUser={currentUser}
+  activeVenue={activeVenue}
+  isUpdatingVenueProfile={isUpdatingVenueProfile}
+  onUpdateVenueProfile={handleUpdateVenueProfile}
+  onSignOut={handleSignOut}
+/>
             ) : null}
           </>
         )}

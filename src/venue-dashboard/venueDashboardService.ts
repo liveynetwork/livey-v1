@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabase";
 import { dashboardSupabase } from "../lib/dashboardSupabase";
+import { uploadVenueLogo } from "../services/venueLogoUpload";
 
 export type VenueActivityStatus =
   | "Live now"
@@ -21,6 +22,22 @@ export type VenueDashboardVenue = {
   verified: boolean | null;
   open_status: string | null;
   opening_hours: string | null;
+};
+
+export type UpdateVenueProfileInput = {
+  venueId: string;
+  name?: string;
+  category?: string | null;
+  area?: string | null;
+  address?: string | null;
+  description?: string | null;
+  openStatus?: string | null;
+  openingHours?: string | null;
+  logoFile?: File | null;
+};
+
+type UpdateVenueProfileResponse = {
+  venue?: VenueDashboardVenue;
 };
 
 export type VenueDashboardEvent = {
@@ -196,6 +213,46 @@ export async function restoreVenueEvent(
   });
 
   return restoredEvent;
+}
+
+export async function updateVenueProfile(
+  input: UpdateVenueProfileInput
+): Promise<VenueDashboardVenue> {
+  await assertUserOwnsVenue(input.venueId);
+
+  const logoUrl = input.logoFile
+    ? await uploadVenueLogo(input.logoFile, {
+        folder: "dashboard",
+      })
+    : undefined;
+
+  const { data, error } =
+    await dashboardSupabase.functions.invoke<UpdateVenueProfileResponse>(
+      "dashboard-update-venue-profile",
+      {
+        body: {
+          app_venue_id: input.venueId,
+          name: input.name,
+          category: input.category,
+          area: input.area,
+          address: input.address,
+          description: input.description,
+          open_status: input.openStatus,
+          opening_hours: input.openingHours,
+          logo_url: logoUrl,
+        },
+      }
+    );
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data?.venue) {
+    throw new Error("The venue profile response was empty.");
+  }
+
+  return data.venue;
 }
 
 async function manageVenueActivity(input: {
