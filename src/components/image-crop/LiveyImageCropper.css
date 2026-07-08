@@ -1,0 +1,153 @@
+.livey-image-cropper-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 6, 8, 0.72);
+  backdrop-filter: blur(22px);
+  overflow-y: auto;
+}
+
+.livey-image-cropper-panel {
+  width: min(460px, 100%);
+  max-height: calc(100dvh - 36px);
+  overflow-y: auto;
+  border-radius: 30px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.18), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.055)),
+    #15171b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 34px 120px rgba(0, 0, 0, 0.48);
+  color: #f7f1ea;
+}
+
+.livey-image-cropper-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.livey-image-cropper-header p {
+  margin: 0 0 6px;
+  color: #ff6b45;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.livey-image-cropper-header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  letter-spacing: -0.06em;
+}
+
+.livey-image-cropper-header span {
+  display: block;
+  max-width: 330px;
+  margin-top: 6px;
+  color: rgba(247, 241, 234, 0.6);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.livey-image-cropper-header button,
+.livey-image-cropper-actions button {
+  border: 0;
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.livey-image-cropper-header button {
+  width: 70px;
+  height: 36px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.075);
+  color: rgba(247, 241, 234, 0.76);
+}
+
+.livey-image-cropper-stage {
+  position: relative;
+  height: min(330px, 54dvh);
+  overflow: hidden;
+  border-radius: 24px;
+  background: #08090b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.livey-image-cropper-controls {
+  margin: 14px 0;
+}
+
+.livey-image-cropper-controls label {
+  display: grid;
+  gap: 8px;
+  color: rgba(247, 241, 234, 0.7);
+  font-size: 0.8rem;
+  font-weight: 950;
+}
+
+.livey-image-cropper-controls input {
+  width: 100%;
+  accent-color: #ff5b32;
+}
+
+.livey-image-cropper-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 10px;
+}
+
+.livey-image-cropper-actions button {
+  min-height: 48px;
+  border-radius: 16px;
+}
+
+.livey-image-cropper-actions button:first-child {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f1ea;
+}
+
+.livey-image-cropper-actions button:last-child {
+  background: #ff5b32;
+  color: #fff;
+  box-shadow: 0 18px 36px rgba(255, 91, 50, 0.2);
+}
+
+.livey-image-cropper-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 560px) {
+  .livey-image-cropper-backdrop {
+    align-items: start;
+    padding: 12px;
+  }
+
+  .livey-image-cropper-panel {
+    width: 100%;
+    border-radius: 26px;
+  }
+
+  .livey-image-cropper-header {
+    flex-direction: column;
+  }
+
+  .livey-image-cropper-header button {
+    width: 100%;
+  }
+
+  .livey-image-cropper-stage {
+    height: min(310px, 48dvh);
+  }
+
+  .livey-image-cropper-actions {
+    grid-template-columns: 1fr;
+  }
+}
