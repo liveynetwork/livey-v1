@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { LiveyImageCropper } from "../../components/image-crop/LiveyImageCropper";
+import type { DashboardSection } from "../VenueDashboardSidebar";
 import type { VenueDashboardVenue } from "../venueDashboardService";
 
 type VenueDashboardAccountProps = {
   currentUser: User | null;
   activeVenue: VenueDashboardVenue | null;
+  isRefreshing: boolean;
   isUpdatingVenueProfile: boolean;
   onUpdateVenueProfile: (input: {
     name: string;
@@ -16,6 +18,8 @@ type VenueDashboardAccountProps = {
     openingHours: string;
     logoFile: File | null;
   }) => void;
+  onRefreshDashboard: () => void;
+  onSectionChange: (section: DashboardSection) => void;
   onSignOut: () => void;
 };
 
@@ -26,6 +30,32 @@ type DayHours = {
   closeTime: string;
   isClosed: boolean;
 };
+
+type LiveyDropdownOption = {
+  label: string;
+  value: string;
+};
+
+type LiveyDashboardDropdownProps = {
+  label?: string;
+  value: string;
+  options: LiveyDropdownOption[];
+  disabled?: boolean;
+  onChange: (value: string) => void;
+};
+
+const statusOptions: LiveyDropdownOption[] = [
+  { label: "Open now", value: "Open now" },
+  { label: "Live now", value: "Live now" },
+  { label: "Tonight", value: "Tonight" },
+  { label: "Weekend", value: "Weekend" },
+  { label: "Closed", value: "Closed" },
+];
+
+const dayStatusOptions: LiveyDropdownOption[] = [
+  { label: "Open", value: "Open" },
+  { label: "Closed", value: "Closed" },
+];
 
 const areaOptions = [
   "Limassol",
@@ -111,6 +141,11 @@ const timeOptions = [
   "23:30",
 ];
 
+const timeDropdownOptions: LiveyDropdownOption[] = timeOptions.map((time) => ({
+  label: time,
+  value: time,
+}));
+
 const defaultOpeningHours: DayHours[] = [
   {
     day: "Monday",
@@ -163,6 +198,53 @@ const defaultOpeningHours: DayHours[] = [
   },
 ];
 
+function LiveyDashboardDropdown({
+  label,
+  value,
+  options,
+  disabled = false,
+  onChange,
+}: LiveyDashboardDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <div
+      className={`venue-dashboard-custom-dropdown ${disabled ? "disabled" : ""}`}
+    >
+      {label ? <span>{label}</span> : null}
+
+      <button
+        type="button"
+        disabled={disabled}
+        onBlur={() => window.setTimeout(() => setIsOpen(false), 120)}
+        onClick={() => setIsOpen((current) => !current)}
+      >
+        {selectedOption?.label ?? value}
+        <small>⌄</small>
+      </button>
+
+      {isOpen && !disabled ? (
+        <div className="venue-dashboard-custom-dropdown-menu">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={option.value === value ? "selected" : ""}
+              onMouseDown={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function buildOpeningHoursDraft(openingHours: string): DayHours[] {
   const draft = defaultOpeningHours.map((day) => ({ ...day }));
 
@@ -177,6 +259,7 @@ function buildOpeningHoursDraft(openingHours: string): DayHours[] {
     draft.slice(0, 5).forEach((day) => {
       day.openTime = weekdayMatch[1];
       day.closeTime = weekdayMatch[2];
+      day.isClosed = false;
     });
   }
 
@@ -184,8 +267,32 @@ function buildOpeningHoursDraft(openingHours: string): DayHours[] {
     draft.slice(5).forEach((day) => {
       day.openTime = weekendMatch[1];
       day.closeTime = weekendMatch[2];
+      day.isClosed = false;
     });
   }
+
+  openingHours.split("•").forEach((section) => {
+    const cleanSection = section.trim();
+
+    draft.forEach((day) => {
+      if (!cleanSection.startsWith(day.shortDay)) return;
+
+      if (cleanSection.toLowerCase().includes("closed")) {
+        day.isClosed = true;
+        return;
+      }
+
+      const timeMatch = cleanSection.match(
+        /(\d{2}:\d{2})[–-](\d{2}:\d{2})/
+      );
+
+      if (timeMatch) {
+        day.openTime = timeMatch[1];
+        day.closeTime = timeMatch[2];
+        day.isClosed = false;
+      }
+    });
+  });
 
   return draft;
 }
@@ -226,11 +333,58 @@ function formatOpeningHours(days: DayHours[]) {
     .join(" • ");
 }
 
+function getOpeningHoursPreview(openingHours: string) {
+  const days = buildOpeningHoursDraft(openingHours);
+
+  const weekdayDays = days.slice(0, 5);
+  const weekendDays = days.slice(5);
+
+  const weekdayOpen = weekdayDays[0]?.openTime ?? "09:00";
+  const weekdayClose = weekdayDays[0]?.closeTime ?? "18:00";
+  const weekendOpen = weekendDays[0]?.openTime ?? "10:00";
+  const weekendClose = weekendDays[0]?.closeTime ?? "22:00";
+
+  const sameWeekdayHours = weekdayDays.every(
+    (day) =>
+      !day.isClosed &&
+      day.openTime === weekdayOpen &&
+      day.closeTime === weekdayClose
+  );
+
+  const sameWeekendHours = weekendDays.every(
+    (day) =>
+      !day.isClosed &&
+      day.openTime === weekendOpen &&
+      day.closeTime === weekendClose
+  );
+
+  if (openingHours && sameWeekdayHours && sameWeekendHours) {
+    return [
+      {
+        title: "Weekdays",
+        value: `${weekdayOpen}–${weekdayClose}`,
+      },
+      {
+        title: "Weekend",
+        value: `${weekendOpen}–${weekendClose}`,
+      },
+    ];
+  }
+
+  return days.map((day) => ({
+    title: day.shortDay,
+    value: day.isClosed ? "Closed" : `${day.openTime}–${day.closeTime}`,
+  }));
+}
+
 export function VenueDashboardAccount({
   currentUser,
   activeVenue,
+  isRefreshing,
   isUpdatingVenueProfile,
   onUpdateVenueProfile,
+  onRefreshDashboard,
+  onSectionChange,
   onSignOut,
 }: VenueDashboardAccountProps) {
   const [name, setName] = useState(activeVenue?.name ?? "");
@@ -269,6 +423,11 @@ export function VenueDashboardAccount({
       option.toLowerCase().includes(cleanArea)
     );
   }, [area]);
+
+  const openingHoursPreview = useMemo(
+    () => getOpeningHoursPreview(openingHours),
+    [openingHours]
+  );
 
   useEffect(() => {
     const nextOpeningHours = activeVenue?.opening_hours ?? "";
@@ -367,6 +526,18 @@ export function VenueDashboardAccount({
     setImageToCropName("");
   }
 
+  function handleStatusChange(nextStatus: string) {
+    if (nextStatus === openStatus) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to change your venue status to "${nextStatus}"? This should only be used for urgent or manual situations.`
+    );
+
+    if (!confirmed) return;
+
+    setOpenStatus(nextStatus);
+  }
+
   function updateOpeningHoursDay(
     dayIndex: number,
     updates: Partial<DayHours>
@@ -410,152 +581,45 @@ export function VenueDashboardAccount({
       {imageToCropSrc ? (
         <LiveyImageCropper
           imageSrc={imageToCropSrc}
-          fileName={imageToCropName || "venue-logo"}
+          fileName={imageToCropName || "venue-logo.png"}
           title="Crop venue logo"
-          description="Move and zoom the image until the venue logo looks clean and centered."
+          description="Center your venue logo inside the square. This is what people will see on Livey."
           onCancel={handleCancelCrop}
           onSave={handleSaveCrop}
         />
       ) : null}
 
-      {isOpeningHoursEditorOpen ? (
-        <div
-          className="venue-dashboard-hours-editor-backdrop"
-          role="dialog"
-          aria-modal="true"
-        >
-          <section className="venue-dashboard-hours-editor-card">
-            <div className="venue-dashboard-hours-editor-header">
-              <div>
-                <p className="venue-dashboard-eyebrow">Opening hours</p>
-                <h2>Edit weekly hours</h2>
-                <span>
-                  Use dropdowns for each day. These hours update the public
-                  venue profile after saving.
-                </span>
+      <section className="venue-dashboard-account-settings">
+        <section className="venue-dashboard-card venue-dashboard-profile-card">
+          <div className="venue-dashboard-account-heading">
+            <div>
+              <p className="venue-dashboard-eyebrow">Account Settings</p>
+              <h2>Public venue profile</h2>
+              <p>
+                Control how your venue appears inside Livey. These updates go
+                through the secure dashboard bridge and update the main Livey app
+                venue profile.
+              </p>
+            </div>
+
+            <div className="venue-dashboard-logo-editor">
+              <div className="venue-dashboard-logo-preview">
+                {visibleLogoUrl ? (
+                  <img src={visibleLogoUrl} alt={name || "Venue logo"} />
+                ) : (
+                  <span>{name?.charAt(0) || "L"}</span>
+                )}
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpeningHoursEditorOpen(false)}
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="venue-dashboard-hours-editor-list">
-              {openingHoursDraft.map((day, index) => (
-                <div className="venue-dashboard-hours-editor-row" key={day.day}>
-                  <strong>{day.day}</strong>
-
-                  <label>
-                    Status
-                    <select
-                      value={day.isClosed ? "Closed" : "Open"}
-                      onChange={(event) =>
-                        updateOpeningHoursDay(index, {
-                          isClosed: event.target.value === "Closed",
-                        })
-                      }
-                    >
-                      <option value="Open">Open</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </label>
-
-                  <label>
-                    Opens
-                    <select
-                      value={day.openTime}
-                      disabled={day.isClosed}
-                      onChange={(event) =>
-                        updateOpeningHoursDay(index, {
-                          openTime: event.target.value,
-                        })
-                      }
-                    >
-                      {timeOptions.map((time) => (
-                        <option key={`${day.day}-open-${time}`} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label>
-                    Closes
-                    <select
-                      value={day.closeTime}
-                      disabled={day.isClosed}
-                      onChange={(event) =>
-                        updateOpeningHoursDay(index, {
-                          closeTime: event.target.value,
-                        })
-                      }
-                    >
-                      {timeOptions.map((time) => (
-                        <option key={`${day.day}-close-${time}`} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            <div className="venue-dashboard-hours-editor-actions">
-              <button
-                type="button"
-                onClick={() => setIsOpeningHoursEditorOpen(false)}
-              >
-                Cancel
-              </button>
-
-              <button type="button" onClick={handleApplyOpeningHours}>
-                Apply hours
-              </button>
-            </div>
-          </section>
-        </div>
-      ) : null}
-
-      <section className="venue-dashboard-account-page">
-        <section className="venue-dashboard-card venue-dashboard-profile-card">
-          <div className="venue-dashboard-section-heading">
-            <p className="venue-dashboard-eyebrow">Venue profile</p>
-            <h2>Public Livey profile</h2>
-            <p>
-              Changes here update the venue profile shown inside the Livey app.
-            </p>
-          </div>
-
-          <div className="venue-dashboard-logo-editor">
-            <div className="venue-dashboard-logo-preview">
-              {visibleLogoUrl ? (
-                <img src={visibleLogoUrl} alt={activeVenue?.name || "Venue"} />
-              ) : (
-                <span>{activeVenue?.name?.slice(0, 1) || "L"}</span>
-              )}
-            </div>
-
-            <div>
-              <h3>Venue logo</h3>
-              <p>
-                Upload a PNG, JPG, or WebP. Crop it before saving so it looks
-                clean inside Livey.
-              </p>
-
-              <label className="venue-dashboard-logo-upload-button">
-                {logoFile ? "Change cropped image" : "Upload and crop logo"}
+              <label className="venue-dashboard-logo-upload">
                 <input
                   type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  onChange={(event) => {
-                    handleLogoChange(event.target.files?.[0] ?? null);
-                    event.target.value = "";
-                  }}
+                  accept="image/*"
+                  onChange={(event) =>
+                    handleLogoChange(event.target.files?.[0] ?? null)
+                  }
                 />
+                Change logo
               </label>
             </div>
           </div>
@@ -575,28 +639,28 @@ export function VenueDashboardAccount({
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                placeholder="Describe your venue."
+                placeholder="Tell people what makes your venue worth visiting."
               />
             </label>
 
-            <div className="venue-dashboard-form-row">
-              <label className="venue-dashboard-searchable-field">
-                Area
+            <label>
+              Area
+              <div className="venue-dashboard-area-field">
                 <input
                   value={area}
-                  onBlur={() =>
-                    window.setTimeout(() => setIsAreaDropdownOpen(false), 120)
-                  }
+                  onFocus={() => setIsAreaDropdownOpen(true)}
                   onChange={(event) => {
                     setArea(event.target.value);
                     setIsAreaDropdownOpen(true);
                   }}
-                  onFocus={() => setIsAreaDropdownOpen(true)}
+                  onBlur={() =>
+                    window.setTimeout(() => setIsAreaDropdownOpen(false), 140)
+                  }
                   placeholder="Search area"
                 />
 
                 {isAreaDropdownOpen ? (
-                  <div className="venue-dashboard-area-dropdown">
+                  <div className="venue-dashboard-area-menu">
                     {filteredAreaOptions.length > 0 ? (
                       filteredAreaOptions.map((option) => (
                         <button
@@ -611,97 +675,132 @@ export function VenueDashboardAccount({
                         </button>
                       ))
                     ) : (
-                      <span>No matching areas</span>
+                      <span>No matching area</span>
                     )}
                   </div>
                 ) : null}
-              </label>
-
-              <label>
-                Status
-                <select
-                  value={openStatus}
-                  onChange={(event) => setOpenStatus(event.target.value)}
-                >
-                  <option value="Open now">Open now</option>
-                  <option value="Live now">Live now</option>
-                  <option value="Tonight">Tonight</option>
-                  <option value="Weekend">Weekend</option>
-                  <option value="Closed">Closed</option>
-                </select>
-                <span className="venue-dashboard-field-note">
-                  Used only for urgent/manual cases. Normal status will become
-                  automatic later.
-                </span>
-              </label>
-            </div>
+              </div>
+            </label>
 
             <label>
               Address
-              <input
-                value={address}
-                readOnly
-                placeholder="Venue address"
-              />
-              <span className="venue-dashboard-field-note">
-                Address is locked because location changes need verification.
-              </span>
+              <input value={address} readOnly />
+              <small className="venue-dashboard-field-note">
+                Address is locked to protect location accuracy. Later, address
+                changes should use a new Google Maps verification flow.
+              </small>
             </label>
 
-            <div className="venue-dashboard-opening-hours-summary">
-              <div>
-                <span>Opening hours</span>
-                <strong>{openingHours || "No opening hours added yet"}</strong>
-              </div>
+            <div className="venue-dashboard-profile-row">
+              <label>
+                Status override
+                <LiveyDashboardDropdown
+                  value={openStatus}
+                  options={statusOptions}
+                  onChange={handleStatusChange}
+                />
+                <small className="venue-dashboard-field-note">
+                  Use this only for urgent/manual situations. Activity timing
+                  should normally control what appears live.
+                </small>
+              </label>
 
-              <button type="button" onClick={handleOpenOpeningHoursEditor}>
-                Edit hours
-              </button>
+              <label>
+                Opening hours
+                <div className="venue-dashboard-hours-summary">
+                  {openingHoursPreview.map((item) => (
+                    <div key={`${item.title}-${item.value}`}>
+                      <span>{item.title}</span>
+                      <strong>{item.value}</strong>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="venue-dashboard-secondary-button"
+                  type="button"
+                  onClick={handleOpenOpeningHoursEditor}
+                >
+                  Edit hours
+                </button>
+              </label>
             </div>
 
             <button
               className="venue-dashboard-save-button"
               type="button"
               onClick={handleSaveProfile}
-              disabled={isUpdatingVenueProfile || !activeVenue}
+              disabled={isUpdatingVenueProfile}
             >
-              {isUpdatingVenueProfile ? "Saving..." : "Save venue profile"}
+              {isUpdatingVenueProfile ? "Saving venue profile..." : "Save venue profile"}
             </button>
           </div>
         </section>
 
-        <section className="venue-dashboard-card venue-dashboard-owner-card">
-          <p className="venue-dashboard-eyebrow">Account</p>
-          <h2>Owner information</h2>
+        <aside className="venue-dashboard-account-side">
+          <section className="venue-dashboard-card">
+            <p className="venue-dashboard-eyebrow">Dashboard controls</p>
+            <h2>Useful actions</h2>
 
-          <div className="venue-dashboard-account-list">
-            <div>
-              <span>Email</span>
-              <strong>{currentUser?.email || "No email found"}</strong>
+            <div className="venue-dashboard-settings-list">
+              <button
+                type="button"
+                onClick={onRefreshDashboard}
+                disabled={isRefreshing}
+              >
+                <span>Refresh dashboard</span>
+                <small>
+                  {isRefreshing
+                    ? "Refreshing your latest venue data..."
+                    : "Reload venue, activity, and history data from Livey."}
+                </small>
+              </button>
+
+              <button type="button" onClick={() => onSectionChange("activity")}>
+                <span>Manage activity</span>
+                <small>Create, edit, hide, remove, or restore activities.</small>
+              </button>
+
+              <a href="mailto:support@livey.network">
+                <span>Contact Livey support</span>
+                <small>Ask for help with your venue dashboard.</small>
+              </a>
             </div>
+          </section>
 
-            <div>
-              <span>Connected venue</span>
-              <strong>{activeVenue?.name || "No venue connected"}</strong>
+          <section className="venue-dashboard-card">
+            <p className="venue-dashboard-eyebrow">Owner account</p>
+            <h2>Connected account</h2>
+
+            <div className="venue-dashboard-account-list">
+              <div>
+                <span>Email</span>
+                <strong>{currentUser?.email || "Not available"}</strong>
+              </div>
+
+              <div>
+                <span>User ID</span>
+                <strong>{currentUser?.id || "Not available"}</strong>
+              </div>
+
+              <div>
+                <span>Connected venue</span>
+                <strong>{activeVenue?.name || "No venue connected"}</strong>
+              </div>
+
+              <div>
+                <span>Venue ID</span>
+                <strong>{activeVenue?.id || "Not available"}</strong>
+              </div>
             </div>
+          </section>
 
-            <div>
-              <span>Venue ID</span>
-              <strong>{activeVenue?.id || "No venue ID found"}</strong>
-            </div>
-
-            <div>
-              <span>Role</span>
-              <strong>Owner</strong>
-            </div>
-          </div>
-
-          <div className="venue-dashboard-session-box">
+          <section className="venue-dashboard-card venue-dashboard-settings-danger">
             <p className="venue-dashboard-eyebrow">Session</p>
             <h2>Sign out</h2>
             <p>
-              Signing out will return this browser to the Livey dashboard auth
-              screen.
+              Signing out will close the venue dashboard session in this
+              browser.
             </p>
 
             <button
@@ -711,9 +810,93 @@ export function VenueDashboardAccount({
             >
               Sign out
             </button>
-          </div>
-        </section>
+          </section>
+        </aside>
       </section>
+
+      {isOpeningHoursEditorOpen ? (
+        <div className="venue-dashboard-hours-editor-backdrop">
+          <section className="venue-dashboard-hours-editor-card">
+            <div className="venue-dashboard-hours-editor-heading">
+              <div>
+                <p className="venue-dashboard-eyebrow">Opening hours</p>
+                <h2>Edit venue hours</h2>
+                <p>
+                  Choose whether each day is open or closed, then select opening
+                  and closing times.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsOpeningHoursEditorOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="venue-dashboard-hours-editor-list">
+              {openingHoursDraft.map((day, index) => (
+                <div className="venue-dashboard-hours-editor-row" key={day.day}>
+                  <strong>{day.day}</strong>
+
+                  <LiveyDashboardDropdown
+                    value={day.isClosed ? "Closed" : "Open"}
+                    options={dayStatusOptions}
+                    onChange={(value) =>
+                      updateOpeningHoursDay(index, {
+                        isClosed: value === "Closed",
+                      })
+                    }
+                  />
+
+                  <LiveyDashboardDropdown
+                    label="Opens"
+                    value={day.openTime}
+                    options={timeDropdownOptions}
+                    disabled={day.isClosed}
+                    onChange={(value) =>
+                      updateOpeningHoursDay(index, {
+                        openTime: value,
+                      })
+                    }
+                  />
+
+                  <LiveyDashboardDropdown
+                    label="Closes"
+                    value={day.closeTime}
+                    options={timeDropdownOptions}
+                    disabled={day.isClosed}
+                    onChange={(value) =>
+                      updateOpeningHoursDay(index, {
+                        closeTime: value,
+                      })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="venue-dashboard-hours-editor-actions">
+              <button
+                className="venue-dashboard-secondary-button"
+                type="button"
+                onClick={() => setIsOpeningHoursEditorOpen(false)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="venue-dashboard-save-button"
+                type="button"
+                onClick={handleApplyOpeningHours}
+              >
+                Use these hours
+              </button>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </>
   );
 }

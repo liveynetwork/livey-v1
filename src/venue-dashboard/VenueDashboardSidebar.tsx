@@ -5,7 +5,6 @@ export type DashboardSection =
   | "activity"
   | "analytics"
   | "history"
-  | "settings"
   | "account";
 
 type VenueDashboardSidebarProps = {
@@ -35,26 +34,20 @@ const DASHBOARD_NAV_ITEMS: Array<{
   {
     id: "analytics",
     label: "Analytics",
-    description: "Coming soon",
+    description: "Insights",
     icon: <AnalyticsIcon />,
   },
   {
     id: "history",
     label: "History",
-    description: "Coming soon",
+    description: "Removed activity",
     icon: <HistoryIcon />,
   },
   {
-    id: "settings",
-    label: "Settings",
-    description: "Coming soon",
-    icon: <SettingsIcon />,
-  },
-  {
     id: "account",
-    label: "Account",
-    description: "Owner profile",
-    icon: <AccountIcon />,
+    label: "Account Settings",
+    description: "Profile and owner",
+    icon: <AccountSettingsIcon />,
   },
 ];
 
@@ -152,20 +145,12 @@ function HistoryIcon() {
   );
 }
 
-function SettingsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" role="img">
-      <path d="M12 15.15a3.15 3.15 0 1 0 0-6.3 3.15 3.15 0 0 0 0 6.3Z" />
-      <path d="M18.2 13.15c.08-.38.12-.76.12-1.15s-.04-.77-.12-1.15l1.6-1.25-1.55-2.68-1.9.76a7.05 7.05 0 0 0-1.98-1.15L14.1 4.5h-3.2l-.27 2.03c-.72.27-1.38.66-1.98 1.15l-1.9-.76L5.2 9.6l1.6 1.25c-.08.38-.12.76-.12 1.15s.04.77.12 1.15L5.2 14.4l1.55 2.68 1.9-.76c.6.5 1.26.88 1.98 1.15l.27 2.03h3.2l.27-2.03c.72-.27 1.38-.66 1.98-1.15l1.9.76 1.55-2.68-1.6-1.25Z" />
-    </svg>
-  );
-}
-
-function AccountIcon() {
+function AccountSettingsIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
       <path d="M12 12.25a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
       <path d="M5.25 19.5c.65-3.05 3.05-4.85 6.75-4.85s6.1 1.8 6.75 4.85" />
+      <path d="M18.2 13.15c.08-.38.12-.76.12-1.15s-.04-.77-.12-1.15l1.6-1.25-1.55-2.68-1.9.76a7.05 7.05 0 0 0-1.98-1.15L14.1 4.5" />
     </svg>
   );
 }

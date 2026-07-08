@@ -24,7 +24,6 @@ import { VenueDashboardAccount } from "./tabs/VenueDashboardAccount";
 import { VenueDashboardComingSoon } from "./tabs/VenueDashboardComingSoon";
 import { VenueDashboardHistory } from "./tabs/VenueDashboardHistory";
 import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
-import { VenueDashboardSettings } from "./tabs/VenueDashboardSettings";
 import "./VenueDashboardScreen.css";
 
 export function VenueDashboardScreen() {
@@ -351,44 +350,44 @@ export function VenueDashboardScreen() {
       setIsRestoringEvent(false);
     }
   }
-  
+
   async function handleUpdateVenueProfile(input: {
-  name: string;
-  description: string;
-  area: string;
-  address: string;
-  openStatus: string;
-  openingHours: string;
-  logoFile: File | null;
-}) {
-  if (!activeVenue) return;
+    name: string;
+    description: string;
+    area: string;
+    address: string;
+    openStatus: string;
+    openingHours: string;
+    logoFile: File | null;
+  }) {
+    if (!activeVenue) return;
 
-  try {
-    setIsUpdatingVenueProfile(true);
-    setStatusMessage("");
-    setErrorMessage("");
+    try {
+      setIsUpdatingVenueProfile(true);
+      setStatusMessage("");
+      setErrorMessage("");
 
-    await updateVenueProfile({
-      venueId: activeVenue.id,
-      name: input.name,
-      description: input.description,
-      area: input.area,
-      address: input.address,
-      openStatus: input.openStatus,
-      openingHours: input.openingHours,
-      logoFile: input.logoFile,
-    });
+      await updateVenueProfile({
+        venueId: activeVenue.id,
+        name: input.name,
+        description: input.description,
+        area: input.area,
+        address: input.address,
+        openStatus: input.openStatus,
+        openingHours: input.openingHours,
+        logoFile: input.logoFile,
+      });
 
-    await refreshDashboard();
+      await refreshDashboard();
 
-    setStatusMessage("Venue profile updated successfully.");
-  } catch (error) {
-    console.error("Failed to update venue profile:", error);
-    setErrorMessage("We could not update your venue profile. Please try again.");
-  } finally {
-    setIsUpdatingVenueProfile(false);
+      setStatusMessage("Venue profile updated successfully.");
+    } catch (error) {
+      console.error("Failed to update venue profile:", error);
+      setErrorMessage("We could not update your venue profile. Please try again.");
+    } finally {
+      setIsUpdatingVenueProfile(false);
+    }
   }
-}
 
   async function handleSignOut() {
     const shouldSignOut = window.confirm(
@@ -418,12 +417,12 @@ export function VenueDashboardScreen() {
         <header className="venue-dashboard-topbar">
           <div>
             <img
-  className="venue-dashboard-topbar-logo"
-  src="/Livey-Logo.png"
-  alt="Livey"
-/>
+              className="venue-dashboard-topbar-logo"
+              src="/Livey-Logo.png"
+              alt="Livey"
+            />
 
-<h1>{getSectionTitle(activeSection)}</h1>
+            <h1>{getSectionTitle(activeSection)}</h1>
           </div>
 
           <button
@@ -515,24 +514,17 @@ export function VenueDashboardScreen() {
               />
             ) : null}
 
-            {activeSection === "settings" ? (
-              <VenueDashboardSettings
-                activeVenue={activeVenue}
-                isRefreshing={isRefreshing}
-                onRefreshDashboard={handleRefreshDashboard}
-                onSectionChange={setActiveSection}
-                onSignOut={handleSignOut}
-              />
-            ) : null}
-
             {activeSection === "account" ? (
               <VenueDashboardAccount
-  currentUser={currentUser}
-  activeVenue={activeVenue}
-  isUpdatingVenueProfile={isUpdatingVenueProfile}
-  onUpdateVenueProfile={handleUpdateVenueProfile}
-  onSignOut={handleSignOut}
-/>
+                currentUser={currentUser}
+                activeVenue={activeVenue}
+                isRefreshing={isRefreshing}
+                isUpdatingVenueProfile={isUpdatingVenueProfile}
+                onRefreshDashboard={handleRefreshDashboard}
+                onSectionChange={setActiveSection}
+                onUpdateVenueProfile={handleUpdateVenueProfile}
+                onSignOut={handleSignOut}
+              />
             ) : null}
           </>
         )}
@@ -546,8 +538,7 @@ function getSectionTitle(section: DashboardSection) {
   if (section === "activity") return "Activity";
   if (section === "analytics") return "Analytics";
   if (section === "history") return "History";
-  if (section === "settings") return "Settings";
-  return "Account";
+  return "Account Settings";
 }
 
 function mapEventToEditingState(
