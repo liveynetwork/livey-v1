@@ -408,10 +408,11 @@ export function VenueDashboardScreen() {
   return (
     <main className="venue-dashboard-page">
       <VenueDashboardSidebar
-        activeSection={activeSection}
-        venueName={activeVenue?.name || "Venue owner"}
-        onSectionChange={setActiveSection}
-      />
+  activeSection={activeSection}
+  venueName={activeVenue?.name || "Venue owner"}
+  venueLogoUrl={activeVenue?.logo_url || null}
+  onSectionChange={setActiveSection}
+/>
 
       <section className="venue-dashboard-main">
         <header className="venue-dashboard-topbar">

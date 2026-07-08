@@ -10,11 +10,12 @@ export type DashboardSection =
 type VenueDashboardSidebarProps = {
   activeSection: DashboardSection;
   venueName: string;
+  venueLogoUrl?: string | null;
   onSectionChange: (section: DashboardSection) => void;
 };
 
-const DASHBOARD_NAV_ITEMS: Array<{
-  id: DashboardSection;
+const MAIN_NAV_ITEMS: Array<{
+  id: Exclude<DashboardSection, "account">;
   label: string;
   description: string;
   icon: ReactNode;
@@ -23,7 +24,7 @@ const DASHBOARD_NAV_ITEMS: Array<{
     id: "home",
     label: "Home",
     description: "Overview",
-    icon: <HomeIcon />,
+    icon: <ControlCenterIcon />,
   },
   {
     id: "activity",
@@ -43,55 +44,65 @@ const DASHBOARD_NAV_ITEMS: Array<{
     description: "Removed activity",
     icon: <HistoryIcon />,
   },
-  {
-    id: "account",
-    label: "Account Settings",
-    description: "Profile and owner",
-    icon: <AccountSettingsIcon />,
-  },
 ];
+
+const ACCOUNT_NAV_ITEM: {
+  id: Extract<DashboardSection, "account">;
+  label: string;
+  description: string;
+  icon: ReactNode;
+} = {
+  id: "account",
+  label: "Account Settings",
+  description: "Profile and owner",
+  icon: <AccountSettingsIcon />,
+};
 
 export function VenueDashboardSidebar({
   activeSection,
   venueName,
+  venueLogoUrl,
   onSectionChange,
 }: VenueDashboardSidebarProps) {
+  const venueInitial = venueName?.trim()?.charAt(0)?.toUpperCase() || "L";
+
   return (
     <aside className="venue-dashboard-sidebar">
       <div className="venue-dashboard-brand">
         <div className="venue-dashboard-brand-icon">
-          <img src="/Livey - Logo.png" alt="Livey" />
+          {venueLogoUrl ? (
+            <img src={venueLogoUrl} alt={venueName || "Venue logo"} />
+          ) : (
+            <span>{venueInitial}</span>
+          )}
         </div>
 
         <div className="venue-dashboard-brand-copy">
-          <strong>Livey</strong>
+          <strong>{venueName || "Venue owner"}</strong>
           <span>Venue Console</span>
         </div>
       </div>
 
       <nav className="venue-dashboard-nav" aria-label="Venue dashboard">
-        {DASHBOARD_NAV_ITEMS.map((item) => (
-          <button
+        {MAIN_NAV_ITEMS.map((item) => (
+          <DashboardNavButton
             key={item.id}
-            className={
-              activeSection === item.id
-                ? "venue-dashboard-nav-item is-active"
-                : "venue-dashboard-nav-item"
-            }
-            type="button"
-            onClick={() => onSectionChange(item.id)}
-            title={item.label}
-          >
-            <span className="venue-dashboard-nav-icon" aria-hidden="true">
-              {item.icon}
-            </span>
-
-            <span className="venue-dashboard-nav-copy">
-              <strong>{item.label}</strong>
-              <small>{item.description}</small>
-            </span>
-          </button>
+            item={item}
+            isActive={activeSection === item.id}
+            onSectionChange={onSectionChange}
+          />
         ))}
+      </nav>
+
+      <nav
+        className="venue-dashboard-nav venue-dashboard-nav-bottom"
+        aria-label="Venue account settings"
+      >
+        <DashboardNavButton
+          item={ACCOUNT_NAV_ITEM}
+          isActive={activeSection === ACCOUNT_NAV_ITEM.id}
+          onSectionChange={onSectionChange}
+        />
       </nav>
 
       <div className="venue-dashboard-sidebar-footer">
@@ -102,12 +113,50 @@ export function VenueDashboardSidebar({
   );
 }
 
-function HomeIcon() {
+function DashboardNavButton({
+  item,
+  isActive,
+  onSectionChange,
+}: {
+  item: {
+    id: DashboardSection;
+    label: string;
+    description: string;
+    icon: ReactNode;
+  };
+  isActive: boolean;
+  onSectionChange: (section: DashboardSection) => void;
+}) {
+  return (
+    <button
+      className={
+        isActive
+          ? "venue-dashboard-nav-item is-active"
+          : "venue-dashboard-nav-item"
+      }
+      type="button"
+      onClick={() => onSectionChange(item.id)}
+      title={item.label}
+    >
+      <span className="venue-dashboard-nav-icon" aria-hidden="true">
+        {item.icon}
+      </span>
+
+      <span className="venue-dashboard-nav-copy">
+        <strong>{item.label}</strong>
+        <small>{item.description}</small>
+      </span>
+    </button>
+  );
+}
+
+function ControlCenterIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
-      <path d="M4.75 11.2 12 5.25l7.25 5.95" />
-      <path d="M6.5 10.65v7.1c0 .8.45 1.25 1.25 1.25h8.5c.8 0 1.25-.45 1.25-1.25v-7.1" />
-      <path d="M10 19v-4.25c0-.55.35-.9.9-.9h2.2c.55 0 .9.35.9.9V19" />
+      <rect x="4.5" y="4.5" width="5.6" height="5.6" rx="1.8" />
+      <rect x="13.9" y="4.5" width="5.6" height="5.6" rx="1.8" />
+      <rect x="4.5" y="13.9" width="5.6" height="5.6" rx="1.8" />
+      <rect x="13.9" y="13.9" width="5.6" height="5.6" rx="1.8" />
     </svg>
   );
 }
@@ -115,10 +164,7 @@ function HomeIcon() {
 function ActivityIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
-      <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
-      <path d="M12 7.25v5.15l3.35 2.05" />
-      <path d="M7.55 12h1.7" />
-      <path d="M14.75 12h1.7" />
+      <path d="M3.6 12h4.05l2.85-6.4 3.25 12.8L16.65 12h3.75" />
     </svg>
   );
 }
@@ -126,11 +172,10 @@ function ActivityIcon() {
 function AnalyticsIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
-      <path d="M5.5 18.5V14" />
-      <path d="M10 18.5V9.5" />
-      <path d="M14.5 18.5v-6" />
-      <path d="M19 18.5V6" />
-      <path d="M4.5 18.75h15" />
+      <path d="M5.2 18.7V12.8" />
+      <path d="M9.75 18.7V9.9" />
+      <path d="M14.3 18.7v-6.9" />
+      <path d="M18.85 18.7V7.1" />
     </svg>
   );
 }
@@ -138,9 +183,8 @@ function AnalyticsIcon() {
 function HistoryIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
-      <path d="M5.65 8.1A7.75 7.75 0 1 1 4.25 12" />
-      <path d="M5.65 8.1H3.25V5.7" />
-      <path d="M12 7.75v4.7l3.05 1.85" />
+      <circle cx="12" cy="12" r="8.2" />
+      <path d="M12 8.25v4.05l2.45 1.85" />
     </svg>
   );
 }
@@ -148,9 +192,8 @@ function HistoryIcon() {
 function AccountSettingsIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
-      <path d="M12 12.25a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
-      <path d="M5.25 19.5c.65-3.05 3.05-4.85 6.75-4.85s6.1 1.8 6.75 4.85" />
-      <path d="M18.2 13.15c.08-.38.12-.76.12-1.15s-.04-.77-.12-1.15l1.6-1.25-1.55-2.68-1.9.76a7.05 7.05 0 0 0-1.98-1.15L14.1 4.5" />
+      <circle cx="12" cy="8.25" r="3.55" />
+      <path d="M5.15 19.15c.75-3.35 3.15-5.15 6.85-5.15s6.1 1.8 6.85 5.15" />
     </svg>
   );
 }
