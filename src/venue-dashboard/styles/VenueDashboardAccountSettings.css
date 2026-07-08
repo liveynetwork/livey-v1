@@ -1,0 +1,425 @@
+.venue-dashboard-account-settings {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.venue-dashboard-profile-card {
+  overflow: visible;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.16), transparent 24rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.042)),
+    #17191d;
+}
+
+.venue-dashboard-account-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.venue-dashboard-account-heading > div:first-child {
+  max-width: 720px;
+}
+
+.venue-dashboard-logo-editor {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.venue-dashboard-logo-preview {
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 91, 50, 0.24), transparent 7rem),
+    rgba(255, 255, 255, 0.075);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.venue-dashboard-logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.venue-dashboard-logo-preview span {
+  color: #ff6b45;
+  font-size: 2.8rem;
+  font-weight: 950;
+  letter-spacing: -0.08em;
+}
+
+.venue-dashboard-logo-upload {
+  min-height: 38px;
+  border-radius: 999px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd !important;
+  font-size: 0.8rem !important;
+  font-weight: 950 !important;
+  cursor: pointer;
+}
+
+.venue-dashboard-logo-upload input {
+  display: none;
+}
+
+.venue-dashboard-profile-form {
+  gap: 18px;
+}
+
+.venue-dashboard-profile-row {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 16px;
+}
+
+.venue-dashboard-area-field {
+  position: relative;
+}
+
+.venue-dashboard-area-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 230px;
+  overflow: auto;
+  border-radius: 18px;
+  padding: 8px;
+  background: rgba(13, 14, 17, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+}
+
+.venue-dashboard-area-menu button,
+.venue-dashboard-area-menu span {
+  width: 100%;
+  min-height: 38px;
+  border: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 11px;
+  background: transparent;
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 850;
+  text-align: left;
+}
+
+.venue-dashboard-area-menu button {
+  cursor: pointer;
+}
+
+.venue-dashboard-area-menu button:hover {
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.venue-dashboard-hours-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.venue-dashboard-hours-summary div {
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-hours-summary span,
+.venue-dashboard-hours-summary strong {
+  display: block;
+}
+
+.venue-dashboard-hours-summary span {
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-hours-summary strong {
+  margin-top: 5px;
+  color: #f7f1ea;
+  font-size: 0.9rem;
+}
+
+.venue-dashboard-account-side {
+  display: grid;
+  gap: 18px;
+}
+
+.venue-dashboard-account-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.venue-dashboard-account-list div {
+  display: grid;
+  gap: 5px;
+  border-radius: 18px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-account-list span {
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.venue-dashboard-account-list strong {
+  color: #f7f1ea;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.venue-dashboard-settings-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.venue-dashboard-settings-list button,
+.venue-dashboard-settings-list a {
+  width: 100%;
+  min-height: 68px;
+  border: 0;
+  border-radius: 18px;
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #f7f1ea;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.venue-dashboard-settings-list button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.venue-dashboard-settings-list span {
+  font-size: 0.95rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-settings-list small {
+  color: rgba(247, 241, 234, 0.55);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.venue-dashboard-settings-danger {
+  grid-column: 1 / -1;
+}
+
+.venue-dashboard-hours-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.64);
+  backdrop-filter: blur(18px);
+}
+
+.venue-dashboard-hours-editor-card {
+  width: min(920px, 100%);
+  max-height: min(760px, calc(100dvh - 48px));
+  overflow: auto;
+  border-radius: 32px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.16), transparent 22rem),
+    #15171b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 28px 100px rgba(0, 0, 0, 0.5);
+}
+
+.venue-dashboard-hours-editor-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.venue-dashboard-hours-editor-heading h2 {
+  margin: 0;
+}
+
+.venue-dashboard-hours-editor-heading button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f1ea;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.venue-dashboard-hours-editor-list {
+  display: grid;
+  gap: 10px;
+}
+
+.venue-dashboard-hours-editor-row {
+  display: grid;
+  grid-template-columns: 1fr 150px 150px 150px;
+  gap: 10px;
+  align-items: center;
+  border-radius: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-hours-editor-row > strong {
+  color: #f7f1ea;
+  font-size: 0.94rem;
+}
+
+.venue-dashboard-hours-editor-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.venue-dashboard-custom-dropdown {
+  position: relative;
+  display: grid;
+  gap: 8px;
+}
+
+.venue-dashboard-custom-dropdown > span {
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.venue-dashboard-custom-dropdown > button {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 14px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.venue-dashboard-custom-dropdown.disabled > button {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.venue-dashboard-custom-dropdown > button small {
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.9rem;
+}
+
+.venue-dashboard-custom-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  max-height: 210px;
+  overflow: auto;
+  border-radius: 16px;
+  padding: 7px;
+  background: rgba(13, 14, 17, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+}
+
+.venue-dashboard-custom-dropdown-menu button {
+  width: 100%;
+  min-height: 36px;
+  border: 0;
+  border-radius: 11px;
+  padding: 0 10px;
+  background: transparent;
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 850;
+  text-align: left;
+  cursor: pointer;
+}
+
+.venue-dashboard-custom-dropdown-menu button:hover,
+.venue-dashboard-custom-dropdown-menu button.selected {
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+}
+
+@media (max-width: 1080px) {
+  .venue-dashboard-account-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-profile-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-account-heading,
+  .venue-dashboard-hours-editor-heading {
+    flex-direction: column;
+  }
+
+  .venue-dashboard-logo-editor {
+    width: 100%;
+  }
+
+  .venue-dashboard-hours-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-hours-editor-row {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-hours-editor-actions {
+    grid-template-columns: 1fr;
+  }
+}

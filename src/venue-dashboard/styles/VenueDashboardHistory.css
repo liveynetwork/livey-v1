@@ -1,0 +1,172 @@
+.venue-dashboard-history-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.venue-dashboard-history-hero {
+  min-height: 230px;
+  display: grid;
+  align-content: center;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.16), transparent 24rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.042)),
+    #17191d;
+}
+
+.venue-dashboard-history-hero h2 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  letter-spacing: -0.07em;
+}
+
+.venue-dashboard-history-hero p {
+  max-width: 520px;
+  margin-bottom: 0;
+}
+
+.venue-dashboard-history-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.venue-dashboard-history-summary div {
+  min-height: 76px;
+  border-radius: 20px;
+  display: grid;
+  gap: 4px;
+  align-content: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-history-summary span {
+  color: rgba(247, 241, 234, 0.52);
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.venue-dashboard-history-summary strong {
+  color: #f7f1ea;
+  font-size: 1.7rem;
+  letter-spacing: -0.06em;
+}
+
+.venue-dashboard-history-card {
+  border-radius: 32px;
+}
+
+.venue-dashboard-history-list {
+  display: grid;
+  gap: 12px;
+}
+
+.venue-dashboard-history-item {
+  min-height: 78px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.045));
+  border: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+.venue-dashboard-history-main {
+  min-width: 0;
+}
+
+.venue-dashboard-history-item strong,
+.venue-dashboard-history-item span {
+  display: block;
+}
+
+.venue-dashboard-history-item strong,
+.venue-dashboard-history-main strong {
+  color: #f7f1ea;
+  font-size: 1rem;
+}
+
+.venue-dashboard-history-item span,
+.venue-dashboard-history-main span {
+  margin-top: 5px;
+  color: rgba(247, 241, 234, 0.56);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-history-empty {
+  min-height: 180px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+}
+
+.venue-dashboard-history-empty h3 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size: 1.7rem;
+  letter-spacing: -0.05em;
+}
+
+.venue-dashboard-history-empty p {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.6);
+}
+
+.venue-dashboard-history-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.venue-dashboard-restore-button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 12px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+  font-size: 0.78rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.venue-dashboard-restore-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(255, 91, 50, 0.22);
+}
+
+.venue-dashboard-restore-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-history-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-history-hero {
+    min-height: unset;
+  }
+}
+
+@media (max-width: 560px) {
+  .venue-dashboard-history-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-history-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

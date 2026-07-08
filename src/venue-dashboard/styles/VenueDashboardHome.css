@@ -1,0 +1,319 @@
+.venue-dashboard-home {
+  display: grid;
+  gap: 18px;
+}
+
+.venue-dashboard-home-simple {
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.venue-dashboard-hero-card {
+  min-height: 210px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.22), transparent 28rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.045)),
+    #15171b;
+}
+
+.venue-dashboard-hero-card h2 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+}
+
+.venue-dashboard-hero-card p {
+  max-width: 620px;
+  margin-bottom: 0;
+}
+
+.venue-dashboard-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.venue-dashboard-hero-badges span,
+.venue-dashboard-venue-meta span {
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(255, 91, 50, 0.14);
+  color: #ffd8cd;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.venue-dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.venue-dashboard-stat-card {
+  min-height: 116px;
+  padding: 22px;
+}
+
+.venue-dashboard-stat-card span,
+.venue-dashboard-stat-card strong {
+  display: block;
+}
+
+.venue-dashboard-stat-card span {
+  color: rgba(247, 241, 234, 0.54);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.venue-dashboard-stat-card strong {
+  margin-top: 14px;
+  font-size: 2.25rem;
+  letter-spacing: -0.07em;
+}
+
+.venue-dashboard-section-heading {
+  margin-bottom: 18px;
+}
+
+.venue-dashboard-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.venue-dashboard-quick-actions button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 16px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f1ea;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.venue-dashboard-quick-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.venue-dashboard-event-table {
+  display: grid;
+  gap: 10px;
+}
+
+.venue-dashboard-event-table button {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #f7f1ea;
+  cursor: pointer;
+}
+
+.venue-dashboard-event-table span {
+  font-weight: 900;
+}
+
+.venue-dashboard-overview-card {
+  min-height: 260px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 91, 50, 0.24), transparent 25rem),
+    radial-gradient(circle at 10% 100%, rgba(255, 255, 255, 0.06), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.045)),
+    #181a1f;
+}
+
+.venue-dashboard-overview-main {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.venue-dashboard-overview-card h2 {
+  max-width: 900px;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 0.9;
+}
+
+.venue-dashboard-overview-card .venue-dashboard-hero-badges {
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.venue-dashboard-overview-card .venue-dashboard-hero-badges span {
+  padding: 10px 14px;
+  background: rgba(255, 91, 50, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-home-overview-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.venue-dashboard-now-card,
+.venue-dashboard-status-card {
+  min-height: 300px;
+  border-radius: 30px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.042)),
+    #17191d;
+}
+
+.venue-dashboard-now-card {
+  display: grid;
+  align-content: start;
+}
+
+.venue-dashboard-next-activity {
+  width: 100%;
+  min-height: 172px;
+  border: 0;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  background:
+    radial-gradient(circle at right, rgba(255, 91, 50, 0.14), transparent 18rem),
+    rgba(255, 255, 255, 0.055);
+  color: #f7f1ea;
+  text-align: left;
+  cursor: pointer;
+}
+
+.venue-dashboard-next-activity h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 3vw, 2.4rem);
+  letter-spacing: -0.06em;
+}
+
+.venue-dashboard-next-activity p {
+  margin: 10px 0 0;
+}
+
+.venue-dashboard-empty-overview {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+  min-height: 210px;
+}
+
+.venue-dashboard-empty-overview h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.45rem);
+  letter-spacing: -0.05em;
+}
+
+.venue-dashboard-empty-overview p {
+  max-width: 430px;
+}
+
+.venue-dashboard-empty-overview .venue-dashboard-primary-action {
+  position: static;
+  width: fit-content;
+  margin-top: 6px;
+}
+
+.venue-dashboard-status-list {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.venue-dashboard-status-list div {
+  min-height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.venue-dashboard-status-list span {
+  color: rgba(247, 241, 234, 0.55);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.venue-dashboard-status-list strong {
+  color: #f7f1ea;
+  font-size: 1.08rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-status-card .venue-dashboard-secondary-button {
+  margin-top: 20px;
+  min-height: 54px;
+  border-radius: 18px;
+}
+
+@media (max-width: 980px) {
+  .venue-dashboard-hero-card {
+    min-height: unset;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-hero-badges {
+    justify-content: flex-start;
+  }
+
+  .venue-dashboard-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .venue-dashboard-home-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-overview-card {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .venue-dashboard-overview-main {
+    justify-items: start;
+  }
+
+  .venue-dashboard-overview-card .venue-dashboard-hero-badges {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .venue-dashboard-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-next-activity {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-empty-overview .venue-dashboard-primary-action {
+    width: 100%;
+  }
+}
