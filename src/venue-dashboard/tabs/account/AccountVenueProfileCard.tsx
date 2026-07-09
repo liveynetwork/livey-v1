@@ -2,6 +2,8 @@ import { LiveyDashboardDropdown } from "./LiveyDashboardDropdown";
 import { statusOptions } from "./accountOptions";
 import type { OpeningHoursPreviewItem } from "./accountTypes";
 
+const DESCRIPTION_MAX_LENGTH = 100;
+
 type AccountVenueProfileCardProps = {
   description: string;
   openStatus: string;
@@ -25,42 +27,65 @@ export function AccountVenueProfileCard({
 }: AccountVenueProfileCardProps) {
   return (
     <section className="venue-dashboard-card venue-dashboard-profile-card">
-      <div className="venue-dashboard-premium-card-heading">
+      <div className="venue-dashboard-premium-card-heading venue-dashboard-profile-card-heading">
         <div>
           <p className="venue-dashboard-eyebrow">Venue profile</p>
           <h2>Profile controls</h2>
         </div>
 
-        <span className="venue-dashboard-card-status-dot">Editable</span>
       </div>
 
       <div className="venue-dashboard-form venue-dashboard-profile-form">
-        <label>
+        <label className="venue-dashboard-description-field">
           Description
           <textarea
             value={description}
+            maxLength={DESCRIPTION_MAX_LENGTH}
             onChange={(event) => onDescriptionChange(event.target.value)}
             placeholder="Tell people what makes your venue worth visiting."
           />
+
+          <small className="venue-dashboard-description-count">
+            {description.length}/{DESCRIPTION_MAX_LENGTH}
+          </small>
         </label>
 
-        <label>
-          Opening hours
-          <div className="venue-dashboard-today-hours-card">
-            <div>
-              <span>{todayOpeningHours.title}</span>
-              <strong>{todayOpeningHours.value}</strong>
-            </div>
+        <div className="venue-dashboard-opening-hours-field">
+  <div className="venue-dashboard-today-hours-card">
+    <span>{todayOpeningHours.title}</span>
 
-            <button
-              className="venue-dashboard-secondary-button"
-              type="button"
-              onClick={onOpenOpeningHoursEditor}
-            >
-              Edit weekly hours
-            </button>
-          </div>
-        </label>
+    <strong>{todayOpeningHours.value}</strong>
+
+    <button
+      className="venue-dashboard-hours-edit-icon-button"
+      type="button"
+      onClick={onOpenOpeningHoursEditor}
+      aria-label="Edit weekly hours"
+      title="Edit weekly hours"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+      >
+        <path
+          d="M4 20h4.4L19.3 9.1a2.1 2.1 0 0 0 0-3L17.9 4.7a2.1 2.1 0 0 0-3 0L4 15.6V20Z"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+        <path
+          d="m13.5 6.1 4.4 4.4"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
 
         <label>
           Status override

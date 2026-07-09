@@ -1006,3 +1006,431 @@
   transform: translateX(-50%);
   width: 220px;
 }
+
+/* Premium venue profile card heading + description polish */
+.venue-dashboard-profile-card-heading {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.venue-dashboard-profile-card-heading > div {
+  display: grid;
+  justify-items: center;
+}
+
+.venue-dashboard-profile-card-heading .venue-dashboard-eyebrow {
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+}
+
+.venue-dashboard-profile-card-heading h2 {
+  margin-top: 10px;
+  font-size: clamp(1.55rem, 2vw, 2.15rem);
+  letter-spacing: -0.055em;
+}
+
+.venue-dashboard-profile-card-heading .venue-dashboard-card-status-dot {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+}
+
+.venue-dashboard-description-field {
+  text-align: center;
+}
+
+.venue-dashboard-description-field textarea {
+  text-align: center;
+  min-height: 130px;
+}
+
+.venue-dashboard-description-field textarea::placeholder {
+  text-align: center;
+}
+
+.venue-dashboard-description-count {
+  display: block;
+  margin-top: 8px;
+  color: rgba(247, 241, 234, 0.42);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-profile-card-heading .venue-dashboard-card-status-dot {
+    position: static;
+    margin-top: 8px;
+  }
+
+  .venue-dashboard-profile-card-heading {
+    align-items: center;
+  }
+}
+
+/* Fixed description box and remove old editable pill spacing */
+.venue-dashboard-description-field textarea {
+  resize: none;
+  min-height: 130px;
+  max-height: 130px;
+  overflow: auto;
+}
+
+.venue-dashboard-profile-card-heading {
+  justify-content: center;
+}
+
+.venue-dashboard-profile-card-heading .venue-dashboard-card-status-dot {
+  display: none;
+}
+
+/* Horizontal today opening hours row */
+.venue-dashboard-opening-hours-field {
+  text-align: center;
+}
+
+.venue-dashboard-today-hours-card {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+}
+
+.venue-dashboard-today-hours-inline {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.venue-dashboard-today-hours-inline span,
+.venue-dashboard-today-hours-inline strong {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.venue-dashboard-today-hours-inline span {
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.venue-dashboard-today-hours-inline strong {
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-hours-edit-icon-button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 42px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+  cursor: pointer;
+}
+
+.venue-dashboard-hours-edit-icon-button:hover {
+  background: rgba(255, 91, 50, 0.24);
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-today-hours-card {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .venue-dashboard-today-hours-inline {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+}
+
+/* Opening hours row final polish */
+.venue-dashboard-opening-hours-field {
+  cursor: default;
+}
+
+.venue-dashboard-today-hours-card {
+  cursor: default;
+  pointer-events: none;
+}
+
+.venue-dashboard-today-hours-inline {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.venue-dashboard-today-hours-inline span,
+.venue-dashboard-today-hours-inline strong {
+  line-height: 1;
+  margin: 0;
+}
+
+.venue-dashboard-hours-edit-icon-button {
+  pointer-events: auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(247, 241, 234, 0.72);
+}
+
+.venue-dashboard-hours-edit-icon-button:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: #f7f1ea;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Opening hours row: day left, hours centered, only pencil clickable */
+.venue-dashboard-opening-hours-field {
+  display: block;
+  cursor: default;
+}
+
+.venue-dashboard-today-hours-card {
+  position: relative;
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 16px 18px;
+  cursor: default;
+  pointer-events: auto;
+}
+
+.venue-dashboard-today-hours-card > span {
+  justify-self: start;
+  margin: 0;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.venue-dashboard-today-hours-card > strong {
+  justify-self: center;
+  margin: 0;
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.venue-dashboard-hours-edit-icon-button {
+  justify-self: end;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.72);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.venue-dashboard-hours-edit-icon-button:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: #f7f1ea;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.venue-dashboard-today-hours-card:hover {
+  transform: none;
+}
+
+/* Premium opening hours modal */
+.venue-dashboard-hours-editor-backdrop {
+  padding: 28px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(22px);
+}
+
+.venue-dashboard-hours-editor-card {
+  width: min(980px, 100%);
+  max-height: min(820px, calc(100dvh - 56px));
+  border-radius: 38px;
+  padding: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 50, 0.16), transparent 26rem),
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.055), transparent 20rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.072), rgba(255, 255, 255, 0.035)),
+    #15171b;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 34px 110px rgba(0, 0, 0, 0.58);
+}
+
+.venue-dashboard-hours-editor-heading {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.venue-dashboard-hours-editor-heading > div {
+  display: grid;
+  justify-items: center;
+}
+
+.venue-dashboard-hours-editor-heading h2 {
+  margin-top: 8px;
+  color: #f7f1ea;
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+}
+
+.venue-dashboard-hours-editor-heading p:not(.venue-dashboard-eyebrow) {
+  max-width: 620px;
+  margin-top: 10px;
+  color: rgba(247, 241, 234, 0.62);
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.venue-dashboard-hours-editor-heading > button {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 0 18px;
+  background: rgba(255, 255, 255, 0.065);
+  color: #f7f1ea;
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-hours-editor-heading > button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.venue-dashboard-hours-editor-list {
+  display: grid;
+  gap: 12px;
+}
+
+.venue-dashboard-hours-editor-row {
+  min-height: 90px;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  border-radius: 26px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.032));
+  border: 1px solid rgba(255, 255, 255, 0.052);
+}
+
+.venue-dashboard-hours-day-name {
+  color: #f7f1ea;
+  font-size: 0.98rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-hours-controls {
+  display: grid;
+  grid-template-columns: minmax(135px, 0.9fr) minmax(135px, 1fr) minmax(135px, 1fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown {
+  gap: 7px;
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown > span {
+  text-align: center;
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown > button {
+  min-height: 52px;
+  border-radius: 18px;
+  padding: 0 15px;
+  background: rgba(5, 6, 8, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown > button:hover {
+  background: rgba(10, 11, 14, 0.96);
+  border-color: rgba(255, 91, 50, 0.22);
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown-menu {
+  border-radius: 18px;
+  padding: 8px;
+  background: rgba(12, 13, 16, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.venue-dashboard-hours-editor-card .venue-dashboard-custom-dropdown-menu button {
+  min-height: 38px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.venue-dashboard-hours-editor-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.venue-dashboard-hours-editor-actions button {
+  min-height: 54px;
+}
+
+@media (max-width: 820px) {
+  .venue-dashboard-hours-editor-card {
+    padding: 24px;
+    border-radius: 30px;
+  }
+
+  .venue-dashboard-hours-editor-heading > button {
+    position: static;
+  }
+
+  .venue-dashboard-hours-editor-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .venue-dashboard-hours-day-name {
+    text-align: center;
+  }
+
+  .venue-dashboard-hours-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-hours-editor-actions {
+    grid-template-columns: 1fr;
+  }
+}

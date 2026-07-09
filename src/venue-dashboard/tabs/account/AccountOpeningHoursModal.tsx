@@ -26,8 +26,8 @@ export function AccountOpeningHoursModal({
             <p className="venue-dashboard-eyebrow">Opening hours</p>
             <h2>Edit venue hours</h2>
             <p>
-              Choose whether each day is open or closed, then select opening and
-              closing times.
+              Set your weekly opening schedule. These hours are shown inside
+              your Livey venue profile.
             </p>
           </div>
 
@@ -39,41 +39,45 @@ export function AccountOpeningHoursModal({
         <div className="venue-dashboard-hours-editor-list">
           {openingHoursDraft.map((day, index) => (
             <div className="venue-dashboard-hours-editor-row" key={day.day}>
-              <strong>{day.day}</strong>
+              <strong className="venue-dashboard-hours-day-name">
+                {day.day}
+              </strong>
 
-              <LiveyDashboardDropdown
-                value={day.isClosed ? "Closed" : "Open"}
-                options={dayStatusOptions}
-                onChange={(value) =>
-                  onUpdateOpeningHoursDay(index, {
-                    isClosed: value === "Closed",
-                  })
-                }
-              />
+              <div className="venue-dashboard-hours-controls">
+                <LiveyDashboardDropdown
+                  value={day.isClosed ? "Closed" : "Open"}
+                  options={dayStatusOptions}
+                  onChange={(value) =>
+                    onUpdateOpeningHoursDay(index, {
+                      isClosed: value === "Closed",
+                    })
+                  }
+                />
 
-              <LiveyDashboardDropdown
-                label="Opens"
-                value={day.openTime}
-                options={timeDropdownOptions}
-                disabled={day.isClosed}
-                onChange={(value) =>
-                  onUpdateOpeningHoursDay(index, {
-                    openTime: value,
-                  })
-                }
-              />
+                <LiveyDashboardDropdown
+                  label="Opens"
+                  value={day.openTime}
+                  options={timeDropdownOptions}
+                  disabled={day.isClosed}
+                  onChange={(value) =>
+                    onUpdateOpeningHoursDay(index, {
+                      openTime: value,
+                    })
+                  }
+                />
 
-              <LiveyDashboardDropdown
-                label="Closes"
-                value={day.closeTime}
-                options={timeDropdownOptions}
-                disabled={day.isClosed}
-                onChange={(value) =>
-                  onUpdateOpeningHoursDay(index, {
-                    closeTime: value,
-                  })
-                }
-              />
+                <LiveyDashboardDropdown
+                  label="Closes"
+                  value={day.closeTime}
+                  options={timeDropdownOptions}
+                  disabled={day.isClosed}
+                  onChange={(value) =>
+                    onUpdateOpeningHoursDay(index, {
+                      closeTime: value,
+                    })
+                  }
+                />
+              </div>
             </div>
           ))}
         </div>
