@@ -949,3 +949,60 @@
     width: 100%;
   }
 }
+
+/* Centered premium hero identity card */
+.venue-dashboard-identity-card {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  padding: 34px 28px;
+}
+
+.venue-dashboard-identity-logo-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.venue-dashboard-identity-logo {
+  width: 118px;
+  height: 118px;
+  flex: 0 0 auto;
+  border-radius: 34px;
+}
+
+.venue-dashboard-identity-copy {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.venue-dashboard-identity-copy h2 {
+  max-width: 900px;
+  margin: 4px auto 0;
+  text-align: center;
+}
+
+.venue-dashboard-identity-meta {
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.venue-dashboard-identity-note {
+  max-width: 620px;
+  margin: 16px auto 0;
+  text-align: center;
+}
+
+.venue-dashboard-identity-card::after {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: 220px;
+}
