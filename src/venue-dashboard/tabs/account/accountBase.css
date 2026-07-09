@@ -1,0 +1,284 @@
+.venue-dashboard-account-settings {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.venue-dashboard-account-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.venue-dashboard-account-settings .venue-dashboard-card {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-account-settings .venue-dashboard-card:hover {
+  transform: translateY(-2px);
+}
+
+.venue-dashboard-account-settings button,
+.venue-dashboard-account-settings a,
+.venue-dashboard-logo-upload,
+.venue-dashboard-custom-dropdown > button {
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease;
+}
+
+.venue-dashboard-account-settings button:hover,
+.venue-dashboard-account-settings a:hover,
+.venue-dashboard-logo-upload:hover,
+.venue-dashboard-custom-dropdown > button:hover {
+  transform: translateY(-1px);
+}
+
+.venue-dashboard-account-settings button:active,
+.venue-dashboard-account-settings a:active,
+.venue-dashboard-logo-upload:active,
+.venue-dashboard-custom-dropdown > button:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.venue-dashboard-logo-upload {
+  min-height: 38px;
+  border-radius: 999px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd !important;
+  font-size: 0.8rem !important;
+  font-weight: 950 !important;
+  cursor: pointer;
+}
+
+.venue-dashboard-logo-upload input {
+  display: none;
+}
+
+.venue-dashboard-custom-dropdown {
+  position: relative;
+  display: grid;
+  gap: 8px;
+}
+
+.venue-dashboard-custom-dropdown > span {
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.venue-dashboard-custom-dropdown > button {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 14px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.venue-dashboard-custom-dropdown.disabled > button {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.venue-dashboard-custom-dropdown > button small {
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.9rem;
+}
+
+.venue-dashboard-custom-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  max-height: 210px;
+  overflow: auto;
+  border-radius: 16px;
+  padding: 7px;
+  background: rgba(13, 14, 17, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+}
+
+.venue-dashboard-custom-dropdown-menu button {
+  width: 100%;
+  min-height: 36px;
+  border: 0;
+  border-radius: 11px;
+  padding: 0 10px;
+  background: transparent;
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 850;
+  text-align: left;
+  cursor: pointer;
+}
+
+.venue-dashboard-custom-dropdown-menu button:hover,
+.venue-dashboard-custom-dropdown-menu button.selected {
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+}
+
+.venue-dashboard-premium-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.venue-dashboard-premium-card-heading h2 {
+  margin-top: 8px;
+}
+
+.venue-dashboard-card-status-dot {
+  min-height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  background: rgba(255, 91, 50, 0.16);
+  color: #ffd8cd;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.venue-dashboard-locked-details-card {
+  position: relative;
+}
+
+.venue-dashboard-locked-details-list {
+  display: grid;
+  gap: 0;
+  margin-top: 4px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-locked-details-list div {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.48fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 15px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.venue-dashboard-locked-details-list div:last-child {
+  border-bottom: 0;
+}
+
+.venue-dashboard-locked-details-list span {
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.75rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.venue-dashboard-locked-details-list strong {
+  color: #f7f1ea;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.venue-dashboard-locked-details-note {
+  margin-top: 16px;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.venue-dashboard-support-session-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  border-radius: 30px;
+  padding: 22px 24px;
+}
+
+.venue-dashboard-support-session-card h2 {
+  margin-top: 8px;
+}
+
+.venue-dashboard-support-session-card p:not(.venue-dashboard-eyebrow) {
+  max-width: 620px;
+  margin-top: 8px;
+  color: rgba(247, 241, 234, 0.58);
+  line-height: 1.55;
+}
+
+.venue-dashboard-support-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.venue-dashboard-support-actions a {
+  text-decoration: none;
+}
+
+@media (max-width: 1080px) {
+  .venue-dashboard-account-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-support-session-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-premium-card-heading {
+    flex-direction: column;
+  }
+
+  .venue-dashboard-locked-details-list div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .venue-dashboard-support-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-support-actions a,
+  .venue-dashboard-support-actions button {
+    width: 100%;
+  }
+}
