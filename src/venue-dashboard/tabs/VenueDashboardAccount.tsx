@@ -3,15 +3,16 @@ import type { User } from "@supabase/supabase-js";
 import { LiveyImageCropper } from "../../components/image-crop/LiveyImageCropper";
 import type { DashboardSection } from "../VenueDashboardSidebar";
 import type { VenueDashboardVenue } from "../venueDashboardService";
+import { AccountLockedDetailsCard } from "./account/AccountLockedDetailsCard";
 import { AccountOpeningHoursModal } from "./account/AccountOpeningHoursModal";
-import { AccountSideCards } from "./account/AccountSideCards";
+import { AccountSupportSessionCard } from "./account/AccountSupportSessionCard";
+import { AccountVenueIdentityCard } from "./account/AccountVenueIdentityCard";
 import { AccountVenueProfileCard } from "./account/AccountVenueProfileCard";
 import type { DayHours } from "./account/accountTypes";
-import { areaOptions } from "./account/accountOptions";
 import {
   buildOpeningHoursDraft,
   formatOpeningHours,
-  getOpeningHoursPreview,
+  getTodayOpeningHoursPreview,
 } from "./account/accountHoursUtils";
 
 type VenueDashboardAccountProps = {
@@ -34,13 +35,9 @@ type VenueDashboardAccountProps = {
 };
 
 export function VenueDashboardAccount({
-  currentUser,
   activeVenue,
-  isRefreshing,
   isUpdatingVenueProfile,
   onUpdateVenueProfile,
-  onRefreshDashboard,
-  onSectionChange,
   onSignOut,
 }: VenueDashboardAccountProps) {
   const [name, setName] = useState(activeVenue?.name ?? "");
@@ -57,7 +54,6 @@ export function VenueDashboardAccount({
   const [openingHoursDraft, setOpeningHoursDraft] = useState<DayHours[]>(
     buildOpeningHoursDraft(activeVenue?.opening_hours ?? "")
   );
-  const [isAreaDropdownOpen, setIsAreaDropdownOpen] = useState(false);
   const [isOpeningHoursEditorOpen, setIsOpeningHoursEditorOpen] =
     useState(false);
 
@@ -68,20 +64,8 @@ export function VenueDashboardAccount({
 
   const visibleLogoUrl = logoPreviewUrl || activeVenue?.logo_url || "";
 
-  const filteredAreaOptions = useMemo(() => {
-    const cleanArea = area.trim().toLowerCase();
-
-    if (!cleanArea) {
-      return areaOptions;
-    }
-
-    return areaOptions.filter((option) =>
-      option.toLowerCase().includes(cleanArea)
-    );
-  }, [area]);
-
-  const openingHoursPreview = useMemo(
-    () => getOpeningHoursPreview(openingHours),
+  const todayOpeningHours = useMemo(
+    () => getTodayOpeningHoursPreview(openingHours),
     [openingHours]
   );
 
@@ -246,35 +230,34 @@ export function VenueDashboardAccount({
       ) : null}
 
       <section className="venue-dashboard-account-settings">
-        <AccountVenueProfileCard
-          name={name}
-          description={description}
-          area={area}
-          address={address}
-          openStatus={openStatus}
+        <AccountVenueIdentityCard
+          activeVenue={activeVenue}
           visibleLogoUrl={visibleLogoUrl}
-          filteredAreaOptions={filteredAreaOptions}
-          openingHoursPreview={openingHoursPreview}
-          isAreaDropdownOpen={isAreaDropdownOpen}
-          isUpdatingVenueProfile={isUpdatingVenueProfile}
-          onNameChange={setName}
-          onDescriptionChange={setDescription}
-          onAreaChange={setArea}
-          onAreaDropdownOpenChange={setIsAreaDropdownOpen}
+          venueName={name}
           onLogoChange={handleLogoChange}
-          onStatusChange={handleStatusChange}
-          onOpenOpeningHoursEditor={handleOpenOpeningHoursEditor}
-          onSaveProfile={handleSaveProfile}
         />
 
-        <AccountSideCards
-          currentUser={currentUser}
-          activeVenue={activeVenue}
-          isRefreshing={isRefreshing}
-          onRefreshDashboard={onRefreshDashboard}
-          onSectionChange={onSectionChange}
-          onSignOut={onSignOut}
-        />
+        <div className="venue-dashboard-account-main-grid">
+          <AccountVenueProfileCard
+            description={description}
+            openStatus={openStatus}
+            todayOpeningHours={todayOpeningHours}
+            isUpdatingVenueProfile={isUpdatingVenueProfile}
+            onDescriptionChange={setDescription}
+            onStatusChange={handleStatusChange}
+            onOpenOpeningHoursEditor={handleOpenOpeningHoursEditor}
+            onSaveProfile={handleSaveProfile}
+          />
+
+          <AccountLockedDetailsCard
+            activeVenue={activeVenue}
+            venueName={name}
+            area={area}
+            address={address}
+          />
+        </div>
+
+        <AccountSupportSessionCard onSignOut={onSignOut} />
       </section>
 
       {isOpeningHoursEditorOpen ? (

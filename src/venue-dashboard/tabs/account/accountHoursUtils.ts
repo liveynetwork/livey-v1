@@ -134,3 +134,24 @@ export function getOpeningHoursPreview(
     value: day.isClosed ? "Closed" : `${day.openTime}–${day.closeTime}`,
   }));
 }
+
+export function getTodayOpeningHoursPreview(openingHours: string) {
+  const days = buildOpeningHoursDraft(openingHours);
+  const todayIndex = new Date().getDay();
+  const liveyDayIndex = todayIndex === 0 ? 6 : todayIndex - 1;
+  const today = days[liveyDayIndex];
+
+  if (!today) {
+    return {
+      title: "Today",
+      value: "Not available",
+    };
+  }
+
+  return {
+    title: today.day,
+    value: today.isClosed
+      ? "Closed today"
+      : `${today.openTime}–${today.closeTime}`,
+  };
+}
