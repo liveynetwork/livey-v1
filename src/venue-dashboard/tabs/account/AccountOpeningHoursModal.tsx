@@ -36,8 +36,15 @@ export function AccountOpeningHoursModal({
           </button>
         </div>
 
-        <div className="venue-dashboard-hours-editor-list">
-          {openingHoursDraft.map((day, index) => (
+        <div className="venue-dashboard-hours-editor-table-header">
+  <span>Days</span>
+  <span>Status</span>
+  <span>Opens</span>
+  <span>Closes</span>
+</div>
+
+<div className="venue-dashboard-hours-editor-list">
+  {openingHoursDraft.map((day, index) => (
             <div className="venue-dashboard-hours-editor-row" key={day.day}>
               <strong className="venue-dashboard-hours-day-name">
                 {day.day}
@@ -55,28 +62,26 @@ export function AccountOpeningHoursModal({
                 />
 
                 <LiveyDashboardDropdown
-                  label="Opens"
-                  value={day.openTime}
-                  options={timeDropdownOptions}
-                  disabled={day.isClosed}
-                  onChange={(value) =>
-                    onUpdateOpeningHoursDay(index, {
-                      openTime: value,
-                    })
-                  }
-                />
+  value={day.openTime}
+  options={timeDropdownOptions}
+  disabled={day.isClosed}
+  onChange={(value) =>
+    onUpdateOpeningHoursDay(index, {
+      openTime: value,
+    })
+  }
+/>
 
                 <LiveyDashboardDropdown
-                  label="Closes"
-                  value={day.closeTime}
-                  options={timeDropdownOptions}
-                  disabled={day.isClosed}
-                  onChange={(value) =>
-                    onUpdateOpeningHoursDay(index, {
-                      closeTime: value,
-                    })
-                  }
-                />
+  value={day.closeTime}
+  options={timeDropdownOptions}
+  disabled={day.isClosed}
+  onChange={(value) =>
+    onUpdateOpeningHoursDay(index, {
+      closeTime: value,
+    })
+  }
+/>
               </div>
             </div>
           ))}
@@ -92,12 +97,12 @@ export function AccountOpeningHoursModal({
           </button>
 
           <button
-            className="venue-dashboard-save-button"
-            type="button"
-            onClick={onApply}
-          >
-            Use these hours
-          </button>
+  className="venue-dashboard-save-button"
+  type="button"
+  onClick={onApply}
+>
+  Save changes
+</button>
         </div>
       </section>
     </div>
