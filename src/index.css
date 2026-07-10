@@ -32,13 +32,17 @@ body,
 }
 
 html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   background: var(--livey-cream);
 }
 
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   background: var(--livey-cream);
 }
 

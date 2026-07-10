@@ -1,5 +1,8 @@
 .venue-dashboard-profile-card {
   overflow: visible;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   border-radius: 32px;
   background:
     radial-gradient(
@@ -41,29 +44,153 @@
   display: none;
 }
 
-.venue-dashboard-profile-form {
-  gap: 18px;
+.venue-dashboard-profile-controls-panel {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(7, 8, 10, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 18px 42px rgba(0, 0, 0, 0.14);
+}
+
+.venue-dashboard-profile-control-tile {
+  min-width: 0;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 21px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 91, 50, 0.035),
+      transparent 12rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(255, 255, 255, 0.01);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 12px 28px rgba(0, 0, 0, 0.08);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.venue-dashboard-profile-control-tile:hover {
+  border-color: rgba(255, 91, 50, 0.14);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 91, 50, 0.085),
+      transparent 12rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.058),
+      rgba(255, 255, 255, 0.024)
+    ),
+    rgba(255, 255, 255, 0.012);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 14px 32px rgba(0, 0, 0, 0.11);
+}
+
+.venue-dashboard-profile-control-label {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.43);
+  font-size: 0.71rem;
+  font-weight: 950;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 .venue-dashboard-description-field {
+  grid-column: 1 / -1;
+  min-height: 210px;
   text-align: center;
 }
 
 .venue-dashboard-description-field textarea {
-  min-height: 130px;
-  max-height: 130px;
+  width: 100%;
+  min-height: 122px;
+  max-height: 122px;
   resize: none;
   overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 18px;
+  padding: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(98, 98, 98, 0.34),
+      rgba(98, 98, 98, 0.18)
+    ),
+    #24262b;
+  color: #f7f1ea;
+  caret-color: #ff5b32;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.55;
   text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 28px rgba(0, 0, 0, 0.08);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.venue-dashboard-description-field textarea:hover {
+  border-color: rgba(255, 255, 255, 0.11);
+}
+
+.venue-dashboard-description-field textarea:focus {
+  outline: none;
+  border-color: rgba(255, 91, 50, 0.28);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(98, 98, 98, 0.4),
+      rgba(98, 98, 98, 0.22)
+    ),
+    #27292e;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 3px rgba(255, 91, 50, 0.08);
 }
 
 .venue-dashboard-description-field textarea::placeholder {
+  color: rgba(247, 241, 234, 0.38);
   text-align: center;
 }
 
 .venue-dashboard-description-count {
   display: block;
-  margin-top: 8px;
+  margin-top: 0;
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.76rem;
   font-weight: 900;
@@ -71,33 +198,35 @@
 }
 
 .venue-dashboard-opening-hours-field {
-  display: block;
+  min-height: 134px;
   cursor: default;
 }
 
 .venue-dashboard-today-hours-card {
   position: relative;
-  min-height: 76px;
-  border-radius: 22px;
+  min-height: 66px;
+  border-radius: 18px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 16px;
-  padding: 16px 18px;
+  gap: 12px;
+  padding: 10px 10px 10px 14px;
   cursor: default;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.064),
-    rgba(255, 255, 255, 0.036)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.046),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(6, 7, 9, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.055);
 }
 
 .venue-dashboard-today-hours-card > span {
   justify-self: start;
   margin: 0;
-  color: rgba(247, 241, 234, 0.48);
-  font-size: 0.78rem;
+  color: rgba(247, 241, 234, 0.43);
+  font-size: 0.7rem;
   font-weight: 950;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -108,19 +237,21 @@
   justify-self: center;
   margin: 0;
   color: #f7f1ea;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 950;
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .venue-dashboard-hours-edit-icon-button {
   justify-self: end;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   display: inline-grid;
   place-items: center;
+  padding: 0;
   background: transparent;
   color: rgba(247, 241, 234, 0.72);
   cursor: pointer;
@@ -128,9 +259,9 @@
 }
 
 .venue-dashboard-hours-edit-icon-button:hover {
-  background: rgba(255, 255, 255, 0.055);
-  color: #f7f1ea;
-  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+  border-color: rgba(255, 91, 50, 0.18);
 }
 
 .venue-dashboard-today-hours-card:hover {
@@ -138,16 +269,11 @@
 }
 
 .venue-dashboard-status-override-field {
-  display: grid;
+  min-height: 134px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 12px;
-}
-
-.venue-dashboard-status-override-heading {
-  margin: 0;
-  color: #f7f1ea;
-  font-size: 0.9rem;
-  font-weight: 950;
-  text-align: center;
 }
 
 .venue-dashboard-custom-dropdown.arrow-only {
@@ -156,31 +282,29 @@
 
 .venue-dashboard-custom-dropdown-arrow-trigger {
   width: 100%;
-  min-height: 52px;
-  border: 1px solid rgba(255, 255, 255, 0.085);
+  min-height: 66px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 18px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 42px;
   align-items: center;
   gap: 10px;
-  padding: 0 7px 0 16px;
+  padding: 0 8px 0 15px;
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.046),
       rgba(255, 255, 255, 0.018)
     ),
-    rgba(6, 7, 9, 0.88);
+    rgba(6, 7, 9, 0.72);
   color: #f7f1ea;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 10px 26px rgba(0, 0, 0, 0.14);
+  box-shadow: none;
   cursor: default;
 }
 
 .venue-dashboard-custom-dropdown-arrow-trigger
   .venue-dashboard-custom-dropdown-value {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 950;
   text-align: left;
 }
@@ -200,7 +324,7 @@
 }
 
 .venue-dashboard-custom-dropdown-arrow-button:hover {
-  background: rgba(255, 91, 50, 0.08);
+  background: rgba(255, 91, 50, 0.1);
 }
 
 .venue-dashboard-custom-dropdown-arrow-button
@@ -208,12 +332,60 @@
   pointer-events: none;
 }
 
+.venue-dashboard-status-advisory {
+  grid-column: 1 / -1;
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 91, 50, 0.13);
+  border-radius: 21px;
+  background:
+    radial-gradient(
+      circle at left center,
+      rgba(255, 91, 50, 0.08),
+      transparent 13rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.016)
+    ),
+    rgba(12, 13, 16, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.venue-dashboard-status-advisory::after {
+  content: "";
+  width: 38px;
+  height: 38px;
+}
+
+.venue-dashboard-status-advisory-icon {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 91, 50, 0.18);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #ff805f;
+  background: rgba(255, 91, 50, 0.12);
+}
+
+.venue-dashboard-status-advisory-icon svg {
+  display: block;
+}
+
 .venue-dashboard-status-override-note {
   display: block;
-  max-width: 940px;
+  max-width: 690px;
   margin: 0 auto;
-  color: rgba(247, 241, 234, 0.46);
-  font-size: 0.7rem;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.68rem;
   font-weight: 900;
   line-height: 1.65;
   letter-spacing: 0.055em;
@@ -221,10 +393,53 @@
 }
 
 .venue-dashboard-profile-save-button {
-  margin-top: 2px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.venue-dashboard-profile-card:hover {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 91, 50, 0.21),
+      transparent 24rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.086),
+      rgba(255, 255, 255, 0.046)
+    ),
+    #17191d;
 }
 
 @media (max-width: 720px) {
+  .venue-dashboard-profile-controls-panel {
+    grid-template-columns: 1fr;
+    gap: 9px;
+    padding: 9px;
+  }
+
+  .venue-dashboard-profile-control-tile,
+  .venue-dashboard-description-field {
+    grid-column: auto;
+    min-height: 0;
+    padding: 17px 16px;
+  }
+
+  .venue-dashboard-description-field {
+    min-height: 194px;
+  }
+
+  .venue-dashboard-description-field textarea {
+    min-height: 116px;
+    max-height: 116px;
+  }
+
+  .venue-dashboard-opening-hours-field,
+  .venue-dashboard-status-override-field {
+    min-height: 122px;
+  }
+
   .venue-dashboard-today-hours-card {
     grid-template-columns: 1fr auto;
   }
@@ -243,8 +458,20 @@
     grid-row: 1 / 3;
   }
 
+  .venue-dashboard-status-advisory {
+    grid-column: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 18px 16px;
+  }
+
+  .venue-dashboard-status-advisory::after {
+    display: none;
+  }
+
   .venue-dashboard-status-override-note {
-    font-size: 0.66rem;
+    font-size: 0.64rem;
     letter-spacing: 0.04em;
   }
 }

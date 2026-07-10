@@ -13,6 +13,8 @@ export function AccountLockedDetailsCard({
   area,
   address,
 }: AccountLockedDetailsCardProps) {
+  const isVerified = activeVenue?.verified === true;
+
   return (
     <section className="venue-dashboard-card venue-dashboard-locked-details-card">
       <div className="venue-dashboard-premium-card-heading venue-dashboard-locked-details-heading">
@@ -23,34 +25,58 @@ export function AccountLockedDetailsCard({
       </div>
 
       <div className="venue-dashboard-locked-details-list">
-        <div>
+        <div className="venue-dashboard-locked-detail-tile venue-dashboard-locked-detail-tile-wide">
           <span>Venue name</span>
           <strong>{venueName || "Not available"}</strong>
         </div>
 
-        <div>
+        <div className="venue-dashboard-locked-detail-tile">
           <span>Address</span>
           <strong>{address || "Not available"}</strong>
         </div>
 
-        <div>
+        <div className="venue-dashboard-locked-detail-tile">
           <span>Area</span>
           <strong>{area || "Not available"}</strong>
         </div>
 
-        <div>
+        <div className="venue-dashboard-locked-detail-tile">
           <span>City</span>
           <strong>{activeVenue?.city || "Not available"}</strong>
         </div>
 
-        <div>
+        <div className="venue-dashboard-locked-detail-tile">
           <span>Category</span>
           <strong>{activeVenue?.category || "Not available"}</strong>
         </div>
 
-        <div>
-          <span>Verified</span>
-          <strong>{activeVenue?.verified ? "Verified" : "Not verified"}</strong>
+        <div
+          className={`venue-dashboard-locked-detail-tile venue-dashboard-locked-detail-tile-wide venue-dashboard-locked-detail-verification ${
+            isVerified ? "is-verified" : ""
+          }`}
+        >
+          <span>Verification</span>
+
+          <strong>
+            <span className="venue-dashboard-verification-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+              >
+                <path
+                  d="m7.5 12.5 3 3 6-7"
+                  stroke="currentColor"
+                  strokeWidth="2.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+
+            {isVerified ? "Verified by Livey" : "Not verified"}
+          </strong>
         </div>
       </div>
 

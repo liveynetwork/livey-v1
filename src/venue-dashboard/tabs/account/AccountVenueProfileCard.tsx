@@ -34,9 +34,11 @@ export function AccountVenueProfileCard({
         </div>
       </div>
 
-      <div className="venue-dashboard-form venue-dashboard-profile-form">
-        <label className="venue-dashboard-description-field">
-          Description
+      <div className="venue-dashboard-profile-controls-panel">
+        <label className="venue-dashboard-profile-control-tile venue-dashboard-description-field">
+          <span className="venue-dashboard-profile-control-label">
+            Description
+          </span>
 
           <textarea
             value={description}
@@ -50,7 +52,11 @@ export function AccountVenueProfileCard({
           </small>
         </label>
 
-        <div className="venue-dashboard-opening-hours-field">
+        <div className="venue-dashboard-profile-control-tile venue-dashboard-opening-hours-field">
+          <span className="venue-dashboard-profile-control-label">
+            Today’s hours
+          </span>
+
           <div className="venue-dashboard-today-hours-card">
             <span>{todayOpeningHours.title}</span>
 
@@ -87,8 +93,8 @@ export function AccountVenueProfileCard({
           </div>
         </div>
 
-        <div className="venue-dashboard-status-override-field">
-          <p className="venue-dashboard-status-override-heading">
+        <div className="venue-dashboard-profile-control-tile venue-dashboard-status-override-field">
+          <p className="venue-dashboard-profile-control-label">
             Status override
           </p>
 
@@ -98,23 +104,52 @@ export function AccountVenueProfileCard({
             triggerMode="arrow"
             onChange={onStatusChange}
           />
-
-          <small className="venue-dashboard-field-note venue-dashboard-status-override-note">
-            USE THIS ONLY FOR URGENT MANUAL CHANGES. YOUR ACTIVITY AND OPENING
-            HOURS SHOULD NORMALLY CONTROL WHAT APPEARS ON LIVEY. TO RETURN THE
-            VENUE TO ITS AUTOMATIC STATE, SELECT DEFAULT.
-          </small>
         </div>
 
-        <button
-          className="venue-dashboard-save-button venue-dashboard-profile-save-button"
-          type="button"
-          onClick={onSaveProfile}
-          disabled={isUpdatingVenueProfile}
-        >
-          {isUpdatingVenueProfile ? "Saving changes..." : "Save changes"}
-        </button>
+        <div className="venue-dashboard-status-advisory">
+          <span
+            className="venue-dashboard-status-advisory-icon"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="17"
+              height="17"
+              fill="none"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path
+                d="M12 10.5v5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <circle cx="12" cy="7.5" r="1.1" fill="currentColor" />
+            </svg>
+          </span>
+
+          <small className="venue-dashboard-field-note venue-dashboard-status-override-note">
+            STATUS OVERRIDE SHOULD ONLY BE USED FOR URGENT MANUAL CHANGES. YOUR
+            ACTIVITY AND OPENING HOURS SHOULD NORMALLY CONTROL WHAT APPEARS ON
+            LIVEY. TO RETURN THE VENUE TO ITS AUTOMATIC STATE, SELECT DEFAULT.
+          </small>
+        </div>
       </div>
+
+      <button
+        className="venue-dashboard-save-button venue-dashboard-profile-save-button"
+        type="button"
+        onClick={onSaveProfile}
+        disabled={isUpdatingVenueProfile}
+      >
+        {isUpdatingVenueProfile ? "Saving changes..." : "Save changes"}
+      </button>
     </section>
   );
 }

@@ -410,25 +410,16 @@ export function VenueDashboardScreen() {
 
       <section className="venue-dashboard-main">
         <header className="venue-dashboard-topbar">
-          <div>
-            <img
-              className="venue-dashboard-topbar-logo"
-              src="/Livey-Logo.png"
-              alt="Livey"
-            />
+  <div>
+    <img
+      className="venue-dashboard-topbar-logo"
+      src="/Livey-Logo.png"
+      alt="Livey"
+    />
 
-            <h1>{getSectionTitle(activeSection)}</h1>
-          </div>
-
-          <button
-            className="venue-dashboard-primary-action"
-            type="button"
-            onClick={handleCreateEvent}
-            disabled={!activeVenue || isCreatingEvent}
-          >
-            {isCreatingEvent ? "Creating..." : "New activity"}
-          </button>
-        </header>
+    <h1>{getSectionTitle(activeSection)}</h1>
+  </div>
+</header>
 
         {isLoading ? (
           <section className="venue-dashboard-card">

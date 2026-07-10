@@ -10,44 +10,44 @@
 
 .venue-dashboard-main {
   min-width: 0;
-  padding: 30px;
+  padding: 34px 30px 30px;
 }
 
 .venue-dashboard-topbar {
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  margin-bottom: 28px;
-  padding-top: 8px;
-  text-align: center;
   position: relative;
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 46px;
+  padding: 16px 0 6px;
+  text-align: center;
 }
 
 .venue-dashboard-topbar > div {
+  width: min(100%, 920px);
   display: grid;
   justify-items: center;
+  gap: 12px;
 }
 
 .venue-dashboard-topbar-logo {
-  width: 58px;
-  height: 58px;
+  display: block;
+  width: 72px;
+  height: 40px;
+  margin: 0;
   object-fit: contain;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 16px 30px rgba(255, 91, 50, 0.16));
+  filter: drop-shadow(0 14px 30px rgba(255, 91, 50, 0.14));
 }
 
 .venue-dashboard-topbar h1 {
+  max-width: 100%;
   margin: 0;
-  font-size: clamp(2.7rem, 5vw, 4.7rem);
-  letter-spacing: -0.085em;
-  line-height: 0.9;
-}
-
-.venue-dashboard-topbar .venue-dashboard-primary-action {
-  position: absolute;
-  right: 0;
+  color: #f7f1ea;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.08em;
+  text-align: center;
+  word-break: break-word;
 }
 
 .venue-dashboard-eyebrow {
@@ -249,40 +249,57 @@
   }
 
   .venue-dashboard-main {
-    padding: 20px;
+    padding: 24px 20px 20px;
   }
 
   .venue-dashboard-topbar {
-    text-align: left;
-    align-items: stretch;
-    flex-direction: column;
+    min-height: 132px;
+    margin-bottom: 38px;
+    padding-top: 10px;
+    text-align: center;
   }
 
   .venue-dashboard-topbar > div {
-    justify-items: start;
+    justify-items: center;
   }
 
-  .venue-dashboard-topbar .venue-dashboard-primary-action {
-    position: static;
+  .venue-dashboard-topbar-logo {
+    width: 64px;
+    height: 36px;
+  }
+
+  .venue-dashboard-topbar h1 {
+    font-size: clamp(2.5rem, 8vw, 3.7rem);
   }
 
   .venue-dashboard-primary-action {
     width: 100%;
   }
-
-  .venue-dashboard-topbar-logo {
-    width: 48px;
-    height: 48px;
-  }
-
-  .venue-dashboard-topbar h1 {
-    font-size: 2.8rem;
-  }
 }
 
 @media (max-width: 560px) {
   .venue-dashboard-main {
-    padding: 16px;
+    padding: 18px 16px 16px;
+  }
+
+  .venue-dashboard-topbar {
+    min-height: 116px;
+    margin-bottom: 30px;
+    padding-top: 6px;
+  }
+
+  .venue-dashboard-topbar > div {
+    gap: 10px;
+  }
+
+  .venue-dashboard-topbar-logo {
+    width: 56px;
+    height: 32px;
+  }
+
+  .venue-dashboard-topbar h1 {
+    font-size: clamp(2.25rem, 12vw, 3.1rem);
+    line-height: 0.96;
   }
 
   .venue-dashboard-card,
@@ -290,4 +307,15 @@
   .venue-dashboard-stat-card {
     border-radius: 24px;
   }
+}
+
+.venue-dashboard-page,
+.venue-dashboard-main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.venue-dashboard-page {
+  overflow-x: clip;
 }
