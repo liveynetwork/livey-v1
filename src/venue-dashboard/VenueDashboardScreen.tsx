@@ -390,20 +390,14 @@ export function VenueDashboardScreen() {
   }
 
   async function handleSignOut() {
-    const shouldSignOut = window.confirm(
-      "Are you sure you want to sign out of the Livey venue dashboard?"
-    );
-
-    if (!shouldSignOut) return;
-
-    try {
-      await dashboardSupabase.auth.signOut();
-      window.dispatchEvent(new Event("livey:auth-changed"));
-    } catch (error) {
-      console.error("Failed to sign out venue owner:", error);
-      setErrorMessage("We could not sign out. Please try again.");
-    }
+  try {
+    await dashboardSupabase.auth.signOut();
+    window.dispatchEvent(new Event("livey:auth-changed"));
+  } catch (error) {
+    console.error("Failed to sign out venue owner:", error);
+    setErrorMessage("We could not sign out. Please try again.");
   }
+}
 
   return (
     <main className="venue-dashboard-page">

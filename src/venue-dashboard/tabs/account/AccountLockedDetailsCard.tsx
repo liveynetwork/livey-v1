@@ -15,13 +15,11 @@ export function AccountLockedDetailsCard({
 }: AccountLockedDetailsCardProps) {
   return (
     <section className="venue-dashboard-card venue-dashboard-locked-details-card">
-      <div className="venue-dashboard-premium-card-heading">
+      <div className="venue-dashboard-premium-card-heading venue-dashboard-locked-details-heading">
         <div>
           <p className="venue-dashboard-eyebrow">Locked Livey details</p>
           <h2>Protected details</h2>
         </div>
-
-        <span className="venue-dashboard-card-status-dot">Locked</span>
       </div>
 
       <div className="venue-dashboard-locked-details-list">
@@ -57,7 +55,8 @@ export function AccountLockedDetailsCard({
       </div>
 
       <p className="venue-dashboard-locked-details-note">
-        These details are visible on Livey and require Livey support to change.
+        THESE DETAILS APPEAR ON LIVEY AND CAN ONLY BE UPDATED WITH HELP FROM
+        LIVEY SUPPORT.
       </p>
     </section>
   );

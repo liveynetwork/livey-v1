@@ -1,10 +1,7 @@
 import type { DayHours, LiveyDropdownOption } from "./accountTypes";
 
 export const statusOptions: LiveyDropdownOption[] = [
-  { label: "Open now", value: "Open now" },
-  { label: "Live now", value: "Live now" },
-  { label: "Tonight", value: "Tonight" },
-  { label: "Weekend", value: "Weekend" },
+  { label: "Default", value: "Open now" },
   { label: "Closed", value: "Closed" },
 ];
 
