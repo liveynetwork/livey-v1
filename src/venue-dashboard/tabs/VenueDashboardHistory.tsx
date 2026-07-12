@@ -15,8 +15,6 @@ type VenueDashboardHistoryProps = {
 export function VenueDashboardHistory({
   venueName,
   historyEvents,
-  isRestoringEvent,
-  onRestoreEvent,
 }: VenueDashboardHistoryProps) {
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [selectedHistoryEvent, setSelectedHistoryEvent] =
@@ -93,22 +91,20 @@ export function VenueDashboardHistory({
             <>
               <VenueDashboardHistoryList
                 events={recentHistoryEvents}
-                isRestoringEvent={isRestoringEvent}
                 onOpenEvent={setSelectedHistoryEvent}
-                onRestoreEvent={onRestoreEvent}
                 variant="preview"
               />
 
               {shouldShowViewAll ? (
                 <footer className="venue-dashboard-history-preview-footer">
-  <button
-    className="venue-dashboard-history-view-all-button"
-    type="button"
-    onClick={() => setIsArchiveOpen(true)}
-  >
-    View all
-  </button>
-</footer>
+                  <button
+                    className="venue-dashboard-history-view-all-button"
+                    type="button"
+                    onClick={() => setIsArchiveOpen(true)}
+                  >
+                    View all
+                  </button>
+                </footer>
               ) : null}
             </>
           )}
@@ -118,10 +114,8 @@ export function VenueDashboardHistory({
       {isArchiveOpen ? (
         <VenueDashboardHistoryArchiveModal
           historyEvents={sortedHistoryEvents}
-          isRestoringEvent={isRestoringEvent}
           onClose={() => setIsArchiveOpen(false)}
           onOpenEvent={setSelectedHistoryEvent}
-          onRestoreEvent={onRestoreEvent}
         />
       ) : null}
 
@@ -129,9 +123,7 @@ export function VenueDashboardHistory({
         <VenueDashboardHistoryDetailsModal
           venueName={venueName}
           event={selectedHistoryEvent}
-          isRestoringEvent={isRestoringEvent}
           onClose={() => setSelectedHistoryEvent(null)}
-          onRestoreEvent={onRestoreEvent}
         />
       ) : null}
     </>

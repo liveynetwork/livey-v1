@@ -2,22 +2,18 @@ import { useEffect } from "react";
 import type { MouseEvent } from "react";
 import type { VenueDashboardEvent } from "../../venueDashboardService";
 import { VenueDashboardHistoryList } from "./VenueDashboardHistoryList";
-import "./VenueDashboardHistoryModals.css";
+import "./VenueDashboardHistoryArchiveModal.css";
 
 type VenueDashboardHistoryArchiveModalProps = {
   historyEvents: VenueDashboardEvent[];
-  isRestoringEvent: boolean;
   onClose: () => void;
   onOpenEvent: (event: VenueDashboardEvent) => void;
-  onRestoreEvent: (event: VenueDashboardEvent) => void;
 };
 
 export function VenueDashboardHistoryArchiveModal({
   historyEvents,
-  isRestoringEvent,
   onClose,
   onOpenEvent,
-  onRestoreEvent,
 }: VenueDashboardHistoryArchiveModalProps) {
   useModalBehaviour(onClose);
 
@@ -66,9 +62,7 @@ export function VenueDashboardHistoryArchiveModal({
         <div className="venue-dashboard-history-archive-scroll">
           <VenueDashboardHistoryList
             events={historyEvents}
-            isRestoringEvent={isRestoringEvent}
             onOpenEvent={onOpenEvent}
-            onRestoreEvent={onRestoreEvent}
             variant="archive"
           />
         </div>

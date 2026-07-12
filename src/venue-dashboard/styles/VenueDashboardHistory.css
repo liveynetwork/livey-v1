@@ -139,16 +139,6 @@
   font-weight: 800;
 }
 
-.venue-dashboard-history-summary-item.is-removed {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(7, 8, 10, 0.5);
-}
-
 .venue-dashboard-history-summary-item.is-removed > strong {
   color: #ffd8cd;
 }
@@ -212,165 +202,6 @@
   font-weight: 900;
 }
 
-.venue-dashboard-history-list {
-  display: grid;
-  gap: 11px;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 28px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.01)
-    ),
-    rgba(7, 8, 10, 0.52);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 18px 42px rgba(0, 0, 0, 0.14);
-}
-
-.venue-dashboard-history-item {
-  min-width: 0;
-  min-height: 92px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 22px;
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 18px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(255, 255, 255, 0.01);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 12px 28px rgba(0, 0, 0, 0.08);
-  transition:
-    border-color 220ms ease,
-    background 220ms ease,
-    box-shadow 220ms ease;
-}
-
-.venue-dashboard-history-item-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 17px;
-  display: grid;
-  place-items: center;
-  color: rgba(247, 241, 234, 0.58);
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.055);
-}
-
-.venue-dashboard-history-item.is-removed
-  .venue-dashboard-history-item-icon {
-  color: #ff8d70;
-  background: rgba(255, 91, 50, 0.11);
-  border-color: rgba(255, 91, 50, 0.14);
-}
-
-.venue-dashboard-history-item-icon svg {
-  display: block;
-}
-
-.venue-dashboard-history-main {
-  min-width: 0;
-}
-
-.venue-dashboard-history-main strong {
-  display: block;
-  overflow: hidden;
-  color: #f7f1ea;
-  font-size: 1rem;
-  font-weight: 950;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.venue-dashboard-history-main span {
-  display: block;
-  margin-top: 6px;
-  color: rgba(247, 241, 234, 0.48);
-  font-size: 0.82rem;
-  font-weight: 800;
-  line-height: 1.4;
-}
-
-.venue-dashboard-history-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.venue-dashboard-history-status {
-  min-height: 32px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 11px;
-  color: rgba(247, 241, 234, 0.62);
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  font-size: 0.73rem;
-  font-weight: 950;
-}
-
-.venue-dashboard-history-status > span {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: currentColor;
-}
-
-.venue-dashboard-history-status.is-removed {
-  color: #ffb09c;
-  background: rgba(255, 91, 50, 0.11);
-  border-color: rgba(255, 91, 50, 0.14);
-}
-
-.venue-dashboard-history-status.is-expired {
-  color: rgba(247, 241, 234, 0.55);
-}
-
-.venue-dashboard-restore-button {
-  min-height: 40px;
-  border: 1px solid rgba(255, 91, 50, 0.17);
-  border-radius: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 0 14px;
-  background: rgba(255, 91, 50, 0.14);
-  color: #ffd8cd;
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 950;
-  cursor: pointer;
-  transition:
-    background 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    color 180ms ease;
-}
-
-.venue-dashboard-restore-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.venue-dashboard-restore-button svg {
-  display: block;
-}
-
 .venue-dashboard-history-empty {
   min-height: 290px;
   border: 1px solid rgba(255, 255, 255, 0.055);
@@ -419,6 +250,35 @@
   font-size: 0.9rem;
   font-weight: 750;
   line-height: 1.6;
+}
+
+.venue-dashboard-history-preview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.venue-dashboard-history-view-all-button {
+  min-height: 44px;
+  border: 1px solid rgba(255, 91, 50, 0.17);
+  border-radius: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background: rgba(255, 91, 50, 0.13);
+  color: #ffd8cd;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 950;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -476,32 +336,6 @@
       #17191d;
   }
 
-  .venue-dashboard-history-item:hover {
-    border-color: rgba(255, 91, 50, 0.14);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.075),
-        transparent 14rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.058),
-        rgba(255, 255, 255, 0.024)
-      ),
-      rgba(255, 255, 255, 0.012);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 14px 34px rgba(0, 0, 0, 0.11);
-  }
-
-  .venue-dashboard-restore-button:hover:not(:disabled) {
-    background: rgba(255, 91, 50, 0.21);
-    border-color: rgba(255, 91, 50, 0.24);
-    color: #fff2ed;
-    box-shadow: 0 10px 24px rgba(255, 91, 50, 0.1);
-  }
-
   .venue-dashboard-history-empty:hover {
     border-color: rgba(255, 91, 50, 0.12);
     background:
@@ -513,6 +347,14 @@
       rgba(7, 8, 10, 0.46);
     box-shadow: 0 16px 38px rgba(0, 0, 0, 0.1);
   }
+
+  .venue-dashboard-history-view-all-button:hover {
+    border-color: rgba(255, 91, 50, 0.25);
+    background: rgba(255, 91, 50, 0.2);
+    color: #fff2ed;
+    box-shadow: 0 12px 28px rgba(255, 91, 50, 0.09);
+    transform: translateY(-1px);
+  }
 }
 
 @media (max-width: 820px) {
@@ -522,21 +364,6 @@
 
   .venue-dashboard-history-summary-item {
     min-height: 100px;
-  }
-
-  .venue-dashboard-history-item {
-    grid-template-columns: 44px minmax(0, 1fr);
-  }
-
-  .venue-dashboard-history-item-icon {
-    width: 44px;
-    height: 44px;
-  }
-
-  .venue-dashboard-history-actions {
-    grid-column: 1 / -1;
-    justify-content: space-between;
-    padding-top: 4px;
   }
 }
 
@@ -558,99 +385,14 @@
     gap: 13px;
   }
 
-  .venue-dashboard-history-list {
-    padding: 9px;
-    border-radius: 24px;
-  }
-
-  .venue-dashboard-history-item {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 12px;
-    padding: 20px 16px;
-    text-align: center;
-  }
-
-  .venue-dashboard-history-main strong {
-    white-space: normal;
-  }
-
-  .venue-dashboard-history-actions {
-    width: 100%;
-    grid-column: auto;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .venue-dashboard-history-status,
-  .venue-dashboard-restore-button {
-    width: 100%;
-  }
-
   .venue-dashboard-history-empty {
     min-height: 250px;
     padding: 24px 18px;
   }
-}
 
-.venue-dashboard-history-item {
-  cursor: pointer;
-  outline: none;
-}
-
-.venue-dashboard-history-item:focus-visible {
-  border-color: rgba(255, 91, 50, 0.34);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 0 0 3px rgba(255, 91, 50, 0.1),
-    0 14px 34px rgba(0, 0, 0, 0.11);
-}
-
-.venue-dashboard-history-preview-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 18px;
-}
-
-.venue-dashboard-history-view-all-button {
-  min-height: 44px;
-  border: 1px solid rgba(255, 91, 50, 0.17);
-  border-radius: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 16px;
-  background: rgba(255, 91, 50, 0.13);
-  color: #ffd8cd;
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 950;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    background 180ms ease,
-    color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-history-view-all-button:hover {
-    border-color: rgba(255, 91, 50, 0.25);
-    background: rgba(255, 91, 50, 0.2);
-    color: #fff2ed;
-    box-shadow: 0 12px 28px rgba(255, 91, 50, 0.09);
-    transform: translateY(-1px);
-  }
-}
-
-@media (max-width: 560px) {
   .venue-dashboard-history-preview-footer {
     align-items: stretch;
     flex-direction: column;
-    text-align: center;
   }
 
   .venue-dashboard-history-view-all-button {

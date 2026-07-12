@@ -6,35 +6,26 @@ import {
   getHistoryEventState,
   wasHistoryEventRemoved,
 } from "./historyUtils";
-import "./VenueDashboardHistoryModals.css";
+import "./VenueDashboardHistoryDetailsModal.css";
 
 type VenueDashboardHistoryDetailsModalProps = {
   venueName: string;
   event: VenueDashboardEvent;
-  isRestoringEvent: boolean;
   onClose: () => void;
-  onRestoreEvent: (event: VenueDashboardEvent) => void;
 };
 
 export function VenueDashboardHistoryDetailsModal({
   venueName,
   event,
-  isRestoringEvent,
   onClose,
-  onRestoreEvent,
 }: VenueDashboardHistoryDetailsModalProps) {
   const wasRemoved = wasHistoryEventRemoved(event);
 
   useModalBehaviour(onClose);
 
-  function handleRestore() {
-    onClose();
-    onRestoreEvent(event);
-  }
-
   return (
     <div
-      className="venue-dashboard-history-modal-backdrop venue-dashboard-history-details-backdrop"
+      className="venue-dashboard-history-details-backdrop"
       role="presentation"
       onMouseDown={(mouseEvent) =>
         handleBackdropClick(mouseEvent, onClose)
@@ -47,7 +38,10 @@ export function VenueDashboardHistoryDetailsModal({
         aria-labelledby="venue-dashboard-history-details-title"
       >
         <header className="venue-dashboard-history-details-heading">
-          <div className="venue-dashboard-history-lock-icon" aria-hidden="true">
+          <div
+            className="venue-dashboard-history-lock-icon"
+            aria-hidden="true"
+          >
             <LockIcon />
           </div>
 
@@ -56,15 +50,10 @@ export function VenueDashboardHistoryDetailsModal({
           <h2 id="venue-dashboard-history-details-title">
             {event.title || "Untitled activity"}
           </h2>
-
         </header>
 
         <div className="venue-dashboard-history-details-state-row">
-          <span
-            className={`venue-dashboard-history-status ${
-              wasRemoved ? "is-removed" : "is-expired"
-            }`}
-          >
+          <span className="venue-dashboard-history-status">
             <span aria-hidden="true" />
             {getHistoryEventState(event)}
           </span>
@@ -76,11 +65,7 @@ export function VenueDashboardHistoryDetailsModal({
         </div>
 
         <div className="venue-dashboard-history-details-grid">
-          <DetailItem
-            label="Venue"
-            value={venueName}
-            wide
-          />
+          <DetailItem label="Venue" value={venueName} wide />
 
           <DetailItem
             label="Description"
@@ -121,7 +106,6 @@ export function VenueDashboardHistoryDetailsModal({
               />
             </>
           ) : null}
-
         </div>
 
         <footer className="venue-dashboard-history-details-actions">
@@ -132,18 +116,6 @@ export function VenueDashboardHistoryDetailsModal({
           >
             Close
           </button>
-
-          {wasRemoved ? (
-            <button
-              className="venue-dashboard-restore-button venue-dashboard-history-details-restore"
-              type="button"
-              onClick={handleRestore}
-              disabled={isRestoringEvent}
-            >
-              <RestoreIcon />
-              {isRestoringEvent ? "Restoring..." : "Restore activity"}
-            </button>
-          ) : null}
         </footer>
       </section>
     </div>
@@ -258,33 +230,6 @@ function LockSmallIcon() {
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function RestoreIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="17"
-      height="17"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M5.5 9A7.5 7.5 0 1 1 5 14"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-
-      <path
-        d="M5.5 5.5V9H9"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   );

@@ -1,0 +1,213 @@
+.venue-dashboard-history-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(2, 3, 5, 0.8);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  animation: venue-dashboard-history-backdrop-enter 180ms ease both;
+}
+
+.venue-dashboard-history-archive-modal {
+  width: min(1100px, 100%);
+  max-height: calc(100dvh - 56px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 36px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: 30px;
+  background:
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(255, 255, 255, 0.055),
+      transparent 20rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.078),
+      rgba(255, 255, 255, 0.038)
+    ),
+    #15171b;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 40px 120px rgba(0, 0, 0, 0.62);
+  animation: venue-dashboard-history-modal-enter 210ms ease both;
+}
+
+.venue-dashboard-history-modal-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 24px;
+}
+
+.venue-dashboard-history-modal-heading .venue-dashboard-eyebrow {
+  margin: 0;
+}
+
+.venue-dashboard-history-modal-heading h2 {
+  margin: 10px 0 0;
+  color: #f7f1ea;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.065em;
+}
+
+.venue-dashboard-history-modal-heading p:not(.venue-dashboard-eyebrow) {
+  max-width: 650px;
+  margin: 13px 0 0;
+  color: rgba(247, 241, 234, 0.54);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.6;
+}
+
+.venue-dashboard-history-modal-close {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 999px;
+  padding: 0 18px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f7f1ea;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 950;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.venue-dashboard-history-archive-summary {
+  display: flex;
+  justify-content: flex-end;
+  margin: 22px 0 12px;
+}
+
+.venue-dashboard-history-archive-summary span {
+  min-height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 13px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(247, 241, 234, 0.58);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.venue-dashboard-history-archive-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 5px;
+}
+
+.venue-dashboard-history-archive-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.venue-dashboard-history-archive-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.venue-dashboard-history-archive-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-history-list-archive {
+  margin: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-history-archive-modal:hover {
+    border-color: rgba(255, 91, 50, 0.14);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.13),
+        transparent 28rem
+      ),
+      radial-gradient(
+        circle at 8% 12%,
+        rgba(255, 255, 255, 0.06),
+        transparent 20rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.084),
+        rgba(255, 255, 255, 0.042)
+      ),
+      #15171b;
+  }
+
+  .venue-dashboard-history-modal-close:hover {
+    border-color: rgba(255, 91, 50, 0.18);
+    background: rgba(255, 91, 50, 0.12);
+    color: #ffd8cd;
+    box-shadow: 0 0 24px rgba(255, 91, 50, 0.07);
+  }
+}
+
+@keyframes venue-dashboard-history-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes venue-dashboard-history-modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.978);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-history-modal-backdrop {
+    align-items: end;
+    padding: 10px;
+  }
+
+  .venue-dashboard-history-archive-modal {
+    width: 100%;
+    max-height: calc(100dvh - 20px);
+    border-radius: 30px;
+    padding: 24px 18px 18px;
+  }
+
+  .venue-dashboard-history-modal-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-history-modal-close {
+    width: 100%;
+  }
+
+  .venue-dashboard-history-archive-summary {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-history-modal-backdrop,
+  .venue-dashboard-history-archive-modal {
+    animation-duration: 1ms;
+  }
+}
