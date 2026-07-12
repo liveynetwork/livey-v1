@@ -494,10 +494,11 @@ export function VenueDashboardScreen() {
 
             {activeSection === "history" ? (
               <VenueDashboardHistory
-                historyEvents={historyEvents}
-                isRestoringEvent={isRestoringEvent}
-                onRestoreEvent={handleRestoreEvent}
-              />
+  venueName={activeVenue?.name || "Your venue"}
+  historyEvents={historyEvents}
+  isRestoringEvent={isRestoringEvent}
+  onRestoreEvent={handleRestoreEvent}
+/>
             ) : null}
 
             {activeSection === "account" ? (
