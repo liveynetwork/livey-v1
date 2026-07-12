@@ -5,17 +5,16 @@
   flex-direction: column;
   border-radius: 32px;
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.16),
-      transparent 24rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.078),
       rgba(255, 255, 255, 0.042)
     ),
     #17191d;
+  transition:
+    border-color 240ms ease,
+    background 240ms ease,
+    box-shadow 240ms ease;
 }
 
 .venue-dashboard-profile-card-heading {
@@ -76,11 +75,6 @@
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 21px;
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.035),
-      transparent 12rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.048),
@@ -94,25 +88,6 @@
     border-color 220ms ease,
     background 220ms ease,
     box-shadow 220ms ease;
-}
-
-.venue-dashboard-profile-control-tile:hover {
-  border-color: rgba(255, 91, 50, 0.14);
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.085),
-      transparent 12rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.058),
-      rgba(255, 255, 255, 0.024)
-    ),
-    rgba(255, 255, 255, 0.012);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 14px 32px rgba(0, 0, 0, 0.11);
 }
 
 .venue-dashboard-profile-control-label {
@@ -162,10 +137,6 @@
     border-color 180ms ease,
     background 180ms ease,
     box-shadow 180ms ease;
-}
-
-.venue-dashboard-description-field textarea:hover {
-  border-color: rgba(255, 255, 255, 0.11);
 }
 
 .venue-dashboard-description-field textarea:focus {
@@ -256,12 +227,11 @@
   color: rgba(247, 241, 234, 0.72);
   cursor: pointer;
   pointer-events: auto;
-}
-
-.venue-dashboard-hours-edit-icon-button:hover {
-  background: rgba(255, 91, 50, 0.1);
-  color: #ffd8cd;
-  border-color: rgba(255, 91, 50, 0.18);
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .venue-dashboard-today-hours-card:hover {
@@ -321,10 +291,9 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-}
-
-.venue-dashboard-custom-dropdown-arrow-button:hover {
-  background: rgba(255, 91, 50, 0.1);
+  transition:
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .venue-dashboard-custom-dropdown-arrow-button
@@ -343,11 +312,6 @@
   border: 1px solid rgba(255, 91, 50, 0.13);
   border-radius: 21px;
   background:
-    radial-gradient(
-      circle at left center,
-      rgba(255, 91, 50, 0.08),
-      transparent 13rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.04),
@@ -357,6 +321,10 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 12px 28px rgba(0, 0, 0, 0.08);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .venue-dashboard-status-advisory::after {
@@ -397,19 +365,74 @@
   margin-top: 18px;
 }
 
-.venue-dashboard-profile-card:hover {
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.21),
-      transparent 24rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.086),
-      rgba(255, 255, 255, 0.046)
-    ),
-    #17191d;
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-profile-card:hover {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.21),
+        transparent 24rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.086),
+        rgba(255, 255, 255, 0.046)
+      ),
+      #17191d;
+  }
+
+  .venue-dashboard-profile-control-tile:hover {
+    border-color: rgba(255, 91, 50, 0.14);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.085),
+        transparent 12rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.058),
+        rgba(255, 255, 255, 0.024)
+      ),
+      rgba(255, 255, 255, 0.012);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 14px 32px rgba(0, 0, 0, 0.11);
+  }
+
+  .venue-dashboard-description-field textarea:hover {
+    border-color: rgba(255, 255, 255, 0.11);
+  }
+
+  .venue-dashboard-hours-edit-icon-button:hover {
+    background: rgba(255, 91, 50, 0.1);
+    color: #ffd8cd;
+    border-color: rgba(255, 91, 50, 0.18);
+    box-shadow: 0 0 20px rgba(255, 91, 50, 0.055);
+  }
+
+  .venue-dashboard-custom-dropdown-arrow-button:hover {
+    background: rgba(255, 91, 50, 0.1);
+  }
+
+  .venue-dashboard-status-advisory:hover {
+    border-color: rgba(255, 91, 50, 0.17);
+    background:
+      radial-gradient(
+        circle at left center,
+        rgba(255, 91, 50, 0.08),
+        transparent 13rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.046),
+        rgba(255, 255, 255, 0.02)
+      ),
+      rgba(12, 13, 16, 0.74);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 14px 32px rgba(0, 0, 0, 0.1);
+  }
 }
 
 @media (max-width: 720px) {

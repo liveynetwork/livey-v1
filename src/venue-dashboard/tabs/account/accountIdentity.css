@@ -6,11 +6,6 @@
   text-align: center;
   background:
     radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.18),
-      transparent 26rem
-    ),
-    radial-gradient(
       circle at 8% 12%,
       rgba(255, 255, 255, 0.06),
       transparent 20rem
@@ -24,6 +19,10 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.065),
     0 26px 90px rgba(0, 0, 0, 0.22);
+  transition:
+    border-color 240ms ease,
+    background 240ms ease,
+    box-shadow 240ms ease;
 }
 
 .venue-dashboard-identity-card::after {
@@ -167,23 +166,6 @@
     box-shadow 220ms ease;
 }
 
-.venue-dashboard-identity-meta-item:hover {
-  border-color: rgba(255, 91, 50, 0.14);
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.07),
-      transparent 9rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.022)
-    ),
-    rgba(255, 255, 255, 0.012);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
-}
-
 .venue-dashboard-identity-meta-item > span {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.67rem;
@@ -203,11 +185,6 @@
 
 .venue-dashboard-identity-verification {
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.08),
-      transparent 10rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.048),
@@ -254,13 +231,11 @@
   padding: 14px 18px;
   border: 1px solid rgba(255, 91, 50, 0.1);
   border-radius: 18px;
-  background:
-    radial-gradient(
-      circle at left center,
-      rgba(255, 91, 50, 0.06),
-      transparent 11rem
-    ),
-    rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .venue-dashboard-identity-note::after {
@@ -293,24 +268,70 @@
   text-align: center;
 }
 
-.venue-dashboard-identity-card:hover {
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.23),
-      transparent 26rem
-    ),
-    radial-gradient(
-      circle at 8% 12%,
-      rgba(255, 255, 255, 0.068),
-      transparent 20rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.094),
-      rgba(255, 255, 255, 0.048)
-    ),
-    #17191d;
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-identity-card:hover {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.23),
+        transparent 26rem
+      ),
+      radial-gradient(
+        circle at 8% 12%,
+        rgba(255, 255, 255, 0.068),
+        transparent 20rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.094),
+        rgba(255, 255, 255, 0.048)
+      ),
+      #17191d;
+  }
+
+  .venue-dashboard-identity-meta-item:hover {
+    border-color: rgba(255, 91, 50, 0.14);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.07),
+        transparent 9rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.055),
+        rgba(255, 255, 255, 0.022)
+      ),
+      rgba(255, 255, 255, 0.012);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+
+  .venue-dashboard-identity-verification:hover {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.08),
+        transparent 10rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.055),
+        rgba(255, 255, 255, 0.022)
+      ),
+      rgba(255, 255, 255, 0.012);
+  }
+
+  .venue-dashboard-identity-note:hover {
+    border-color: rgba(255, 91, 50, 0.16);
+    background:
+      radial-gradient(
+        circle at left center,
+        rgba(255, 91, 50, 0.06),
+        transparent 11rem
+      ),
+      rgba(255, 255, 255, 0.03);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.1);
+  }
 }
 
 @media (max-width: 980px) {

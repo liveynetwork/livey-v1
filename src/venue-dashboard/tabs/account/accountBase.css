@@ -26,45 +26,6 @@
     background 240ms ease;
 }
 
-.venue-dashboard-account-settings .venue-dashboard-card:hover {
-  transform: none;
-  border-color: rgba(255, 91, 50, 0.18);
-  box-shadow:
-    0 22px 54px rgba(0, 0, 0, 0.24),
-    0 0 0 1px rgba(255, 91, 50, 0.045),
-    0 0 38px rgba(255, 91, 50, 0.075);
-}
-
-.venue-dashboard-locked-details-card:hover {
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.2),
-      transparent 24rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.082),
-      rgba(255, 255, 255, 0.042)
-    ),
-    #17191d;
-}
-
-.venue-dashboard-support-session-card:hover {
-  background:
-    radial-gradient(
-      circle at top center,
-      rgba(255, 91, 50, 0.2),
-      transparent 25rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.082),
-      rgba(255, 255, 255, 0.042)
-    ),
-    #17191d;
-}
-
 .venue-dashboard-account-settings button,
 .venue-dashboard-account-settings a,
 .venue-dashboard-logo-upload,
@@ -75,13 +36,6 @@
     border-color 150ms ease,
     box-shadow 150ms ease,
     color 150ms ease;
-}
-
-.venue-dashboard-account-settings button:hover,
-.venue-dashboard-account-settings a:hover,
-.venue-dashboard-logo-upload:hover,
-.venue-dashboard-custom-dropdown > button:hover {
-  transform: translateY(-1px);
 }
 
 .venue-dashboard-account-settings button:active,
@@ -150,17 +104,6 @@
     0 10px 26px rgba(0, 0, 0, 0.14);
 }
 
-.venue-dashboard-custom-dropdown > button:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.06),
-      rgba(255, 255, 255, 0.025)
-    ),
-    rgba(8, 9, 11, 0.96);
-  border-color: rgba(255, 91, 50, 0.22);
-}
-
 .venue-dashboard-custom-dropdown.disabled > button {
   opacity: 0.45;
   cursor: not-allowed;
@@ -182,13 +125,6 @@
   place-items: center;
   color: rgba(247, 241, 234, 0.54);
   background: rgba(255, 255, 255, 0.045);
-}
-
-.venue-dashboard-custom-dropdown
-  > button:hover
-  .venue-dashboard-custom-dropdown-chevron {
-  color: #ffd8cd;
-  background: rgba(255, 91, 50, 0.13);
 }
 
 .venue-dashboard-custom-dropdown-chevron svg {
@@ -225,7 +161,6 @@
   cursor: pointer;
 }
 
-.venue-dashboard-custom-dropdown-menu button:hover,
 .venue-dashboard-custom-dropdown-menu button.selected {
   background: rgba(255, 91, 50, 0.16);
   color: #ffd8cd;
@@ -264,11 +199,6 @@
   border-radius: 32px;
   padding: 30px 28px;
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.13),
-      transparent 24rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.074),
@@ -331,11 +261,6 @@
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 21px;
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.035),
-      transparent 12rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.048),
@@ -349,25 +274,6 @@
     border-color 220ms ease,
     background 220ms ease,
     box-shadow 220ms ease;
-}
-
-.venue-dashboard-locked-detail-tile:hover {
-  border-color: rgba(255, 91, 50, 0.14);
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.085),
-      transparent 12rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.058),
-      rgba(255, 255, 255, 0.024)
-    ),
-    rgba(255, 255, 255, 0.012);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 14px 32px rgba(0, 0, 0, 0.11);
 }
 
 .venue-dashboard-locked-detail-tile-wide {
@@ -414,11 +320,6 @@
   align-items: center;
   gap: 18px;
   background:
-    radial-gradient(
-      circle at right center,
-      rgba(255, 91, 50, 0.08),
-      transparent 14rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.05),
@@ -472,11 +373,6 @@
   border-radius: 32px;
   padding: 38px 28px;
   background:
-    radial-gradient(
-      circle at top center,
-      rgba(255, 91, 50, 0.14),
-      transparent 25rem
-    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.074),
@@ -660,6 +556,111 @@
   line-height: 1;
   text-align: center;
   white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-account-settings .venue-dashboard-card:hover {
+    transform: none;
+    border-color: rgba(255, 91, 50, 0.18);
+    box-shadow:
+      0 22px 54px rgba(0, 0, 0, 0.24),
+      0 0 0 1px rgba(255, 91, 50, 0.045),
+      0 0 38px rgba(255, 91, 50, 0.075);
+  }
+
+  .venue-dashboard-locked-details-card:hover {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.2),
+        transparent 24rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.082),
+        rgba(255, 255, 255, 0.042)
+      ),
+      #17191d;
+  }
+
+  .venue-dashboard-support-session-card:hover {
+    background:
+      radial-gradient(
+        circle at top center,
+        rgba(255, 91, 50, 0.2),
+        transparent 25rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.082),
+        rgba(255, 255, 255, 0.042)
+      ),
+      #17191d;
+  }
+
+  .venue-dashboard-locked-detail-tile:hover {
+    border-color: rgba(255, 91, 50, 0.14);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.085),
+        transparent 12rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.058),
+        rgba(255, 255, 255, 0.024)
+      ),
+      rgba(255, 255, 255, 0.012);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 14px 32px rgba(0, 0, 0, 0.11);
+  }
+
+  .venue-dashboard-locked-detail-verification:hover {
+    background:
+      radial-gradient(
+        circle at right center,
+        rgba(255, 91, 50, 0.08),
+        transparent 14rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.058),
+        rgba(255, 255, 255, 0.024)
+      ),
+      rgba(255, 255, 255, 0.012);
+  }
+
+  .venue-dashboard-account-settings button:hover,
+  .venue-dashboard-account-settings a:hover,
+  .venue-dashboard-logo-upload:hover,
+  .venue-dashboard-custom-dropdown > button:hover {
+    transform: translateY(-1px);
+  }
+
+  .venue-dashboard-custom-dropdown > button:hover {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.025)
+      ),
+      rgba(8, 9, 11, 0.96);
+    border-color: rgba(255, 91, 50, 0.22);
+  }
+
+  .venue-dashboard-custom-dropdown
+    > button:hover
+    .venue-dashboard-custom-dropdown-chevron {
+    color: #ffd8cd;
+    background: rgba(255, 91, 50, 0.13);
+  }
+
+  .venue-dashboard-custom-dropdown-menu button:hover {
+    background: rgba(255, 91, 50, 0.16);
+    color: #ffd8cd;
+  }
 }
 
 @keyframes venue-dashboard-modal-fade-in {
