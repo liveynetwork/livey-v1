@@ -530,9 +530,12 @@ function getSectionTitle(section: DashboardSection) {
 function mapEventToEditingState(
   event: VenueDashboardEvent
 ): EditingEventState {
+  const isUntouchedDraftTitle =
+    event.title.trim().toLowerCase() === "new livey activity";
+
   return {
     id: event.id,
-    title: event.title || "",
+    title: isUntouchedDraftTitle ? "" : event.title || "",
     description: event.description || "",
     status: event.status,
     displayTime: event.display_time || "",
