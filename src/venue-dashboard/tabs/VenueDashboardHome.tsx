@@ -10,7 +10,6 @@ type VenueDashboardHomeProps = {
   liveEventCount: number;
   visibleEventCount: number;
   historyEventCount: number;
-  isCreatingEvent: boolean;
   onCreateEvent: () => void;
   onSelectEvent: (event: VenueDashboardEvent) => void;
   onSectionChange: (section: DashboardSection) => void;
@@ -21,7 +20,6 @@ export function VenueDashboardHome({
   activeEvents,
   liveEventCount,
   visibleEventCount,
-  isCreatingEvent,
   onCreateEvent,
   onSelectEvent,
   onSectionChange,
@@ -32,21 +30,32 @@ export function VenueDashboardHome({
     <section className="venue-dashboard-home venue-dashboard-home-simple">
       <section className="venue-dashboard-hero-card venue-dashboard-overview-card">
         <div className="venue-dashboard-overview-main">
-          <p className="venue-dashboard-eyebrow">Venue overview</p>
+          <p className="venue-dashboard-eyebrow">
+            Venue overview
+          </p>
 
           <h2>{activeVenue?.name || "Your venue"}</h2>
 
           <div className="venue-dashboard-hero-badges">
             <span>{activeVenue?.category || "Venue"}</span>
-            <span>{activeVenue?.area || activeVenue?.city || "Cyprus"}</span>
-            <span>{activeVenue?.open_status || "Status not set"}</span>
+            <span>
+              {activeVenue?.area ||
+                activeVenue?.city ||
+                "Cyprus"}
+            </span>
+            <span>
+              {activeVenue?.open_status ||
+                "Status not set"}
+            </span>
           </div>
         </div>
       </section>
 
       <section className="venue-dashboard-home-overview-grid">
         <section className="venue-dashboard-card venue-dashboard-now-card">
-          <p className="venue-dashboard-eyebrow">Activity</p>
+          <p className="venue-dashboard-eyebrow">
+            Activity
+          </p>
 
           {nextActivity ? (
             <button
@@ -56,7 +65,11 @@ export function VenueDashboardHome({
             >
               <div>
                 <h2>{nextActivity.title}</h2>
-                <p>{nextActivity.display_time || nextActivity.status}</p>
+
+                <p>
+                  {nextActivity.display_time ||
+                    nextActivity.status}
+                </p>
               </div>
 
               <span
@@ -74,22 +87,26 @@ export function VenueDashboardHome({
           ) : (
             <div className="venue-dashboard-empty-overview">
               <h2>No activity live yet</h2>
-<p>Create what people should see on Livey.</p>
+
+              <p>
+                Create what people should see on Livey.
+              </p>
 
               <button
                 className="venue-dashboard-primary-action"
                 type="button"
                 onClick={onCreateEvent}
-                disabled={isCreatingEvent}
               >
-                {isCreatingEvent ? "Creating..." : "Create activity"}
+                Create activity
               </button>
             </div>
           )}
         </section>
 
         <section className="venue-dashboard-card venue-dashboard-status-card">
-          <p className="venue-dashboard-eyebrow">Status</p>
+          <p className="venue-dashboard-eyebrow">
+            Status
+          </p>
 
           <div className="venue-dashboard-status-list">
             <div>

@@ -1,0 +1,199 @@
+.venue-dashboard-active-list {
+  display: grid;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(7, 8, 10, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 18px 42px rgba(0, 0, 0, 0.14);
+}
+
+.venue-dashboard-active-item {
+  min-width: 0;
+  min-height: 96px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 21px;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 17px 18px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(255, 255, 255, 0.01);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 12px 28px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-active-item-icon {
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 17px;
+  display: grid;
+  place-items: center;
+  color: #ff805f;
+  background: rgba(255, 91, 50, 0.1);
+}
+
+.venue-dashboard-active-item-icon svg {
+  display: block;
+}
+
+.venue-dashboard-active-main {
+  min-width: 0;
+}
+
+.venue-dashboard-active-main strong {
+  display: block;
+  overflow: hidden;
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.venue-dashboard-active-main span {
+  display: block;
+  margin-top: 6px;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.venue-dashboard-active-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.venue-dashboard-active-status {
+  min-height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: rgba(247, 241, 234, 0.6);
+  background: rgba(255, 255, 255, 0.055);
+  font-size: 0.73rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-active-status > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.venue-dashboard-active-status.is-live {
+  border-color: rgba(255, 91, 50, 0.18);
+  color: #ff9a80;
+  background: rgba(255, 91, 50, 0.1);
+}
+
+.venue-dashboard-active-status.is-hidden {
+  color: rgba(247, 241, 234, 0.44);
+}
+
+.venue-dashboard-active-item:focus-visible {
+  border-color: rgba(255, 91, 50, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 0 3px rgba(255, 91, 50, 0.1),
+    0 14px 34px rgba(0, 0, 0, 0.11);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-active-item:hover {
+    border-color: rgba(255, 91, 50, 0.14);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.085),
+        transparent 14rem
+      ),
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.058),
+        rgba(255, 255, 255, 0.024)
+      ),
+      rgba(255, 255, 255, 0.012);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 14px 34px rgba(0, 0, 0, 0.11);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 820px) {
+  .venue-dashboard-active-item {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .venue-dashboard-active-item-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .venue-dashboard-active-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-top: 4px;
+  }
+}
+
+@media (max-width: 560px) {
+  .venue-dashboard-active-list {
+    padding: 9px;
+    border-radius: 24px;
+  }
+
+  .venue-dashboard-active-item {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .venue-dashboard-active-main strong {
+    white-space: normal;
+  }
+
+  .venue-dashboard-active-actions {
+    width: 100%;
+    grid-column: auto;
+    justify-content: center;
+  }
+
+  .venue-dashboard-active-status {
+    width: 100%;
+    justify-content: center;
+  }
+}

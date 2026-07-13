@@ -86,6 +86,11 @@ export type UpdateVenueEventInput = {
 
 export type CreateVenueEventInput = {
   venueId: string;
+  title: string;
+  description: string;
+  startsAt: string;
+  endsAt: string;
+  isActive: boolean;
 };
 
 export type DeleteVenueEventInput = {
@@ -101,7 +106,9 @@ type ManageActivityResponse = {
   event?: VenueDashboardEvent;
 };
 
-export async function getVenueDashboardData(): Promise<VenueDashboardData[]> {
+export async function getVenueDashboardData(): Promise<
+  VenueDashboardData[]
+> {
   const ownedVenueIds = await getOwnedVenueIds();
 
   if (ownedVenueIds.length === 0) {
@@ -126,7 +133,10 @@ export async function getVenueDashboardData(): Promise<VenueDashboardData[]> {
       "id, venue_id, title, description, status, display_time, starts_at, ends_at, is_live, is_active, deleted_at, deleted_reason"
     )
     .in("venue_id", ownedVenueIds)
-    .order("starts_at", { ascending: true, nullsFirst: false });
+    .order("starts_at", {
+      ascending: true,
+      nullsFirst: false,
+    });
 
   if (eventsError) {
     throw eventsError;
@@ -148,6 +158,11 @@ export async function createVenueEvent(
   const event = await manageVenueActivity({
     action: "create",
     app_venue_id: input.venueId,
+    title: input.title,
+    description: input.description,
+    starts_at: input.startsAt,
+    ends_at: input.endsAt,
+    is_active: input.isActive,
   });
 
   return event;
@@ -159,10 +174,15 @@ export async function updateVenueEvent(
   const ownedVenueIds = await getOwnedVenueIds();
 
   if (ownedVenueIds.length === 0) {
-    throw new Error("This account is not connected to a venue.");
+    throw new Error(
+      "This account is not connected to a venue."
+    );
   }
 
-  const event = await getExistingOwnedEvent(input.eventId, ownedVenueIds);
+  const event = await getExistingOwnedEvent(
+    input.eventId,
+    ownedVenueIds
+  );
 
   await manageVenueActivity({
     action: "update",
@@ -182,16 +202,22 @@ export async function deleteVenueEvent(
   const ownedVenueIds = await getOwnedVenueIds();
 
   if (ownedVenueIds.length === 0) {
-    throw new Error("This account is not connected to a venue.");
+    throw new Error(
+      "This account is not connected to a venue."
+    );
   }
 
-  const event = await getExistingOwnedEvent(input.eventId, ownedVenueIds);
+  const event = await getExistingOwnedEvent(
+    input.eventId,
+    ownedVenueIds
+  );
 
   await manageVenueActivity({
     action: "delete",
     app_venue_id: event.venue_id,
     event_id: input.eventId,
-    deleted_reason: input.reason || "Removed by venue owner",
+    deleted_reason:
+      input.reason || "Removed by venue owner",
   });
 }
 
@@ -201,10 +227,15 @@ export async function restoreVenueEvent(
   const ownedVenueIds = await getOwnedVenueIds();
 
   if (ownedVenueIds.length === 0) {
-    throw new Error("This account is not connected to a venue.");
+    throw new Error(
+      "This account is not connected to a venue."
+    );
   }
 
-  const event = await getExistingOwnedEvent(input.eventId, ownedVenueIds);
+  const event = await getExistingOwnedEvent(
+    input.eventId,
+    ownedVenueIds
+  );
 
   const restoredEvent = await manageVenueActivity({
     action: "restore",
@@ -249,7 +280,9 @@ export async function updateVenueProfile(
   }
 
   if (!data?.venue) {
-    throw new Error("The venue profile response was empty.");
+    throw new Error(
+      "The venue profile response was empty."
+    );
   }
 
   return data.venue;
@@ -279,7 +312,9 @@ async function manageVenueActivity(input: {
   }
 
   if (!data?.event) {
-    throw new Error("The activity response was empty.");
+    throw new Error(
+      "The activity response was empty."
+    );
   }
 
   return data.event;
@@ -301,7 +336,9 @@ async function getExistingOwnedEvent(
   }
 
   if (!data) {
-    throw new Error("This activity does not belong to your venue.");
+    throw new Error(
+      "This activity does not belong to your venue."
+    );
   }
 
   return data;
@@ -313,7 +350,9 @@ export function buildVenueDashboardAnalytics(
 ): VenueDashboardAnalytics {
   const now = Date.now();
 
-  const removedActivities = events.filter((event) => Boolean(event.deleted_at));
+  const removedActivities = events.filter((event) =>
+    Boolean(event.deleted_at)
+  );
 
   const expiredActivities = events.filter((event) => {
     if (event.deleted_at) return false;
@@ -322,7 +361,10 @@ export function buildVenueDashboardAnalytics(
     return new Date(event.ends_at).getTime() < now;
   });
 
-  const historyActivities = [...removedActivities, ...expiredActivities];
+  const historyActivities = [
+    ...removedActivities,
+    ...expiredActivities,
+  ];
 
   const activeOrUpcomingActivities = events.filter((event) => {
     if (event.deleted_at) return false;
@@ -343,10 +385,17 @@ export function buildVenueDashboardAnalytics(
     if (event.is_live === true) return true;
     if (!event.starts_at || !event.ends_at) return false;
 
-    const startsAtTime = new Date(event.starts_at).getTime();
-    const endsAtTime = new Date(event.ends_at).getTime();
+    const startsAtTime = new Date(
+      event.starts_at
+    ).getTime();
+    const endsAtTime = new Date(
+      event.ends_at
+    ).getTime();
 
-    return now >= startsAtTime && now <= endsAtTime;
+    return (
+      now >= startsAtTime &&
+      now <= endsAtTime
+    );
   });
 
   const upcomingActivities = visibleActivities.filter((event) => {
@@ -370,7 +419,8 @@ export function buildVenueDashboardAnalytics(
         return firstTime - secondTime;
       })[0] ?? null;
 
-  const currentLiveActivity = liveNowActivities[0] ?? null;
+  const currentLiveActivity =
+    liveNowActivities[0] ?? null;
 
   const profileFields = [
     {
@@ -407,16 +457,20 @@ export function buildVenueDashboardAnalytics(
     },
   ];
 
-  const completedProfileFields = profileFields.filter((field) =>
-    Boolean(String(field.value ?? "").trim())
+  const completedProfileFields = profileFields.filter(
+    (field) => Boolean(String(field.value ?? "").trim())
   );
 
   const profileMissingFields = profileFields
-    .filter((field) => !String(field.value ?? "").trim())
+    .filter(
+      (field) => !String(field.value ?? "").trim()
+    )
     .map((field) => field.label);
 
   const profileCompleteness = Math.round(
-    (completedProfileFields.length / profileFields.length) * 100
+    (completedProfileFields.length /
+      profileFields.length) *
+      100
   );
 
   return {
@@ -447,12 +501,16 @@ export function deriveActivityTiming(
   const startsAt = new Date(startsAtIso);
   const endsAt = new Date(endsAtIso);
 
-  const isLive = now >= startsAt && now <= endsAt;
+  const isLive =
+    now >= startsAt &&
+    now <= endsAt;
 
   if (isLive) {
     return {
       status: "Live now",
-      displayTime: `Live now · until ${formatTime(endsAt)}`,
+      displayTime: `Live now · until ${formatTime(
+        endsAt
+      )}`,
       isLive: true,
     };
   }
@@ -461,14 +519,18 @@ export function deriveActivityTiming(
     if (startsAt.getHours() >= 17) {
       return {
         status: "Tonight",
-        displayTime: `Tonight · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+        displayTime: `Tonight · ${formatTime(
+          startsAt
+        )}–${formatTime(endsAt)}`,
         isLive: false,
       };
     }
 
     return {
       status: "Open now",
-      displayTime: `Today · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+      displayTime: `Today · ${formatTime(
+        startsAt
+      )}–${formatTime(endsAt)}`,
       isLive: false,
     };
   }
@@ -479,7 +541,9 @@ export function deriveActivityTiming(
   if (isSameDay(startsAt, tomorrow)) {
     return {
       status: "Tomorrow",
-      displayTime: `Tomorrow · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+      displayTime: `Tomorrow · ${formatTime(
+        startsAt
+      )}–${formatTime(endsAt)}`,
       isLive: false,
     };
   }
@@ -487,7 +551,9 @@ export function deriveActivityTiming(
   if (isWeekend(startsAt)) {
     return {
       status: "Weekend",
-      displayTime: `${formatWeekday(startsAt)} · ${formatTime(
+      displayTime: `${formatWeekday(
+        startsAt
+      )} · ${formatTime(
         startsAt
       )}–${formatTime(endsAt)}`,
       isLive: false,
@@ -496,7 +562,9 @@ export function deriveActivityTiming(
 
   return {
     status: "Scheduled",
-    displayTime: `${formatShortDate(startsAt)} · ${formatTime(
+    displayTime: `${formatShortDate(
+      startsAt
+    )} · ${formatTime(
       startsAt
     )}–${formatTime(endsAt)}`,
     isLive: false,
@@ -517,7 +585,10 @@ async function getOwnedVenueIds(): Promise<string[]> {
     return [];
   }
 
-  const { data: dashboardAccount, error: accountError } = await dashboardSupabase
+  const {
+    data: dashboardAccount,
+    error: accountError,
+  } = await dashboardSupabase
     .from("dashboard_accounts")
     .select("id")
     .eq("auth_user_id", user.id)
@@ -531,10 +602,16 @@ async function getOwnedVenueIds(): Promise<string[]> {
     return [];
   }
 
-  const { data: venueLinks, error: venueLinksError } = await dashboardSupabase
+  const {
+    data: venueLinks,
+    error: venueLinksError,
+  } = await dashboardSupabase
     .from("dashboard_venue_links")
     .select("app_venue_id")
-    .eq("dashboard_account_id", dashboardAccount.id);
+    .eq(
+      "dashboard_account_id",
+      dashboardAccount.id
+    );
 
   if (venueLinksError) {
     throw venueLinksError;
@@ -543,28 +620,43 @@ async function getOwnedVenueIds(): Promise<string[]> {
   return (
     venueLinks
       ?.map((row) => row.app_venue_id)
-      .filter((venueId): venueId is string => Boolean(venueId)) ?? []
+      .filter(
+        (venueId): venueId is string =>
+          Boolean(venueId)
+      ) ?? []
   );
 }
 
-async function assertUserOwnsVenue(venueId: string): Promise<void> {
-  const ownedVenueIds = await getOwnedVenueIds();
+async function assertUserOwnsVenue(
+  venueId: string
+): Promise<void> {
+  const ownedVenueIds =
+    await getOwnedVenueIds();
 
   if (!ownedVenueIds.includes(venueId)) {
-    throw new Error("This account does not have access to this venue.");
+    throw new Error(
+      "This account does not have access to this venue."
+    );
   }
 }
 
-function isSameDay(firstDate: Date, secondDate: Date) {
+function isSameDay(
+  firstDate: Date,
+  secondDate: Date
+) {
   return (
-    firstDate.getFullYear() === secondDate.getFullYear() &&
-    firstDate.getMonth() === secondDate.getMonth() &&
-    firstDate.getDate() === secondDate.getDate()
+    firstDate.getFullYear() ===
+      secondDate.getFullYear() &&
+    firstDate.getMonth() ===
+      secondDate.getMonth() &&
+    firstDate.getDate() ===
+      secondDate.getDate()
   );
 }
 
 function isWeekend(date: Date) {
   const day = date.getDay();
+
   return day === 0 || day === 6;
 }
 

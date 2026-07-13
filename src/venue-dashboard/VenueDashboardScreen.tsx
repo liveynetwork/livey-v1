@@ -27,21 +27,31 @@ import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
 import "./VenueDashboardScreen.css";
 
 export function VenueDashboardScreen() {
-  const [dashboardData, setDashboardData] = useState<VenueDashboardData[]>([]);
-  const [activeSection, setActiveSection] = useState<DashboardSection>("home");
-  const [editingEvent, setEditingEvent] = useState<EditingEventState | null>(
-    null
-  );
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [dashboardData, setDashboardData] = useState<
+    VenueDashboardData[]
+  >([]);
+  const [activeSection, setActiveSection] =
+    useState<DashboardSection>("home");
+  const [editingEvent, setEditingEvent] =
+    useState<EditingEventState | null>(null);
+  const [currentUser, setCurrentUser] =
+    useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isCreatingEvent, setIsCreatingEvent] = useState(false);
-  const [isDeletingEvent, setIsDeletingEvent] = useState(false);
-  const [isRestoringEvent, setIsRestoringEvent] = useState(false);
-  const [isUpdatingVenueProfile, setIsUpdatingVenueProfile] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isDeletingEvent, setIsDeletingEvent] =
+    useState(false);
+  const [isRestoringEvent, setIsRestoringEvent] =
+    useState(false);
+  const [
+    isUpdatingVenueProfile,
+    setIsUpdatingVenueProfile,
+  ] = useState(false);
+  const [isRefreshing, setIsRefreshing] =
+    useState(false);
+  const [statusMessage, setStatusMessage] =
+    useState("");
+  const [errorMessage, setErrorMessage] =
+    useState("");
 
   const hasVenues = dashboardData.length > 0;
 
@@ -54,21 +64,29 @@ export function VenueDashboardScreen() {
   }, [dashboardData]);
 
   const activeEvents = useMemo(() => {
-    return allVenueEvents.filter((event) => !isEventInHistory(event));
+    return allVenueEvents.filter(
+      (event) => !isEventInHistory(event)
+    );
   }, [allVenueEvents]);
 
   const historyEvents = useMemo(() => {
-    return allVenueEvents.filter((event) => isEventInHistory(event));
+    return allVenueEvents.filter((event) =>
+      isEventInHistory(event)
+    );
   }, [allVenueEvents]);
 
   const liveEventCount = useMemo(() => {
     return activeEvents.filter(
-      (event) => event.status === "Live now" && event.is_active !== false
+      (event) =>
+        event.status === "Live now" &&
+        event.is_active !== false
     ).length;
   }, [activeEvents]);
 
   const visibleEventCount = useMemo(() => {
-    return activeEvents.filter((event) => event.is_active !== false).length;
+    return activeEvents.filter(
+      (event) => event.is_active !== false
+    ).length;
   }, [activeEvents]);
 
   useEffect(() => {
@@ -94,7 +112,8 @@ export function VenueDashboardScreen() {
         let data = await getVenueDashboardData();
 
         if (data.length === 0 && user) {
-          const didRecoverClaim = await tryRecoverVenueClaim(user);
+          const didRecoverClaim =
+            await tryRecoverVenueClaim(user);
 
           if (didRecoverClaim) {
             data = await getVenueDashboardData();
@@ -104,14 +123,12 @@ export function VenueDashboardScreen() {
         if (!isMounted) return;
 
         setDashboardData(data);
-
-        const firstEvent = data[0]?.events?.find(
-          (event) => !isEventInHistory(event)
-        );
-
-        setEditingEvent(firstEvent ? mapEventToEditingState(firstEvent) : null);
+        setEditingEvent(null);
       } catch (error) {
-        console.error("Failed to load venue dashboard:", error);
+        console.error(
+          "Failed to load venue dashboard:",
+          error
+        );
 
         if (!isMounted) return;
 
@@ -134,27 +151,32 @@ export function VenueDashboardScreen() {
 
   async function tryRecoverVenueClaim(user: User) {
     const metadataClaimCode =
-      typeof user.user_metadata?.pending_venue_claim_code === "string"
+      typeof user.user_metadata
+        ?.pending_venue_claim_code === "string"
         ? user.user_metadata.pending_venue_claim_code
         : "";
 
     const pendingClaimCode =
-      window.localStorage.getItem("livey:pendingVenueClaimCode") || "";
+      window.localStorage.getItem(
+        "livey:pendingVenueClaimCode"
+      ) || "";
 
-    const codeToClaim = pendingClaimCode || metadataClaimCode || "";
+    const codeToClaim =
+      pendingClaimCode || metadataClaimCode || "";
 
     if (!codeToClaim.trim()) {
       return false;
     }
 
-    const { error } = await dashboardSupabase.functions.invoke(
-      "dashboard-complete-venue-claim",
-      {
-        body: {
-          claim_code: codeToClaim.trim(),
-        },
-      }
-    );
+    const { error } =
+      await dashboardSupabase.functions.invoke(
+        "dashboard-complete-venue-claim",
+        {
+          body: {
+            claim_code: codeToClaim.trim(),
+          },
+        }
+      );
 
     if (error) {
       const message = error.message.toLowerCase();
@@ -163,41 +185,81 @@ export function VenueDashboardScreen() {
         message.includes("already been claimed") ||
         message.includes("already has an owner")
       ) {
-        window.localStorage.removeItem("livey:pendingVenueClaimCode");
+        window.localStorage.removeItem(
+          "livey:pendingVenueClaimCode"
+        );
         return true;
       }
 
-      console.error("Failed to recover venue claim:", error);
+      console.error(
+        "Failed to recover venue claim:",
+        error
+      );
+
       setErrorMessage(
         "We found your Livey venue code, but could not connect this account to the venue. Please contact Livey support."
       );
+
       return false;
     }
 
-    window.localStorage.removeItem("livey:pendingVenueClaimCode");
+    window.localStorage.removeItem(
+      "livey:pendingVenueClaimCode"
+    );
     setStatusMessage("Venue connected successfully.");
+
     return true;
   }
 
+  function handleCreateEvent() {
+    setStatusMessage("");
+    setErrorMessage("");
+    setEditingEvent(createEmptyEditingEvent());
+    setActiveSection("activity");
+  }
+
+  function handleCancelEditing() {
+    setStatusMessage("");
+    setErrorMessage("");
+    setEditingEvent(null);
+  }
+
   function handleSelectEvent(event: VenueDashboardEvent) {
+    if (isEventInHistory(event)) {
+      return;
+    }
+
     setStatusMessage("");
     setErrorMessage("");
     setEditingEvent(mapEventToEditingState(event));
     setActiveSection("activity");
   }
 
-  async function refreshDashboard(selectedEventId?: string) {
-    const freshData = await getVenueDashboardData();
+  async function refreshDashboard(
+    selectedEventId?: string | null
+  ) {
+    const freshData =
+      await getVenueDashboardData();
+
     setDashboardData(freshData);
 
-    if (!selectedEventId) return;
+    if (!selectedEventId) {
+      return;
+    }
 
     const selectedEvent = freshData
       .flatMap((item) => item.events)
-      .find((event) => event.id === selectedEventId);
+      .find(
+        (event) => event.id === selectedEventId
+      );
 
-    if (selectedEvent && !isEventInHistory(selectedEvent)) {
-      setEditingEvent(mapEventToEditingState(selectedEvent));
+    if (
+      selectedEvent &&
+      !isEventInHistory(selectedEvent)
+    ) {
+      setEditingEvent(
+        mapEventToEditingState(selectedEvent)
+      );
     }
   }
 
@@ -207,60 +269,70 @@ export function VenueDashboardScreen() {
       setStatusMessage("");
       setErrorMessage("");
 
-      await refreshDashboard(editingEvent?.id);
+      await refreshDashboard(
+        editingEvent?.mode === "edit"
+          ? editingEvent.id
+          : null
+      );
 
       setStatusMessage("Dashboard refreshed.");
     } catch (error) {
-      console.error("Failed to refresh venue dashboard:", error);
-      setErrorMessage("We could not refresh your dashboard. Please try again.");
+      console.error(
+        "Failed to refresh venue dashboard:",
+        error
+      );
+
+      setErrorMessage(
+        "We could not refresh your dashboard. Please try again."
+      );
     } finally {
       setIsRefreshing(false);
     }
   }
 
-  async function handleCreateEvent() {
-    if (!activeVenue) return;
-
-    try {
-      setIsCreatingEvent(true);
-      setStatusMessage("");
-      setErrorMessage("");
-
-      const newEvent = await createVenueEvent({
-        venueId: activeVenue.id,
-      });
-
-      await refreshDashboard(newEvent.id);
-
-      setEditingEvent(mapEventToEditingState(newEvent));
-      setActiveSection("activity");
-      setStatusMessage("New activity created. You can edit it now.");
-    } catch (error) {
-      console.error("Failed to create venue activity:", error);
-      setErrorMessage("We could not create a new activity. Please try again.");
-    } finally {
-      setIsCreatingEvent(false);
-    }
-  }
-
   async function handleSaveEvent() {
-    if (!editingEvent) return;
+    if (!editingEvent || !activeVenue) {
+      return;
+    }
 
     if (!editingEvent.title.trim()) {
-      setErrorMessage("Activity title is required.");
+      setErrorMessage(
+        "Activity title is required."
+      );
       return;
     }
 
-    if (!editingEvent.startsAt || !editingEvent.endsAt) {
-      setErrorMessage("Activity start and end time are required.");
+    if (
+      !editingEvent.startsAt ||
+      !editingEvent.endsAt
+    ) {
+      setErrorMessage(
+        "Activity start and end time are required."
+      );
       return;
     }
 
-    const startsAtDate = new Date(editingEvent.startsAt);
-    const endsAtDate = new Date(editingEvent.endsAt);
+    const startsAtDate = new Date(
+      editingEvent.startsAt
+    );
+    const endsAtDate = new Date(
+      editingEvent.endsAt
+    );
+
+    if (
+      Number.isNaN(startsAtDate.getTime()) ||
+      Number.isNaN(endsAtDate.getTime())
+    ) {
+      setErrorMessage(
+        "Activity start and end time are invalid."
+      );
+      return;
+    }
 
     if (endsAtDate <= startsAtDate) {
-      setErrorMessage("Activity end time must be after the start time.");
+      setErrorMessage(
+        "Activity end time must be after the start time."
+      );
       return;
     }
 
@@ -269,28 +341,67 @@ export function VenueDashboardScreen() {
       setStatusMessage("");
       setErrorMessage("");
 
-      await updateVenueEvent({
-        eventId: editingEvent.id,
-        title: editingEvent.title,
-        description: editingEvent.description,
-        startsAt: startsAtDate.toISOString(),
-        endsAt: endsAtDate.toISOString(),
-        isActive: editingEvent.isActive,
-      });
+      if (editingEvent.mode === "create") {
+        await createVenueEvent({
+          venueId: activeVenue.id,
+          title: editingEvent.title,
+          description: editingEvent.description,
+          startsAt: startsAtDate.toISOString(),
+          endsAt: endsAtDate.toISOString(),
+          isActive: editingEvent.isActive,
+        });
 
-      await refreshDashboard(editingEvent.id);
+        await refreshDashboard();
+        setEditingEvent(null);
+        setStatusMessage(
+          "Activity created successfully."
+        );
+      } else {
+        if (!editingEvent.id) {
+          throw new Error(
+            "The selected activity has no ID."
+          );
+        }
 
-      setStatusMessage("Activity updated successfully.");
+        await updateVenueEvent({
+          eventId: editingEvent.id,
+          title: editingEvent.title,
+          description: editingEvent.description,
+          startsAt: startsAtDate.toISOString(),
+          endsAt: endsAtDate.toISOString(),
+          isActive: editingEvent.isActive,
+        });
+
+        await refreshDashboard();
+        setEditingEvent(null);
+        setStatusMessage(
+          "Activity updated successfully."
+        );
+      }
     } catch (error) {
-      console.error("Failed to update venue activity:", error);
-      setErrorMessage("We could not save this activity. Please try again.");
+      console.error(
+        "Failed to save venue activity:",
+        error
+      );
+
+      setErrorMessage(
+        editingEvent.mode === "create"
+          ? "We could not create this activity. Please try again."
+          : "We could not save this activity. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }
   }
 
   async function handleDeleteEvent() {
-    if (!editingEvent) return;
+    if (
+      !editingEvent ||
+      editingEvent.mode !== "edit" ||
+      !editingEvent.id
+    ) {
+      return;
+    }
 
     const shouldDelete = window.confirm(
       "Remove this activity from Livey? It will be saved in History."
@@ -308,44 +419,58 @@ export function VenueDashboardScreen() {
         reason: "Removed by venue owner",
       });
 
-      const freshData = await getVenueDashboardData();
-      setDashboardData(freshData);
+      await refreshDashboard();
+      setEditingEvent(null);
 
-      const nextActiveEvent = freshData
-        .flatMap((item) => item.events)
-        .find((event) => !isEventInHistory(event));
-
-      setEditingEvent(
-        nextActiveEvent ? mapEventToEditingState(nextActiveEvent) : null
+      setStatusMessage(
+        "Activity removed and moved to History."
+      );
+    } catch (error) {
+      console.error(
+        "Failed to remove venue activity:",
+        error
       );
 
-      setStatusMessage("Activity removed and moved to History.");
-    } catch (error) {
-      console.error("Failed to remove venue activity:", error);
-      setErrorMessage("We could not remove this activity. Please try again.");
+      setErrorMessage(
+        "We could not remove this activity. Please try again."
+      );
     } finally {
       setIsDeletingEvent(false);
     }
   }
 
-  async function handleRestoreEvent(event: VenueDashboardEvent) {
+  async function handleRestoreEvent(
+    event: VenueDashboardEvent
+  ) {
     try {
       setIsRestoringEvent(true);
       setStatusMessage("");
       setErrorMessage("");
 
-      const restoredEvent = await restoreVenueEvent({
-        eventId: event.id,
-      });
+      const restoredEvent =
+        await restoreVenueEvent({
+          eventId: event.id,
+        });
 
-      await refreshDashboard(restoredEvent.id);
+      await refreshDashboard();
 
-      setEditingEvent(mapEventToEditingState(restoredEvent));
+      setEditingEvent(
+        mapEventToEditingState(restoredEvent)
+      );
       setActiveSection("activity");
-      setStatusMessage("Activity restored successfully.");
+
+      setStatusMessage(
+        "Activity restored successfully."
+      );
     } catch (error) {
-      console.error("Failed to restore venue activity:", error);
-      setErrorMessage("We could not restore this activity. Please try again.");
+      console.error(
+        "Failed to restore venue activity:",
+        error
+      );
+
+      setErrorMessage(
+        "We could not restore this activity. Please try again."
+      );
     } finally {
       setIsRestoringEvent(false);
     }
@@ -380,77 +505,111 @@ export function VenueDashboardScreen() {
 
       await refreshDashboard();
 
-      setStatusMessage("Venue profile updated successfully.");
+      setStatusMessage(
+        "Venue profile updated successfully."
+      );
     } catch (error) {
-      console.error("Failed to update venue profile:", error);
-      setErrorMessage("We could not update your venue profile. Please try again.");
+      console.error(
+        "Failed to update venue profile:",
+        error
+      );
+
+      setErrorMessage(
+        "We could not update your venue profile. Please try again."
+      );
     } finally {
       setIsUpdatingVenueProfile(false);
     }
   }
 
   async function handleSignOut() {
-  try {
-    await dashboardSupabase.auth.signOut();
-    window.dispatchEvent(new Event("livey:auth-changed"));
-  } catch (error) {
-    console.error("Failed to sign out venue owner:", error);
-    setErrorMessage("We could not sign out. Please try again.");
+    try {
+      await dashboardSupabase.auth.signOut();
+
+      window.dispatchEvent(
+        new Event("livey:auth-changed")
+      );
+    } catch (error) {
+      console.error(
+        "Failed to sign out venue owner:",
+        error
+      );
+
+      setErrorMessage(
+        "We could not sign out. Please try again."
+      );
+    }
   }
-}
 
   return (
     <main className="venue-dashboard-page">
       <VenueDashboardSidebar
-  activeSection={activeSection}
-  venueName={activeVenue?.name || "Venue owner"}
-  venueLogoUrl={activeVenue?.logo_url || null}
-  onSectionChange={setActiveSection}
-/>
+        activeSection={activeSection}
+        venueName={
+          activeVenue?.name || "Venue owner"
+        }
+        venueLogoUrl={
+          activeVenue?.logo_url || null
+        }
+        onSectionChange={setActiveSection}
+      />
 
       <section className="venue-dashboard-main">
         <header className="venue-dashboard-topbar">
-  <div>
-    <img
-      className="venue-dashboard-topbar-logo"
-      src="/Livey-Logo.png"
-      alt="Livey"
-    />
+          <div>
+            <img
+              className="venue-dashboard-topbar-logo"
+              src="/Livey-Logo.png"
+              alt="Livey"
+            />
 
-    <h1>{getSectionTitle(activeSection)}</h1>
-  </div>
-</header>
+            <h1>
+              {getSectionTitle(activeSection)}
+            </h1>
+          </div>
+        </header>
 
         {isLoading ? (
           <section className="venue-dashboard-card">
-            <p className="venue-dashboard-muted">Loading your dashboard...</p>
+            <p className="venue-dashboard-muted">
+              Loading your dashboard...
+            </p>
           </section>
         ) : !hasVenues ? (
           <section className="venue-dashboard-card">
             <h2>No venue connected yet</h2>
+
             <p>
-              This account is signed in, but it is not connected to an approved
-              Livey venue yet.
+              This account is signed in, but it is
+              not connected to an approved Livey
+              venue yet.
             </p>
 
             {errorMessage ? (
-              <p className="venue-dashboard-error">{errorMessage}</p>
+              <p className="venue-dashboard-error">
+                {errorMessage}
+              </p>
             ) : null}
 
             <p className="venue-dashboard-muted">
-              If you already received a Livey venue code, sign out and create
-              your venue account using that code. If this keeps happening,
-              contact Livey support.
+              If you already received a Livey venue
+              code, sign out and create your venue
+              account using that code. If this keeps
+              happening, contact Livey support.
             </p>
           </section>
         ) : (
           <>
             {statusMessage ? (
-              <p className="venue-dashboard-success">{statusMessage}</p>
+              <p className="venue-dashboard-success">
+                {statusMessage}
+              </p>
             ) : null}
 
             {errorMessage ? (
-              <p className="venue-dashboard-error">{errorMessage}</p>
+              <p className="venue-dashboard-error">
+                {errorMessage}
+              </p>
             ) : null}
 
             {activeSection === "home" ? (
@@ -458,12 +617,21 @@ export function VenueDashboardScreen() {
                 activeVenue={activeVenue}
                 activeEvents={activeEvents}
                 liveEventCount={liveEventCount}
-                visibleEventCount={visibleEventCount}
-                historyEventCount={historyEvents.length}
-                isCreatingEvent={isCreatingEvent}
-                onCreateEvent={handleCreateEvent}
-                onSelectEvent={handleSelectEvent}
-                onSectionChange={setActiveSection}
+                visibleEventCount={
+                  visibleEventCount
+                }
+                historyEventCount={
+                  historyEvents.length
+                }
+                onCreateEvent={
+                  handleCreateEvent
+                }
+                onSelectEvent={
+                  handleSelectEvent
+                }
+                onSectionChange={
+                  setActiveSection
+                }
               />
             ) : null}
 
@@ -471,17 +639,31 @@ export function VenueDashboardScreen() {
               <VenueDashboardActivity
                 activeEvents={activeEvents}
                 editingEvent={editingEvent}
-                isCreatingEvent={isCreatingEvent}
                 isSaving={isSaving}
-                isDeletingEvent={isDeletingEvent}
+                isDeletingEvent={
+                  isDeletingEvent
+                }
                 statusMessage={statusMessage}
                 errorMessage={errorMessage}
-                onCreateEvent={handleCreateEvent}
-                onDeleteEvent={handleDeleteEvent}
+                onCreateEvent={
+                  handleCreateEvent
+                }
+                onCancelEditing={
+                  handleCancelEditing
+                }
+                onDeleteEvent={
+                  handleDeleteEvent
+                }
                 onSaveEvent={handleSaveEvent}
-                onSelectEvent={handleSelectEvent}
-                onEditingEventChange={setEditingEvent}
-                getPreviewTiming={getPreviewTiming}
+                onSelectEvent={
+                  handleSelectEvent
+                }
+                onEditingEventChange={
+                  setEditingEvent
+                }
+                getPreviewTiming={
+                  getPreviewTiming
+                }
               />
             ) : null}
 
@@ -494,11 +676,18 @@ export function VenueDashboardScreen() {
 
             {activeSection === "history" ? (
               <VenueDashboardHistory
-  venueName={activeVenue?.name || "Your venue"}
-  historyEvents={historyEvents}
-  isRestoringEvent={isRestoringEvent}
-  onRestoreEvent={handleRestoreEvent}
-/>
+                venueName={
+                  activeVenue?.name ||
+                  "Your venue"
+                }
+                historyEvents={historyEvents}
+                isRestoringEvent={
+                  isRestoringEvent
+                }
+                onRestoreEvent={
+                  handleRestoreEvent
+                }
+              />
             ) : null}
 
             {activeSection === "account" ? (
@@ -506,10 +695,18 @@ export function VenueDashboardScreen() {
                 currentUser={currentUser}
                 activeVenue={activeVenue}
                 isRefreshing={isRefreshing}
-                isUpdatingVenueProfile={isUpdatingVenueProfile}
-                onRefreshDashboard={handleRefreshDashboard}
-                onSectionChange={setActiveSection}
-                onUpdateVenueProfile={handleUpdateVenueProfile}
+                isUpdatingVenueProfile={
+                  isUpdatingVenueProfile
+                }
+                onRefreshDashboard={
+                  handleRefreshDashboard
+                }
+                onSectionChange={
+                  setActiveSection
+                }
+                onUpdateVenueProfile={
+                  handleUpdateVenueProfile
+                }
                 onSignOut={handleSignOut}
               />
             ) : null}
@@ -520,96 +717,162 @@ export function VenueDashboardScreen() {
   );
 }
 
+function createEmptyEditingEvent(): EditingEventState {
+  const now = new Date();
+  const startsAt = new Date(
+    now.getTime() + 60 * 60 * 1000
+  );
+  const endsAt = new Date(
+    now.getTime() + 3 * 60 * 60 * 1000
+  );
+  const preview = getPreviewTiming(
+    toDateTimeLocalValue(startsAt.toISOString()),
+    toDateTimeLocalValue(endsAt.toISOString())
+  );
+
+  return {
+    id: null,
+    mode: "create",
+    title: "",
+    description: "",
+    status: preview.status,
+    displayTime: preview.displayTime,
+    startsAt: toDateTimeLocalValue(
+      startsAt.toISOString()
+    ),
+    endsAt: toDateTimeLocalValue(
+      endsAt.toISOString()
+    ),
+    isActive: true,
+  };
+}
+
 function getSectionTitle(section: DashboardSection) {
   if (section === "home") return "Control Center";
   if (section === "activity") return "Activity";
   if (section === "analytics") return "Analytics";
   if (section === "history") return "History";
+
   return "Account Settings";
 }
 
 function mapEventToEditingState(
   event: VenueDashboardEvent
 ): EditingEventState {
-  const isUntouchedDraftTitle =
-    event.title.trim().toLowerCase() === "new livey activity";
-
   return {
     id: event.id,
-    title: isUntouchedDraftTitle ? "" : event.title || "",
+    mode: "edit",
+    title: event.title || "",
     description: event.description || "",
     status: event.status,
     displayTime: event.display_time || "",
-    startsAt: toDateTimeLocalValue(event.starts_at),
-    endsAt: toDateTimeLocalValue(event.ends_at),
+    startsAt: toDateTimeLocalValue(
+      event.starts_at
+    ),
+    endsAt: toDateTimeLocalValue(
+      event.ends_at
+    ),
     isActive: event.is_active !== false,
   };
 }
 
-function isEventInHistory(event: VenueDashboardEvent) {
+function isEventInHistory(
+  event: VenueDashboardEvent
+) {
   if (event.deleted_at) return true;
-
   if (!event.ends_at) return false;
 
-  return new Date(event.ends_at).getTime() < Date.now();
+  return (
+    new Date(event.ends_at).getTime() <
+    Date.now()
+  );
 }
 
-function toDateTimeLocalValue(isoValue: string | null) {
+function toDateTimeLocalValue(
+  isoValue: string | null
+) {
   if (!isoValue) return "";
 
   const date = new Date(isoValue);
-  const timezoneOffsetMs = date.getTimezoneOffset() * 60 * 1000;
-  const localDate = new Date(date.getTime() - timezoneOffsetMs);
+  const timezoneOffsetMs =
+    date.getTimezoneOffset() * 60 * 1000;
+  const localDate = new Date(
+    date.getTime() - timezoneOffsetMs
+  );
 
-  return localDate.toISOString().slice(0, 16);
+  return localDate
+    .toISOString()
+    .slice(0, 16);
 }
 
-function getPreviewTiming(startsAtValue: string, endsAtValue: string) {
+function getPreviewTiming(
+  startsAtValue: string,
+  endsAtValue: string
+) {
   if (!startsAtValue || !endsAtValue) {
     return {
-      status: "Scheduled" as VenueActivityStatus,
-      displayTime: "Choose start and end time",
+      status:
+        "Scheduled" as VenueActivityStatus,
+      displayTime:
+        "Choose start and end time",
     };
   }
 
   const startsAt = new Date(startsAtValue);
   const endsAt = new Date(endsAtValue);
 
-  if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime())) {
+  if (
+    Number.isNaN(startsAt.getTime()) ||
+    Number.isNaN(endsAt.getTime())
+  ) {
     return {
-      status: "Scheduled" as VenueActivityStatus,
-      displayTime: "Choose start and end time",
+      status:
+        "Scheduled" as VenueActivityStatus,
+      displayTime:
+        "Choose start and end time",
     };
   }
 
   if (endsAt <= startsAt) {
     return {
-      status: "Scheduled" as VenueActivityStatus,
-      displayTime: "End time must be after start time",
+      status:
+        "Scheduled" as VenueActivityStatus,
+      displayTime:
+        "End time must be after start time",
     };
   }
 
   const now = new Date();
-  const isLive = now >= startsAt && now <= endsAt;
+  const isLive =
+    now >= startsAt && now <= endsAt;
 
   if (isLive) {
     return {
-      status: "Live now" as VenueActivityStatus,
-      displayTime: `Live now · until ${formatTime(endsAt)}`,
+      status:
+        "Live now" as VenueActivityStatus,
+      displayTime: `Live now · until ${formatTime(
+        endsAt
+      )}`,
     };
   }
 
   if (isSameDay(startsAt, now)) {
     if (startsAt.getHours() >= 17) {
       return {
-        status: "Tonight" as VenueActivityStatus,
-        displayTime: `Tonight · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+        status:
+          "Tonight" as VenueActivityStatus,
+        displayTime: `Tonight · ${formatTime(
+          startsAt
+        )}–${formatTime(endsAt)}`,
       };
     }
 
     return {
-      status: "Open now" as VenueActivityStatus,
-      displayTime: `Today · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+      status:
+        "Open now" as VenueActivityStatus,
+      displayTime: `Today · ${formatTime(
+        startsAt
+      )}–${formatTime(endsAt)}`,
     };
   }
 
@@ -618,38 +881,54 @@ function getPreviewTiming(startsAtValue: string, endsAtValue: string) {
 
   if (isSameDay(startsAt, tomorrow)) {
     return {
-      status: "Tomorrow" as VenueActivityStatus,
-      displayTime: `Tomorrow · ${formatTime(startsAt)}–${formatTime(endsAt)}`,
+      status:
+        "Tomorrow" as VenueActivityStatus,
+      displayTime: `Tomorrow · ${formatTime(
+        startsAt
+      )}–${formatTime(endsAt)}`,
     };
   }
 
   if (isWeekend(startsAt)) {
     return {
-      status: "Weekend" as VenueActivityStatus,
-      displayTime: `${formatWeekday(startsAt)} · ${formatTime(
+      status:
+        "Weekend" as VenueActivityStatus,
+      displayTime: `${formatWeekday(
+        startsAt
+      )} · ${formatTime(
         startsAt
       )}–${formatTime(endsAt)}`,
     };
   }
 
   return {
-    status: "Scheduled" as VenueActivityStatus,
-    displayTime: `${formatShortDate(startsAt)} · ${formatTime(
+    status:
+      "Scheduled" as VenueActivityStatus,
+    displayTime: `${formatShortDate(
+      startsAt
+    )} · ${formatTime(
       startsAt
     )}–${formatTime(endsAt)}`,
   };
 }
 
-function isSameDay(firstDate: Date, secondDate: Date) {
+function isSameDay(
+  firstDate: Date,
+  secondDate: Date
+) {
   return (
-    firstDate.getFullYear() === secondDate.getFullYear() &&
-    firstDate.getMonth() === secondDate.getMonth() &&
-    firstDate.getDate() === secondDate.getDate()
+    firstDate.getFullYear() ===
+      secondDate.getFullYear() &&
+    firstDate.getMonth() ===
+      secondDate.getMonth() &&
+    firstDate.getDate() ===
+      secondDate.getDate()
   );
 }
 
 function isWeekend(date: Date) {
   const day = date.getDay();
+
   return day === 0 || day === 6;
 }
 
