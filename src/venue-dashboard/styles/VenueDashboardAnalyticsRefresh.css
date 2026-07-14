@@ -1,0 +1,59 @@
+﻿.venue-dashboard-analytics-refresh-button {
+  min-width: 146px;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -10px auto 24px;
+  padding: 0 16px;
+  color: rgba(247, 241, 234, 0.7);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.022)
+    ),
+    rgba(7, 8, 10, 0.5);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-analytics-refresh-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-analytics-refresh-button:not(:disabled):hover {
+    border-color: rgba(255, 91, 50, 0.18);
+    color: #ffd8cd;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 91, 50, 0.09),
+        rgba(255, 255, 255, 0.025)
+      ),
+      rgba(7, 8, 10, 0.52);
+    box-shadow: 0 0 24px rgba(255, 91, 50, 0.06);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 760px) {
+  .venue-dashboard-analytics-refresh-button {
+    width: min(100%, 220px);
+    min-height: 48px;
+  }
+}
+

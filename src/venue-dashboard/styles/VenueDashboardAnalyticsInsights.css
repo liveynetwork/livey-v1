@@ -1,0 +1,451 @@
+﻿.venue-dashboard-analytics-insights-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(310px, 0.65fr);
+  gap: 18px;
+}
+
+.venue-dashboard-analytics-trend-summary {
+  width: fit-content;
+  min-width: 160px;
+  min-height: 76px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  margin: 0 auto 26px;
+  border: 1px solid rgba(255, 91, 50, 0.13);
+  border-radius: 20px;
+  padding: 12px 20px;
+  background: rgba(255, 91, 50, 0.07);
+}
+
+.venue-dashboard-analytics-trend-summary span {
+  color: rgba(247, 241, 234, 0.44);
+  font-size: 0.67rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-trend-summary strong {
+  color: #f7f1ea;
+  font-size: 1.8rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.venue-dashboard-analytics-chart {
+  height: 260px;
+  display: grid;
+  grid-template-columns: repeat(
+    14,
+    minmax(24px, 1fr)
+  );
+  align-items: end;
+  gap: 8px;
+  padding: 20px 16px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(7, 8, 10, 0.42);
+}
+
+.venue-dashboard-analytics-chart-column {
+  min-width: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 22px 1fr 28px;
+  justify-items: center;
+  gap: 7px;
+}
+
+.venue-dashboard-analytics-chart-value {
+  color: rgba(247, 241, 234, 0.52);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-chart-track {
+  width: min(100%, 24px);
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.venue-dashboard-analytics-chart-track span {
+  width: 100%;
+  min-height: 3px;
+  display: block;
+  border-radius: inherit;
+  background: rgba(247, 241, 234, 0.12);
+  transition:
+    height 300ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.venue-dashboard-analytics-chart-track
+  span.is-active {
+  background: #ff5b32;
+  box-shadow: 0 0 18px rgba(255, 91, 50, 0.17);
+}
+
+.venue-dashboard-analytics-chart-column small {
+  color: rgba(247, 241, 234, 0.36);
+  font-size: 0.56rem;
+  font-weight: 850;
+  text-align: center;
+  white-space: nowrap;
+  transform: rotate(-40deg);
+}
+
+.venue-dashboard-analytics-trend-empty {
+  margin: 18px 0 0;
+  color: rgba(247, 241, 234, 0.43);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.venue-dashboard-analytics-month-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.venue-dashboard-analytics-month-grid > div {
+  min-height: 142px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(7, 8, 10, 0.42);
+}
+
+.venue-dashboard-analytics-month-grid span,
+.venue-dashboard-analytics-month-change > span {
+  color: rgba(247, 241, 234, 0.42);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-month-grid strong {
+  color: #f7f1ea;
+  font-size: 2.3rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.07em;
+}
+
+.venue-dashboard-analytics-month-grid small {
+  color: rgba(247, 241, 234, 0.4);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-analytics-month-change {
+  min-height: 116px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 7px;
+  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 22px;
+  padding: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.015)
+    ),
+    rgba(7, 8, 10, 0.42);
+  text-align: center;
+}
+
+.venue-dashboard-analytics-month-change strong {
+  color: rgba(247, 241, 234, 0.8);
+  font-size: 1.8rem;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.venue-dashboard-analytics-month-change.is-up strong {
+  color: #ff805f;
+}
+
+.venue-dashboard-analytics-month-change small {
+  color: rgba(247, 241, 234, 0.44);
+  font-size: 0.73rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-analytics-timing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.venue-dashboard-analytics-timing-grid > article {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 24px;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 91, 50, 0.07),
+      transparent 15rem
+    ),
+    rgba(7, 8, 10, 0.42);
+  text-align: center;
+}
+
+.venue-dashboard-analytics-timing-grid
+  > article
+  > span {
+  color: rgba(247, 241, 234, 0.42);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-timing-grid
+  > article
+  > strong {
+  margin-top: 13px;
+  color: #f7f1ea;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-weight: 950;
+  letter-spacing: -0.045em;
+}
+
+.venue-dashboard-analytics-timing-grid
+  > article
+  > p {
+  margin: 9px auto 0;
+  color: rgba(247, 241, 234, 0.47);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.venue-dashboard-analytics-duration-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.venue-dashboard-analytics-duration-grid small,
+.venue-dashboard-analytics-countdown {
+  min-height: 70px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.venue-dashboard-analytics-duration-grid span,
+.venue-dashboard-analytics-countdown span {
+  color: rgba(247, 241, 234, 0.39);
+  font-size: 0.61rem;
+  font-weight: 950;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-duration-grid strong,
+.venue-dashboard-analytics-countdown strong {
+  color: #ffd8cd;
+  font-size: 1.04rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-countdown {
+  margin-top: 20px;
+}
+
+.venue-dashboard-analytics-recommendations-list {
+  display: grid;
+  gap: 10px;
+}
+
+.venue-dashboard-analytics-recommendations-list
+  article {
+  min-height: 104px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 21px;
+  padding: 18px;
+  background: rgba(7, 8, 10, 0.42);
+}
+
+.venue-dashboard-analytics-recommendations-list
+  article
+  > span {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 91, 50, 0.15);
+  border-radius: 16px;
+  color: #ff805f;
+  background: rgba(255, 91, 50, 0.09);
+  font-size: 0.88rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-recommendations-list
+  article
+  > div {
+  display: grid;
+  gap: 6px;
+}
+
+.venue-dashboard-analytics-recommendations-list
+  strong {
+  color: #f7f1ea;
+  font-size: 0.92rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-recommendations-list p {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.47);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.venue-dashboard-analytics-recommendations-complete {
+  min-height: 150px;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  border: 1px solid rgba(255, 91, 50, 0.12);
+  border-radius: 24px;
+  padding: 24px;
+  color: #ff805f;
+  background: rgba(255, 91, 50, 0.055);
+}
+
+.venue-dashboard-analytics-recommendations-complete
+  svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.venue-dashboard-analytics-recommendations-complete
+  strong {
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-recommendations-complete
+  p {
+  margin: 7px 0 0;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-analytics-chart-column:hover
+    .venue-dashboard-analytics-chart-track
+    span.is-active {
+    background: #ff704b;
+    box-shadow: 0 0 22px rgba(255, 91, 50, 0.24);
+  }
+
+  .venue-dashboard-analytics-recommendations-list
+    article:hover,
+  .venue-dashboard-analytics-timing-grid
+    > article:hover {
+    border-color: rgba(255, 91, 50, 0.13);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(255, 91, 50, 0.065),
+        transparent 13rem
+      ),
+      rgba(7, 8, 10, 0.44);
+  }
+}
+
+@media (max-width: 1080px) {
+  .venue-dashboard-analytics-insights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .venue-dashboard-analytics-timing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-analytics-chart {
+    grid-template-columns: repeat(
+      14,
+      minmax(20px, 1fr)
+    );
+    gap: 5px;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .venue-dashboard-analytics-month-grid,
+  .venue-dashboard-analytics-duration-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-analytics-chart {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .venue-dashboard-analytics-recommendations-list
+    article,
+  .venue-dashboard-analytics-recommendations-complete {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+}
+
