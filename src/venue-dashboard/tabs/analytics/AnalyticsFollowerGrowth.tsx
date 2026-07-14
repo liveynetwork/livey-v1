@@ -6,6 +6,7 @@ import { AnalyticsSectionHeading } from "./AnalyticsSectionHeading";
 
 type AnalyticsFollowerGrowthProps = {
   analytics: VenueDashboardAnalytics;
+  onRefresh?: () => void;
 };
 
 type ChartPoint = VenueFollowerGrowthPoint & {
@@ -22,6 +23,7 @@ const CHART_RIGHT = 972;
 
 export function AnalyticsFollowerGrowth({
   analytics,
+  onRefresh,
 }: AnalyticsFollowerGrowthProps) {
   const growth =
     analytics.followerGrowthLast30Days ?? [];
@@ -67,6 +69,16 @@ export function AnalyticsFollowerGrowth({
     0
   );
 
+  const activeGrowthDays =
+  growth.filter(
+    (point) => point.newFollowers > 0
+  ).length;
+
+const averagePerActiveDay =
+  activeGrowthDays > 0
+    ? totalGrowth / activeGrowthDays
+    : 0;
+
   const bestDay = growth.reduce<
     VenueFollowerGrowthPoint | null
   >((currentBest, point) => {
@@ -94,38 +106,75 @@ export function AnalyticsFollowerGrowth({
         description="See how many people followed your venue on each day during the last 30 days."
       />
 
+      {onRefresh ? (
+  <button
+    type="button"
+    className="venue-dashboard-analytics-refresh-button"
+    disabled={
+      analytics.isFollowerAnalyticsLoading
+    }
+    onClick={onRefresh}
+  >
+    {analytics.isFollowerAnalyticsLoading
+      ? "Refreshing..."
+      : "Refresh data"}
+  </button>
+) : null}
+
       <div className="venue-dashboard-analytics-follower-chart-meta">
-        <div>
-          <span>New followers</span>
-          <strong>+{totalGrowth}</strong>
-          <small>Last 30 days</small>
-        </div>
+  <div>
+    <span>New followers</span>
+    <strong>+{totalGrowth}</strong>
+    <small>Last 30 days</small>
+  </div>
 
-        <div>
-          <span>Best day</span>
-          <strong>
-            +{bestDay?.newFollowers ?? 0}
-          </strong>
-          <small>
-            {bestDay
-              ? formatFollowerGrowthDate(
-                  bestDay.date,
-                  true
-                )
-              : "No follower activity"}
-          </small>
-        </div>
-      </div>
+  <div>
+    <span>Best day</span>
+    <strong>
+      +{bestDay?.newFollowers ?? 0}
+    </strong>
+    <small>
+      {bestDay
+        ? formatFollowerGrowthDate(
+            bestDay.date,
+            true
+          )
+        : "No follower activity"}
+    </small>
+  </div>
 
-      {chartPoints.length > 0 ? (
-        <FollowerGrowthChart
-          points={chartPoints}
-        />
-      ) : (
-        <FollowerChartState>
-          No follower history is available yet.
-        </FollowerChartState>
-      )}
+  <div>
+    <span>Active growth days</span>
+    <strong>{activeGrowthDays}</strong>
+    <small>
+      Days with new followers
+    </small>
+  </div>
+
+  <div>
+    <span>Average</span>
+    <strong>
+      {averagePerActiveDay.toFixed(1)}
+    </strong>
+    <small>
+      Per active growth day
+    </small>
+  </div>
+</div>
+
+      {growth.length === 0 ? (
+  <FollowerChartState>
+    No follower history is available yet.
+  </FollowerChartState>
+) : totalGrowth === 0 ? (
+  <FollowerChartState>
+    No new followers in the last 30 days yet.
+  </FollowerChartState>
+) : (
+  <FollowerGrowthChart
+    points={chartPoints}
+  />
+)}
 
       <footer className="venue-dashboard-analytics-follower-chart-footer">
         <span className="venue-dashboard-analytics-follower-live-status">

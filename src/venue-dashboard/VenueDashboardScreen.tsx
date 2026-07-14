@@ -939,14 +939,17 @@ followerAnalyticsGeneratedAt:
             analytics &&
             activeVenue ? (
               <VenueDashboardAnalytics
-                venueName={
-                  activeVenue.name ||
-                  "Your venue"
-                }
-                venue={activeVenue}
-                events={allVenueEvents}
-                analytics={analytics}
-              />
+  venueName={
+    activeVenue.name ||
+    "Your venue"
+  }
+  venue={activeVenue}
+  events={allVenueEvents}
+  analytics={analytics}
+  onRefreshAnalytics={
+    handleRefreshDashboard
+  }
+/>
             ) : null}
 
             {activeSection ===

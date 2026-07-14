@@ -21,6 +21,7 @@ type VenueDashboardAnalyticsProps = {
   venue: VenueDashboardVenue;
   events: VenueDashboardEvent[];
   analytics: VenueDashboardAnalyticsData;
+  onRefreshAnalytics?: () => void;
 };
 
 export function VenueDashboardAnalytics({
@@ -28,6 +29,7 @@ export function VenueDashboardAnalytics({
   venue,
   events,
   analytics,
+  onRefreshAnalytics,
 }: VenueDashboardAnalyticsProps) {
   const activityCoverage =
     calculateAnalyticsPercentage(
@@ -53,10 +55,9 @@ export function VenueDashboardAnalytics({
 
       <AnalyticsSummaryGrid analytics={analytics} />
 
-      <AnalyticsSummaryGrid analytics={analytics} />
-
 <AnalyticsFollowerGrowth
   analytics={analytics}
+  onRefresh={onRefreshAnalytics}
 />
 
       <section className="venue-dashboard-analytics-main-grid">
