@@ -1,0 +1,217 @@
+.livey-toast {
+  position: fixed;
+  top: max(22px, env(safe-area-inset-top));
+  right: 24px;
+  z-index: 650;
+  width: min(calc(100vw - 48px), 430px);
+  min-height: 82px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 23px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 14px 16px 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.082),
+      rgba(255, 255, 255, 0.038)
+    ),
+    rgba(20, 22, 26, 0.98);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: livey-toast-enter 240ms ease;
+}
+
+.livey-toast-success {
+  background:
+    radial-gradient(
+      circle at left center,
+      rgba(71, 210, 139, 0.13),
+      transparent 16rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.082),
+      rgba(255, 255, 255, 0.038)
+    ),
+    rgba(20, 22, 26, 0.98);
+}
+
+.livey-toast-error {
+  background:
+    radial-gradient(
+      circle at left center,
+      rgba(255, 80, 80, 0.14),
+      transparent 16rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.082),
+      rgba(255, 255, 255, 0.038)
+    ),
+    rgba(20, 22, 26, 0.98);
+}
+
+.livey-toast.is-closing {
+  pointer-events: none;
+  animation: livey-toast-exit 220ms ease forwards;
+}
+
+.livey-toast-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+}
+
+.livey-toast-success .livey-toast-icon {
+  border: 1px solid rgba(71, 210, 139, 0.2);
+  color: #85e9b6;
+  background: rgba(71, 210, 139, 0.11);
+  box-shadow: 0 12px 28px rgba(71, 210, 139, 0.07);
+}
+
+.livey-toast-error .livey-toast-icon {
+  border: 1px solid rgba(255, 98, 98, 0.2);
+  color: #ff9f9f;
+  background: rgba(255, 80, 80, 0.11);
+  box-shadow: 0 12px 28px rgba(255, 80, 80, 0.07);
+}
+
+.livey-toast-icon svg {
+  display: block;
+}
+
+.livey-toast-copy {
+  min-width: 0;
+}
+
+.livey-toast-copy strong {
+  display: block;
+  color: #f7f1ea;
+  font-size: 0.88rem;
+  font-weight: 950;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.livey-toast-copy p {
+  margin: 5px 0 0;
+  color: rgba(247, 241, 234, 0.58);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.livey-toast-close {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.48);
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.livey-toast-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  transform-origin: left center;
+  animation-name: livey-toast-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.livey-toast-success .livey-toast-progress {
+  background: #58d997;
+}
+
+.livey-toast-error .livey-toast-progress {
+  background: #f06464;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-toast-close:hover {
+    color: #f7f1ea;
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+@keyframes livey-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes livey-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+@keyframes livey-toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 560px) {
+  .livey-toast {
+    top: max(14px, env(safe-area-inset-top));
+    left: 16px;
+    right: 16px;
+    width: auto;
+    min-height: 78px;
+    grid-template-columns: 42px minmax(0, 1fr) 32px;
+    gap: 11px;
+    border-radius: 21px;
+    padding: 14px 12px 14px 14px;
+  }
+
+  .livey-toast-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-toast,
+  .livey-toast.is-closing,
+  .livey-toast-progress {
+    animation-duration: 1ms !important;
+  }
+}

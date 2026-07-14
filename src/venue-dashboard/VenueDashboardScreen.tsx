@@ -25,8 +25,16 @@ import { VenueDashboardComingSoon } from "./tabs/VenueDashboardComingSoon";
 import { VenueDashboardHistory } from "./tabs/VenueDashboardHistory";
 import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
 import "./VenueDashboardScreen.css";
+import { LiveyConfirmModal } from "./components/LiveyConfirmModal";
+import { LiveyToast } from "./components/LiveyToast";
 
-export function VenueDashboardScreen() {
+type VenueDashboardScreenProps = {
+  onReady?: () => void;
+};
+
+export function VenueDashboardScreen({
+  onReady,
+}: VenueDashboardScreenProps) {
   const [dashboardData, setDashboardData] = useState<
     VenueDashboardData[]
   >([]);
@@ -54,6 +62,9 @@ export function VenueDashboardScreen() {
     useState("");
 
   const hasVenues = dashboardData.length > 0;
+
+  const [isRemoveActivityModalOpen, setIsRemoveActivityModalOpen] =
+  useState(false);
 
   const activeVenue = useMemo(() => {
     return dashboardData[0]?.venue ?? null;
@@ -136,10 +147,11 @@ export function VenueDashboardScreen() {
           "We could not load your venue dashboard. Please try again."
         );
       } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
+  if (isMounted) {
+    setIsLoading(false);
+    onReady?.();
+  }
+}
     }
 
     loadDashboard();
@@ -147,7 +159,12 @@ export function VenueDashboardScreen() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [onReady]);
+
+  function handleDismissToast() {
+  setStatusMessage("");
+  setErrorMessage("");
+}
 
   async function tryRecoverVenueClaim(user: User) {
     const metadataClaimCode =
@@ -394,50 +411,63 @@ export function VenueDashboardScreen() {
     }
   }
 
-  async function handleDeleteEvent() {
-    if (
-      !editingEvent ||
-      editingEvent.mode !== "edit" ||
-      !editingEvent.id
-    ) {
-      return;
-    }
+  function handleDeleteEvent() {
+  if (
+    !editingEvent ||
+    editingEvent.mode !== "edit" ||
+    !editingEvent.id
+  ) {
+    return;
+  }
 
-    const shouldDelete = window.confirm(
-      "Remove this activity from Livey? It will be saved in History."
+  setIsRemoveActivityModalOpen(true);
+}
+
+function handleCancelDeleteEvent() {
+  if (isDeletingEvent) return;
+  setIsRemoveActivityModalOpen(false);
+}
+
+async function handleConfirmDeleteEvent() {
+  if (
+    !editingEvent ||
+    editingEvent.mode !== "edit" ||
+    !editingEvent.id
+  ) {
+    setIsRemoveActivityModalOpen(false);
+    return;
+  }
+
+  try {
+    setIsDeletingEvent(true);
+    setStatusMessage("");
+    setErrorMessage("");
+
+    await deleteVenueEvent({
+      eventId: editingEvent.id,
+      reason: "Removed by venue owner",
+    });
+
+    await refreshDashboard();
+
+    setEditingEvent(null);
+    setIsRemoveActivityModalOpen(false);
+    setStatusMessage(
+      "Activity removed and moved to History."
+    );
+  } catch (error) {
+    console.error(
+      "Failed to remove venue activity:",
+      error
     );
 
-    if (!shouldDelete) return;
-
-    try {
-      setIsDeletingEvent(true);
-      setStatusMessage("");
-      setErrorMessage("");
-
-      await deleteVenueEvent({
-        eventId: editingEvent.id,
-        reason: "Removed by venue owner",
-      });
-
-      await refreshDashboard();
-      setEditingEvent(null);
-
-      setStatusMessage(
-        "Activity removed and moved to History."
-      );
-    } catch (error) {
-      console.error(
-        "Failed to remove venue activity:",
-        error
-      );
-
-      setErrorMessage(
-        "We could not remove this activity. Please try again."
-      );
-    } finally {
-      setIsDeletingEvent(false);
-    }
+    setErrorMessage(
+      "We could not remove this activity. Please try again."
+    );
+  } finally {
+    setIsDeletingEvent(false);
   }
+}
 
   async function handleRestoreEvent(
     event: VenueDashboardEvent
@@ -585,12 +615,6 @@ export function VenueDashboardScreen() {
               venue yet.
             </p>
 
-            {errorMessage ? (
-              <p className="venue-dashboard-error">
-                {errorMessage}
-              </p>
-            ) : null}
-
             <p className="venue-dashboard-muted">
               If you already received a Livey venue
               code, sign out and create your venue
@@ -600,17 +624,6 @@ export function VenueDashboardScreen() {
           </section>
         ) : (
           <>
-            {statusMessage ? (
-              <p className="venue-dashboard-success">
-                {statusMessage}
-              </p>
-            ) : null}
-
-            {errorMessage ? (
-              <p className="venue-dashboard-error">
-                {errorMessage}
-              </p>
-            ) : null}
 
             {activeSection === "home" ? (
               <VenueDashboardHome
@@ -643,8 +656,6 @@ export function VenueDashboardScreen() {
                 isDeletingEvent={
                   isDeletingEvent
                 }
-                statusMessage={statusMessage}
-                errorMessage={errorMessage}
                 onCreateEvent={
                   handleCreateEvent
                 }
@@ -712,7 +723,40 @@ export function VenueDashboardScreen() {
             ) : null}
           </>
         )}
+        
       </section>
+
+      {errorMessage ? (
+  <LiveyToast
+    key={`error-${errorMessage}`}
+    tone="error"
+    message={errorMessage}
+    onDismiss={handleDismissToast}
+  />
+) : statusMessage ? (
+  <LiveyToast
+    key={`success-${statusMessage}`}
+    tone="success"
+    message={statusMessage}
+    onDismiss={handleDismissToast}
+  />
+) : null}
+
+
+      <LiveyConfirmModal
+  isOpen={isRemoveActivityModalOpen}
+  tone="danger"
+  title="Remove this activity?"
+  description={
+    editingEvent
+      ? `"${editingEvent.title || "Untitled activity"}" will be removed from Livey. Removed activities cannot be restored.`
+      : "This activity will be removed from Livey. Removed activities cannot be restored."
+  }
+  confirmLabel="Remove activity"
+  isProcessing={isDeletingEvent}
+  onCancel={handleCancelDeleteEvent}
+  onConfirm={handleConfirmDeleteEvent}
+/>
     </main>
   );
 }

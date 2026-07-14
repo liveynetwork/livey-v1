@@ -21,8 +21,6 @@ type VenueDashboardActivityProps = {
   editingEvent: EditingEventState | null;
   isSaving: boolean;
   isDeletingEvent: boolean;
-  statusMessage: string;
-  errorMessage: string;
   onCreateEvent: () => void;
   onCancelEditing: () => void;
   onDeleteEvent: () => void;
@@ -47,8 +45,6 @@ export function VenueDashboardActivity({
   editingEvent,
   isSaving,
   isDeletingEvent,
-  statusMessage,
-  errorMessage,
   onCreateEvent,
   onCancelEditing,
   onDeleteEvent,
@@ -329,18 +325,6 @@ export function VenueDashboardActivity({
             </button>
           </div>
         )}
-
-        {errorMessage ? (
-          <p className="venue-dashboard-error venue-dashboard-activity-message">
-            {errorMessage}
-          </p>
-        ) : null}
-
-        {statusMessage ? (
-          <p className="venue-dashboard-success venue-dashboard-activity-message">
-            {statusMessage}
-          </p>
-        ) : null}
 
         {editingEvent ? (
           <div className="venue-dashboard-activity-editor-actions">

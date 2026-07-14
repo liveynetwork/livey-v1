@@ -9,6 +9,7 @@ import { AccountSupportSessionCard } from "./account/AccountSupportSessionCard";
 import { AccountVenueIdentityCard } from "./account/AccountVenueIdentityCard";
 import { AccountVenueProfileCard } from "./account/AccountVenueProfileCard";
 import type { DayHours } from "./account/accountTypes";
+import { LiveyConfirmModal } from "../components/LiveyConfirmModal";
 import {
   buildOpeningHoursDraft,
   formatOpeningHours,
@@ -50,6 +51,9 @@ export function VenueDashboardAccount({
   const [openingHours, setOpeningHours] = useState(
     activeVenue?.opening_hours ?? ""
   );
+
+  const [pendingStatus, setPendingStatus] =
+  useState<string | null>(null);
 
   const [openingHoursDraft, setOpeningHoursDraft] = useState<DayHours[]>(
     buildOpeningHoursDraft(activeVenue?.opening_hours ?? "")
@@ -167,16 +171,20 @@ export function VenueDashboardAccount({
   }
 
   function handleStatusChange(nextStatus: string) {
-    if (nextStatus === openStatus) return;
+  if (nextStatus === openStatus) return;
+  setPendingStatus(nextStatus);
+}
 
-    const confirmed = window.confirm(
-      `Are you sure you want to change your venue status to "${nextStatus}"? This should only be used for urgent or manual situations.`
-    );
+function handleCancelStatusChange() {
+  setPendingStatus(null);
+}
 
-    if (!confirmed) return;
+function handleConfirmStatusChange() {
+  if (!pendingStatus) return;
 
-    setOpenStatus(nextStatus);
-  }
+  setOpenStatus(pendingStatus);
+  setPendingStatus(null);
+}
 
   function updateOpeningHoursDay(
     dayIndex: number,
@@ -268,6 +276,20 @@ export function VenueDashboardAccount({
           onApply={handleApplyOpeningHours}
         />
       ) : null}
+
+      <LiveyConfirmModal
+  isOpen={pendingStatus !== null}
+  tone="warning"
+  title="Change venue status?"
+  description={
+    pendingStatus
+      ? `Your venue status will be changed to "${pendingStatus}". Manual status overrides should only be used for urgent or exceptional situations.`
+      : ""
+  }
+  confirmLabel="Change status"
+  onCancel={handleCancelStatusChange}
+  onConfirm={handleConfirmStatusChange}
+/>
     </>
   );
 }

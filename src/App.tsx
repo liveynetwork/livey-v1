@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { LiveyDashboardLoader } from "./venue-dashboard/components/LiveyDashboardLoader";
 import type { User } from "@supabase/supabase-js";
 import { LiveyBottomNav, type LiveyTab } from "./components/LiveyBottomNav";
 import { MapScreen } from "./screens/MapScreen";
@@ -24,6 +29,13 @@ function App() {
 
   const [dashboardUser, setDashboardUser] = useState<User | null>(null);
   const [dashboardAuthLoading, setDashboardAuthLoading] = useState(true);
+
+  const [dashboardReady, setDashboardReady] =
+  useState(false);
+
+  const handleDashboardReady = useCallback(() => {
+  setDashboardReady(true);
+}, []);
 
   const [profileLoading, setProfileLoading] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState<
@@ -117,14 +129,26 @@ function App() {
 
     const {
       data: { subscription },
-    } = dashboardSupabase.auth.onAuthStateChange((_event, session) => {
-      setDashboardUser(session?.user ?? null);
-      setDashboardAuthLoading(false);
-    });
+    } = dashboardSupabase.auth.onAuthStateChange(
+  (event, session) => {
+    const nextDashboardUser =
+      session?.user ?? null;
+
+    setDashboardUser(nextDashboardUser);
+    setDashboardAuthLoading(false);
+
+    if (
+      event === "SIGNED_IN" ||
+      !nextDashboardUser
+    ) {
+      setDashboardReady(false);
+    }
+  }
+);
 
     function handleDashboardAuthChanged() {
-      loadDashboardUser();
-    }
+  loadDashboardUser();
+}
 
     window.addEventListener("livey:auth-changed", handleDashboardAuthChanged);
 
@@ -219,7 +243,17 @@ function App() {
       return <VenueDashboardAuthScreen />;
     }
 
-    return <VenueDashboardScreen />;
+    return (
+  <>
+    <VenueDashboardScreen
+      onReady={handleDashboardReady}
+    />
+
+    <LiveyDashboardLoader
+      isReady={dashboardReady}
+    />
+  </>
+);
   }
 
   if (authLoading || (user && (profileLoading || onboardingCompleted === null))) {
