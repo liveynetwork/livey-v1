@@ -13,18 +13,12 @@ export function AnalyticsHero({
         </p>
 
         <h2>
-          A clearer view of how {venueName} is performing.
-        </h2>
+  {venueName}&apos;s Overview
+</h2>
 
-        <p>
-          Review your activity visibility, publishing health,
-          upcoming schedule, and venue profile readiness.
-        </p>
-      </div>
-
-      <div className="venue-dashboard-analytics-hero-status">
-        <span>Analytics V1</span>
-        <strong>Live</strong>
+<p>
+  See how your activity, audience, and profile are performing across Livey.
+</p>
       </div>
     </section>
   );

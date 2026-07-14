@@ -37,9 +37,10 @@ export function AnalyticsFollowerGrowth({
           description="See how your Livey audience has grown during the last 30 days."
         />
 
-        <FollowerChartState>
-          Loading follower growth...
-        </FollowerChartState>
+        <FollowerChartState
+          title="Loading audience data"
+          description="Your latest follower analytics are being prepared."
+        />
       </section>
     );
   }
@@ -53,9 +54,11 @@ export function AnalyticsFollowerGrowth({
           description="See how your Livey audience has grown during the last 30 days."
         />
 
-        <FollowerChartState isError>
-          Follower growth could not be loaded right now.
-        </FollowerChartState>
+        <FollowerChartState
+          title="Audience data unavailable"
+          description="Follower growth could not be loaded right now."
+          isError
+        />
       </section>
     );
   }
@@ -69,19 +72,22 @@ export function AnalyticsFollowerGrowth({
     0
   );
 
-  const activeGrowthDays =
-  growth.filter(
+  const activeGrowthDays = growth.filter(
     (point) => point.newFollowers > 0
   ).length;
 
-const averagePerActiveDay =
-  activeGrowthDays > 0
-    ? totalGrowth / activeGrowthDays
-    : 0;
+  const averagePerActiveDay =
+    activeGrowthDays > 0
+      ? totalGrowth / activeGrowthDays
+      : 0;
 
   const bestDay = growth.reduce<
     VenueFollowerGrowthPoint | null
   >((currentBest, point) => {
+    if (point.newFollowers <= 0) {
+      return currentBest;
+    }
+
     if (
       !currentBest ||
       point.newFollowers >
@@ -100,91 +106,111 @@ const averagePerActiveDay =
 
   return (
     <section className="venue-dashboard-analytics-card venue-dashboard-analytics-follower-chart-card">
-      <AnalyticsSectionHeading
-        eyebrow="Audience growth"
-        title="Follower growth"
-        description="See how many people followed your venue on each day during the last 30 days."
-      />
+      <div className="venue-dashboard-analytics-follower-heading">
+        <AnalyticsSectionHeading
+          eyebrow="Audience growth"
+          title="Follower growth"
+          description="See how many people followed your venue on each day during the last 30 days."
+        />
 
-      {onRefresh ? (
-  <button
-    type="button"
-    className="venue-dashboard-analytics-refresh-button"
-    disabled={
-      analytics.isFollowerAnalyticsLoading
-    }
-    onClick={onRefresh}
-  >
-    {analytics.isFollowerAnalyticsLoading
-      ? "Refreshing..."
-      : "Refresh data"}
-  </button>
-) : null}
+        {onRefresh ? (
+          <button
+            type="button"
+            className="venue-dashboard-analytics-refresh-button"
+            disabled={
+              analytics.isFollowerAnalyticsLoading
+            }
+            aria-label="Refresh follower analytics"
+            onClick={onRefresh}
+          >
+            <RefreshIcon />
+
+            <span>
+              {analytics.isFollowerAnalyticsLoading
+                ? "Refreshing"
+                : "Refresh data"}
+            </span>
+          </button>
+        ) : null}
+      </div>
 
       <div className="venue-dashboard-analytics-follower-chart-meta">
-  <div>
-    <span>New followers</span>
-    <strong>+{totalGrowth}</strong>
-    <small>Last 30 days</small>
-  </div>
+        <div className="is-primary">
+          <span>New followers</span>
 
-  <div>
-    <span>Best day</span>
-    <strong>
-      +{bestDay?.newFollowers ?? 0}
-    </strong>
-    <small>
-      {bestDay
-        ? formatFollowerGrowthDate(
-            bestDay.date,
-            true
-          )
-        : "No follower activity"}
-    </small>
-  </div>
+          <strong>+{totalGrowth}</strong>
 
-  <div>
-    <span>Active growth days</span>
-    <strong>{activeGrowthDays}</strong>
-    <small>
-      Days with new followers
-    </small>
-  </div>
+          <small>Across the last 30 days</small>
+        </div>
 
-  <div>
-    <span>Average</span>
-    <strong>
-      {averagePerActiveDay.toFixed(1)}
-    </strong>
-    <small>
-      Per active growth day
-    </small>
-  </div>
-</div>
+        <div>
+          <span>Best day</span>
+
+          <strong>
+            +{bestDay?.newFollowers ?? 0}
+          </strong>
+
+          <small>
+            {bestDay
+              ? formatFollowerGrowthDate(
+                  bestDay.date,
+                  true
+                )
+              : "No growth recorded yet"}
+          </small>
+        </div>
+
+        <div>
+          <span>Active growth days</span>
+
+          <strong>{activeGrowthDays}</strong>
+
+          <small>
+            {activeGrowthDays === 1
+              ? "Day with new followers"
+              : "Days with new followers"}
+          </small>
+        </div>
+
+        <div>
+          <span>Daily average</span>
+
+          <strong>
+            {formatFollowerAverage(
+              averagePerActiveDay
+            )}
+          </strong>
+
+          <small>Per active growth day</small>
+        </div>
+      </div>
 
       {growth.length === 0 ? (
-  <FollowerChartState>
-    No follower history is available yet.
-  </FollowerChartState>
-) : totalGrowth === 0 ? (
-  <FollowerChartState>
-    No new followers in the last 30 days yet.
-  </FollowerChartState>
-) : (
-  <FollowerGrowthChart
-    points={chartPoints}
-  />
-)}
+        <FollowerChartState
+          title="No follower history yet"
+          description="Your daily audience growth will appear here once follower data becomes available."
+        />
+      ) : totalGrowth === 0 ? (
+        <FollowerChartState
+          title="Your audience journey starts here"
+          description="No new followers were recorded during the last 30 days. New growth will appear here automatically."
+        />
+      ) : (
+        <FollowerGrowthChart
+          points={chartPoints}
+        />
+      )}
 
       <footer className="venue-dashboard-analytics-follower-chart-footer">
         <span className="venue-dashboard-analytics-follower-live-status">
           <i />
+
           Livey audience data
         </span>
 
         <span>
           {lastUpdated
-            ? `Last updated ${lastUpdated}`
+            ? `Updated ${lastUpdated}`
             : "Update time unavailable"}
         </span>
       </footer>
@@ -197,7 +223,8 @@ function FollowerGrowthChart({
 }: {
   points: ChartPoint[];
 }) {
-  const linePath = buildLinePath(points);
+  const linePath =
+    buildLinePath(points);
 
   const areaPath = buildAreaPath(
     points,
@@ -328,10 +355,12 @@ function ChartGrid() {
 }
 
 function FollowerChartState({
-  children,
+  title,
+  description,
   isError = false,
 }: {
-  children: string;
+  title: string;
+  description: string;
   isError?: boolean;
 }) {
   return (
@@ -342,8 +371,43 @@ function FollowerChartState({
           : "venue-dashboard-analytics-follower-chart-state"
       }
     >
-      {children}
+      <span className="venue-dashboard-analytics-follower-empty-icon">
+        <AudienceGrowthIcon />
+      </span>
+
+      <div>
+        <strong>{title}</strong>
+        <p>{description}</p>
+      </div>
     </div>
+  );
+}
+
+function RefreshIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M20 11a8 8 0 0 0-14.8-4.2L3 9" />
+      <path d="M3 4v5h5" />
+      <path d="M4 13a8 8 0 0 0 14.8 4.2L21 15" />
+      <path d="M21 20v-5h-5" />
+    </svg>
+  );
+}
+
+function AudienceGrowthIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M5 19V9" />
+      <path d="M10 19V5" />
+      <path d="M15 19v-7" />
+      <path d="M20 19V3" />
+    </svg>
   );
 }
 
@@ -412,6 +476,7 @@ function buildAreaPath(
   }
 
   const firstPoint = points[0];
+
   const lastPoint =
     points[points.length - 1];
 
@@ -421,6 +486,16 @@ function buildAreaPath(
     `L ${firstPoint.x} ${CHART_BOTTOM}`,
     "Z",
   ].join(" ");
+}
+
+function formatFollowerAverage(
+  value: number
+) {
+  if (Number.isInteger(value)) {
+    return `${value}`;
+  }
+
+  return value.toFixed(1);
 }
 
 function formatFollowerGrowthDate(

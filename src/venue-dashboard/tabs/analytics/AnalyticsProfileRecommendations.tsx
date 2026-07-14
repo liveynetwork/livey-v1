@@ -15,20 +15,47 @@ export function AnalyticsProfileRecommendations({
   const recommendations =
     buildProfileRecommendations(venue);
 
+    if (recommendations.length === 0) {
+  return null;
+}
+
+  const hasRecommendations =
+    recommendations.length > 0;
+
   return (
     <section className="venue-dashboard-analytics-card venue-dashboard-analytics-recommendations-card">
       <AnalyticsSectionHeading
-        eyebrow="Recommended actions"
-        title="Improve your Livey presence"
-        description="Complete the details that help customers recognise and understand your venue."
+        eyebrow={
+          hasRecommendations
+            ? "Recommended actions"
+            : "Profile status"
+        }
+        title={
+          hasRecommendations
+            ? "Improve your Livey presence"
+            : "Your venue is ready"
+        }
+        description={
+          hasRecommendations
+            ? "Complete the details that help customers recognise and understand your venue."
+            : "Your essential venue details are complete and ready for people to discover on Livey."
+        }
       />
 
-      {recommendations.length > 0 ? (
+      {hasRecommendations ? (
         <div className="venue-dashboard-analytics-recommendations-list">
           {recommendations.map(
             (recommendation, index) => (
               <article key={recommendation.id}>
-                <span>{index + 1}</span>
+                <span
+                  className="venue-dashboard-analytics-recommendation-number"
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(
+                    2,
+                    "0"
+                  )}
+                </span>
 
                 <div>
                   <strong>
@@ -45,16 +72,22 @@ export function AnalyticsProfileRecommendations({
         </div>
       ) : (
         <div className="venue-dashboard-analytics-recommendations-complete">
-          <ProfileCompleteIcon />
+          <span className="venue-dashboard-analytics-recommendations-complete-icon">
+            <ProfileCompleteIcon />
+          </span>
 
           <div>
+            <span className="venue-dashboard-analytics-recommendations-complete-label">
+              Profile complete
+            </span>
+
             <strong>
-              Your core venue profile is complete.
+              Your core venue details are ready.
             </strong>
 
             <p>
-              Continue publishing relevant activity
-              to keep your Livey presence useful.
+              Keep your Livey presence active by
+              publishing clear, relevant activity.
             </p>
           </div>
         </div>

@@ -12,7 +12,6 @@ import { AnalyticsProfileHealth } from "./analytics/AnalyticsProfileHealth";
 import { AnalyticsProfileRecommendations } from "./analytics/AnalyticsProfileRecommendations";
 import { AnalyticsPublishingSummary } from "./analytics/AnalyticsPublishingSummary";
 import { AnalyticsPublishingTrend } from "./analytics/AnalyticsPublishingTrend";
-import { AnalyticsSummaryGrid } from "./analytics/AnalyticsSummaryGrid";
 import { calculateAnalyticsPercentage } from "./analytics/analyticsFormatters";
 import { AnalyticsFollowerGrowth } from "./analytics/AnalyticsFollowerGrowth";
 
@@ -53,14 +52,19 @@ export function VenueDashboardAnalytics({
     <section className="venue-dashboard-analytics">
       <AnalyticsHero venueName={venueName} />
 
-      <AnalyticsSummaryGrid analytics={analytics} />
+<AnalyticsNextActivity
+  currentLiveActivity={
+    analytics.currentLiveActivity
+  }
+  nextActivity={analytics.nextActivity}
+/>
 
 <AnalyticsFollowerGrowth
   analytics={analytics}
   onRefresh={onRefreshAnalytics}
 />
 
-      <section className="venue-dashboard-analytics-main-grid">
+<section className="venue-dashboard-analytics-main-grid">
         <AnalyticsActivityHealth
           analytics={analytics}
           activityCoverage={activityCoverage}
@@ -82,13 +86,6 @@ export function VenueDashboardAnalytics({
           events={events}
         />
       </section>
-
-      <AnalyticsNextActivity
-        currentLiveActivity={
-          analytics.currentLiveActivity
-        }
-        nextActivity={analytics.nextActivity}
-      />
 
       <AnalyticsProfileRecommendations
         venue={venue}

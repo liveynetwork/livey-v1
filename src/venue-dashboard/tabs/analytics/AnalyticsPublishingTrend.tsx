@@ -11,17 +11,28 @@ type AnalyticsPublishingTrendProps = {
 export function AnalyticsPublishingTrend({
   events,
 }: AnalyticsPublishingTrendProps) {
-  const trend = buildPublishingTrend(events, 14);
+  const trend = buildPublishingTrend(
+    events,
+    14
+  );
 
   const highestValue = Math.max(
-    ...trend.map((point) => point.count),
+    ...trend.map(
+      (point) => point.count
+    ),
     1
   );
 
   const totalPublished = trend.reduce(
-    (total, point) => total + point.count,
+    (total, point) =>
+      total + point.count,
     0
   );
+
+  const activePublishingDays =
+    trend.filter(
+      (point) => point.count > 0
+    ).length;
 
   return (
     <section className="venue-dashboard-analytics-card venue-dashboard-analytics-trend-card">
@@ -32,22 +43,39 @@ export function AnalyticsPublishingTrend({
       />
 
       <div className="venue-dashboard-analytics-trend-summary">
-        <span>Activities published</span>
-        <strong>{totalPublished}</strong>
+        <div>
+          <span>
+            Activities published
+          </span>
+
+          <strong>
+            {totalPublished}
+          </strong>
+        </div>
+
+        <small>
+          {activePublishingDays === 1
+            ? "Across 1 active publishing day"
+            : `Across ${activePublishingDays} active publishing days`}
+        </small>
       </div>
 
       <div
         className="venue-dashboard-analytics-chart"
         aria-label={`Activities published over the last 14 days: ${totalPublished}`}
       >
+        <div className="venue-dashboard-analytics-chart-baseline" />
+
         {trend.map((point) => {
           const heightPercentage =
             point.count > 0
               ? Math.max(
-                  (point.count / highestValue) * 100,
-                  12
+                  (point.count /
+                    highestValue) *
+                    100,
+                  14
                 )
-              : 3;
+              : 2;
 
           return (
             <div
@@ -74,17 +102,25 @@ export function AnalyticsPublishingTrend({
                 />
               </div>
 
-              <small>{point.label}</small>
+              <small>
+                {point.label}
+              </small>
             </div>
           );
         })}
       </div>
 
       {totalPublished === 0 ? (
-        <p className="venue-dashboard-analytics-trend-empty">
-          No new activity was published during this
-          period.
-        </p>
+        <div className="venue-dashboard-analytics-trend-empty">
+          <strong>
+            No activity published yet
+          </strong>
+
+          <span>
+            New activity published during
+            this period will appear here.
+          </span>
+        </div>
       ) : null}
     </section>
   );

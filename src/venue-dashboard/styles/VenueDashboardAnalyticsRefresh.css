@@ -1,25 +1,26 @@
 ﻿.venue-dashboard-analytics-refresh-button {
-  min-width: 146px;
-  min-height: 46px;
+  min-width: 142px;
+  min-height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.075);
   border-radius: 15px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: -10px auto 24px;
+  gap: 9px;
+  margin: 20px auto 0;
   padding: 0 16px;
-  color: rgba(247, 241, 234, 0.7);
+  color: rgba(247, 241, 234, 0.68);
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.022)
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.018)
     ),
-    rgba(7, 8, 10, 0.5);
+    rgba(7, 8, 10, 0.54);
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 950;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.035em;
   cursor: pointer;
   transition:
     color 180ms ease,
@@ -29,23 +30,51 @@
     transform 180ms ease;
 }
 
+.venue-dashboard-analytics-refresh-button
+  svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .venue-dashboard-analytics-refresh-button:disabled {
   cursor: wait;
   opacity: 0.62;
 }
 
+.venue-dashboard-analytics-refresh-button:disabled
+  svg {
+  animation:
+    venue-dashboard-analytics-refresh-spin
+    850ms linear infinite;
+}
+
+@keyframes venue-dashboard-analytics-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-analytics-refresh-button:not(:disabled):hover {
+  .venue-dashboard-analytics-refresh-button:not(
+      :disabled
+    ):hover {
     border-color: rgba(255, 91, 50, 0.18);
     color: #ffd8cd;
     background:
       linear-gradient(
         145deg,
-        rgba(255, 91, 50, 0.09),
-        rgba(255, 255, 255, 0.025)
+        rgba(255, 91, 50, 0.085),
+        rgba(255, 255, 255, 0.02)
       ),
-      rgba(7, 8, 10, 0.52);
-    box-shadow: 0 0 24px rgba(255, 91, 50, 0.06);
+      rgba(7, 8, 10, 0.56);
+    box-shadow:
+      0 0 24px rgba(255, 91, 50, 0.055);
     transform: translateY(-1px);
   }
 }
@@ -56,4 +85,3 @@
     min-height: 48px;
   }
 }
-
