@@ -14,6 +14,7 @@ import { AnalyticsPublishingSummary } from "./analytics/AnalyticsPublishingSumma
 import { AnalyticsPublishingTrend } from "./analytics/AnalyticsPublishingTrend";
 import { AnalyticsSummaryGrid } from "./analytics/AnalyticsSummaryGrid";
 import { calculateAnalyticsPercentage } from "./analytics/analyticsFormatters";
+import { AnalyticsFollowerGrowth } from "./analytics/AnalyticsFollowerGrowth";
 
 type VenueDashboardAnalyticsProps = {
   venueName: string;
@@ -51,6 +52,12 @@ export function VenueDashboardAnalytics({
       <AnalyticsHero venueName={venueName} />
 
       <AnalyticsSummaryGrid analytics={analytics} />
+
+      <AnalyticsSummaryGrid analytics={analytics} />
+
+<AnalyticsFollowerGrowth
+  analytics={analytics}
+/>
 
       <section className="venue-dashboard-analytics-main-grid">
         <AnalyticsActivityHealth

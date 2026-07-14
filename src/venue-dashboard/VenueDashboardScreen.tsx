@@ -148,10 +148,13 @@ export function VenueDashboardScreen({
         followerAnalytics
           ?.newFollowersLast7Days ?? 0,
       newFollowersLast30Days:
-        followerAnalytics
-          ?.newFollowersLast30Days ?? 0,
-      followerAnalyticsGeneratedAt:
-        followerAnalytics?.generatedAt ?? null,
+  followerAnalytics
+    ?.newFollowersLast30Days ?? 0,
+followerGrowthLast30Days:
+  followerAnalytics
+    ?.followerGrowthLast30Days ?? [],
+followerAnalyticsGeneratedAt:
+  followerAnalytics?.generatedAt ?? null,
       isFollowerAnalyticsLoading,
       followerAnalyticsError,
     };

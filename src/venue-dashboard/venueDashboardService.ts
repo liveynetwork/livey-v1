@@ -61,6 +61,11 @@ export type VenueDashboardData = {
   events: VenueDashboardEvent[];
 };
 
+export type VenueFollowerGrowthPoint = {
+  date: string;
+  newFollowers: number;
+};
+
 export type VenueDashboardAnalytics = {
   totalActivities: number;
   visibleActivities: number;
@@ -78,6 +83,7 @@ export type VenueDashboardAnalytics = {
   totalFollowers?: number;
   newFollowersLast7Days?: number;
   newFollowersLast30Days?: number;
+  followerGrowthLast30Days?: VenueFollowerGrowthPoint[];
   followerAnalyticsGeneratedAt?: string | null;
   isFollowerAnalyticsLoading?: boolean;
   followerAnalyticsError?: string;
@@ -87,6 +93,7 @@ export type VenueFollowerAnalytics = {
   totalFollowers: number;
   newFollowersLast7Days: number;
   newFollowersLast30Days: number;
+  followerGrowthLast30Days: VenueFollowerGrowthPoint[];
   generatedAt: string | null;
 };
 
@@ -95,6 +102,10 @@ type VenueFollowerAnalyticsResponse = {
     total?: number;
     new_last_7_days?: number;
     new_last_30_days?: number;
+    growth_last_30_days?: Array<{
+      date?: string;
+      new_followers?: number;
+    }>;
   };
   generated_at?: string;
 };
@@ -203,10 +214,12 @@ export async function getVenueFollowerAnalytics(
     newFollowersLast30Days: normalizeAnalyticsCount(
       data?.followers?.new_last_30_days
     ),
-    generatedAt:
-      typeof data?.generated_at === "string"
-        ? data.generated_at
-        : null,
+    followerGrowthLast30Days: normalizeFollowerGrowth(
+      data?.followers?.growth_last_30_days
+    ),
+    generatedAt: normalizeGeneratedAt(
+      data?.generated_at
+    ),
   };
 }
 
@@ -415,8 +428,13 @@ export function buildVenueDashboardAnalytics(
   );
 
   const expiredActivities = events.filter((event) => {
-    if (event.deleted_at) return false;
-    if (!event.ends_at) return false;
+    if (event.deleted_at) {
+      return false;
+    }
+
+    if (!event.ends_at) {
+      return false;
+    }
 
     return new Date(event.ends_at).getTime() < now;
   });
@@ -427,23 +445,35 @@ export function buildVenueDashboardAnalytics(
   ];
 
   const activeOrUpcomingActivities = events.filter((event) => {
-    if (event.deleted_at) return false;
-    if (!event.ends_at) return true;
+    if (event.deleted_at) {
+      return false;
+    }
+
+    if (!event.ends_at) {
+      return true;
+    }
 
     return new Date(event.ends_at).getTime() >= now;
   });
 
-  const visibleActivities = activeOrUpcomingActivities.filter(
-    (event) => event.is_active !== false
-  );
+  const visibleActivities =
+    activeOrUpcomingActivities.filter(
+      (event) => event.is_active !== false
+    );
 
-  const hiddenActivities = activeOrUpcomingActivities.filter(
-    (event) => event.is_active === false
-  );
+  const hiddenActivities =
+    activeOrUpcomingActivities.filter(
+      (event) => event.is_active === false
+    );
 
   const liveNowActivities = visibleActivities.filter((event) => {
-    if (event.is_live === true) return true;
-    if (!event.starts_at || !event.ends_at) return false;
+    if (event.is_live === true) {
+      return true;
+    }
+
+    if (!event.starts_at || !event.ends_at) {
+      return false;
+    }
 
     const startsAtTime = new Date(
       event.starts_at
@@ -460,7 +490,9 @@ export function buildVenueDashboardAnalytics(
   });
 
   const upcomingActivities = visibleActivities.filter((event) => {
-    if (!event.starts_at) return false;
+    if (!event.starts_at) {
+      return false;
+    }
 
     return new Date(event.starts_at).getTime() > now;
   });
@@ -601,7 +633,10 @@ export function deriveActivityTiming(
   }
 
   const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate() + 1);
+
+  tomorrow.setDate(
+    now.getDate() + 1
+  );
 
   if (isSameDay(startsAt, tomorrow)) {
     return {
@@ -717,6 +752,88 @@ function normalizeAnalyticsCount(
   }
 
   return Math.floor(value);
+}
+
+function normalizeFollowerGrowth(
+  value: unknown
+): VenueFollowerGrowthPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate = point as {
+        date?: unknown;
+        new_followers?: unknown;
+      };
+
+      const date =
+        typeof candidate.date === "string"
+          ? candidate.date.trim()
+          : "";
+
+      if (!isValidAnalyticsDateKey(date)) {
+        return null;
+      }
+
+      return {
+        date,
+        newFollowers:
+          normalizeAnalyticsCount(
+            candidate.new_followers
+          ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is VenueFollowerGrowthPoint =>
+        point !== null
+    );
+}
+
+function normalizeGeneratedAt(
+  value: unknown
+): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const generatedAt = new Date(value);
+
+  if (
+    Number.isNaN(
+      generatedAt.getTime()
+    )
+  ) {
+    return null;
+  }
+
+  return generatedAt.toISOString();
+}
+
+function isValidAnalyticsDateKey(
+  value: string
+): boolean {
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(value)
+  ) {
+    return false;
+  }
+
+  const date = new Date(
+    `${value}T00:00:00.000Z`
+  );
+
+  return !Number.isNaN(date.getTime());
 }
 
 function isSameDay(

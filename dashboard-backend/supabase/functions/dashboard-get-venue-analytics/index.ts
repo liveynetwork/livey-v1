@@ -4,14 +4,25 @@ type DashboardAnalyticsPayload = {
   app_venue_id?: string;
 };
 
+type AppFollowerGrowthPoint = {
+  date?: string;
+  new_followers?: number;
+};
+
 type AppAnalyticsResponse = {
   followers?: {
     total?: number;
     new_last_7_days?: number;
     new_last_30_days?: number;
+    growth_last_30_days?: AppFollowerGrowthPoint[];
   };
   generated_at?: string;
   error?: string;
+};
+
+type FollowerGrowthPoint = {
+  date: string;
+  new_followers: number;
 };
 
 const corsHeaders = {
@@ -280,10 +291,16 @@ Deno.serve(async (request) => {
             appPayload?.followers
               ?.new_last_30_days
           ),
+          growth_last_30_days:
+            normalizeFollowerGrowth(
+              appPayload?.followers
+                ?.growth_last_30_days
+            ),
         },
         generated_at:
-          appPayload?.generated_at ??
-          new Date().toISOString(),
+          normalizeGeneratedAt(
+            appPayload?.generated_at
+          ),
       },
       200
     );
@@ -314,6 +331,77 @@ function normalizeCount(
   return Math.floor(value);
 }
 
+function normalizeFollowerGrowth(
+  value: unknown
+): FollowerGrowthPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate =
+        point as AppFollowerGrowthPoint;
+
+      const date =
+        typeof candidate.date === "string"
+          ? candidate.date.trim()
+          : "";
+
+      if (!isValidDateKey(date)) {
+        return null;
+      }
+
+      return {
+        date,
+        new_followers: normalizeCount(
+          candidate.new_followers
+        ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is FollowerGrowthPoint =>
+        point !== null
+    );
+}
+
+function normalizeGeneratedAt(
+  value: unknown
+) {
+  if (typeof value !== "string") {
+    return new Date().toISOString();
+  }
+
+  const date = new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return new Date().toISOString();
+  }
+
+  return date.toISOString();
+}
+
+function isValidDateKey(
+  value: string
+) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(
+    value
+  );
+}
+
 function jsonResponse(
   payload: unknown,
   status = 200
@@ -324,7 +412,8 @@ function jsonResponse(
       status,
       headers: {
         ...corsHeaders,
-        "Content-Type": "application/json",
+        "Content-Type":
+          "application/json",
         "Cache-Control": "no-store",
       },
     }

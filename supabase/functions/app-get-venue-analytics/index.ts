@@ -11,6 +11,15 @@ type CountResult = {
   } | null;
 };
 
+type FollowerRow = {
+  created_at: string;
+};
+
+type FollowerGrowthPoint = {
+  date: string;
+  new_followers: number;
+};
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -147,10 +156,14 @@ Deno.serve(async (request) => {
       thirtyDaysAgo.getUTCDate() - 30
     );
 
+    const growthRangeStart =
+      getFollowerGrowthRangeStart(now);
+
     const [
       totalFollowersResult,
       sevenDayFollowersResult,
       thirtyDayFollowersResult,
+      followerGrowthResult,
     ] = await Promise.all([
       countVenueFollowers(
         supabase,
@@ -165,6 +178,11 @@ Deno.serve(async (request) => {
         supabase,
         appVenueId,
         thirtyDaysAgo.toISOString()
+      ),
+      getVenueFollowerRows(
+        supabase,
+        appVenueId,
+        growthRangeStart.toISOString()
       ),
     ]);
 
@@ -188,6 +206,27 @@ Deno.serve(async (request) => {
       );
     }
 
+    if (followerGrowthResult.error) {
+      console.error(
+        "Follower growth query error:",
+        followerGrowthResult.error
+      );
+
+      return jsonResponse(
+        {
+          error:
+            "Could not load follower growth",
+        },
+        500
+      );
+    }
+
+    const followerGrowth =
+      buildFollowerGrowthSeries(
+        followerGrowthResult.data ?? [],
+        now
+      );
+
     return jsonResponse(
       {
         followers: {
@@ -198,6 +237,8 @@ Deno.serve(async (request) => {
           new_last_30_days:
             thirtyDayFollowersResult.count ??
             0,
+          growth_last_30_days:
+            followerGrowth,
         },
         generated_at: now.toISOString(),
       },
@@ -239,6 +280,125 @@ function countVenueFollowers(
   return query;
 }
 
+async function getVenueFollowerRows(
+  supabase: ReturnType<typeof createClient>,
+  appVenueId: string,
+  createdAfter: string
+): Promise<{
+  data: FollowerRow[] | null;
+  error: {
+    message?: string;
+  } | null;
+}> {
+  const { data, error } = await supabase
+    .from("venue_follows")
+    .select("created_at")
+    .eq("venue_id", appVenueId)
+    .gte("created_at", createdAfter)
+    .order("created_at", {
+      ascending: true,
+    });
+
+  return {
+    data:
+      data as FollowerRow[] | null,
+    error,
+  };
+}
+
+function buildFollowerGrowthSeries(
+  followerRows: FollowerRow[],
+  now: Date
+): FollowerGrowthPoint[] {
+  const growthPoints =
+    createEmptyFollowerGrowthSeries(now);
+
+  const pointsByDate = new Map(
+    growthPoints.map((point) => [
+      point.date,
+      point,
+    ])
+  );
+
+  followerRows.forEach((row) => {
+    const createdAt = new Date(
+      row.created_at
+    );
+
+    if (
+      Number.isNaN(
+        createdAt.getTime()
+      )
+    ) {
+      return;
+    }
+
+    const dateKey =
+      toUtcDateKey(createdAt);
+
+    const matchingPoint =
+      pointsByDate.get(dateKey);
+
+    if (matchingPoint) {
+      matchingPoint.new_followers += 1;
+    }
+  });
+
+  return growthPoints;
+}
+
+function createEmptyFollowerGrowthSeries(
+  now: Date
+): FollowerGrowthPoint[] {
+  const today = startOfUtcDay(now);
+
+  return Array.from(
+    { length: 30 },
+    (_, index) => {
+      const date = new Date(today);
+
+      date.setUTCDate(
+        today.getUTCDate() -
+          (29 - index)
+      );
+
+      return {
+        date: toUtcDateKey(date),
+        new_followers: 0,
+      };
+    }
+  );
+}
+
+function getFollowerGrowthRangeStart(
+  now: Date
+) {
+  const rangeStart =
+    startOfUtcDay(now);
+
+  rangeStart.setUTCDate(
+    rangeStart.getUTCDate() - 29
+  );
+
+  return rangeStart;
+}
+
+function startOfUtcDay(date: Date) {
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate()
+    )
+  );
+}
+
+function toUtcDateKey(date: Date) {
+  return date
+    .toISOString()
+    .slice(0, 10);
+}
+
 function jsonResponse(
   payload: unknown,
   status = 200
@@ -249,7 +409,8 @@ function jsonResponse(
       status,
       headers: {
         ...corsHeaders,
-        "Content-Type": "application/json",
+        "Content-Type":
+          "application/json",
         "Cache-Control": "no-store",
       },
     }

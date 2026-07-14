@@ -1296,3 +1296,280 @@
     grid-template-columns: 1fr;
   }
 }
+
+.venue-dashboard-analytics-follower-chart-card {
+  overflow: hidden;
+}
+
+.venue-dashboard-analytics-follower-chart-meta {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 190px)
+  );
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.venue-dashboard-analytics-follower-chart-meta
+  > div {
+  min-height: 108px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+  border-radius: 21px;
+  padding: 16px;
+  background: rgba(
+    7,
+    8,
+    10,
+    0.4
+  );
+  text-align: center;
+}
+
+.venue-dashboard-analytics-follower-chart-meta
+  span {
+  color: rgba(
+    247,
+    241,
+    234,
+    0.42
+  );
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-follower-chart-meta
+  strong {
+  color: #f7f1ea;
+  font-size: 1.75rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.venue-dashboard-analytics-follower-chart-meta
+  small {
+  color: rgba(
+    247,
+    241,
+    234,
+    0.42
+  );
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-analytics-follower-chart-shell {
+  position: relative;
+  width: 100%;
+  min-height: 330px;
+  overflow: hidden;
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+  border-radius: 26px;
+  padding: 16px 14px 42px;
+  background:
+    radial-gradient(
+      circle at 70% 0%,
+      rgba(255, 91, 50, 0.07),
+      transparent 25rem
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.008)
+    ),
+    rgba(7, 8, 10, 0.42);
+}
+
+.venue-dashboard-analytics-follower-chart-svg {
+  width: 100%;
+  height: 270px;
+  display: block;
+  overflow: visible;
+}
+
+.venue-dashboard-analytics-follower-chart-grid
+  line {
+  stroke: rgba(
+    255,
+    255,
+    255,
+    0.06
+  );
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.venue-dashboard-analytics-follower-chart-area {
+  fill: url(
+    #liveyFollowerChartFill
+  );
+}
+
+.venue-dashboard-analytics-follower-chart-line {
+  fill: none;
+  stroke: #ff5b32;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(
+    0 0 8px
+      rgba(255, 91, 50, 0.2)
+  );
+}
+
+.venue-dashboard-analytics-follower-chart-point {
+  fill: #67615d;
+  stroke: #17191d;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+  transition:
+    r 180ms ease,
+    fill 180ms ease;
+}
+
+.venue-dashboard-analytics-follower-chart-point.is-active {
+  fill: #ff805f;
+}
+
+.venue-dashboard-analytics-follower-chart-labels {
+  position: absolute;
+  right: 14px;
+  bottom: 13px;
+  left: 14px;
+  height: 24px;
+}
+
+.venue-dashboard-analytics-follower-chart-labels
+  span {
+  position: absolute;
+  color: rgba(
+    247,
+    241,
+    234,
+    0.36
+  );
+  font-size: 0.59rem;
+  font-weight: 850;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.venue-dashboard-analytics-follower-chart-footer {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 15px;
+  color: rgba(
+    247,
+    241,
+    234,
+    0.42
+  );
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.venue-dashboard-analytics-follower-live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.venue-dashboard-analytics-follower-live-status
+  i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #ff5b32;
+  box-shadow: 0 0 13px
+    rgba(255, 91, 50, 0.35);
+}
+
+.venue-dashboard-analytics-follower-chart-state {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+  border-radius: 24px;
+  padding: 24px;
+  color: rgba(
+    247,
+    241,
+    234,
+    0.44
+  );
+  background: rgba(
+    7,
+    8,
+    10,
+    0.4
+  );
+  font-size: 0.8rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.venue-dashboard-analytics-follower-chart-state.is-error {
+  border-color: rgba(
+    255,
+    91,
+    50,
+    0.14
+  );
+  color: rgba(
+    255,
+    155,
+    128,
+    0.78
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-analytics-follower-chart-point:hover {
+    r: 7;
+    fill: #ff9b80;
+  }
+}
+
+@media (max-width: 760px) {
+  .venue-dashboard-analytics-follower-chart-shell {
+    min-height: 290px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .venue-dashboard-analytics-follower-chart-svg {
+    height: 230px;
+  }
+
+  .venue-dashboard-analytics-follower-chart-footer {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .venue-dashboard-analytics-follower-chart-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-analytics-follower-chart-meta
+    > div {
+    min-height: 94px;
+  }
+}
