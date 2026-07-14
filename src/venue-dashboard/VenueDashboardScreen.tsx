@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
+  buildVenueDashboardAnalytics,
   createVenueEvent,
   deleteVenueEvent,
   getVenueDashboardData,
@@ -21,7 +22,7 @@ import {
   type EditingEventState,
 } from "./tabs/VenueDashboardActivity";
 import { VenueDashboardAccount } from "./tabs/VenueDashboardAccount";
-import { VenueDashboardComingSoon } from "./tabs/VenueDashboardComingSoon";
+import { VenueDashboardAnalytics } from "./tabs/VenueDashboardAnalytics";
 import { VenueDashboardHistory } from "./tabs/VenueDashboardHistory";
 import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
 import "./VenueDashboardScreen.css";
@@ -85,6 +86,17 @@ export function VenueDashboardScreen({
       isEventInHistory(event)
     );
   }, [allVenueEvents]);
+
+  const analytics = useMemo(() => {
+  if (!activeVenue) {
+    return null;
+  }
+
+  return buildVenueDashboardAnalytics(
+    activeVenue,
+    allVenueEvents
+  );
+}, [activeVenue, allVenueEvents]);
 
   const liveEventCount = useMemo(() => {
     return activeEvents.filter(
@@ -678,12 +690,14 @@ async function handleConfirmDeleteEvent() {
               />
             ) : null}
 
-            {activeSection === "analytics" ? (
-              <VenueDashboardComingSoon
-                title="Analytics"
-                description="Later this will show profile views, activity taps, map impressions, and venue performance."
-              />
-            ) : null}
+            {activeSection === "analytics" && analytics ? (
+  <VenueDashboardAnalytics
+    venueName={
+      activeVenue?.name || "Your venue"
+    }
+    analytics={analytics}
+  />
+) : null}
 
             {activeSection === "history" ? (
               <VenueDashboardHistory
