@@ -53,6 +53,7 @@ export type VenueDashboardEvent = {
   is_active: boolean | null;
   deleted_at: string | null;
   deleted_reason: string | null;
+  created_at: string;
 };
 
 export type VenueDashboardData = {
@@ -73,6 +74,29 @@ export type VenueDashboardAnalytics = {
   profileMissingFields: string[];
   nextActivity: VenueDashboardEvent | null;
   currentLiveActivity: VenueDashboardEvent | null;
+
+  totalFollowers?: number;
+  newFollowersLast7Days?: number;
+  newFollowersLast30Days?: number;
+  followerAnalyticsGeneratedAt?: string | null;
+  isFollowerAnalyticsLoading?: boolean;
+  followerAnalyticsError?: string;
+};
+
+export type VenueFollowerAnalytics = {
+  totalFollowers: number;
+  newFollowersLast7Days: number;
+  newFollowersLast30Days: number;
+  generatedAt: string | null;
+};
+
+type VenueFollowerAnalyticsResponse = {
+  followers?: {
+    total?: number;
+    new_last_7_days?: number;
+    new_last_30_days?: number;
+  };
+  generated_at?: string;
 };
 
 export type UpdateVenueEventInput = {
@@ -130,7 +154,7 @@ export async function getVenueDashboardData(): Promise<
   const { data: events, error: eventsError } = await supabase
     .from("venue_events")
     .select(
-      "id, venue_id, title, description, status, display_time, starts_at, ends_at, is_live, is_active, deleted_at, deleted_reason"
+      "id, venue_id, title, description, status, display_time, starts_at, ends_at, is_live, is_active, deleted_at, deleted_reason, created_at"
     )
     .in("venue_id", ownedVenueIds)
     .order("starts_at", {
@@ -148,6 +172,42 @@ export async function getVenueDashboardData(): Promise<
       (event) => event.venue_id === venue.id
     ) ?? []) as VenueDashboardEvent[],
   }));
+}
+
+export async function getVenueFollowerAnalytics(
+  venueId: string
+): Promise<VenueFollowerAnalytics> {
+  await assertUserOwnsVenue(venueId);
+
+  const { data, error } =
+    await dashboardSupabase.functions.invoke<VenueFollowerAnalyticsResponse>(
+      "dashboard-get-venue-analytics",
+      {
+        body: {
+          app_venue_id: venueId,
+        },
+      }
+    );
+
+  if (error) {
+    throw error;
+  }
+
+  return {
+    totalFollowers: normalizeAnalyticsCount(
+      data?.followers?.total
+    ),
+    newFollowersLast7Days: normalizeAnalyticsCount(
+      data?.followers?.new_last_7_days
+    ),
+    newFollowersLast30Days: normalizeAnalyticsCount(
+      data?.followers?.new_last_30_days
+    ),
+    generatedAt:
+      typeof data?.generated_at === "string"
+        ? data.generated_at
+        : null,
+  };
 }
 
 export async function createVenueEvent(
@@ -388,6 +448,7 @@ export function buildVenueDashboardAnalytics(
     const startsAtTime = new Date(
       event.starts_at
     ).getTime();
+
     const endsAtTime = new Date(
       event.ends_at
     ).getTime();
@@ -458,12 +519,16 @@ export function buildVenueDashboardAnalytics(
   ];
 
   const completedProfileFields = profileFields.filter(
-    (field) => Boolean(String(field.value ?? "").trim())
+    (field) =>
+      Boolean(
+        String(field.value ?? "").trim()
+      )
   );
 
   const profileMissingFields = profileFields
     .filter(
-      (field) => !String(field.value ?? "").trim()
+      (field) =>
+        !String(field.value ?? "").trim()
     )
     .map((field) => field.label);
 
@@ -638,6 +703,20 @@ async function assertUserOwnsVenue(
       "This account does not have access to this venue."
     );
   }
+}
+
+function normalizeAnalyticsCount(
+  value: unknown
+): number {
+  if (
+    typeof value !== "number" ||
+    !Number.isFinite(value) ||
+    value < 0
+  ) {
+    return 0;
+  }
+
+  return Math.floor(value);
 }
 
 function isSameDay(

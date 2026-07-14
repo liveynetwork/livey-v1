@@ -1,21 +1,31 @@
 import type {
   VenueDashboardAnalytics as VenueDashboardAnalyticsData,
+  VenueDashboardEvent,
+  VenueDashboardVenue,
 } from "../venueDashboardService";
 import { AnalyticsActivityCard } from "./analytics/AnalyticsActivityCard";
 import { AnalyticsActivityHealth } from "./analytics/AnalyticsActivityHealth";
 import { AnalyticsAudienceState } from "./analytics/AnalyticsAudienceState";
 import { AnalyticsHero } from "./analytics/AnalyticsHero";
+import { AnalyticsNextActivity } from "./analytics/AnalyticsNextActivity";
 import { AnalyticsProfileHealth } from "./analytics/AnalyticsProfileHealth";
+import { AnalyticsProfileRecommendations } from "./analytics/AnalyticsProfileRecommendations";
+import { AnalyticsPublishingSummary } from "./analytics/AnalyticsPublishingSummary";
+import { AnalyticsPublishingTrend } from "./analytics/AnalyticsPublishingTrend";
 import { AnalyticsSummaryGrid } from "./analytics/AnalyticsSummaryGrid";
 import { calculateAnalyticsPercentage } from "./analytics/analyticsFormatters";
 
 type VenueDashboardAnalyticsProps = {
   venueName: string;
+  venue: VenueDashboardVenue;
+  events: VenueDashboardEvent[];
   analytics: VenueDashboardAnalyticsData;
 };
 
 export function VenueDashboardAnalytics({
   venueName,
+  venue,
+  events,
   analytics,
 }: VenueDashboardAnalyticsProps) {
   const activityCoverage =
@@ -50,8 +60,31 @@ export function VenueDashboardAnalytics({
           historyShare={historyShare}
         />
 
-        <AnalyticsProfileHealth analytics={analytics} />
+        <AnalyticsProfileHealth
+          analytics={analytics}
+        />
       </section>
+
+      <section className="venue-dashboard-analytics-insights-grid">
+        <AnalyticsPublishingTrend
+          events={events}
+        />
+
+        <AnalyticsPublishingSummary
+          events={events}
+        />
+      </section>
+
+      <AnalyticsNextActivity
+        currentLiveActivity={
+          analytics.currentLiveActivity
+        }
+        nextActivity={analytics.nextActivity}
+      />
+
+      <AnalyticsProfileRecommendations
+        venue={venue}
+      />
 
       <section className="venue-dashboard-analytics-schedule-grid">
         <AnalyticsActivityCard

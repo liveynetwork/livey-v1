@@ -1,16 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { User } from "@supabase/supabase-js";
 import {
   buildVenueDashboardAnalytics,
   createVenueEvent,
   deleteVenueEvent,
   getVenueDashboardData,
+  getVenueFollowerAnalytics,
   restoreVenueEvent,
   updateVenueEvent,
   updateVenueProfile,
   type VenueActivityStatus,
   type VenueDashboardData,
   type VenueDashboardEvent,
+  type VenueFollowerAnalytics,
 } from "./venueDashboardService";
 import { dashboardSupabase } from "../lib/dashboardSupabase";
 import {
@@ -39,37 +45,73 @@ export function VenueDashboardScreen({
   const [dashboardData, setDashboardData] = useState<
     VenueDashboardData[]
   >([]);
+
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("home");
+
   const [editingEvent, setEditingEvent] =
     useState<EditingEventState | null>(null);
+
   const [currentUser, setCurrentUser] =
     useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
+
+  const [isLoading, setIsLoading] =
+    useState(true);
+
+  const [isSaving, setIsSaving] =
+    useState(false);
+
   const [isDeletingEvent, setIsDeletingEvent] =
     useState(false);
+
   const [isRestoringEvent, setIsRestoringEvent] =
     useState(false);
+
   const [
     isUpdatingVenueProfile,
     setIsUpdatingVenueProfile,
   ] = useState(false);
+
   const [isRefreshing, setIsRefreshing] =
     useState(false);
+
   const [statusMessage, setStatusMessage] =
     useState("");
+
   const [errorMessage, setErrorMessage] =
     useState("");
 
-  const hasVenues = dashboardData.length > 0;
+  const [
+    followerAnalytics,
+    setFollowerAnalytics,
+  ] = useState<VenueFollowerAnalytics | null>(
+    null
+  );
 
-  const [isRemoveActivityModalOpen, setIsRemoveActivityModalOpen] =
-  useState(false);
+  const [
+    isFollowerAnalyticsLoading,
+    setIsFollowerAnalyticsLoading,
+  ] = useState(false);
+
+  const [
+    followerAnalyticsError,
+    setFollowerAnalyticsError,
+  ] = useState("");
+
+  const [
+    isRemoveActivityModalOpen,
+    setIsRemoveActivityModalOpen,
+  ] = useState(false);
+
+  const hasVenues =
+    dashboardData.length > 0;
 
   const activeVenue = useMemo(() => {
     return dashboardData[0]?.venue ?? null;
   }, [dashboardData]);
+
+  const activeVenueId =
+    activeVenue?.id ?? null;
 
   const allVenueEvents = useMemo(() => {
     return dashboardData[0]?.events ?? [];
@@ -88,15 +130,38 @@ export function VenueDashboardScreen({
   }, [allVenueEvents]);
 
   const analytics = useMemo(() => {
-  if (!activeVenue) {
-    return null;
-  }
+    if (!activeVenue) {
+      return null;
+    }
 
-  return buildVenueDashboardAnalytics(
+    const baseAnalytics =
+      buildVenueDashboardAnalytics(
+        activeVenue,
+        allVenueEvents
+      );
+
+    return {
+      ...baseAnalytics,
+      totalFollowers:
+        followerAnalytics?.totalFollowers ?? 0,
+      newFollowersLast7Days:
+        followerAnalytics
+          ?.newFollowersLast7Days ?? 0,
+      newFollowersLast30Days:
+        followerAnalytics
+          ?.newFollowersLast30Days ?? 0,
+      followerAnalyticsGeneratedAt:
+        followerAnalytics?.generatedAt ?? null,
+      isFollowerAnalyticsLoading,
+      followerAnalyticsError,
+    };
+  }, [
     activeVenue,
-    allVenueEvents
-  );
-}, [activeVenue, allVenueEvents]);
+    allVenueEvents,
+    followerAnalytics,
+    isFollowerAnalyticsLoading,
+    followerAnalyticsError,
+  ]);
 
   const liveEventCount = useMemo(() => {
     return activeEvents.filter(
@@ -124,7 +189,8 @@ export function VenueDashboardScreen({
         const {
           data: { user },
           error: userError,
-        } = await dashboardSupabase.auth.getUser();
+        } =
+          await dashboardSupabase.auth.getUser();
 
         if (userError) {
           throw userError;
@@ -132,18 +198,22 @@ export function VenueDashboardScreen({
 
         setCurrentUser(user);
 
-        let data = await getVenueDashboardData();
+        let data =
+          await getVenueDashboardData();
 
         if (data.length === 0 && user) {
           const didRecoverClaim =
             await tryRecoverVenueClaim(user);
 
           if (didRecoverClaim) {
-            data = await getVenueDashboardData();
+            data =
+              await getVenueDashboardData();
           }
         }
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         setDashboardData(data);
         setEditingEvent(null);
@@ -153,17 +223,19 @@ export function VenueDashboardScreen({
           error
         );
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         setErrorMessage(
           "We could not load your venue dashboard. Please try again."
         );
       } finally {
-  if (isMounted) {
-    setIsLoading(false);
-    onReady?.();
-  }
-}
+        if (isMounted) {
+          setIsLoading(false);
+          onReady?.();
+        }
+      }
     }
 
     loadDashboard();
@@ -173,16 +245,76 @@ export function VenueDashboardScreen({
     };
   }, [onReady]);
 
-  function handleDismissToast() {
-  setStatusMessage("");
-  setErrorMessage("");
-}
+  useEffect(() => {
+    if (!activeVenueId) {
+      setFollowerAnalytics(null);
+      setFollowerAnalyticsError("");
+      setIsFollowerAnalyticsLoading(false);
+      return;
+    }
 
-  async function tryRecoverVenueClaim(user: User) {
+    if (activeSection !== "analytics") {
+      return;
+    }
+
+    let isMounted = true;
+
+    async function loadFollowerAnalytics() {
+      try {
+        setIsFollowerAnalyticsLoading(true);
+        setFollowerAnalyticsError("");
+
+        const data =
+          await getVenueFollowerAnalytics(
+            activeVenueId
+          );
+
+        if (!isMounted) {
+          return;
+        }
+
+        setFollowerAnalytics(data);
+      } catch (error) {
+        console.error(
+          "Failed to load venue follower analytics:",
+          error
+        );
+
+        if (!isMounted) {
+          return;
+        }
+
+        setFollowerAnalytics(null);
+        setFollowerAnalyticsError(
+          "Follower analytics could not be loaded right now."
+        );
+      } finally {
+        if (isMounted) {
+          setIsFollowerAnalyticsLoading(false);
+        }
+      }
+    }
+
+    loadFollowerAnalytics();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeSection, activeVenueId]);
+
+  function handleDismissToast() {
+    setStatusMessage("");
+    setErrorMessage("");
+  }
+
+  async function tryRecoverVenueClaim(
+    user: User
+  ) {
     const metadataClaimCode =
       typeof user.user_metadata
         ?.pending_venue_claim_code === "string"
-        ? user.user_metadata.pending_venue_claim_code
+        ? user.user_metadata
+            .pending_venue_claim_code
         : "";
 
     const pendingClaimCode =
@@ -191,7 +323,9 @@ export function VenueDashboardScreen({
       ) || "";
 
     const codeToClaim =
-      pendingClaimCode || metadataClaimCode || "";
+      pendingClaimCode ||
+      metadataClaimCode ||
+      "";
 
     if (!codeToClaim.trim()) {
       return false;
@@ -202,21 +336,28 @@ export function VenueDashboardScreen({
         "dashboard-complete-venue-claim",
         {
           body: {
-            claim_code: codeToClaim.trim(),
+            claim_code:
+              codeToClaim.trim(),
           },
         }
       );
 
     if (error) {
-      const message = error.message.toLowerCase();
+      const message =
+        error.message.toLowerCase();
 
       if (
-        message.includes("already been claimed") ||
-        message.includes("already has an owner")
+        message.includes(
+          "already been claimed"
+        ) ||
+        message.includes(
+          "already has an owner"
+        )
       ) {
         window.localStorage.removeItem(
           "livey:pendingVenueClaimCode"
         );
+
         return true;
       }
 
@@ -235,7 +376,10 @@ export function VenueDashboardScreen({
     window.localStorage.removeItem(
       "livey:pendingVenueClaimCode"
     );
-    setStatusMessage("Venue connected successfully.");
+
+    setStatusMessage(
+      "Venue connected successfully."
+    );
 
     return true;
   }
@@ -243,7 +387,9 @@ export function VenueDashboardScreen({
   function handleCreateEvent() {
     setStatusMessage("");
     setErrorMessage("");
-    setEditingEvent(createEmptyEditingEvent());
+    setEditingEvent(
+      createEmptyEditingEvent()
+    );
     setActiveSection("activity");
   }
 
@@ -253,14 +399,18 @@ export function VenueDashboardScreen({
     setEditingEvent(null);
   }
 
-  function handleSelectEvent(event: VenueDashboardEvent) {
+  function handleSelectEvent(
+    event: VenueDashboardEvent
+  ) {
     if (isEventInHistory(event)) {
       return;
     }
 
     setStatusMessage("");
     setErrorMessage("");
-    setEditingEvent(mapEventToEditingState(event));
+    setEditingEvent(
+      mapEventToEditingState(event)
+    );
     setActiveSection("activity");
   }
 
@@ -279,7 +429,8 @@ export function VenueDashboardScreen({
     const selectedEvent = freshData
       .flatMap((item) => item.events)
       .find(
-        (event) => event.id === selectedEventId
+        (event) =>
+          event.id === selectedEventId
       );
 
     if (
@@ -287,7 +438,9 @@ export function VenueDashboardScreen({
       !isEventInHistory(selectedEvent)
     ) {
       setEditingEvent(
-        mapEventToEditingState(selectedEvent)
+        mapEventToEditingState(
+          selectedEvent
+        )
       );
     }
   }
@@ -304,7 +457,42 @@ export function VenueDashboardScreen({
           : null
       );
 
-      setStatusMessage("Dashboard refreshed.");
+      if (
+        activeSection === "analytics" &&
+        activeVenueId
+      ) {
+        try {
+          setIsFollowerAnalyticsLoading(
+            true
+          );
+
+          setFollowerAnalyticsError("");
+
+          const data =
+            await getVenueFollowerAnalytics(
+              activeVenueId
+            );
+
+          setFollowerAnalytics(data);
+        } catch (error) {
+          console.error(
+            "Failed to refresh venue follower analytics:",
+            error
+          );
+
+          setFollowerAnalyticsError(
+            "Follower analytics could not be refreshed right now."
+          );
+        } finally {
+          setIsFollowerAnalyticsLoading(
+            false
+          );
+        }
+      }
+
+      setStatusMessage(
+        "Dashboard refreshed."
+      );
     } catch (error) {
       console.error(
         "Failed to refresh venue dashboard:",
@@ -328,6 +516,7 @@ export function VenueDashboardScreen({
       setErrorMessage(
         "Activity title is required."
       );
+
       return;
     }
 
@@ -338,23 +527,30 @@ export function VenueDashboardScreen({
       setErrorMessage(
         "Activity start and end time are required."
       );
+
       return;
     }
 
     const startsAtDate = new Date(
       editingEvent.startsAt
     );
+
     const endsAtDate = new Date(
       editingEvent.endsAt
     );
 
     if (
-      Number.isNaN(startsAtDate.getTime()) ||
-      Number.isNaN(endsAtDate.getTime())
+      Number.isNaN(
+        startsAtDate.getTime()
+      ) ||
+      Number.isNaN(
+        endsAtDate.getTime()
+      )
     ) {
       setErrorMessage(
         "Activity start and end time are invalid."
       );
+
       return;
     }
 
@@ -362,6 +558,7 @@ export function VenueDashboardScreen({
       setErrorMessage(
         "Activity end time must be after the start time."
       );
+
       return;
     }
 
@@ -370,18 +567,26 @@ export function VenueDashboardScreen({
       setStatusMessage("");
       setErrorMessage("");
 
-      if (editingEvent.mode === "create") {
+      if (
+        editingEvent.mode === "create"
+      ) {
         await createVenueEvent({
           venueId: activeVenue.id,
           title: editingEvent.title,
-          description: editingEvent.description,
-          startsAt: startsAtDate.toISOString(),
-          endsAt: endsAtDate.toISOString(),
-          isActive: editingEvent.isActive,
+          description:
+            editingEvent.description,
+          startsAt:
+            startsAtDate.toISOString(),
+          endsAt:
+            endsAtDate.toISOString(),
+          isActive:
+            editingEvent.isActive,
         });
 
         await refreshDashboard();
+
         setEditingEvent(null);
+
         setStatusMessage(
           "Activity created successfully."
         );
@@ -395,14 +600,20 @@ export function VenueDashboardScreen({
         await updateVenueEvent({
           eventId: editingEvent.id,
           title: editingEvent.title,
-          description: editingEvent.description,
-          startsAt: startsAtDate.toISOString(),
-          endsAt: endsAtDate.toISOString(),
-          isActive: editingEvent.isActive,
+          description:
+            editingEvent.description,
+          startsAt:
+            startsAtDate.toISOString(),
+          endsAt:
+            endsAtDate.toISOString(),
+          isActive:
+            editingEvent.isActive,
         });
 
         await refreshDashboard();
+
         setEditingEvent(null);
+
         setStatusMessage(
           "Activity updated successfully."
         );
@@ -424,62 +635,70 @@ export function VenueDashboardScreen({
   }
 
   function handleDeleteEvent() {
-  if (
-    !editingEvent ||
-    editingEvent.mode !== "edit" ||
-    !editingEvent.id
-  ) {
-    return;
+    if (
+      !editingEvent ||
+      editingEvent.mode !== "edit" ||
+      !editingEvent.id
+    ) {
+      return;
+    }
+
+    setIsRemoveActivityModalOpen(true);
   }
 
-  setIsRemoveActivityModalOpen(true);
-}
+  function handleCancelDeleteEvent() {
+    if (isDeletingEvent) {
+      return;
+    }
 
-function handleCancelDeleteEvent() {
-  if (isDeletingEvent) return;
-  setIsRemoveActivityModalOpen(false);
-}
-
-async function handleConfirmDeleteEvent() {
-  if (
-    !editingEvent ||
-    editingEvent.mode !== "edit" ||
-    !editingEvent.id
-  ) {
     setIsRemoveActivityModalOpen(false);
-    return;
   }
 
-  try {
-    setIsDeletingEvent(true);
-    setStatusMessage("");
-    setErrorMessage("");
+  async function handleConfirmDeleteEvent() {
+    if (
+      !editingEvent ||
+      editingEvent.mode !== "edit" ||
+      !editingEvent.id
+    ) {
+      setIsRemoveActivityModalOpen(false);
+      return;
+    }
 
-    await deleteVenueEvent({
-      eventId: editingEvent.id,
-      reason: "Removed by venue owner",
-    });
+    try {
+      setIsDeletingEvent(true);
+      setStatusMessage("");
+      setErrorMessage("");
 
-    await refreshDashboard();
+      await deleteVenueEvent({
+        eventId: editingEvent.id,
+        reason:
+          "Removed by venue owner",
+      });
 
-    setEditingEvent(null);
-    setIsRemoveActivityModalOpen(false);
-    setStatusMessage(
-      "Activity removed and moved to History."
-    );
-  } catch (error) {
-    console.error(
-      "Failed to remove venue activity:",
-      error
-    );
+      await refreshDashboard();
 
-    setErrorMessage(
-      "We could not remove this activity. Please try again."
-    );
-  } finally {
-    setIsDeletingEvent(false);
+      setEditingEvent(null);
+
+      setIsRemoveActivityModalOpen(
+        false
+      );
+
+      setStatusMessage(
+        "Activity removed and moved to History."
+      );
+    } catch (error) {
+      console.error(
+        "Failed to remove venue activity:",
+        error
+      );
+
+      setErrorMessage(
+        "We could not remove this activity. Please try again."
+      );
+    } finally {
+      setIsDeletingEvent(false);
+    }
   }
-}
 
   async function handleRestoreEvent(
     event: VenueDashboardEvent
@@ -497,8 +716,11 @@ async function handleConfirmDeleteEvent() {
       await refreshDashboard();
 
       setEditingEvent(
-        mapEventToEditingState(restoredEvent)
+        mapEventToEditingState(
+          restoredEvent
+        )
       );
+
       setActiveSection("activity");
 
       setStatusMessage(
@@ -518,16 +740,20 @@ async function handleConfirmDeleteEvent() {
     }
   }
 
-  async function handleUpdateVenueProfile(input: {
-    name: string;
-    description: string;
-    area: string;
-    address: string;
-    openStatus: string;
-    openingHours: string;
-    logoFile: File | null;
-  }) {
-    if (!activeVenue) return;
+  async function handleUpdateVenueProfile(
+    input: {
+      name: string;
+      description: string;
+      area: string;
+      address: string;
+      openStatus: string;
+      openingHours: string;
+      logoFile: File | null;
+    }
+  ) {
+    if (!activeVenue) {
+      return;
+    }
 
     try {
       setIsUpdatingVenueProfile(true);
@@ -537,11 +763,14 @@ async function handleConfirmDeleteEvent() {
       await updateVenueProfile({
         venueId: activeVenue.id,
         name: input.name,
-        description: input.description,
+        description:
+          input.description,
         area: input.area,
         address: input.address,
-        openStatus: input.openStatus,
-        openingHours: input.openingHours,
+        openStatus:
+          input.openStatus,
+        openingHours:
+          input.openingHours,
         logoFile: input.logoFile,
       });
 
@@ -588,12 +817,15 @@ async function handleConfirmDeleteEvent() {
       <VenueDashboardSidebar
         activeSection={activeSection}
         venueName={
-          activeVenue?.name || "Venue owner"
+          activeVenue?.name ||
+          "Venue owner"
         }
         venueLogoUrl={
           activeVenue?.logo_url || null
         }
-        onSectionChange={setActiveSection}
+        onSectionChange={
+          setActiveSection
+        }
       />
 
       <section className="venue-dashboard-main">
@@ -606,7 +838,9 @@ async function handleConfirmDeleteEvent() {
             />
 
             <h1>
-              {getSectionTitle(activeSection)}
+              {getSectionTitle(
+                activeSection
+              )}
             </h1>
           </div>
         </header>
@@ -619,29 +853,34 @@ async function handleConfirmDeleteEvent() {
           </section>
         ) : !hasVenues ? (
           <section className="venue-dashboard-card">
-            <h2>No venue connected yet</h2>
+            <h2>
+              No venue connected yet
+            </h2>
 
             <p>
-              This account is signed in, but it is
-              not connected to an approved Livey
-              venue yet.
+              This account is signed in,
+              but it is not connected to an
+              approved Livey venue yet.
             </p>
 
             <p className="venue-dashboard-muted">
-              If you already received a Livey venue
-              code, sign out and create your venue
-              account using that code. If this keeps
-              happening, contact Livey support.
+              If you already received a
+              Livey venue code, sign out and
+              create your venue account using
+              that code. If this keeps
+              happening, contact Livey
+              support.
             </p>
           </section>
         ) : (
           <>
-
             {activeSection === "home" ? (
               <VenueDashboardHome
                 activeVenue={activeVenue}
                 activeEvents={activeEvents}
-                liveEventCount={liveEventCount}
+                liveEventCount={
+                  liveEventCount
+                }
                 visibleEventCount={
                   visibleEventCount
                 }
@@ -677,7 +916,9 @@ async function handleConfirmDeleteEvent() {
                 onDeleteEvent={
                   handleDeleteEvent
                 }
-                onSaveEvent={handleSaveEvent}
+                onSaveEvent={
+                  handleSaveEvent
+                }
                 onSelectEvent={
                   handleSelectEvent
                 }
@@ -690,22 +931,31 @@ async function handleConfirmDeleteEvent() {
               />
             ) : null}
 
-            {activeSection === "analytics" && analytics ? (
-  <VenueDashboardAnalytics
-    venueName={
-      activeVenue?.name || "Your venue"
-    }
-    analytics={analytics}
-  />
-) : null}
+            {activeSection ===
+              "analytics" &&
+            analytics &&
+            activeVenue ? (
+              <VenueDashboardAnalytics
+                venueName={
+                  activeVenue.name ||
+                  "Your venue"
+                }
+                venue={activeVenue}
+                events={allVenueEvents}
+                analytics={analytics}
+              />
+            ) : null}
 
-            {activeSection === "history" ? (
+            {activeSection ===
+            "history" ? (
               <VenueDashboardHistory
                 venueName={
                   activeVenue?.name ||
                   "Your venue"
                 }
-                historyEvents={historyEvents}
+                historyEvents={
+                  historyEvents
+                }
                 isRestoringEvent={
                   isRestoringEvent
                 }
@@ -715,11 +965,14 @@ async function handleConfirmDeleteEvent() {
               />
             ) : null}
 
-            {activeSection === "account" ? (
+            {activeSection ===
+            "account" ? (
               <VenueDashboardAccount
                 currentUser={currentUser}
                 activeVenue={activeVenue}
-                isRefreshing={isRefreshing}
+                isRefreshing={
+                  isRefreshing
+                }
                 isUpdatingVenueProfile={
                   isUpdatingVenueProfile
                 }
@@ -737,55 +990,67 @@ async function handleConfirmDeleteEvent() {
             ) : null}
           </>
         )}
-        
       </section>
 
       {errorMessage ? (
-  <LiveyToast
-    key={`error-${errorMessage}`}
-    tone="error"
-    message={errorMessage}
-    onDismiss={handleDismissToast}
-  />
-) : statusMessage ? (
-  <LiveyToast
-    key={`success-${statusMessage}`}
-    tone="success"
-    message={statusMessage}
-    onDismiss={handleDismissToast}
-  />
-) : null}
-
+        <LiveyToast
+          key={`error-${errorMessage}`}
+          tone="error"
+          message={errorMessage}
+          onDismiss={handleDismissToast}
+        />
+      ) : statusMessage ? (
+        <LiveyToast
+          key={`success-${statusMessage}`}
+          tone="success"
+          message={statusMessage}
+          onDismiss={handleDismissToast}
+        />
+      ) : null}
 
       <LiveyConfirmModal
-  isOpen={isRemoveActivityModalOpen}
-  tone="danger"
-  title="Remove this activity?"
-  description={
-    editingEvent
-      ? `"${editingEvent.title || "Untitled activity"}" will be removed from Livey. Removed activities cannot be restored.`
-      : "This activity will be removed from Livey. Removed activities cannot be restored."
-  }
-  confirmLabel="Remove activity"
-  isProcessing={isDeletingEvent}
-  onCancel={handleCancelDeleteEvent}
-  onConfirm={handleConfirmDeleteEvent}
-/>
+        isOpen={
+          isRemoveActivityModalOpen
+        }
+        tone="danger"
+        title="Remove this activity?"
+        description={
+          editingEvent
+            ? `"${editingEvent.title || "Untitled activity"}" will be removed from Livey. Removed activities cannot be restored.`
+            : "This activity will be removed from Livey. Removed activities cannot be restored."
+        }
+        confirmLabel="Remove activity"
+        isProcessing={isDeletingEvent}
+        onCancel={
+          handleCancelDeleteEvent
+        }
+        onConfirm={
+          handleConfirmDeleteEvent
+        }
+      />
     </main>
   );
 }
 
 function createEmptyEditingEvent(): EditingEventState {
   const now = new Date();
+
   const startsAt = new Date(
     now.getTime() + 60 * 60 * 1000
   );
+
   const endsAt = new Date(
-    now.getTime() + 3 * 60 * 60 * 1000
+    now.getTime() +
+      3 * 60 * 60 * 1000
   );
+
   const preview = getPreviewTiming(
-    toDateTimeLocalValue(startsAt.toISOString()),
-    toDateTimeLocalValue(endsAt.toISOString())
+    toDateTimeLocalValue(
+      startsAt.toISOString()
+    ),
+    toDateTimeLocalValue(
+      endsAt.toISOString()
+    )
   );
 
   return {
@@ -805,11 +1070,24 @@ function createEmptyEditingEvent(): EditingEventState {
   };
 }
 
-function getSectionTitle(section: DashboardSection) {
-  if (section === "home") return "Control Center";
-  if (section === "activity") return "Activity";
-  if (section === "analytics") return "Analytics";
-  if (section === "history") return "History";
+function getSectionTitle(
+  section: DashboardSection
+) {
+  if (section === "home") {
+    return "Control Center";
+  }
+
+  if (section === "activity") {
+    return "Activity";
+  }
+
+  if (section === "analytics") {
+    return "Analytics";
+  }
+
+  if (section === "history") {
+    return "History";
+  }
 
   return "Account Settings";
 }
@@ -821,41 +1099,57 @@ function mapEventToEditingState(
     id: event.id,
     mode: "edit",
     title: event.title || "",
-    description: event.description || "",
+    description:
+      event.description || "",
     status: event.status,
-    displayTime: event.display_time || "",
+    displayTime:
+      event.display_time || "",
     startsAt: toDateTimeLocalValue(
       event.starts_at
     ),
     endsAt: toDateTimeLocalValue(
       event.ends_at
     ),
-    isActive: event.is_active !== false,
+    isActive:
+      event.is_active !== false,
   };
 }
 
 function isEventInHistory(
   event: VenueDashboardEvent
 ) {
-  if (event.deleted_at) return true;
-  if (!event.ends_at) return false;
+  if (event.deleted_at) {
+    return true;
+  }
+
+  if (!event.ends_at) {
+    return false;
+  }
 
   return (
-    new Date(event.ends_at).getTime() <
-    Date.now()
+    new Date(
+      event.ends_at
+    ).getTime() < Date.now()
   );
 }
 
 function toDateTimeLocalValue(
   isoValue: string | null
 ) {
-  if (!isoValue) return "";
+  if (!isoValue) {
+    return "";
+  }
 
   const date = new Date(isoValue);
+
   const timezoneOffsetMs =
-    date.getTimezoneOffset() * 60 * 1000;
+    date.getTimezoneOffset() *
+    60 *
+    1000;
+
   const localDate = new Date(
-    date.getTime() - timezoneOffsetMs
+    date.getTime() -
+      timezoneOffsetMs
   );
 
   return localDate
@@ -867,7 +1161,10 @@ function getPreviewTiming(
   startsAtValue: string,
   endsAtValue: string
 ) {
-  if (!startsAtValue || !endsAtValue) {
+  if (
+    !startsAtValue ||
+    !endsAtValue
+  ) {
     return {
       status:
         "Scheduled" as VenueActivityStatus,
@@ -876,12 +1173,19 @@ function getPreviewTiming(
     };
   }
 
-  const startsAt = new Date(startsAtValue);
-  const endsAt = new Date(endsAtValue);
+  const startsAt =
+    new Date(startsAtValue);
+
+  const endsAt =
+    new Date(endsAtValue);
 
   if (
-    Number.isNaN(startsAt.getTime()) ||
-    Number.isNaN(endsAt.getTime())
+    Number.isNaN(
+      startsAt.getTime()
+    ) ||
+    Number.isNaN(
+      endsAt.getTime()
+    )
   ) {
     return {
       status:
@@ -901,16 +1205,19 @@ function getPreviewTiming(
   }
 
   const now = new Date();
+
   const isLive =
-    now >= startsAt && now <= endsAt;
+    now >= startsAt &&
+    now <= endsAt;
 
   if (isLive) {
     return {
       status:
         "Live now" as VenueActivityStatus,
-      displayTime: `Live now · until ${formatTime(
-        endsAt
-      )}`,
+      displayTime:
+        `Live now · until ${formatTime(
+          endsAt
+        )}`,
     };
   }
 
@@ -919,31 +1226,48 @@ function getPreviewTiming(
       return {
         status:
           "Tonight" as VenueActivityStatus,
-        displayTime: `Tonight · ${formatTime(
-          startsAt
-        )}–${formatTime(endsAt)}`,
+        displayTime:
+          `Tonight · ${formatTime(
+            startsAt
+          )}–${formatTime(
+            endsAt
+          )}`,
       };
     }
 
     return {
       status:
         "Open now" as VenueActivityStatus,
-      displayTime: `Today · ${formatTime(
-        startsAt
-      )}–${formatTime(endsAt)}`,
+      displayTime:
+        `Today · ${formatTime(
+          startsAt
+        )}–${formatTime(
+          endsAt
+        )}`,
     };
   }
 
   const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate() + 1);
 
-  if (isSameDay(startsAt, tomorrow)) {
+  tomorrow.setDate(
+    now.getDate() + 1
+  );
+
+  if (
+    isSameDay(
+      startsAt,
+      tomorrow
+    )
+  ) {
     return {
       status:
         "Tomorrow" as VenueActivityStatus,
-      displayTime: `Tomorrow · ${formatTime(
-        startsAt
-      )}–${formatTime(endsAt)}`,
+      displayTime:
+        `Tomorrow · ${formatTime(
+          startsAt
+        )}–${formatTime(
+          endsAt
+        )}`,
     };
   }
 
@@ -951,22 +1275,28 @@ function getPreviewTiming(
     return {
       status:
         "Weekend" as VenueActivityStatus,
-      displayTime: `${formatWeekday(
-        startsAt
-      )} · ${formatTime(
-        startsAt
-      )}–${formatTime(endsAt)}`,
+      displayTime:
+        `${formatWeekday(
+          startsAt
+        )} · ${formatTime(
+          startsAt
+        )}–${formatTime(
+          endsAt
+        )}`,
     };
   }
 
   return {
     status:
       "Scheduled" as VenueActivityStatus,
-    displayTime: `${formatShortDate(
-      startsAt
-    )} · ${formatTime(
-      startsAt
-    )}–${formatTime(endsAt)}`,
+    displayTime:
+      `${formatShortDate(
+        startsAt
+      )} · ${formatTime(
+        startsAt
+      )}–${formatTime(
+        endsAt
+      )}`,
   };
 }
 
@@ -991,21 +1321,30 @@ function isWeekend(date: Date) {
 }
 
 function formatTime(date: Date) {
-  return new Intl.DateTimeFormat("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    }
+  ).format(date);
 }
 
 function formatWeekday(date: Date) {
-  return new Intl.DateTimeFormat("en-GB", {
-    weekday: "long",
-  }).format(date);
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      weekday: "long",
+    }
+  ).format(date);
 }
 
 function formatShortDate(date: Date) {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-  }).format(date);
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "short",
+    }
+  ).format(date);
 }
