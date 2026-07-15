@@ -12,10 +12,7 @@
   width: 100%;
   min-width: 0;
   border-color: rgba(255, 255, 255, 0.07);
-  transition:
-    border-color 240ms ease,
-    background 240ms ease,
-    box-shadow 240ms ease;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-activity-primary-card,
@@ -27,10 +24,10 @@
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.078),
-      rgba(255, 255, 255, 0.042)
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.018)
     ),
-    #17191d;
+    #15171a;
 }
 
 .venue-dashboard-activity-card-heading {
@@ -131,10 +128,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 12px 28px rgba(0, 0, 0, 0.08);
-  transition:
-    border-color 220ms ease,
-    background 220ms ease,
-    box-shadow 220ms ease;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-activity-control-label {
@@ -405,7 +399,7 @@
   margin-bottom: 8px;
   color: #ff805f;
   background: rgba(255, 91, 50, 0.11);
-  box-shadow: 0 18px 40px rgba(255, 91, 50, 0.07);
+  box-shadow: none;
 }
 
 .venue-dashboard-activity-create-panel strong {
@@ -413,6 +407,7 @@
   font-size: clamp(1.3rem, 2vw, 1.75rem);
   font-weight: 950;
   letter-spacing: -0.04em;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-activity-create-panel p {
@@ -511,75 +506,36 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-activity-layout .venue-dashboard-card:hover {
-    border-color: rgba(255, 91, 50, 0.18);
-    box-shadow:
-      0 22px 54px rgba(0, 0, 0, 0.24),
-      0 0 0 1px rgba(255, 91, 50, 0.045),
-      0 0 38px rgba(255, 91, 50, 0.075);
-  }
-
-  .venue-dashboard-activity-primary-card:hover,
-  .venue-dashboard-activity-saved-card:hover {
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.2),
-        transparent 24rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.082),
-        rgba(255, 255, 255, 0.042)
-      ),
-      #17191d;
-  }
-
-  .venue-dashboard-activity-control-tile:hover {
-    border-color: rgba(255, 91, 50, 0.14);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.085),
-        transparent 12rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.058),
-        rgba(255, 255, 255, 0.024)
-      ),
-      rgba(255, 255, 255, 0.012);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 14px 32px rgba(0, 0, 0, 0.11);
+  .venue-dashboard-activity-layout .venue-dashboard-card:hover,
+  .venue-dashboard-activity-control-tile:hover,
+  .venue-dashboard-activity-create-panel:hover {
+    border-color: rgba(255, 91, 50, 0.55);
   }
 
   .venue-dashboard-activity-advisory:hover {
-    border-color: rgba(255, 91, 50, 0.17);
+    border-color: rgba(255, 91, 50, 0.28);
     background:
       radial-gradient(
         circle at left center,
-        rgba(255, 91, 50, 0.08),
-        transparent 13rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.046),
-        rgba(255, 255, 255, 0.02)
+        rgba(255, 91, 50, 0.055),
+        transparent 12rem
       ),
       rgba(12, 13, 16, 0.74);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.025),
+      0 0 24px rgba(255, 91, 50, 0.045);
   }
 
   .venue-dashboard-activity-cancel-button:hover:not(:disabled) {
-    border-color: rgba(255, 91, 50, 0.16);
+    border-color: rgba(255, 91, 50, 0.32);
     background: rgba(255, 91, 50, 0.08);
     color: #ff9a80;
   }
 
   .venue-dashboard-remove-button:hover:not(:disabled) {
-    border-color: rgba(255, 90, 90, 0.22);
+    border-color: rgba(255, 90, 90, 0.28);
     background: rgba(255, 70, 70, 0.18);
-    box-shadow: 0 12px 28px rgba(255, 70, 70, 0.08);
+    box-shadow: none;
   }
 }
 

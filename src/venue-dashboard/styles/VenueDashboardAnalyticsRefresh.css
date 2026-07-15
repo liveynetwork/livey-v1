@@ -22,12 +22,10 @@
   font-weight: 950;
   letter-spacing: 0.035em;
   cursor: pointer;
-  transition:
+    transition:
     color 180ms ease,
     border-color 180ms ease,
-    background 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    background-color 180ms ease;
 }
 
 .venue-dashboard-analytics-refresh-button
@@ -64,18 +62,9 @@
   .venue-dashboard-analytics-refresh-button:not(
       :disabled
     ):hover {
-    border-color: rgba(255, 91, 50, 0.18);
-    color: #ffd8cd;
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 91, 50, 0.085),
-        rgba(255, 255, 255, 0.02)
-      ),
-      rgba(7, 8, 10, 0.56);
-    box-shadow:
-      0 0 24px rgba(255, 91, 50, 0.055);
-    transform: translateY(-1px);
+    border-color: rgba(255, 91, 50, 0.42);
+    color: #ffb29f;
+    background: rgba(7, 8, 10, 0.62);
   }
 }
 

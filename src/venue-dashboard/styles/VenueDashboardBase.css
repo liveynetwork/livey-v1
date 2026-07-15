@@ -2,9 +2,7 @@
   min-height: 100dvh;
   display: grid;
   grid-template-columns: 86px 1fr;
-  background:
-    radial-gradient(circle at 22% 0%, rgba(255, 91, 50, 0.12), transparent 34rem),
-    linear-gradient(135deg, #111215 0%, #0b0c0f 100%);
+  background: #0b0c0f;
   color: #f7f1ea;
 }
 
@@ -15,39 +13,53 @@
 
 .venue-dashboard-topbar {
   position: relative;
-  min-height: 150px;
+  min-height: 164px;
   display: grid;
   place-items: center;
   margin-bottom: 46px;
-  padding: 16px 0 6px;
+  padding: 18px 0 18px;
   text-align: center;
 }
 
 .venue-dashboard-topbar > div {
-  width: min(100%, 920px);
+  position: relative;
+  width: min(100%, 900px);
   display: grid;
   justify-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding-bottom: 24px;
 }
 
 .venue-dashboard-topbar-logo {
   display: block;
-  width: 72px;
-  height: 40px;
+  width: 66px;
+  height: 36px;
   margin: 0;
   object-fit: contain;
-  filter: drop-shadow(0 14px 30px rgba(255, 91, 50, 0.14));
+  filter: none;
 }
 
 .venue-dashboard-topbar h1 {
   max-width: 100%;
   margin: 0;
   color: #f7f1ea;
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
-  line-height: 0.94;
-  letter-spacing: -0.08em;
+  font-size: clamp(2.65rem, 4.5vw, 4rem);
+  font-weight: 650;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
   text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
   word-break: break-word;
+
+  -webkit-text-stroke: 1.15px #ff5b32;
+  paint-order: stroke fill;
+
+  text-shadow:
+    1.4px 0 0 #ff5b32,
+    -1.4px 0 0 #ff5b32,
+    0 1.4px 0 #ff5b32,
+    0 -1.4px 0 #ff5b32;
 }
 
 .venue-dashboard-eyebrow {
@@ -253,24 +265,25 @@
   }
 
   .venue-dashboard-topbar {
-    min-height: 132px;
-    margin-bottom: 38px;
-    padding-top: 10px;
-    text-align: center;
-  }
+  min-height: 146px;
+  margin-bottom: 38px;
+  padding: 14px 0 16px;
+}
 
-  .venue-dashboard-topbar > div {
-    justify-items: center;
-  }
+.venue-dashboard-topbar > div {
+  justify-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+}
 
-  .venue-dashboard-topbar-logo {
-    width: 64px;
-    height: 36px;
-  }
+.venue-dashboard-topbar-logo {
+  width: 60px;
+  height: 34px;
+}
 
-  .venue-dashboard-topbar h1 {
-    font-size: clamp(2.5rem, 8vw, 3.7rem);
-  }
+.venue-dashboard-topbar h1 {
+  font-size: clamp(2.4rem, 7vw, 3.45rem);
+}
 
   .venue-dashboard-primary-action {
     width: 100%;
@@ -283,24 +296,26 @@
   }
 
   .venue-dashboard-topbar {
-    min-height: 116px;
-    margin-bottom: 30px;
-    padding-top: 6px;
-  }
+  min-height: 128px;
+  margin-bottom: 30px;
+  padding: 10px 0 14px;
+}
 
-  .venue-dashboard-topbar > div {
-    gap: 10px;
-  }
+.venue-dashboard-topbar > div {
+  gap: 10px;
+  padding-bottom: 18px;
+}
 
-  .venue-dashboard-topbar-logo {
-    width: 56px;
-    height: 32px;
-  }
+.venue-dashboard-topbar-logo {
+  width: 54px;
+  height: 30px;
+}
 
-  .venue-dashboard-topbar h1 {
-    font-size: clamp(2.25rem, 12vw, 3.1rem);
-    line-height: 0.96;
-  }
+.venue-dashboard-topbar h1 {
+  font-size: clamp(2.2rem, 11vw, 2.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
 
   .venue-dashboard-card,
   .venue-dashboard-hero-card,

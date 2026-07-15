@@ -20,10 +20,7 @@
   width: 100%;
   min-width: 0;
   border-color: rgba(255, 255, 255, 0.07);
-  transition:
-    border-color 240ms ease,
-    box-shadow 240ms ease,
-    background 240ms ease;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-account-settings button,
@@ -190,21 +187,18 @@
   font-weight: 900;
 }
 
-.venue-dashboard-locked-details-card {
+.venue-dashboard-support-session-card {
   position: relative;
   overflow: hidden;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   border-radius: 32px;
-  padding: 30px 28px;
+  padding: 38px 28px;
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.074),
-      rgba(255, 255, 255, 0.038)
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.018)
     ),
-    #17191d;
+    #15171a;
 }
 
 .venue-dashboard-locked-details-heading {
@@ -560,43 +554,9 @@
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-account-settings .venue-dashboard-card:hover {
-    transform: none;
-    border-color: rgba(255, 91, 50, 0.18);
-    box-shadow:
-      0 22px 54px rgba(0, 0, 0, 0.24),
-      0 0 0 1px rgba(255, 91, 50, 0.045),
-      0 0 38px rgba(255, 91, 50, 0.075);
-  }
-
-  .venue-dashboard-locked-details-card:hover {
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.2),
-        transparent 24rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.082),
-        rgba(255, 255, 255, 0.042)
-      ),
-      #17191d;
-  }
-
-  .venue-dashboard-support-session-card:hover {
-    background:
-      radial-gradient(
-        circle at top center,
-        rgba(255, 91, 50, 0.2),
-        transparent 25rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.082),
-        rgba(255, 255, 255, 0.042)
-      ),
-      #17191d;
-  }
+  transform: none;
+  border-color: rgba(255, 91, 50, 0.55);
+}
 
   .venue-dashboard-locked-detail-tile:hover {
     border-color: rgba(255, 91, 50, 0.14);

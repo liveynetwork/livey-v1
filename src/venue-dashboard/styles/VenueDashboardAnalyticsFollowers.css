@@ -16,17 +16,12 @@
   justify-items: center;
   align-content: center;
   gap: 5px;
-  border: 1px solid
-    rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 16px;
   padding: 10px;
-  background: rgba(
-    7,
-    8,
-    10,
-    0.34
-  );
+  background: rgba(7, 8, 10, 0.46);
   text-align: center;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-analytics-follower-growth
@@ -175,18 +170,13 @@
     rgba(255, 255, 255, 0.055);
   border-radius: 26px;
   padding: 16px 14px 42px;
-  background:
-    radial-gradient(
-      circle at 70% 0%,
-      rgba(255, 91, 50, 0.07),
-      transparent 25rem
-    ),
+    background:
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.008)
+      rgba(255, 255, 255, 0.024),
+      rgba(255, 255, 255, 0.006)
     ),
-    rgba(7, 8, 10, 0.42);
+    rgba(7, 8, 10, 0.48);
 }
 
 .venue-dashboard-analytics-follower-chart-svg {
@@ -386,17 +376,12 @@
   position: relative;
   padding: 38px 34px 26px;
   background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(255, 91, 50, 0.07),
-      transparent 26rem
-    ),
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.07),
-      rgba(255, 255, 255, 0.03)
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.016)
     ),
-    #17191d;
+    #15171a;
 }
 
 .venue-dashboard-analytics-follower-heading {
@@ -430,10 +415,11 @@
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.014)
+      rgba(255, 255, 255, 0.032),
+      rgba(255, 255, 255, 0.009)
     ),
-    rgba(8, 9, 11, 0.56);
+    rgba(8, 9, 11, 0.62);
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-analytics-follower-chart-meta
@@ -454,19 +440,14 @@
 
 .venue-dashboard-analytics-follower-chart-meta
   > div.is-primary {
-  border-color: rgba(255, 91, 50, 0.15);
+  border-color: rgba(255, 255, 255, 0.065);
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(255, 91, 50, 0.13),
-      transparent 13rem
-    ),
     linear-gradient(
       145deg,
-      rgba(255, 91, 50, 0.055),
-      rgba(255, 255, 255, 0.018)
+      rgba(255, 255, 255, 0.038),
+      rgba(255, 255, 255, 0.01)
     ),
-    rgba(8, 9, 11, 0.6);
+    rgba(8, 9, 11, 0.64);
 }
 
 .venue-dashboard-analytics-follower-chart-meta
@@ -474,7 +455,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 91, 50, 0.42),
+    rgba(255, 255, 255, 0.1),
     transparent
   );
 }
@@ -512,18 +493,13 @@
   gap: 20px;
   border-radius: 25px;
   padding: 34px;
-  background:
-    radial-gradient(
-      circle at 50% 100%,
-      rgba(255, 91, 50, 0.045),
-      transparent 18rem
-    ),
+    background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.024),
       rgba(255, 255, 255, 0.006)
     ),
-    rgba(7, 8, 10, 0.5);
+    rgba(7, 8, 10, 0.52);
   text-align: left;
 }
 
@@ -585,18 +561,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-analytics-follower-chart-meta
-    > div {
-    transition:
-      border-color 180ms ease,
-      background 180ms ease,
-      transform 180ms ease;
-  }
-
+  .venue-dashboard-analytics-follower-growth
+    > div:hover,
   .venue-dashboard-analytics-follower-chart-meta
     > div:hover {
-    border-color: rgba(255, 91, 50, 0.13);
-    transform: translateY(-2px);
+    border-color: rgba(255, 91, 50, 0.55);
   }
 }
 

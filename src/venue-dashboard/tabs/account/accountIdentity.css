@@ -1,28 +1,21 @@
 .venue-dashboard-identity-card {
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 36px;
   padding: 38px 30px;
   text-align: center;
   background:
-    radial-gradient(
-      circle at 8% 12%,
-      rgba(255, 255, 255, 0.06),
-      transparent 20rem
-    ),
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.086),
-      rgba(255, 255, 255, 0.042)
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.018)
     ),
-    #17191d;
+    #15171a;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.065),
-    0 26px 90px rgba(0, 0, 0, 0.22);
-  transition:
-    border-color 240ms ease,
-    background 240ms ease,
-    box-shadow 240ms ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 18px 48px rgba(0, 0, 0, 0.16);
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-identity-card::after {
@@ -61,18 +54,11 @@
   display: grid;
   place-items: center;
   padding: 10px;
-  background:
-    radial-gradient(
-      circle at top,
-      rgba(255, 91, 50, 0.18),
-      transparent 9rem
-    ),
-    rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 91, 50, 0.13);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.075);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 20px 50px rgba(255, 91, 50, 0.09),
-    0 16px 42px rgba(0, 0, 0, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 16px 38px rgba(0, 0, 0, 0.18);
 }
 
 .venue-dashboard-identity-logo {
@@ -82,14 +68,8 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 30% 20%,
-      rgba(255, 91, 50, 0.28),
-      transparent 7rem
-    ),
-    rgba(255, 255, 255, 0.075);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.085);
 }
 
 .venue-dashboard-identity-logo img {
@@ -160,10 +140,7 @@
       rgba(255, 255, 255, 0.017)
     ),
     rgba(255, 255, 255, 0.01);
-  transition:
-    border-color 220ms ease,
-    background 220ms ease,
-    box-shadow 220ms ease;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-identity-meta-item > span {
@@ -233,9 +210,9 @@
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.025);
   transition:
-    border-color 220ms ease,
-    background 220ms ease,
-    box-shadow 220ms ease;
+  border-color 180ms ease,
+  background 180ms ease,
+  box-shadow 180ms ease;
 }
 
 .venue-dashboard-identity-note::after {
@@ -270,68 +247,26 @@
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-identity-card:hover {
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.23),
-        transparent 26rem
-      ),
-      radial-gradient(
-        circle at 8% 12%,
-        rgba(255, 255, 255, 0.068),
-        transparent 20rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.094),
-        rgba(255, 255, 255, 0.048)
-      ),
-      #17191d;
+    border-color: rgba(255, 91, 50, 0.55);
   }
 
   .venue-dashboard-identity-meta-item:hover {
-    border-color: rgba(255, 91, 50, 0.14);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.07),
-        transparent 9rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.055),
-        rgba(255, 255, 255, 0.022)
-      ),
-      rgba(255, 255, 255, 0.012);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
-  }
-
-  .venue-dashboard-identity-verification:hover {
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.08),
-        transparent 10rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.055),
-        rgba(255, 255, 255, 0.022)
-      ),
-      rgba(255, 255, 255, 0.012);
+    border-color: rgba(255, 91, 50, 0.55);
   }
 
   .venue-dashboard-identity-note:hover {
-    border-color: rgba(255, 91, 50, 0.16);
-    background:
-      radial-gradient(
-        circle at left center,
-        rgba(255, 91, 50, 0.06),
-        transparent 11rem
-      ),
-      rgba(255, 255, 255, 0.03);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.1);
-  }
+  border-color: rgba(255, 91, 50, 0.28);
+  background:
+    radial-gradient(
+      circle at left center,
+      rgba(255, 91, 50, 0.055),
+      transparent 12rem
+    ),
+    rgba(255, 255, 255, 0.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 0 24px rgba(255, 91, 50, 0.045);
+}
 }
 
 @media (max-width: 980px) {
