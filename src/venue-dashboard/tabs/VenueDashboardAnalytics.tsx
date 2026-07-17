@@ -3,7 +3,6 @@ import type {
   VenueDashboardEvent,
   VenueDashboardVenue,
 } from "../venueDashboardService";
-import { AnalyticsActivityCard } from "./analytics/AnalyticsActivityCard";
 import { AnalyticsActivityHealth } from "./analytics/AnalyticsActivityHealth";
 import { AnalyticsAudienceState } from "./analytics/AnalyticsAudienceState";
 import { AnalyticsHero } from "./analytics/AnalyticsHero";
@@ -14,6 +13,9 @@ import { AnalyticsPublishingSummary } from "./analytics/AnalyticsPublishingSumma
 import { AnalyticsPublishingTrend } from "./analytics/AnalyticsPublishingTrend";
 import { calculateAnalyticsPercentage } from "./analytics/analyticsFormatters";
 import { AnalyticsFollowerGrowth } from "./analytics/AnalyticsFollowerGrowth";
+import type {
+  EditableProfileFocusTarget,
+} from "./analytics/AnalyticsProfileHealthModal";
 
 type VenueDashboardAnalyticsProps = {
   venueName: string;
@@ -21,6 +23,9 @@ type VenueDashboardAnalyticsProps = {
   events: VenueDashboardEvent[];
   analytics: VenueDashboardAnalyticsData;
   onRefreshAnalytics?: () => void;
+  onOpenAccountSettings: (
+  target: EditableProfileFocusTarget
+) => void;
 };
 
 export function VenueDashboardAnalytics({
@@ -29,6 +34,7 @@ export function VenueDashboardAnalytics({
   events,
   analytics,
   onRefreshAnalytics,
+  onOpenAccountSettings,
 }: VenueDashboardAnalyticsProps) {
   const activityCoverage =
     calculateAnalyticsPercentage(
@@ -73,8 +79,11 @@ export function VenueDashboardAnalytics({
         />
 
         <AnalyticsProfileHealth
-          analytics={analytics}
-        />
+  analytics={analytics}
+  onOpenAccountSettings={
+    onOpenAccountSettings
+  }
+/>
       </section>
 
       <section className="venue-dashboard-analytics-insights-grid">
@@ -90,24 +99,6 @@ export function VenueDashboardAnalytics({
       <AnalyticsProfileRecommendations
         venue={venue}
       />
-
-      <section className="venue-dashboard-analytics-schedule-grid">
-        <AnalyticsActivityCard
-          eyebrow="Live activity"
-          title="Happening now"
-          event={analytics.currentLiveActivity}
-          emptyTitle="Nothing is live right now"
-          emptyDescription="When an activity is currently running, it will appear here."
-        />
-
-        <AnalyticsActivityCard
-          eyebrow="Next activity"
-          title="Coming up"
-          event={analytics.nextActivity}
-          emptyTitle="No upcoming activity"
-          emptyDescription="Create or schedule activity to build your upcoming venue calendar."
-        />
-      </section>
 
       <AnalyticsAudienceState />
     </section>

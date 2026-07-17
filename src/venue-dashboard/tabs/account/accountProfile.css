@@ -81,10 +81,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 12px 28px rgba(0, 0, 0, 0.08);
-  transition:
-    border-color 220ms ease,
-    background 220ms ease,
-    box-shadow 220ms ease;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-profile-control-label {
@@ -188,6 +185,7 @@
     ),
     rgba(6, 7, 9, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.055);
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-today-hours-card > span {
@@ -267,6 +265,7 @@
   color: #f7f1ea;
   box-shadow: none;
   cursor: default;
+  transition: border-color 180ms ease;
 }
 
 .venue-dashboard-custom-dropdown-arrow-trigger
@@ -363,57 +362,36 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-profile-control-tile:hover {
-    border-color: rgba(255, 91, 50, 0.14);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.085),
-        transparent 12rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.058),
-        rgba(255, 255, 255, 0.024)
-      ),
-      rgba(255, 255, 255, 0.012);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 14px 32px rgba(0, 0, 0, 0.11);
-  }
-
-  .venue-dashboard-description-field textarea:hover {
-    border-color: rgba(255, 255, 255, 0.11);
-  }
+  .venue-dashboard-profile-control-tile:hover,
+.venue-dashboard-today-hours-card:hover,
+.venue-dashboard-custom-dropdown-arrow-trigger:hover {
+  border-color: rgba(255, 91, 50, 0.55);
+}
 
   .venue-dashboard-hours-edit-icon-button:hover {
-    background: rgba(255, 91, 50, 0.1);
+    border-color: rgba(255, 91, 50, 0.55);
+    background: rgba(255, 91, 50, 0.08);
     color: #ffd8cd;
-    border-color: rgba(255, 91, 50, 0.18);
-    box-shadow: 0 0 20px rgba(255, 91, 50, 0.055);
+    box-shadow: none;
   }
 
   .venue-dashboard-custom-dropdown-arrow-button:hover {
-    background: rgba(255, 91, 50, 0.1);
+    background: rgba(255, 91, 50, 0.08);
+    color: #ffd8cd;
   }
 
   .venue-dashboard-status-advisory:hover {
-    border-color: rgba(255, 91, 50, 0.17);
+    border-color: rgba(255, 91, 50, 0.28);
     background:
       radial-gradient(
         circle at left center,
-        rgba(255, 91, 50, 0.08),
-        transparent 13rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.046),
-        rgba(255, 255, 255, 0.02)
+        rgba(255, 91, 50, 0.055),
+        transparent 12rem
       ),
       rgba(12, 13, 16, 0.74);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 14px 32px rgba(0, 0, 0, 0.1);
+      inset 0 1px 0 rgba(255, 255, 255, 0.025),
+      0 0 24px rgba(255, 91, 50, 0.045);
   }
 }
 
@@ -480,3 +458,4 @@
     letter-spacing: 0.04em;
   }
 }
+

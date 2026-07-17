@@ -1,79 +1,157 @@
-import type { CSSProperties } from "react";
+import {
+  useState,
+} from "react";
+import type {
+  KeyboardEvent,
+} from "react";
 import type {
   VenueDashboardAnalytics,
 } from "../../venueDashboardService";
 import { ProfileCompleteIcon } from "./AnalyticsIcons";
+import { AnalyticsCompletionRing } from "./AnalyticsCompletionRing";
+import {
+  AnalyticsProfileHealthModal,
+  type EditableProfileFocusTarget,
+} from "./AnalyticsProfileHealthModal";
 import { AnalyticsSectionHeading } from "./AnalyticsSectionHeading";
-import { clampAnalyticsPercentage } from "./analyticsFormatters";
+import {
+  clampAnalyticsPercentage,
+} from "./analyticsFormatters";
 
 type AnalyticsProfileHealthProps = {
   analytics: VenueDashboardAnalytics;
-};
-
-type ProfileProgressStyle = CSSProperties & {
-  "--profile-progress": string;
+  onOpenAccountSettings: (
+    target: EditableProfileFocusTarget
+  ) => void;
 };
 
 export function AnalyticsProfileHealth({
   analytics,
+  onOpenAccountSettings,
 }: AnalyticsProfileHealthProps) {
+  const [
+    isDetailsOpen,
+    setIsDetailsOpen,
+  ] = useState(false);
+
   const profileCompleteness =
     clampAnalyticsPercentage(
       analytics.profileCompleteness
     );
 
-  const profileProgressStyle: ProfileProgressStyle = {
-    "--profile-progress":
-      `${profileCompleteness * 3.6}deg`,
-  };
+  function openDetails() {
+    setIsDetailsOpen(true);
+  }
+
+  function handleKeyDown(
+    event: KeyboardEvent<HTMLElement>
+  ) {
+    if (
+      event.key !== "Enter" &&
+      event.key !== " "
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    openDetails();
+  }
+
+  function handleFixField(
+  target: EditableProfileFocusTarget
+) {
+  onOpenAccountSettings(target);
+}
 
   return (
-    <section className="venue-dashboard-analytics-card venue-dashboard-analytics-profile-card">
-      <AnalyticsSectionHeading
-        eyebrow="Profile health"
-        title={`${profileCompleteness}% complete`}
-        description="A complete venue profile helps people understand where you are and what your venue offers."
-      />
-
-      <div
-        className="venue-dashboard-analytics-profile-ring"
-        style={profileProgressStyle}
-        aria-label={`${profileCompleteness}% profile completeness`}
+    <>
+      <section
+        className="venue-dashboard-analytics-card venue-dashboard-analytics-profile-card"
+        role="button"
+        tabIndex={0}
+        aria-label={`Open venue profile health details. Current completion is ${profileCompleteness}%`}
+        onClick={openDetails}
+        onKeyDown={handleKeyDown}
       >
-        <div>
-          <strong>{profileCompleteness}%</strong>
-          <span>Complete</span>
-        </div>
-      </div>
+        <AnalyticsSectionHeading
+          eyebrow="Profile health"
+          title={`${profileCompleteness}% complete`}
+          description="A complete venue profile helps people understand where you are and what your venue offers."
+        />
 
-      {analytics.profileMissingFields.length > 0 ? (
-        <div className="venue-dashboard-analytics-missing-fields">
-          <span>Still missing</span>
+        <AnalyticsCompletionRing
+          percentage={
+            profileCompleteness
+          }
+          ariaLabel={`${profileCompleteness}% profile completeness`}
+        />
 
-          <div>
-            {analytics.profileMissingFields.map(
-              (field) => (
-                <small key={field}>{field}</small>
-              )
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="venue-dashboard-analytics-profile-complete">
-          <ProfileCompleteIcon />
-
-          <div>
-            <strong>
-              Your venue profile is complete.
-            </strong>
-
+        {analytics
+          .profileMissingFields
+          .length > 0 ? (
+          <div className="venue-dashboard-analytics-missing-fields">
             <span>
-              All core public details are currently
-              available.
+              Still missing
             </span>
+
+            <div>
+              {analytics.profileMissingFields.map(
+                (field) => (
+                  <small key={field}>
+                    {field}
+                  </small>
+                )
+              )}
+            </div>
           </div>
+        ) : (
+          <div className="venue-dashboard-analytics-profile-complete">
+            <ProfileCompleteIcon />
+
+            <div>
+              <strong>
+                Your venue profile is
+                complete.
+              </strong>
+
+              <span>
+                All editable public details
+                are currently available.
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="venue-dashboard-analytics-profile-card-action">
+          <span>
+            View profile details
+          </span>
+
+          <span aria-hidden="true">
+            →
+          </span>
         </div>
-      )}
-    </section>
+      </section>
+
+      {isDetailsOpen ? (
+        <AnalyticsProfileHealthModal
+          percentage={
+            profileCompleteness
+          }
+          completedFields={
+            analytics.profileCompletedFields
+          }
+          missingFields={
+            analytics.profileMissingFields
+          }
+          onClose={() =>
+            setIsDetailsOpen(false)
+          }
+          onFixField={
+            handleFixField
+          }
+        />
+      ) : null}
+    </>
   );
 }

@@ -1,8 +1,14 @@
+import {
+  useMemo,
+  useState,
+} from "react";
 import type {
   VenueDashboardEvent,
 } from "../../venueDashboardService";
 import { AnalyticsSectionHeading } from "./AnalyticsSectionHeading";
-import { buildPublishingTrend } from "./analyticsInsights";
+import { AnalyticsPublishingChart } from "./AnalyticsPublishingChart";
+import { AnalyticsPublishingHistoryModal } from "./AnalyticsPublishingHistoryModal";
+import { buildCurrentWeekPublishingTrend } from "./analyticsInsights";
 
 type AnalyticsPublishingTrendProps = {
   events: VenueDashboardEvent[];
@@ -11,17 +17,16 @@ type AnalyticsPublishingTrendProps = {
 export function AnalyticsPublishingTrend({
   events,
 }: AnalyticsPublishingTrendProps) {
-  const trend = buildPublishingTrend(
-    events,
-    14
-  );
+  const [
+    isHistoryModalOpen,
+    setIsHistoryModalOpen,
+  ] = useState(false);
 
-  const highestValue = Math.max(
-    ...trend.map(
-      (point) => point.count
-    ),
-    1
-  );
+  const trend = useMemo(() => {
+    return buildCurrentWeekPublishingTrend(
+      events
+    );
+  }, [events]);
 
   const totalPublished = trend.reduce(
     (total, point) =>
@@ -35,93 +40,71 @@ export function AnalyticsPublishingTrend({
     ).length;
 
   return (
-    <section className="venue-dashboard-analytics-card venue-dashboard-analytics-trend-card">
-      <AnalyticsSectionHeading
-        eyebrow="Publishing trend"
-        title="Your last 14 days"
-        description="See how consistently new activity has been published for your venue."
-      />
+    <>
+      <section className="venue-dashboard-analytics-card venue-dashboard-analytics-trend-card">
+        <AnalyticsSectionHeading
+          eyebrow="Publishing trend"
+          title="This week"
+          description="See how consistently new activity has been published this week."
+        />
 
-      <div className="venue-dashboard-analytics-trend-summary">
-        <div>
-          <span>
-            Activities published
-          </span>
+        <div className="venue-dashboard-analytics-trend-summary">
+          <div>
+            <span>
+              Activities published
+            </span>
 
-          <strong>
-            {totalPublished}
-          </strong>
+            <strong>
+              {totalPublished}
+            </strong>
+          </div>
+
+          <small>
+            {activePublishingDays === 1
+              ? "Across 1 publishing day this week"
+              : `Across ${activePublishingDays} publishing days this week`}
+          </small>
         </div>
 
-        <small>
-          {activePublishingDays === 1
-            ? "Across 1 active publishing day"
-            : `Across ${activePublishingDays} active publishing days`}
-        </small>
-      </div>
+        <AnalyticsPublishingChart
+          points={trend}
+          ariaLabel={`${totalPublished} activities published during the current week`}
+        />
 
-      <div
-        className="venue-dashboard-analytics-chart"
-        aria-label={`Activities published over the last 14 days: ${totalPublished}`}
-      >
-        <div className="venue-dashboard-analytics-chart-baseline" />
+        {totalPublished === 0 ? (
+          <div className="venue-dashboard-analytics-trend-empty">
+            <strong>
+              No activity published this
+              week
+            </strong>
 
-        {trend.map((point) => {
-          const heightPercentage =
-            point.count > 0
-              ? Math.max(
-                  (point.count /
-                    highestValue) *
-                    100,
-                  14
-                )
-              : 2;
+            <span>
+              New activity published this
+              week will appear here.
+            </span>
+          </div>
+        ) : null}
 
-          return (
-            <div
-              className="venue-dashboard-analytics-chart-column"
-              key={point.key}
-              title={`${point.label}: ${point.count}`}
-            >
-              <div className="venue-dashboard-analytics-chart-value">
-                {point.count > 0
-                  ? point.count
-                  : ""}
-              </div>
-
-              <div className="venue-dashboard-analytics-chart-track">
-                <span
-                  className={
-                    point.count > 0
-                      ? "is-active"
-                      : ""
-                  }
-                  style={{
-                    height: `${heightPercentage}%`,
-                  }}
-                />
-              </div>
-
-              <small>
-                {point.label}
-              </small>
-            </div>
-          );
-        })}
-      </div>
-
-      {totalPublished === 0 ? (
-        <div className="venue-dashboard-analytics-trend-empty">
-          <strong>
-            No activity published yet
-          </strong>
-
-          <span>
-            New activity published during
-            this period will appear here.
-          </span>
+        <div className="venue-dashboard-analytics-trend-actions">
+          <button
+            type="button"
+            onClick={() =>
+              setIsHistoryModalOpen(true)
+            }
+          >
+            View more
+          </button>
         </div>
+      </section>
+
+      {isHistoryModalOpen ? (
+        <AnalyticsPublishingHistoryModal
+          events={events}
+          onClose={() =>
+            setIsHistoryModalOpen(false)
+          }
+        />
       ) : null}
-    </section>
+    </>
   );
 }

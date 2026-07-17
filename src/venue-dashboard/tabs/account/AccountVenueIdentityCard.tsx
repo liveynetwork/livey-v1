@@ -1,9 +1,14 @@
 import type { VenueDashboardVenue } from "../../venueDashboardService";
+import type {
+  RefObject,
+} from "react";
 
 type AccountVenueIdentityCardProps = {
   activeVenue: VenueDashboardVenue | null;
   visibleLogoUrl: string;
   venueName: string;
+  logoTargetRef:
+  RefObject<HTMLDivElement | null>;
   onLogoChange: (file: File | null) => void;
 };
 
@@ -11,6 +16,7 @@ export function AccountVenueIdentityCard({
   activeVenue,
   visibleLogoUrl,
   venueName,
+  logoTargetRef,
   onLogoChange,
 }: AccountVenueIdentityCardProps) {
   const venueInitial = venueName?.charAt(0) || "L";
@@ -19,7 +25,10 @@ export function AccountVenueIdentityCard({
   return (
     <section className="venue-dashboard-card venue-dashboard-identity-card">
       <div className="venue-dashboard-identity-content">
-        <div className="venue-dashboard-identity-logo-wrap">
+        <div
+  ref={logoTargetRef}
+  className="venue-dashboard-identity-logo-wrap"
+>
           <div className="venue-dashboard-identity-logo-shell">
             <div className="venue-dashboard-identity-logo">
               {visibleLogoUrl ? (

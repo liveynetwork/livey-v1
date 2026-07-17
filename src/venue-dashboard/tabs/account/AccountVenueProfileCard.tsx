@@ -1,6 +1,11 @@
+import type {
+  RefObject,
+} from "react";
 import { LiveyDashboardDropdown } from "./LiveyDashboardDropdown";
 import { statusOptions } from "./accountOptions";
-import type { OpeningHoursPreviewItem } from "./accountTypes";
+import type {
+  OpeningHoursPreviewItem,
+} from "./accountTypes";
 
 const DESCRIPTION_MAX_LENGTH = 100;
 
@@ -9,9 +14,20 @@ type AccountVenueProfileCardProps = {
   openStatus: string;
   todayOpeningHours: OpeningHoursPreviewItem;
   isUpdatingVenueProfile: boolean;
-  onDescriptionChange: (value: string) => void;
-  onStatusChange: (nextStatus: string) => void;
-  onOpenOpeningHoursEditor: () => void;
+  descriptionTargetRef:
+    RefObject<HTMLLabelElement | null>;
+  openingHoursTargetRef:
+    RefObject<HTMLDivElement | null>;
+  openStatusTargetRef:
+    RefObject<HTMLDivElement | null>;
+  onDescriptionChange: (
+    value: string
+  ) => void;
+  onStatusChange: (
+    nextStatus: string
+  ) => void;
+  onOpenOpeningHoursEditor:
+    () => void;
   onSaveProfile: () => void;
 };
 
@@ -20,6 +36,9 @@ export function AccountVenueProfileCard({
   openStatus,
   todayOpeningHours,
   isUpdatingVenueProfile,
+  descriptionTargetRef,
+  openingHoursTargetRef,
+  openStatusTargetRef,
   onDescriptionChange,
   onStatusChange,
   onOpenOpeningHoursEditor,
@@ -29,43 +48,67 @@ export function AccountVenueProfileCard({
     <section className="venue-dashboard-card venue-dashboard-profile-card">
       <div className="venue-dashboard-premium-card-heading venue-dashboard-profile-card-heading">
         <div>
-          <p className="venue-dashboard-eyebrow">Venue profile</p>
-          <h2>Profile controls</h2>
+          <p className="venue-dashboard-eyebrow">
+            Venue profile
+          </p>
+
+          <h2>
+            Profile controls
+          </h2>
         </div>
       </div>
 
       <div className="venue-dashboard-profile-controls-panel">
-        <label className="venue-dashboard-profile-control-tile venue-dashboard-description-field">
+        <label
+          ref={descriptionTargetRef}
+          className="venue-dashboard-profile-control-tile venue-dashboard-description-field"
+        >
           <span className="venue-dashboard-profile-control-label">
             Description
           </span>
 
           <textarea
             value={description}
-            maxLength={DESCRIPTION_MAX_LENGTH}
-            onChange={(event) => onDescriptionChange(event.target.value)}
+            maxLength={
+              DESCRIPTION_MAX_LENGTH
+            }
+            onChange={(event) =>
+              onDescriptionChange(
+                event.target.value
+              )
+            }
             placeholder="Tell people what makes your venue worth visiting."
           />
 
           <small className="venue-dashboard-description-count">
-            {description.length}/{DESCRIPTION_MAX_LENGTH}
+            {description.length}/
+            {DESCRIPTION_MAX_LENGTH}
           </small>
         </label>
 
-        <div className="venue-dashboard-profile-control-tile venue-dashboard-opening-hours-field">
+        <div
+          ref={openingHoursTargetRef}
+          className="venue-dashboard-profile-control-tile venue-dashboard-opening-hours-field"
+        >
           <span className="venue-dashboard-profile-control-label">
             Today’s hours
           </span>
 
           <div className="venue-dashboard-today-hours-card">
-            <span>{todayOpeningHours.title}</span>
+            <span>
+              {todayOpeningHours.title}
+            </span>
 
-            <strong>{todayOpeningHours.value}</strong>
+            <strong>
+              {todayOpeningHours.value}
+            </strong>
 
             <button
               className="venue-dashboard-hours-edit-icon-button"
               type="button"
-              onClick={onOpenOpeningHoursEditor}
+              onClick={
+                onOpenOpeningHoursEditor
+              }
               aria-label="Edit weekly hours"
               title="Edit weekly hours"
             >
@@ -82,6 +125,7 @@ export function AccountVenueProfileCard({
                   strokeWidth="2"
                   strokeLinejoin="round"
                 />
+
                 <path
                   d="m13.5 6.1 4.4 4.4"
                   stroke="currentColor"
@@ -93,7 +137,10 @@ export function AccountVenueProfileCard({
           </div>
         </div>
 
-        <div className="venue-dashboard-profile-control-tile venue-dashboard-status-override-field">
+        <div
+          ref={openStatusTargetRef}
+          className="venue-dashboard-profile-control-tile venue-dashboard-status-override-field"
+        >
           <p className="venue-dashboard-profile-control-label">
             Status override
           </p>
@@ -124,20 +171,32 @@ export function AccountVenueProfileCard({
                 stroke="currentColor"
                 strokeWidth="2"
               />
+
               <path
                 d="M12 10.5v5"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
-              <circle cx="12" cy="7.5" r="1.1" fill="currentColor" />
+
+              <circle
+                cx="12"
+                cy="7.5"
+                r="1.1"
+                fill="currentColor"
+              />
             </svg>
           </span>
 
           <small className="venue-dashboard-field-note venue-dashboard-status-override-note">
-            STATUS OVERRIDE SHOULD ONLY BE USED FOR URGENT MANUAL CHANGES. YOUR
-            ACTIVITY AND OPENING HOURS SHOULD NORMALLY CONTROL WHAT APPEARS ON
-            LIVEY. TO RETURN THE VENUE TO ITS AUTOMATIC STATE, SELECT DEFAULT.
+            STATUS OVERRIDE SHOULD ONLY
+            BE USED FOR URGENT MANUAL
+            CHANGES. YOUR ACTIVITY AND
+            OPENING HOURS SHOULD NORMALLY
+            CONTROL WHAT APPEARS ON LIVEY.
+            TO RETURN THE VENUE TO ITS
+            AUTOMATIC STATE, SELECT
+            DEFAULT.
           </small>
         </div>
       </div>
@@ -146,9 +205,13 @@ export function AccountVenueProfileCard({
         className="venue-dashboard-save-button venue-dashboard-profile-save-button"
         type="button"
         onClick={onSaveProfile}
-        disabled={isUpdatingVenueProfile}
+        disabled={
+          isUpdatingVenueProfile
+        }
       >
-        {isUpdatingVenueProfile ? "Saving changes..." : "Save changes"}
+        {isUpdatingVenueProfile
+          ? "Saving changes..."
+          : "Save changes"}
       </button>
     </section>
   );

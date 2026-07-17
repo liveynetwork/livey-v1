@@ -1,4 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { User } from "@supabase/supabase-js";
 import { LiveyImageCropper } from "../../components/image-crop/LiveyImageCropper";
 import type { DashboardSection } from "../VenueDashboardSidebar";
@@ -15,12 +20,17 @@ import {
   formatOpeningHours,
   getTodayOpeningHoursPreview,
 } from "./account/accountHoursUtils";
+import type {
+  EditableProfileFocusTarget,
+} from "./analytics/AnalyticsProfileHealthModal";
 
 type VenueDashboardAccountProps = {
   currentUser: User | null;
   activeVenue: VenueDashboardVenue | null;
   isRefreshing: boolean;
   isUpdatingVenueProfile: boolean;
+  focusTarget: EditableProfileFocusTarget | null;
+  onFocusTargetHandled: () => void;
   onUpdateVenueProfile: (input: {
     name: string;
     description: string;
@@ -31,75 +41,164 @@ type VenueDashboardAccountProps = {
     logoFile: File | null;
   }) => void;
   onRefreshDashboard: () => void;
-  onSectionChange: (section: DashboardSection) => void;
+  onSectionChange: (
+    section: DashboardSection
+  ) => void;
   onSignOut: () => void;
 };
 
 export function VenueDashboardAccount({
   activeVenue,
   isUpdatingVenueProfile,
+  focusTarget,
+  onFocusTargetHandled,
   onUpdateVenueProfile,
   onSignOut,
 }: VenueDashboardAccountProps) {
-  const [name, setName] = useState(activeVenue?.name ?? "");
-  const [description, setDescription] = useState(activeVenue?.description ?? "");
-  const [area, setArea] = useState(activeVenue?.area ?? "");
-  const [address, setAddress] = useState(activeVenue?.address ?? "");
-  const [openStatus, setOpenStatus] = useState(
-    activeVenue?.open_status ?? "Open now"
+  const logoTargetRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const descriptionTargetRef =
+    useRef<HTMLLabelElement | null>(null);
+
+  const openingHoursTargetRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const openStatusTargetRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const [name, setName] = useState(
+    activeVenue?.name ?? ""
   );
-  const [openingHours, setOpeningHours] = useState(
-    activeVenue?.opening_hours ?? ""
+
+  const [description, setDescription] =
+    useState(
+      activeVenue?.description ?? ""
+    );
+
+  const [area, setArea] = useState(
+    activeVenue?.area ?? ""
   );
 
-  const [pendingStatus, setPendingStatus] =
-  useState<string | null>(null);
-
-  const [openingHoursDraft, setOpeningHoursDraft] = useState<DayHours[]>(
-    buildOpeningHoursDraft(activeVenue?.opening_hours ?? "")
+  const [address, setAddress] = useState(
+    activeVenue?.address ?? ""
   );
-  const [isOpeningHoursEditorOpen, setIsOpeningHoursEditorOpen] =
-    useState(false);
 
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
-  const [imageToCropSrc, setImageToCropSrc] = useState<string | null>(null);
-  const [imageToCropName, setImageToCropName] = useState("");
+  const [openStatus, setOpenStatus] =
+    useState(
+      activeVenue?.open_status ??
+        "Open now"
+    );
 
-  const visibleLogoUrl = logoPreviewUrl || activeVenue?.logo_url || "";
+  const [openingHours, setOpeningHours] =
+    useState(
+      activeVenue?.opening_hours ?? ""
+    );
+
+  const [
+    pendingStatus,
+    setPendingStatus,
+  ] = useState<string | null>(null);
+
+  const [
+    openingHoursDraft,
+    setOpeningHoursDraft,
+  ] = useState<DayHours[]>(
+    buildOpeningHoursDraft(
+      activeVenue?.opening_hours ?? ""
+    )
+  );
+
+  const [
+    isOpeningHoursEditorOpen,
+    setIsOpeningHoursEditorOpen,
+  ] = useState(false);
+
+  const [logoFile, setLogoFile] =
+    useState<File | null>(null);
+
+  const [
+    logoPreviewUrl,
+    setLogoPreviewUrl,
+  ] = useState<string | null>(null);
+
+  const [
+    imageToCropSrc,
+    setImageToCropSrc,
+  ] = useState<string | null>(null);
+
+  const [
+    imageToCropName,
+    setImageToCropName,
+  ] = useState("");
+
+  const visibleLogoUrl =
+    logoPreviewUrl ||
+    activeVenue?.logo_url ||
+    "";
 
   const todayOpeningHours = useMemo(
-    () => getTodayOpeningHoursPreview(openingHours),
+    () =>
+      getTodayOpeningHoursPreview(
+        openingHours
+      ),
     [openingHours]
   );
 
   useEffect(() => {
-    const nextOpeningHours = activeVenue?.opening_hours ?? "";
+    const nextOpeningHours =
+      activeVenue?.opening_hours ?? "";
 
     setName(activeVenue?.name ?? "");
-    setDescription(activeVenue?.description ?? "");
+
+    setDescription(
+      activeVenue?.description ?? ""
+    );
+
     setArea(activeVenue?.area ?? "");
-    setAddress(activeVenue?.address ?? "");
-    setOpenStatus(activeVenue?.open_status ?? "Open now");
+
+    setAddress(
+      activeVenue?.address ?? ""
+    );
+
+    setOpenStatus(
+      activeVenue?.open_status ??
+        "Open now"
+    );
+
     setOpeningHours(nextOpeningHours);
-    setOpeningHoursDraft(buildOpeningHoursDraft(nextOpeningHours));
+
+    setOpeningHoursDraft(
+      buildOpeningHoursDraft(
+        nextOpeningHours
+      )
+    );
+
     setLogoFile(null);
 
-    setLogoPreviewUrl((currentPreviewUrl) => {
-      if (currentPreviewUrl) {
-        URL.revokeObjectURL(currentPreviewUrl);
+    setLogoPreviewUrl(
+      (currentPreviewUrl) => {
+        if (currentPreviewUrl) {
+          URL.revokeObjectURL(
+            currentPreviewUrl
+          );
+        }
+
+        return null;
       }
+    );
 
-      return null;
-    });
+    setImageToCropSrc(
+      (currentCropUrl) => {
+        if (currentCropUrl) {
+          URL.revokeObjectURL(
+            currentCropUrl
+          );
+        }
 
-    setImageToCropSrc((currentCropUrl) => {
-      if (currentCropUrl) {
-        URL.revokeObjectURL(currentCropUrl);
+        return null;
       }
-
-      return null;
-    });
+    );
 
     setImageToCropName("");
   }, [activeVenue]);
@@ -107,84 +206,187 @@ export function VenueDashboardAccount({
   useEffect(() => {
     return () => {
       if (logoPreviewUrl) {
-        URL.revokeObjectURL(logoPreviewUrl);
+        URL.revokeObjectURL(
+          logoPreviewUrl
+        );
       }
 
       if (imageToCropSrc) {
-        URL.revokeObjectURL(imageToCropSrc);
+        URL.revokeObjectURL(
+          imageToCropSrc
+        );
       }
     };
-  }, [logoPreviewUrl, imageToCropSrc]);
+  }, [
+    logoPreviewUrl,
+    imageToCropSrc,
+  ]);
 
-  function handleLogoChange(file: File | null) {
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
+  useEffect(() => {
+    if (!focusTarget) {
       return;
     }
 
-    const cropUrl = URL.createObjectURL(file);
+    const targetElements: Record<
+      EditableProfileFocusTarget,
+      HTMLElement | null
+    > = {
+      logo: logoTargetRef.current,
+      description:
+        descriptionTargetRef.current,
+      "opening-hours":
+        openingHoursTargetRef.current,
+      "open-status":
+        openStatusTargetRef.current,
+    };
 
-    setImageToCropSrc((currentCropUrl) => {
-      if (currentCropUrl) {
-        URL.revokeObjectURL(currentCropUrl);
+    const targetElement =
+      targetElements[focusTarget];
+
+    if (!targetElement) {
+      onFocusTargetHandled();
+      return;
+    }
+
+    let focusTimeoutId = 0;
+
+    const scrollFrameId =
+      window.requestAnimationFrame(
+        () => {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest",
+          });
+
+          focusTimeoutId =
+            window.setTimeout(() => {
+              focusTargetControl(
+                focusTarget,
+                targetElement
+              );
+
+              onFocusTargetHandled();
+            }, 500);
+        }
+      );
+
+    return () => {
+      window.cancelAnimationFrame(
+        scrollFrameId
+      );
+
+      window.clearTimeout(
+        focusTimeoutId
+      );
+    };
+  }, [
+    focusTarget,
+    onFocusTargetHandled,
+  ]);
+
+  function handleLogoChange(
+    file: File | null
+  ) {
+    if (!file) {
+      return;
+    }
+
+    if (
+      !file.type.startsWith("image/")
+    ) {
+      return;
+    }
+
+    const cropUrl =
+      URL.createObjectURL(file);
+
+    setImageToCropSrc(
+      (currentCropUrl) => {
+        if (currentCropUrl) {
+          URL.revokeObjectURL(
+            currentCropUrl
+          );
+        }
+
+        return cropUrl;
       }
-
-      return cropUrl;
-    });
+    );
 
     setImageToCropName(file.name);
   }
 
   function handleCancelCrop() {
-    setImageToCropSrc((currentCropUrl) => {
-      if (currentCropUrl) {
-        URL.revokeObjectURL(currentCropUrl);
-      }
+    setImageToCropSrc(
+      (currentCropUrl) => {
+        if (currentCropUrl) {
+          URL.revokeObjectURL(
+            currentCropUrl
+          );
+        }
 
-      return null;
-    });
+        return null;
+      }
+    );
 
     setImageToCropName("");
   }
 
-  function handleSaveCrop(file: File, previewUrl: string) {
+  function handleSaveCrop(
+    file: File,
+    previewUrl: string
+  ) {
     setLogoFile(file);
 
-    setLogoPreviewUrl((currentPreviewUrl) => {
-      if (currentPreviewUrl) {
-        URL.revokeObjectURL(currentPreviewUrl);
+    setLogoPreviewUrl(
+      (currentPreviewUrl) => {
+        if (currentPreviewUrl) {
+          URL.revokeObjectURL(
+            currentPreviewUrl
+          );
+        }
+
+        return previewUrl;
       }
+    );
 
-      return previewUrl;
-    });
+    setImageToCropSrc(
+      (currentCropUrl) => {
+        if (currentCropUrl) {
+          URL.revokeObjectURL(
+            currentCropUrl
+          );
+        }
 
-    setImageToCropSrc((currentCropUrl) => {
-      if (currentCropUrl) {
-        URL.revokeObjectURL(currentCropUrl);
+        return null;
       }
-
-      return null;
-    });
+    );
 
     setImageToCropName("");
   }
 
-  function handleStatusChange(nextStatus: string) {
-  if (nextStatus === openStatus) return;
-  setPendingStatus(nextStatus);
-}
+  function handleStatusChange(
+    nextStatus: string
+  ) {
+    if (nextStatus === openStatus) {
+      return;
+    }
 
-function handleCancelStatusChange() {
-  setPendingStatus(null);
-}
+    setPendingStatus(nextStatus);
+  }
 
-function handleConfirmStatusChange() {
-  if (!pendingStatus) return;
+  function handleCancelStatusChange() {
+    setPendingStatus(null);
+  }
 
-  setOpenStatus(pendingStatus);
-  setPendingStatus(null);
-}
+  function handleConfirmStatusChange() {
+    if (!pendingStatus) {
+      return;
+    }
+
+    setOpenStatus(pendingStatus);
+    setPendingStatus(null);
+  }
 
   function updateOpeningHoursDay(
     dayIndex: number,
@@ -203,12 +405,22 @@ function handleConfirmStatusChange() {
   }
 
   function handleOpenOpeningHoursEditor() {
-    setOpeningHoursDraft(buildOpeningHoursDraft(openingHours));
+    setOpeningHoursDraft(
+      buildOpeningHoursDraft(
+        openingHours
+      )
+    );
+
     setIsOpeningHoursEditorOpen(true);
   }
 
   function handleApplyOpeningHours() {
-    setOpeningHours(formatOpeningHours(openingHoursDraft));
+    setOpeningHours(
+      formatOpeningHours(
+        openingHoursDraft
+      )
+    );
+
     setIsOpeningHoursEditorOpen(false);
   }
 
@@ -229,7 +441,10 @@ function handleConfirmStatusChange() {
       {imageToCropSrc ? (
         <LiveyImageCropper
           imageSrc={imageToCropSrc}
-          fileName={imageToCropName || "venue-logo.png"}
+          fileName={
+            imageToCropName ||
+            "venue-logo.png"
+          }
           title="Crop venue logo"
           description="Center your venue logo inside the square. This is what people will see on Livey."
           onCancel={handleCancelCrop}
@@ -240,21 +455,49 @@ function handleConfirmStatusChange() {
       <section className="venue-dashboard-account-settings">
         <AccountVenueIdentityCard
           activeVenue={activeVenue}
-          visibleLogoUrl={visibleLogoUrl}
+          visibleLogoUrl={
+            visibleLogoUrl
+          }
           venueName={name}
-          onLogoChange={handleLogoChange}
+          logoTargetRef={
+            logoTargetRef
+          }
+          onLogoChange={
+            handleLogoChange
+          }
         />
 
         <div className="venue-dashboard-account-main-grid">
           <AccountVenueProfileCard
             description={description}
             openStatus={openStatus}
-            todayOpeningHours={todayOpeningHours}
-            isUpdatingVenueProfile={isUpdatingVenueProfile}
-            onDescriptionChange={setDescription}
-            onStatusChange={handleStatusChange}
-            onOpenOpeningHoursEditor={handleOpenOpeningHoursEditor}
-            onSaveProfile={handleSaveProfile}
+            todayOpeningHours={
+              todayOpeningHours
+            }
+            isUpdatingVenueProfile={
+              isUpdatingVenueProfile
+            }
+            descriptionTargetRef={
+              descriptionTargetRef
+            }
+            openingHoursTargetRef={
+              openingHoursTargetRef
+            }
+            openStatusTargetRef={
+              openStatusTargetRef
+            }
+            onDescriptionChange={
+              setDescription
+            }
+            onStatusChange={
+              handleStatusChange
+            }
+            onOpenOpeningHoursEditor={
+              handleOpenOpeningHoursEditor
+            }
+            onSaveProfile={
+              handleSaveProfile
+            }
           />
 
           <AccountLockedDetailsCard
@@ -265,31 +508,86 @@ function handleConfirmStatusChange() {
           />
         </div>
 
-        <AccountSupportSessionCard onSignOut={onSignOut} />
+        <AccountSupportSessionCard
+          onSignOut={onSignOut}
+        />
       </section>
 
       {isOpeningHoursEditorOpen ? (
         <AccountOpeningHoursModal
-          openingHoursDraft={openingHoursDraft}
-          onUpdateOpeningHoursDay={updateOpeningHoursDay}
-          onClose={() => setIsOpeningHoursEditorOpen(false)}
-          onApply={handleApplyOpeningHours}
+          openingHoursDraft={
+            openingHoursDraft
+          }
+          onUpdateOpeningHoursDay={
+            updateOpeningHoursDay
+          }
+          onClose={() =>
+            setIsOpeningHoursEditorOpen(
+              false
+            )
+          }
+          onApply={
+            handleApplyOpeningHours
+          }
         />
       ) : null}
 
       <LiveyConfirmModal
-  isOpen={pendingStatus !== null}
-  tone="warning"
-  title="Change venue status?"
-  description={
-    pendingStatus
-      ? `Your venue status will be changed to "${pendingStatus}". Manual status overrides should only be used for urgent or exceptional situations.`
-      : ""
-  }
-  confirmLabel="Change status"
-  onCancel={handleCancelStatusChange}
-  onConfirm={handleConfirmStatusChange}
-/>
+        isOpen={
+          pendingStatus !== null
+        }
+        tone="warning"
+        title="Change venue status?"
+        description={
+          pendingStatus
+            ? `Your venue status will be changed to "${pendingStatus}". Manual status overrides should only be used for urgent or exceptional situations.`
+            : ""
+        }
+        confirmLabel="Change status"
+        onCancel={
+          handleCancelStatusChange
+        }
+        onConfirm={
+          handleConfirmStatusChange
+        }
+      />
     </>
   );
+}
+
+function focusTargetControl(
+  target: EditableProfileFocusTarget,
+  container: HTMLElement
+) {
+  if (target === "logo") {
+    container
+      .querySelector<HTMLInputElement>(
+        'input[type="file"]'
+      )
+      ?.focus({
+        preventScroll: true,
+      });
+
+    return;
+  }
+
+  if (target === "description") {
+    container
+      .querySelector<HTMLTextAreaElement>(
+        "textarea"
+      )
+      ?.focus({
+        preventScroll: true,
+      });
+
+    return;
+  }
+
+  container
+    .querySelector<HTMLButtonElement>(
+      "button"
+    )
+    ?.focus({
+      preventScroll: true,
+    });
 }

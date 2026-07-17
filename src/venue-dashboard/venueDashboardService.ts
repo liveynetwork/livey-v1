@@ -76,7 +76,8 @@ export type VenueDashboardAnalytics = {
   removedActivities: number;
   historyActivities: number;
   profileCompleteness: number;
-  profileMissingFields: string[];
+  profileCompletedFields: string[];
+  profileMissingFields: string[]; 
   nextActivity: VenueDashboardEvent | null;
   currentLiveActivity: VenueDashboardEvent | null;
 
@@ -516,45 +517,34 @@ export function buildVenueDashboardAnalytics(
     liveNowActivities[0] ?? null;
 
   const profileFields = [
-    {
-      label: "Venue name",
-      value: venue.name,
-    },
-    {
-      label: "Category",
-      value: venue.category,
-    },
-    {
-      label: "City",
-      value: venue.city,
-    },
-    {
-      label: "Area",
-      value: venue.area,
-    },
-    {
-      label: "Address",
-      value: venue.address,
-    },
-    {
-      label: "Description",
-      value: venue.description,
-    },
-    {
-      label: "Opening hours",
-      value: venue.opening_hours,
-    },
-    {
-      label: "Open status",
-      value: venue.open_status,
-    },
-  ];
+  {
+    label: "Venue logo",
+    value: venue.logo_url,
+  },
+  {
+    label: "Description",
+    value: venue.description,
+  },
+  {
+    label: "Opening hours",
+    value: venue.opening_hours,
+  },
+  {
+    label: "Open status",
+    value: venue.open_status,
+  },
+];
 
   const completedProfileFields = profileFields.filter(
     (field) =>
       Boolean(
         String(field.value ?? "").trim()
       )
+  );
+
+  const profileCompletedFields =
+  completedProfileFields.map(
+    (field) => field.label
   );
 
   const profileMissingFields = profileFields
@@ -580,6 +570,7 @@ export function buildVenueDashboardAnalytics(
     removedActivities: removedActivities.length,
     historyActivities: historyActivities.length,
     profileCompleteness,
+    profileCompletedFields,
     profileMissingFields,
     nextActivity,
     currentLiveActivity,

@@ -6,8 +6,17 @@ import type {
 export type AnalyticsTrendPoint = {
   key: string;
   label: string;
+  accessibleLabel: string;
   count: number;
+  isCurrent?: boolean;
+  isFuture?: boolean;
 };
+
+export type AnalyticsPublishingRange =
+  | "14-days"
+  | "last-month"
+  | "6-months"
+  | "12-months";
 
 export type AnalyticsPublishingSummaryData = {
   thisMonth: number;
@@ -27,7 +36,108 @@ export function buildPublishingTrend(
   events: VenueDashboardEvent[],
   numberOfDays = 14
 ): AnalyticsTrendPoint[] {
-  const today = startOfDay(new Date());
+  return buildDailyPublishingTrend(
+    events,
+    numberOfDays
+  );
+}
+
+export function buildCurrentWeekPublishingTrend(
+  events: VenueDashboardEvent[]
+): AnalyticsTrendPoint[] {
+  const today = startOfDay(
+    new Date()
+  );
+
+  const monday = new Date(today);
+
+  const currentDay =
+    today.getDay();
+
+  const daysSinceMonday =
+    currentDay === 0
+      ? 6
+      : currentDay - 1;
+
+  monday.setDate(
+    today.getDate() -
+      daysSinceMonday
+  );
+
+  const points = Array.from(
+    { length: 7 },
+    (_, index) => {
+      const date = new Date(
+        monday
+      );
+
+      date.setDate(
+        monday.getDate() + index
+      );
+
+      return {
+        key: toLocalDateKey(date),
+        label: formatWeekdayLetter(
+          date
+        ),
+        accessibleLabel:
+          formatFullTrendDate(date),
+        count: 0,
+        isCurrent:
+          isSameLocalDate(
+            date,
+            today
+          ),
+        isFuture: date > today,
+      };
+    }
+  );
+
+  countEventsIntoDailyPoints(
+    events,
+    points
+  );
+
+  return points;
+}
+
+export function buildPublishingHistoryTrend(
+  events: VenueDashboardEvent[],
+  range: AnalyticsPublishingRange
+): AnalyticsTrendPoint[] {
+  if (range === "14-days") {
+    return buildDailyPublishingTrend(
+      events,
+      14
+    );
+  }
+
+  if (range === "last-month") {
+    return buildPreviousMonthWeeklyTrend(
+      events
+    );
+  }
+
+  if (range === "6-months") {
+    return buildMonthlyPublishingTrend(
+      events,
+      6
+    );
+  }
+
+  return buildMonthlyPublishingTrend(
+    events,
+    12
+  );
+}
+
+function buildDailyPublishingTrend(
+  events: VenueDashboardEvent[],
+  numberOfDays: number
+): AnalyticsTrendPoint[] {
+  const today = startOfDay(
+    new Date()
+  );
 
   const points = Array.from(
     { length: numberOfDays },
@@ -35,30 +145,199 @@ export function buildPublishingTrend(
       const date = new Date(today);
 
       date.setDate(
-        today.getDate() - (numberOfDays - 1 - index)
+        today.getDate() -
+          (numberOfDays -
+            1 -
+            index)
       );
 
       return {
         key: toLocalDateKey(date),
-        label: formatTrendLabel(date),
+        label: formatTrendLabel(
+          date
+        ),
+        accessibleLabel:
+          formatFullTrendDate(date),
+        count: 0,
+        isCurrent:
+          isSameLocalDate(
+            date,
+            today
+          ),
+      };
+    }
+  );
+
+  countEventsIntoDailyPoints(
+    events,
+    points
+  );
+
+  return points;
+}
+
+function buildPreviousMonthWeeklyTrend(
+  events: VenueDashboardEvent[]
+): AnalyticsTrendPoint[] {
+  const now = new Date();
+
+  const previousMonthStart = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    1
+  );
+
+  const previousMonthEnd = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    0
+  );
+
+  const totalDays =
+    previousMonthEnd.getDate();
+
+  const numberOfWeeks = Math.ceil(
+    totalDays / 7
+  );
+
+  const points = Array.from(
+    { length: numberOfWeeks },
+    (_, index) => {
+      const weekStartDay =
+        index * 7 + 1;
+
+      const weekEndDay = Math.min(
+        weekStartDay + 6,
+        totalDays
+      );
+
+      const weekStart = new Date(
+        previousMonthStart.getFullYear(),
+        previousMonthStart.getMonth(),
+        weekStartDay
+      );
+
+      const weekEnd = new Date(
+        previousMonthStart.getFullYear(),
+        previousMonthStart.getMonth(),
+        weekEndDay
+      );
+
+      return {
+        key: `week-${index + 1}`,
+        label: `W${index + 1}`,
+        accessibleLabel:
+          formatWeeklyTrendRange(
+            weekStart,
+            weekEnd
+          ),
         count: 0,
       };
     }
   );
 
+  events.forEach((event) => {
+    const createdAt = new Date(
+      event.created_at
+    );
+
+    if (
+      Number.isNaN(
+        createdAt.getTime()
+      )
+    ) {
+      return;
+    }
+
+    if (
+      createdAt < previousMonthStart ||
+      createdAt >
+        endOfLocalDay(
+          previousMonthEnd
+        )
+    ) {
+      return;
+    }
+
+    const weekIndex = Math.floor(
+      (createdAt.getDate() - 1) / 7
+    );
+
+    const point =
+      points[weekIndex];
+
+    if (point) {
+      point.count += 1;
+    }
+  });
+
+  return points;
+}
+
+function buildMonthlyPublishingTrend(
+  events: VenueDashboardEvent[],
+  numberOfMonths: number
+): AnalyticsTrendPoint[] {
+  const now = new Date();
+
+  const points = Array.from(
+    { length: numberOfMonths },
+    (_, index) => {
+      const monthDate = new Date(
+        now.getFullYear(),
+        now.getMonth() -
+          (numberOfMonths -
+            1 -
+            index),
+        1
+      );
+
+      return {
+        key: toLocalMonthKey(
+          monthDate
+        ),
+        label:
+          formatTrendMonthLabel(
+            monthDate
+          ),
+        accessibleLabel:
+          formatFullTrendMonth(
+            monthDate
+          ),
+        count: 0,
+        isCurrent:
+          monthDate.getFullYear() ===
+            now.getFullYear() &&
+          monthDate.getMonth() ===
+            now.getMonth(),
+      };
+    }
+  );
+
   const pointsByKey = new Map(
-    points.map((point) => [point.key, point])
+    points.map((point) => [
+      point.key,
+      point,
+    ])
   );
 
   events.forEach((event) => {
-    const createdAt = new Date(event.created_at);
+    const createdAt = new Date(
+      event.created_at
+    );
 
-    if (Number.isNaN(createdAt.getTime())) {
+    if (
+      Number.isNaN(
+        createdAt.getTime()
+      )
+    ) {
       return;
     }
 
     const point = pointsByKey.get(
-      toLocalDateKey(createdAt)
+      toLocalMonthKey(
+        createdAt
+      )
     );
 
     if (point) {
@@ -67,6 +346,42 @@ export function buildPublishingTrend(
   });
 
   return points;
+}
+
+function countEventsIntoDailyPoints(
+  events: VenueDashboardEvent[],
+  points: AnalyticsTrendPoint[]
+) {
+  const pointsByKey = new Map(
+    points.map((point) => [
+      point.key,
+      point,
+    ])
+  );
+
+  events.forEach((event) => {
+    const createdAt = new Date(
+      event.created_at
+    );
+
+    if (
+      Number.isNaN(
+        createdAt.getTime()
+      )
+    ) {
+      return;
+    }
+
+    const point = pointsByKey.get(
+      toLocalDateKey(
+        createdAt
+      )
+    );
+
+    if (point) {
+      point.count += 1;
+    }
+  });
 }
 
 export function buildPublishingSummary(
@@ -319,6 +634,81 @@ function toLocalDateKey(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
+function toLocalMonthKey(
+  date: Date
+) {
+  const year =
+    date.getFullYear();
+
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+
+  return `${year}-${month}`;
+}
+
+function isSameLocalDate(
+  firstDate: Date,
+  secondDate: Date
+) {
+  return (
+    firstDate.getFullYear() ===
+      secondDate.getFullYear() &&
+    firstDate.getMonth() ===
+      secondDate.getMonth() &&
+    firstDate.getDate() ===
+      secondDate.getDate()
+  );
+}
+
+function formatWeekdayLetter(
+  date: Date
+) {
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      weekday: "narrow",
+    }
+  ).format(date);
+}
+
+function formatFullTrendDate(
+  date: Date
+) {
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  ).format(date);
+}
+
+function formatTrendMonthLabel(
+  date: Date
+) {
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      month: "short",
+    }
+  ).format(date);
+}
+
+function formatFullTrendMonth(
+  date: Date
+) {
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      month: "long",
+      year: "numeric",
+    }
+  ).format(date);
+}
+
 function formatTrendLabel(date: Date) {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -339,4 +729,56 @@ function formatDuration(totalMinutes: number) {
   return minutes > 0
     ? `${hours}h ${minutes}m`
     : `${hours}h`;
+}
+
+function endOfLocalDay(
+  date: Date
+) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    23,
+    59,
+    59,
+    999
+  );
+}
+
+function formatWeeklyTrendRange(
+  startDate: Date,
+  endDate: Date
+) {
+  const sameMonth =
+    startDate.getMonth() ===
+      endDate.getMonth() &&
+    startDate.getFullYear() ===
+      endDate.getFullYear();
+
+  if (sameMonth) {
+    const monthAndYear =
+      new Intl.DateTimeFormat(
+        "en-GB",
+        {
+          month: "long",
+          year: "numeric",
+        }
+      ).format(endDate);
+
+    return `${startDate.getDate()}–${endDate.getDate()} ${monthAndYear}`;
+  }
+
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }
+    );
+
+  return `${formatter.format(
+    startDate
+  )}–${formatter.format(endDate)}`;
 }

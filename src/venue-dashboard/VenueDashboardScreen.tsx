@@ -34,6 +34,9 @@ import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
 import "./VenueDashboardScreen.css";
 import { LiveyConfirmModal } from "./components/LiveyConfirmModal";
 import { LiveyToast } from "./components/LiveyToast";
+import type {
+  EditableProfileFocusTarget,
+} from "./tabs/analytics/AnalyticsProfileHealthModal";
 
 type VenueDashboardScreenProps = {
   onReady?: () => void;
@@ -48,6 +51,14 @@ export function VenueDashboardScreen({
 
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("home");
+
+    const [
+  accountSettingsFocusTarget,
+  setAccountSettingsFocusTarget,
+] =
+  useState<EditableProfileFocusTarget | null>(
+    null
+  );
 
   const [editingEvent, setEditingEvent] =
     useState<EditingEventState | null>(null);
@@ -386,6 +397,13 @@ followerAnalyticsGeneratedAt:
 
     return true;
   }
+
+  function handleOpenAccountSettings(
+  target: EditableProfileFocusTarget
+) {
+  setAccountSettingsFocusTarget(target);
+  setActiveSection("account");
+}
 
   function handleCreateEvent() {
     setStatusMessage("");
@@ -949,6 +967,9 @@ followerAnalyticsGeneratedAt:
   onRefreshAnalytics={
     handleRefreshDashboard
   }
+  onOpenAccountSettings={
+  handleOpenAccountSettings
+}
 />
             ) : null}
 
@@ -982,6 +1003,12 @@ followerAnalyticsGeneratedAt:
                 isUpdatingVenueProfile={
                   isUpdatingVenueProfile
                 }
+                focusTarget={
+  accountSettingsFocusTarget
+}
+onFocusTargetHandled={() =>
+  setAccountSettingsFocusTarget(null)
+}
                 onRefreshDashboard={
                   handleRefreshDashboard
                 }

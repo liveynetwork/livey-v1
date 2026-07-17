@@ -1,4 +1,5 @@
 ﻿@import "./VenueDashboardAnalyticsBase.css";
+@import "./analytics/analyticsProfileHealth.css";
 @import "./VenueDashboardAnalyticsInsights.css";
 @import "./VenueDashboardAnalyticsFollowers.css";
 @import "./VenueDashboardAnalyticsRefresh.css";
