@@ -96,9 +96,10 @@ export function AccountOpeningHoursModal({
           <button
             className="venue-dashboard-hours-editor-close-button"
             type="button"
+            aria-label="Close opening hours editor"
             onClick={handleRequestClose}
           >
-            Close
+            <CloseIcon />
           </button>
         </div>
 
@@ -157,14 +158,6 @@ export function AccountOpeningHoursModal({
 
         <div className="venue-dashboard-hours-editor-actions">
           <button
-            className="venue-dashboard-secondary-button"
-            type="button"
-            onClick={handleRequestClose}
-          >
-            Cancel
-          </button>
-
-          <button
             className="venue-dashboard-save-button"
             type="button"
             onClick={handleApplyChanges}
@@ -174,5 +167,14 @@ export function AccountOpeningHoursModal({
         </div>
       </section>
     </div>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </svg>
   );
 }

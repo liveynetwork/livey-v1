@@ -7,7 +7,9 @@ import "./VenueDashboardHistoryArchiveModal.css";
 type VenueDashboardHistoryArchiveModalProps = {
   historyEvents: VenueDashboardEvent[];
   onClose: () => void;
-  onOpenEvent: (event: VenueDashboardEvent) => void;
+  onOpenEvent: (
+    event: VenueDashboardEvent
+  ) => void;
 };
 
 export function VenueDashboardHistoryArchiveModal({
@@ -21,7 +23,12 @@ export function VenueDashboardHistoryArchiveModal({
     <div
       className="venue-dashboard-history-modal-backdrop"
       role="presentation"
-      onMouseDown={(event) => handleBackdropClick(event, onClose)}
+      onMouseDown={(event) =>
+        handleBackdropClick(
+          event,
+          onClose
+        )
+      }
     >
       <section
         className="venue-dashboard-history-archive-modal"
@@ -31,31 +38,37 @@ export function VenueDashboardHistoryArchiveModal({
       >
         <header className="venue-dashboard-history-modal-heading">
           <div>
-            <p className="venue-dashboard-eyebrow">Full archive</p>
+            <p className="venue-dashboard-eyebrow">
+              Full archive
+            </p>
 
             <h2 id="venue-dashboard-history-archive-title">
               All past activity
             </h2>
 
             <p>
-              Review every activity that expired naturally or was removed from
-              Livey.
+              Review every activity that
+              expired naturally or was
+              removed from Livey.
             </p>
           </div>
 
           <button
             className="venue-dashboard-history-modal-close"
             type="button"
+            aria-label="Close activity archive"
             onClick={onClose}
           >
-            Close
+            <CloseIcon />
           </button>
         </header>
 
         <div className="venue-dashboard-history-archive-summary">
           <span>
             {historyEvents.length}{" "}
-            {historyEvents.length === 1 ? "activity" : "activities"}
+            {historyEvents.length === 1
+              ? "activity"
+              : "activities"}
           </span>
         </div>
 
@@ -71,23 +84,37 @@ export function VenueDashboardHistoryArchiveModal({
   );
 }
 
-function useModalBehaviour(onClose: () => void) {
+function useModalBehaviour(
+  onClose: () => void
+) {
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const previousOverflow =
+      document.body.style.overflow;
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+      "hidden";
 
-    function handleKeyDown(event: globalThis.KeyboardEvent) {
+    function handleKeyDown(
+      event: globalThis.KeyboardEvent
+    ) {
       if (event.key === "Escape") {
         onClose();
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow =
+        previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
     };
   }, [onClose]);
 }
@@ -96,7 +123,21 @@ function handleBackdropClick(
   event: MouseEvent<HTMLDivElement>,
   onClose: () => void
 ) {
-  if (event.target === event.currentTarget) {
+  if (
+    event.target === event.currentTarget
+  ) {
     onClose();
   }
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </svg>
+  );
 }

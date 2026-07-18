@@ -72,15 +72,15 @@ export function AnalyticsPublishingHistoryModal({
     ).length;
 
   const selectedRangeLabel =
-  publishingRanges.find(
-    (range) =>
-      range.value === selectedRange
-  )?.label ?? "Selected period";
+    publishingRanges.find(
+      (range) =>
+        range.value === selectedRange
+    )?.label ?? "Selected period";
 
-const selectedRangeDescription =
-  selectedRange === "last-month"
-    ? "during the previous calendar month"
-    : `during the last ${selectedRangeLabel.toLowerCase()}`;
+  const selectedRangeDescription =
+    selectedRange === "last-month"
+      ? "during the previous calendar month"
+      : `during the last ${selectedRangeLabel.toLowerCase()}`;
 
   return (
     <div
@@ -119,9 +119,10 @@ const selectedRangeDescription =
           <button
             className="venue-dashboard-analytics-publishing-modal-close"
             type="button"
+            aria-label="Close publishing history"
             onClick={onClose}
           >
-            Close
+            <CloseIcon />
           </button>
         </header>
 
@@ -169,10 +170,10 @@ const selectedRangeDescription =
           </div>
 
           <small>
-  {activePublishingPeriods === 1
-    ? `Across 1 active period ${selectedRangeDescription}`
-    : `Across ${activePublishingPeriods} active periods ${selectedRangeDescription}`}
-</small>
+            {activePublishingPeriods === 1
+              ? `Across 1 active period ${selectedRangeDescription}`
+              : `Across ${activePublishingPeriods} active periods ${selectedRangeDescription}`}
+          </small>
         </div>
 
         <div className="venue-dashboard-analytics-publishing-modal-chart-scroll">
@@ -196,17 +197,20 @@ const selectedRangeDescription =
             </span>
           </div>
         ) : null}
-
-        <footer className="venue-dashboard-analytics-publishing-modal-footer">
-          <button
-            type="button"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </footer>
       </section>
     </div>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </svg>
   );
 }
 

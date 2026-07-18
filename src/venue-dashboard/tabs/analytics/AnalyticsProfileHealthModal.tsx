@@ -124,9 +124,10 @@ export function AnalyticsProfileHealthModal({
           <button
             className="venue-dashboard-analytics-profile-modal-close"
             type="button"
+            aria-label="Close venue profile details"
             onClick={onClose}
           >
-            Close
+            <CloseIcon />
           </button>
         </header>
 
@@ -233,9 +234,7 @@ export function AnalyticsProfileHealthModal({
                       </svg>
                     </button>
                   ) : (
-                    <span
-                      className="venue-dashboard-analytics-profile-field-complete-label"
-                    >
+                    <span className="venue-dashboard-analytics-profile-field-complete-label">
                       Ready
                     </span>
                   )}
@@ -258,15 +257,6 @@ export function AnalyticsProfileHealthModal({
             </span>
           </div>
         ) : null}
-
-        <footer className="venue-dashboard-analytics-profile-modal-actions">
-          <button
-            type="button"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </footer>
       </section>
     </div>
   );
@@ -291,6 +281,18 @@ function MissingIcon() {
     >
       <path d="m8 8 8 8" />
       <path d="m16 8-8 8" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
     </svg>
   );
 }

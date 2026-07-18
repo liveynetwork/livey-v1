@@ -132,18 +132,16 @@
   border-radius: 28px;
   padding: 24px;
   background:
-    radial-gradient(
-      circle at 50% 100%,
-      rgba(255, 91, 50, 0.08),
-      transparent 44%
-    ),
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.034),
-      rgba(255, 255, 255, 0.008)
+      rgba(255, 255, 255, 0.026),
+      rgba(255, 255, 255, 0.006)
     ),
-    rgba(7, 8, 10, 0.58);
+    rgba(7, 8, 10, 0.62);
   text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-analytics-follower-compact-metric::after {
@@ -195,10 +193,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   margin: 0 auto 12px;
-  color:
-    rgba(247, 241, 234, 0.48);
   text-align: center;
 }
 
@@ -207,30 +202,6 @@
   color: #f7f1ea;
   font-size: 0.78rem;
   font-weight: 950;
-}
-
-.venue-dashboard-analytics-follower-today-label
-  small {
-  position: relative;
-  padding-left: 11px;
-  color:
-    rgba(247, 241, 234, 0.34);
-  font-size: 0.64rem;
-  font-weight: 800;
-}
-
-.venue-dashboard-analytics-follower-today-label
-  small::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 3px;
-  height: 3px;
-  border-radius: 999px;
-  background:
-    rgba(247, 241, 234, 0.28);
-  transform: translateY(-50%);
 }
 
 /* Range selector */
@@ -298,8 +269,7 @@
 .venue-dashboard-analytics-follower-chart-meta {
   display: grid;
   grid-template-columns:
-    minmax(230px, 1.35fr)
-    repeat(3, minmax(170px, 1fr));
+    repeat(4, minmax(0, 1fr));
   align-items: stretch;
   justify-content: center;
   gap: 12px;
@@ -309,6 +279,7 @@
 .venue-dashboard-analytics-follower-chart-meta
   > div {
   position: relative;
+  min-width: 0;
   min-height: 118px;
   overflow: hidden;
   display: grid;
@@ -397,7 +368,7 @@
   .is-primary
   strong {
   color: #ff8b6e;
-  font-size: 2.35rem;
+  font-size: 1.85rem;
 }
 
 .venue-dashboard-analytics-follower-chart-meta
@@ -413,6 +384,7 @@
 /* Chart */
 
 .venue-dashboard-analytics-follower-chart-shell {
+  
   position: relative;
   width: 100%;
   min-height: 330px;
@@ -428,6 +400,9 @@
       transparent 42%
     ),
     rgba(7, 8, 10, 0.5);
+      transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-analytics-follower-chart-shell::before {
@@ -540,7 +515,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0;
   border: 1px solid
     rgba(255, 91, 50, 0.3);
   border-radius: 16px;
@@ -559,17 +534,6 @@
     color 180ms ease,
     transform 180ms ease,
     box-shadow 180ms ease;
-}
-
-.venue-dashboard-analytics-follower-advanced-button
-  svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .venue-dashboard-analytics-follower-advanced-button:focus-visible {
@@ -730,20 +694,10 @@
   border-radius: 34px;
   padding: 32px;
   background:
-    radial-gradient(
-      circle at 10% 0%,
-      rgba(255, 91, 50, 0.075),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(255, 255, 255, 0.04),
-      transparent 30%
-    ),
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.028),
-      rgba(255, 255, 255, 0.006)
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.004)
     ),
     #15171b;
   box-shadow:
@@ -854,9 +808,12 @@
 
 .venue-dashboard-analytics-follower-modal-footer {
   min-height: 54px;
-  display: flex;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 18px;
   margin-top: 20px;
   border-top: 1px solid
@@ -866,6 +823,18 @@
     rgba(247, 241, 234, 0.4);
   font-size: 0.7rem;
   font-weight: 850;
+}
+
+.venue-dashboard-analytics-follower-modal-footer
+  > span {
+  justify-self: start;
+}
+
+.venue-dashboard-analytics-follower-modal-footer
+  .venue-dashboard-analytics-refresh-button {
+  position: static;
+  grid-column: 2;
+  justify-self: center;
 }
 
 .venue-dashboard-analytics-follower-modal-footer
@@ -904,12 +873,40 @@
 /* Hover */
 
 @media (hover: hover) and (pointer: fine) {
+
   .venue-dashboard-analytics-follower-growth
-    > div:hover,
+  > div:hover {
+  border-color:
+    rgba(255, 91, 50, 0.42);
+}
+    .venue-dashboard-analytics-follower-compact-metric:hover,
+  .venue-dashboard-analytics-follower-chart-shell:hover,
   .venue-dashboard-analytics-follower-chart-meta
     > div:hover {
     border-color:
-      rgba(255, 91, 50, 0.42);
+      rgba(255, 91, 50, 0.55);
+  }
+
+  .venue-dashboard-analytics-follower-compact-metric:hover,
+  .venue-dashboard-analytics-follower-chart-meta
+    > div:hover {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.007)
+      ),
+      rgba(7, 8, 10, 0.64);
+  }
+
+  .venue-dashboard-analytics-follower-chart-shell:hover {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 91, 50, 0.018),
+        rgba(255, 255, 255, 0.004)
+      ),
+      rgba(7, 8, 10, 0.52);
   }
 
   .venue-dashboard-analytics-follower-range-selector
@@ -1031,10 +1028,18 @@
   }
 
   .venue-dashboard-analytics-follower-modal-footer {
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.venue-dashboard-analytics-follower-modal-footer
+  > span,
+.venue-dashboard-analytics-follower-modal-footer
+  .venue-dashboard-analytics-refresh-button {
+  grid-column: 1;
+  justify-self: center;
+}
 }
 
 @media (max-width: 560px) {
@@ -1053,21 +1058,6 @@
 
   .venue-dashboard-analytics-follower-range-selector.is-advanced {
     grid-template-columns: 1fr;
-  }
-
-  .venue-dashboard-analytics-follower-today-label {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .venue-dashboard-analytics-follower-today-label
-    small {
-    padding-left: 0;
-  }
-
-  .venue-dashboard-analytics-follower-today-label
-    small::before {
-    display: none;
   }
 
   .venue-dashboard-analytics-follower-advanced-button {

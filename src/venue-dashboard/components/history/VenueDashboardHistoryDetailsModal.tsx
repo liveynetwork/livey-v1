@@ -37,6 +37,15 @@ export function VenueDashboardHistoryDetailsModal({
         aria-modal="true"
         aria-labelledby="venue-dashboard-history-details-title"
       >
+        <button
+          className="venue-dashboard-history-details-close"
+          type="button"
+          aria-label="Close archived activity details"
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </button>
+
         <header className="venue-dashboard-history-details-heading">
           <div
             className="venue-dashboard-history-lock-icon"
@@ -107,16 +116,6 @@ export function VenueDashboardHistoryDetailsModal({
             </>
           ) : null}
         </div>
-
-        <footer className="venue-dashboard-history-details-actions">
-          <button
-            className="venue-dashboard-secondary-button"
-            type="button"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </footer>
       </section>
     </div>
   );
@@ -128,7 +127,11 @@ type DetailItemProps = {
   wide?: boolean;
 };
 
-function DetailItem({ label, value, wide = false }: DetailItemProps) {
+function DetailItem({
+  label,
+  value,
+  wide = false,
+}: DetailItemProps) {
   return (
     <article
       className={`venue-dashboard-history-detail-item ${
@@ -169,6 +172,15 @@ function handleBackdropClick(
   if (event.target === event.currentTarget) {
     onClose();
   }
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </svg>
+  );
 }
 
 function LockIcon() {

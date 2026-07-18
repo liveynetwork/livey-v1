@@ -277,6 +277,7 @@
 }
 
 .venue-dashboard-analytics-profile-modal {
+  position: relative;
   width: min(1040px, 100%);
   max-height: calc(100dvh - 56px);
   overflow-y: auto;
@@ -290,19 +291,18 @@
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.018)
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.004)
     ),
     #15171b;
   box-shadow:
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.03),
     0 40px 120px
-      rgba(0, 0, 0, 0.62);
+    rgba(0, 0, 0, 0.62);
   animation:
     venue-dashboard-profile-modal-enter
     210ms ease both;
-  transition: border-color 180ms ease;
+  transition:
+    border-color 180ms ease;
 }
 
 .venue-dashboard-analytics-profile-modal-heading {
@@ -342,25 +342,36 @@
   line-height: 1.6;
 }
 
-.venue-dashboard-analytics-profile-modal-close,
-.venue-dashboard-analytics-profile-modal-actions
-  button {
-  min-height: 44px;
+.venue-dashboard-analytics-profile-modal-close {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
   border: 1px solid
-    rgba(255, 255, 255, 0.085);
-  border-radius: 999px;
-  padding: 0 18px;
+    rgba(255, 255, 255, 0.075);
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  padding: 0;
   background:
-    rgba(255, 255, 255, 0.06);
-  color: #f7f1ea;
-  font: inherit;
-  font-size: 0.84rem;
-  font-weight: 950;
+    rgba(7, 8, 10, 0.48);
+  color:
+    rgba(247, 241, 234, 0.68);
   cursor: pointer;
   transition:
     border-color 180ms ease,
     background 180ms ease,
-    color 180ms ease;
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-analytics-profile-modal-close
+  svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
 }
 
 .venue-dashboard-analytics-profile-modal-overview {
@@ -375,12 +386,15 @@
   border-radius: 30px;
   padding: 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.008)
-    ),
-    rgba(7, 8, 10, 0.46);
+  linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.018),
+    rgba(255, 255, 255, 0.004)
+  ),
+  rgba(7, 8, 10, 0.52);
+  transition:
+  border-color 180ms ease,
+  background 180ms ease;
 }
 
 .venue-dashboard-analytics-profile-modal-overview-copy {
@@ -427,12 +441,12 @@
   border-radius: 26px;
   padding: 20px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.008)
-    ),
-    rgba(7, 8, 10, 0.46);
+  linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.018),
+    rgba(255, 255, 255, 0.004)
+  ),
+  rgba(7, 8, 10, 0.52);
   transition: border-color 180ms ease;
 }
 
@@ -503,7 +517,7 @@
   gap: 13px;
   padding: 12px 15px;
   background:
-    rgba(255, 255, 255, 0.025);
+  rgba(7, 8, 10, 0.48);
   transition:
     border-color 180ms ease,
     background 180ms ease;
@@ -664,35 +678,6 @@
   font-size: 0.76rem;
 }
 
-.venue-dashboard-analytics-profile-modal-actions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.venue-dashboard-analytics-profile-modal-actions
-  button {
-  min-width: 150px;
-}
-
-.venue-dashboard-analytics-profile-modal-actions
-  button.is-primary {
-  border-color:
-    rgba(255, 91, 50, 0.5);
-  background:
-    rgba(255, 91, 50, 0.14);
-  color: #ffd8cd;
-}
-
-.venue-dashboard-analytics-profile-modal-close:focus-visible,
-.venue-dashboard-analytics-profile-modal-actions
-  button:focus-visible {
-  outline: 2px solid
-    rgba(255, 91, 50, 0.72);
-  outline-offset: 3px;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-analytics-profile-card-action:hover,
 .venue-dashboard-analytics-profile-card-action:focus-visible {
@@ -718,15 +703,14 @@
       rgba(255, 91, 50, 0.55);
   }
 
-  .venue-dashboard-analytics-profile-modal-close:hover,
-  .venue-dashboard-analytics-profile-modal-actions
-    button:hover {
-    border-color:
-      rgba(255, 91, 50, 0.55);
-    background:
-      rgba(255, 91, 50, 0.12);
-    color: #ffd8cd;
-  }
+  .venue-dashboard-analytics-profile-modal-close:hover {
+  border-color:
+    rgba(255, 91, 50, 0.32);
+  background:
+    rgba(255, 91, 50, 0.1);
+  color: #ffd5ca;
+  transform: translateY(-1px);
+}
 
   .venue-dashboard-analytics-profile-card-action:focus-visible {
   outline: 3px solid rgba(255, 91, 50, 0.14);
@@ -806,12 +790,15 @@
   }
 
   .venue-dashboard-analytics-profile-modal-heading {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns:
+    minmax(0, 1fr) auto;
+  gap: 14px;
+}
 
-  .venue-dashboard-analytics-profile-modal-close {
-    width: 100%;
-  }
+.venue-dashboard-analytics-profile-modal-close {
+  width: 46px;
+  height: 46px;
+}
 }
 
 @media (max-width: 560px) {
@@ -841,16 +828,6 @@
     .venue-dashboard-analytics-profile-ring-inner {
     width: 158px;
     height: 158px;
-  }
-
-  .venue-dashboard-analytics-profile-modal-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .venue-dashboard-analytics-profile-modal-actions
-    button {
-    width: 100%;
   }
 }
 
