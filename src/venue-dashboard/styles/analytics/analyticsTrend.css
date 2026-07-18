@@ -79,6 +79,9 @@
       rgba(255, 255, 255, 0.006)
     ),
     rgba(7, 8, 10, 0.5);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-analytics-chart-history {
@@ -152,6 +155,8 @@
   display: block;
   border-radius: inherit;
   background: rgba(247, 241, 234, 0.09);
+  outline: 1px solid transparent;
+  outline-offset: 2px;
   transform: scaleY(0);
   transform-origin: bottom;
   transition:
@@ -162,7 +167,7 @@
       1
     ),
     background 180ms ease,
-    box-shadow 180ms ease;
+    outline-color 180ms ease;
 }
 
 .venue-dashboard-analytics-chart.is-visible
@@ -200,7 +205,14 @@
 
 .venue-dashboard-analytics-chart-column.is-current
   .venue-dashboard-analytics-chart-track {
-  border-color: rgba(255, 91, 50, 0.2);
+  border-color:
+    rgba(255, 91, 50, 0.52);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 91, 50, 0.07),
+      rgba(255, 255, 255, 0.023)
+    );
 }
 
 .venue-dashboard-analytics-chart-column.is-future
@@ -268,82 +280,183 @@
   outline-offset: 3px;
 }
 
+.venue-dashboard-analytics-publishing-summary-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.venue-dashboard-analytics-publishing-summary-card
+  .venue-dashboard-analytics-section-heading {
+  flex: 0 0 auto;
+}
+
 .venue-dashboard-analytics-month-grid {
+  flex: 2 1 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr;
+  grid-template-rows:
+    repeat(2, minmax(148px, 1fr));
+  gap: 12px;
 }
 
 .venue-dashboard-analytics-month-grid > div {
-  min-height: 142px;
+  position: relative;
+  overflow: hidden;
+  min-height: 148px;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 7px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 22px;
-  padding: 18px;
-  background: rgba(7, 8, 10, 0.42);
+  gap: 9px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+  border-radius: 24px;
+  padding: 22px;
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(255, 255, 255, 0.035),
+      transparent 68%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.042),
+      rgba(255, 255, 255, 0.012)
+    ),
+    rgba(7, 8, 10, 0.52);
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.025),
+    0 14px 34px
+      rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-analytics-month-grid
+  > div::after {
+  content: "";
+  position: absolute;
+  right: 24%;
+  bottom: 0;
+  left: 24%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 91, 50, 0.24),
+      transparent
+    );
 }
 
 .venue-dashboard-analytics-month-grid span,
 .venue-dashboard-analytics-month-change > span {
-  color: rgba(247, 241, 234, 0.42);
-  font-size: 0.66rem;
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.68rem;
   font-weight: 950;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .venue-dashboard-analytics-month-grid strong {
   color: #f7f1ea;
-  font-size: 2.3rem;
+  font-size: clamp(
+    2.45rem,
+    4vw,
+    3.15rem
+  );
   font-weight: 950;
-  line-height: 1;
-  letter-spacing: -0.07em;
+  line-height: 0.95;
+  letter-spacing: -0.08em;
 }
 
 .venue-dashboard-analytics-month-grid small {
-  color: rgba(247, 241, 234, 0.4);
-  font-size: 0.7rem;
-  font-weight: 800;
+  color: rgba(247, 241, 234, 0.44);
+  font-size: 0.73rem;
+  font-weight: 850;
 }
 
 .venue-dashboard-analytics-month-change {
-  min-height: 116px;
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 0;
+  min-height: 148px;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 7px;
+  gap: 9px;
   margin-top: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 22px;
-  padding: 18px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+  border-radius: 24px;
+  padding: 22px;
   background:
+    radial-gradient(
+      circle at top center,
+      rgba(255, 91, 50, 0.065),
+      transparent 70%
+    ),
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.015)
+      rgba(255, 255, 255, 0.014)
     ),
-    rgba(7, 8, 10, 0.42);
+    rgba(7, 8, 10, 0.52);
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.025),
+    0 14px 34px
+      rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-analytics-month-change::after {
+  content: "";
+  position: absolute;
+  right: 24%;
+  bottom: 0;
+  left: 24%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 91, 50, 0.42),
+      transparent
+    );
 }
 
 .venue-dashboard-analytics-month-change strong {
-  color: rgba(247, 241, 234, 0.8);
-  font-size: 1.8rem;
+  color: rgba(247, 241, 234, 0.84);
+  font-size: clamp(
+    2.15rem,
+    4vw,
+    2.75rem
+  );
   font-weight: 950;
-  letter-spacing: -0.06em;
+  line-height: 0.95;
+  letter-spacing: -0.075em;
 }
 
-.venue-dashboard-analytics-month-change.is-up strong {
-  color: #ff805f;
+.venue-dashboard-analytics-month-change.is-up
+  strong {
+  color: #ff7654;
+}
+
+.venue-dashboard-analytics-month-change.is-down
+  strong {
+  color: rgba(247, 241, 234, 0.72);
 }
 
 .venue-dashboard-analytics-month-change small {
-  color: rgba(247, 241, 234, 0.44);
-  font-size: 0.73rem;
-  font-weight: 800;
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.74rem;
+  font-weight: 850;
 }
 
 /* Publishing history modal */
@@ -563,21 +676,104 @@
   }
 
   .venue-dashboard-analytics-chart-column:hover
-    .venue-dashboard-analytics-chart-track
-    span.is-active,
-  .venue-dashboard-analytics-chart-column:focus-visible
-    .venue-dashboard-analytics-chart-track
-    span.is-active {
-    background:
-      linear-gradient(
-        180deg,
-        #ff8466,
-        #ff6540
-      );
-    box-shadow:
-      0 0 11px rgba(255, 91, 50, 0.34),
-      0 0 24px rgba(255, 91, 50, 0.14);
-  }
+  .venue-dashboard-analytics-chart-track
+  span,
+.venue-dashboard-analytics-chart-column:focus-visible
+  .venue-dashboard-analytics-chart-track
+  span {
+  outline-color:
+    rgba(247, 241, 234, 0.34);
+}
+
+.venue-dashboard-analytics-chart-column:hover
+  .venue-dashboard-analytics-chart-track
+  span.is-active,
+.venue-dashboard-analytics-chart-column:focus-visible
+  .venue-dashboard-analytics-chart-track
+  span.is-active {
+  background:
+    linear-gradient(
+      180deg,
+      #ff8466,
+      #ff6540
+    );
+  outline-color:
+    rgba(255, 128, 95, 0.82);
+}
+
+  .venue-dashboard-analytics-chart-column.is-current:hover
+  .venue-dashboard-analytics-chart-track,
+.venue-dashboard-analytics-chart-column.is-current:focus-visible
+  .venue-dashboard-analytics-chart-track {
+  border-color:
+    rgba(255, 91, 50, 0.82);
+}
+
+.venue-dashboard-analytics-chart-column:hover
+  .venue-dashboard-analytics-chart-track,
+.venue-dashboard-analytics-chart-column:focus-visible
+  .venue-dashboard-analytics-chart-track {
+  border-color:
+    rgba(255, 255, 255, 0.16);
+}
+
+.venue-dashboard-analytics-chart-column.is-current:hover
+  .venue-dashboard-analytics-chart-track,
+.venue-dashboard-analytics-chart-column.is-current:focus-visible
+  .venue-dashboard-analytics-chart-track {
+  border-color:
+    rgba(255, 91, 50, 0.88);
+}
+
+  .venue-dashboard-analytics-chart:hover {
+  border-color:
+    rgba(255, 91, 50, 0.55);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 91, 50, 0.025),
+      rgba(255, 255, 255, 0.006)
+    ),
+    rgba(7, 8, 10, 0.52);
+}
+
+  .venue-dashboard-analytics-month-grid
+  > div:hover,
+.venue-dashboard-analytics-month-change:hover {
+  border-color:
+    rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-analytics-month-grid
+  > div:hover {
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(255, 91, 50, 0.055),
+      transparent 68%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.046),
+      rgba(255, 255, 255, 0.014)
+    ),
+    rgba(7, 8, 10, 0.54);
+}
+
+.venue-dashboard-analytics-month-change:hover {
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(255, 91, 50, 0.095),
+      transparent 70%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.048),
+      rgba(255, 255, 255, 0.015)
+    ),
+    rgba(7, 8, 10, 0.54);
+}
 
   .venue-dashboard-analytics-trend-actions
     button:hover,
@@ -674,10 +870,6 @@
 }
 
 @media (max-width: 560px) {
-  .venue-dashboard-analytics-month-grid {
-    grid-template-columns: 1fr;
-  }
-
   .venue-dashboard-analytics-chart {
     height: 270px;
   }

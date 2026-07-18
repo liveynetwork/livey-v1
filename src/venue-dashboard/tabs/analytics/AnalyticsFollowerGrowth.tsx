@@ -1,40 +1,91 @@
+import { useState } from "react";
 import type {
   VenueDashboardAnalytics,
-  VenueFollowerGrowthPoint,
+  VenueFollowerActivityPoint,
 } from "../../venueDashboardService";
 import { AnalyticsSectionHeading } from "./AnalyticsSectionHeading";
+import "./AnalyticsFollowerGrowth.css";
 
 type AnalyticsFollowerGrowthProps = {
   analytics: VenueDashboardAnalytics;
   onRefresh?: () => void;
 };
 
-type ChartPoint = VenueFollowerGrowthPoint & {
-  x: number;
-  y: number;
+type FollowerGrowthRange =
+  | "last14Days"
+  | "lastMonth"
+  | "last6Months"
+  | "lastYear";
+
+type FollowerMovementType =
+  | "start"
+  | "follow"
+  | "unfollow"
+  | "snapshot";
+
+type CumulativeFollowerPoint = {
+  id: string;
+  date: string;
+  follows: number;
+  unfollows: number;
+  followerTotal: number;
+  movementType: FollowerMovementType;
+  timelinePosition: number;
 };
+
+type ChartPoint =
+  CumulativeFollowerPoint & {
+    x: number;
+    y: number;
+  };
 
 const CHART_WIDTH = 1000;
 const CHART_HEIGHT = 280;
-const CHART_TOP = 22;
+const CHART_TOP = 28;
 const CHART_BOTTOM = 226;
 const CHART_LEFT = 28;
 const CHART_RIGHT = 972;
+
+const CHART_MIDDLE =
+  CHART_TOP +
+  (CHART_BOTTOM - CHART_TOP) / 2;
 
 export function AnalyticsFollowerGrowth({
   analytics,
   onRefresh,
 }: AnalyticsFollowerGrowthProps) {
-  const growth =
-    analytics.followerGrowthLast30Days ?? [];
+  const [
+    selectedRange,
+    setSelectedRange,
+  ] = useState<FollowerGrowthRange>(
+    "last14Days"
+  );
 
-  if (analytics.isFollowerAnalyticsLoading) {
+  const activityRanges =
+    analytics.followerActivityRanges ?? {
+      last14Days: [],
+      lastMonth: [],
+      last6Months: [],
+      lastYear: [],
+    };
+
+  const activity =
+    activityRanges[selectedRange];
+
+  const rangeDetails =
+    getFollowerRangeDetails(
+      selectedRange
+    );
+
+  if (
+    analytics.isFollowerAnalyticsLoading
+  ) {
     return (
       <section className="venue-dashboard-analytics-card venue-dashboard-analytics-follower-chart-card">
         <AnalyticsSectionHeading
           eyebrow="Audience growth"
           title="Follower growth"
-          description="See how your Livey audience has grown during the last 30 days."
+          description="See how your Livey audience changes over time."
         />
 
         <FollowerChartState
@@ -45,13 +96,15 @@ export function AnalyticsFollowerGrowth({
     );
   }
 
-  if (analytics.followerAnalyticsError) {
+  if (
+    analytics.followerAnalyticsError
+  ) {
     return (
       <section className="venue-dashboard-analytics-card venue-dashboard-analytics-follower-chart-card">
         <AnalyticsSectionHeading
           eyebrow="Audience growth"
           title="Follower growth"
-          description="See how your Livey audience has grown during the last 30 days."
+          description="See how your Livey audience changes over time."
         />
 
         <FollowerChartState
@@ -63,45 +116,54 @@ export function AnalyticsFollowerGrowth({
     );
   }
 
+  const totalFollowers =
+    analytics.totalFollowers ?? 0;
+
+  const cumulativeGrowth =
+    buildCumulativeFollowerGrowth(
+      activity,
+      totalFollowers
+    );
+
   const chartPoints =
-    buildFollowerChartPoints(growth);
+    buildFollowerChartPoints(
+      cumulativeGrowth,
+      activity.length
+    );
 
-  const totalGrowth = growth.reduce(
-    (total, point) =>
-      total + point.newFollowers,
-    0
-  );
+  const totalFollows =
+    activity.reduce(
+      (total, point) =>
+        total + point.follows,
+      0
+    );
 
-  const activeGrowthDays = growth.filter(
-    (point) => point.newFollowers > 0
-  ).length;
+  const totalUnfollows =
+    activity.reduce(
+      (total, point) =>
+        total + point.unfollows,
+      0
+    );
 
-  const averagePerActiveDay =
-    activeGrowthDays > 0
-      ? totalGrowth / activeGrowthDays
-      : 0;
+  const netChange =
+    totalFollows -
+    totalUnfollows;
 
-  const bestDay = growth.reduce<
-    VenueFollowerGrowthPoint | null
-  >((currentBest, point) => {
-    if (point.newFollowers <= 0) {
-      return currentBest;
-    }
+  const activePeriods =
+    activity.filter(
+      (point) =>
+        point.follows > 0 ||
+        point.unfollows > 0
+    ).length;
 
-    if (
-      !currentBest ||
-      point.newFollowers >
-        currentBest.newFollowers
-    ) {
-      return point;
-    }
-
-    return currentBest;
-  }, null);
+  const totalMovements =
+    totalFollows +
+    totalUnfollows;
 
   const lastUpdated =
     formatFollowerAnalyticsUpdatedAt(
-      analytics.followerAnalyticsGeneratedAt
+      analytics
+        .followerAnalyticsGeneratedAt
     );
 
   return (
@@ -110,7 +172,7 @@ export function AnalyticsFollowerGrowth({
         <AnalyticsSectionHeading
           eyebrow="Audience growth"
           title="Follower growth"
-          description="See how many people followed your venue on each day during the last 30 days."
+          description="See how your total Livey audience changed across the selected period."
         />
 
         {onRefresh ? (
@@ -118,7 +180,8 @@ export function AnalyticsFollowerGrowth({
             type="button"
             className="venue-dashboard-analytics-refresh-button"
             disabled={
-              analytics.isFollowerAnalyticsLoading
+              analytics
+                .isFollowerAnalyticsLoading
             }
             aria-label="Refresh follower analytics"
             onClick={onRefresh}
@@ -126,7 +189,8 @@ export function AnalyticsFollowerGrowth({
             <RefreshIcon />
 
             <span>
-              {analytics.isFollowerAnalyticsLoading
+              {analytics
+                .isFollowerAnalyticsLoading
                 ? "Refreshing"
                 : "Refresh data"}
             </span>
@@ -134,70 +198,138 @@ export function AnalyticsFollowerGrowth({
         ) : null}
       </div>
 
+      <div
+        className="venue-dashboard-analytics-follower-range-selector"
+        aria-label="Follower growth range"
+      >
+        <FollowerRangeButton
+          label="Last 14 days"
+          isActive={
+            selectedRange ===
+            "last14Days"
+          }
+          onClick={() =>
+            setSelectedRange(
+              "last14Days"
+            )
+          }
+        />
+
+        <FollowerRangeButton
+          label="Last month"
+          isActive={
+            selectedRange ===
+            "lastMonth"
+          }
+          onClick={() =>
+            setSelectedRange(
+              "lastMonth"
+            )
+          }
+        />
+
+        <FollowerRangeButton
+          label="Last 6 months"
+          isActive={
+            selectedRange ===
+            "last6Months"
+          }
+          onClick={() =>
+            setSelectedRange(
+              "last6Months"
+            )
+          }
+        />
+
+        <FollowerRangeButton
+          label="Last year"
+          isActive={
+            selectedRange ===
+            "lastYear"
+          }
+          onClick={() =>
+            setSelectedRange(
+              "lastYear"
+            )
+          }
+        />
+      </div>
+
       <div className="venue-dashboard-analytics-follower-chart-meta">
         <div className="is-primary">
-          <span>New followers</span>
-
-          <strong>+{totalGrowth}</strong>
-
-          <small>Across the last 30 days</small>
-        </div>
-
-        <div>
-          <span>Best day</span>
+          <span>Total followers</span>
 
           <strong>
-            +{bestDay?.newFollowers ?? 0}
+            {totalFollowers}
           </strong>
 
           <small>
-            {bestDay
-              ? formatFollowerGrowthDate(
-                  bestDay.date,
-                  true
-                )
-              : "No growth recorded yet"}
+            Current Livey audience
           </small>
         </div>
 
         <div>
-          <span>Active growth days</span>
-
-          <strong>{activeGrowthDays}</strong>
-
-          <small>
-            {activeGrowthDays === 1
-              ? "Day with new followers"
-              : "Days with new followers"}
-          </small>
-        </div>
-
-        <div>
-          <span>Daily average</span>
+          <span>New follows</span>
 
           <strong>
-            {formatFollowerAverage(
-              averagePerActiveDay
+            {totalFollows}
+          </strong>
+
+          <small>
+            Across{" "}
+            {rangeDetails.summaryLabel}
+          </small>
+        </div>
+
+        <div>
+          <span>Unfollows</span>
+
+          <strong>
+            {totalUnfollows}
+          </strong>
+
+          <small>
+            Across{" "}
+            {rangeDetails.summaryLabel}
+          </small>
+        </div>
+
+        <div>
+          <span>Net change</span>
+
+          <strong>
+            {formatSignedFollowerValue(
+              netChange
             )}
           </strong>
 
-          <small>Per active growth day</small>
+          <small>
+            Across {activePeriods} active{" "}
+            {activePeriods === 1
+              ? "period"
+              : "periods"}
+          </small>
         </div>
       </div>
 
-      {growth.length === 0 ? (
+      {activity.length === 0 ? (
         <FollowerChartState
           title="No follower history yet"
-          description="Your daily audience growth will appear here once follower data becomes available."
-        />
-      ) : totalGrowth === 0 ? (
-        <FollowerChartState
-          title="Your audience journey starts here"
-          description="No new followers were recorded during the last 30 days. New growth will appear here automatically."
+          description="Your follower growth line will appear here once audience data becomes available."
         />
       ) : (
         <FollowerGrowthChart
           points={chartPoints}
+          activity={activity}
+          rangeLabel={
+            rangeDetails.ariaLabel
+          }
+          labelInterval={
+            rangeDetails.labelInterval
+          }
+          hasMovement={
+            totalMovements > 0
+          }
         />
       )}
 
@@ -218,25 +350,62 @@ export function AnalyticsFollowerGrowth({
   );
 }
 
+function FollowerRangeButton({
+  label,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={
+        isActive
+          ? "is-active"
+          : undefined
+      }
+      aria-pressed={isActive}
+      onClick={onClick}
+    >
+      {label}
+    </button>
+  );
+}
+
 function FollowerGrowthChart({
   points,
+  activity,
+  rangeLabel,
+  labelInterval,
+  hasMovement,
 }: {
   points: ChartPoint[];
+  activity: VenueFollowerActivityPoint[];
+  rangeLabel: string;
+  labelInterval: number;
+  hasMovement: boolean;
 }) {
   const linePath =
     buildLinePath(points);
 
-  const areaPath = buildAreaPath(
-    points,
-    linePath
-  );
+  const movementPoints =
+    points.filter(
+      (point) =>
+        point.movementType ===
+          "follow" ||
+        point.movementType ===
+          "unfollow"
+    );
 
-  const visibleLabels = points.filter(
-    (_, index) =>
-      index === 0 ||
-      index === points.length - 1 ||
-      index % 7 === 0
-  );
+  const visibleLabels =
+    buildVisibleDateLabels(
+      points,
+      activity,
+      labelInterval
+    );
 
   return (
     <div className="venue-dashboard-analytics-follower-chart-shell">
@@ -244,112 +413,111 @@ function FollowerGrowthChart({
         className="venue-dashboard-analytics-follower-chart-svg"
         viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
         role="img"
-        aria-label="New followers during the last 30 days"
+        aria-label={`Total follower growth during ${rangeLabel}`}
         preserveAspectRatio="none"
       >
-        <defs>
-          <linearGradient
-            id="liveyFollowerChartFill"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-          >
-            <stop
-              offset="0%"
-              stopColor="#ff5b32"
-              stopOpacity="0.28"
-            />
-
-            <stop
-              offset="100%"
-              stopColor="#ff5b32"
-              stopOpacity="0"
-            />
-          </linearGradient>
-        </defs>
-
         <ChartGrid />
 
         <path
-          className="venue-dashboard-analytics-follower-chart-area"
-          d={areaPath}
-        />
-
-        <path
-          className="venue-dashboard-analytics-follower-chart-line"
+          className="venue-dashboard-analytics-follower-chart-line is-follow"
           d={linePath}
         />
 
-        {points.map((point) => (
-          <g key={point.date}>
-            <circle
-              className={
-                point.newFollowers > 0
-                  ? "venue-dashboard-analytics-follower-chart-point is-active"
-                  : "venue-dashboard-analytics-follower-chart-point"
-              }
-              cx={point.x}
-              cy={point.y}
-              r={
-                point.newFollowers > 0
-                  ? 5
-                  : 3
-              }
-            />
-
-            <title>
-              {`${formatFollowerGrowthDate(
-                point.date,
-                true
-              )}: ${point.newFollowers} new follower${
-                point.newFollowers === 1
-                  ? ""
-                  : "s"
-              }`}
-            </title>
-          </g>
-        ))}
+        {hasMovement
+          ? movementPoints.map(
+              (point) => (
+                <circle
+                  key={point.id}
+                  className={
+                    point.movementType ===
+                    "follow"
+                      ? "venue-dashboard-analytics-follower-chart-point is-positive"
+                      : "venue-dashboard-analytics-follower-chart-point is-negative"
+                  }
+                  cx={point.x}
+                  cy={point.y}
+                  r={4.5}
+                >
+                  <title>
+                    {buildMovementTooltip(
+                      point
+                    )}
+                  </title>
+                </circle>
+              )
+            )
+          : null}
       </svg>
 
       <div className="venue-dashboard-analytics-follower-chart-labels">
-        {visibleLabels.map((point) => (
-          <span
-            key={point.date}
-            style={{
-              left: `${point.x / 10}%`,
-            }}
-          >
-            {formatFollowerGrowthDate(
-              point.date
-            )}
-          </span>
-        ))}
+        {visibleLabels.map(
+          (point) => (
+            <span
+              key={point.id}
+              style={{
+                left: `${
+                  point.x / 10
+                }%`,
+              }}
+            >
+              {formatFollowerActivityDate(
+                point.date
+              )}
+            </span>
+          )
+        )}
       </div>
     </div>
   );
 }
 
 function ChartGrid() {
+  const chartHeight =
+    CHART_BOTTOM - CHART_TOP;
+
+  const gridLines = [
+    {
+      y: CHART_TOP,
+      className: undefined,
+    },
+    {
+      y:
+        CHART_TOP +
+        chartHeight / 4,
+      className: undefined,
+    },
+    {
+      y: CHART_MIDDLE,
+      className: "is-baseline",
+    },
+    {
+      y:
+        CHART_TOP +
+        (chartHeight / 4) * 3,
+      className: undefined,
+    },
+    {
+      y: CHART_BOTTOM,
+      className: undefined,
+    },
+  ];
+
   return (
     <g className="venue-dashboard-analytics-follower-chart-grid">
-      {[0, 1, 2, 3].map((line) => {
-        const y =
-          CHART_TOP +
-          ((CHART_BOTTOM - CHART_TOP) /
-            3) *
-            line;
-
-        return (
+      {gridLines.map(
+        (line, index) => (
           <line
-            key={line}
+            key={`${line.y}-${index}`}
+            className={
+              line.className
+            }
             x1={CHART_LEFT}
             x2={CHART_RIGHT}
-            y1={y}
-            y2={y}
+            y1={line.y}
+            y2={line.y}
           />
-        );
-      })}
+        )
+      )}
     </g>
   );
 }
@@ -377,6 +545,7 @@ function FollowerChartState({
 
       <div>
         <strong>{title}</strong>
+
         <p>{description}</p>
       </div>
     </div>
@@ -411,40 +580,175 @@ function AudienceGrowthIcon() {
   );
 }
 
+function buildCumulativeFollowerGrowth(
+  activity: VenueFollowerActivityPoint[],
+  currentFollowerTotal: number
+): CumulativeFollowerPoint[] {
+  if (activity.length === 0) {
+    return [];
+  }
+
+  const totalNetMovement =
+    activity.reduce(
+      (total, point) =>
+        total +
+        point.follows -
+        point.unfollows,
+      0
+    );
+
+  let runningTotal = Math.max(
+    0,
+    currentFollowerTotal -
+      totalNetMovement
+  );
+
+  const points: CumulativeFollowerPoint[] = [
+    {
+      id: "range-start",
+      date: activity[0].date,
+      follows: 0,
+      unfollows: 0,
+      followerTotal: runningTotal,
+      movementType: "start",
+      timelinePosition: 0,
+    },
+  ];
+
+  activity.forEach(
+    (period, periodIndex) => {
+      const movementCount =
+        period.follows +
+        period.unfollows;
+
+      let movementIndex = 0;
+
+      for (
+        let followIndex = 0;
+        followIndex <
+        period.follows;
+        followIndex += 1
+      ) {
+        movementIndex += 1;
+        runningTotal += 1;
+
+        points.push({
+          id:
+            `${period.date}-follow-` +
+            `${followIndex}`,
+          date: period.date,
+          follows: 1,
+          unfollows: 0,
+          followerTotal:
+            runningTotal,
+          movementType: "follow",
+          timelinePosition:
+            periodIndex +
+            movementIndex /
+              (movementCount + 1),
+        });
+      }
+
+      for (
+        let unfollowIndex = 0;
+        unfollowIndex <
+        period.unfollows;
+        unfollowIndex += 1
+      ) {
+        movementIndex += 1;
+
+        runningTotal = Math.max(
+          0,
+          runningTotal - 1
+        );
+
+        points.push({
+          id:
+            `${period.date}-unfollow-` +
+            `${unfollowIndex}`,
+          date: period.date,
+          follows: 0,
+          unfollows: 1,
+          followerTotal:
+            runningTotal,
+          movementType: "unfollow",
+          timelinePosition:
+            periodIndex +
+            movementIndex /
+              (movementCount + 1),
+        });
+      }
+
+      points.push({
+        id:
+          `${period.date}-snapshot-` +
+          `${periodIndex}`,
+        date: period.date,
+        follows: 0,
+        unfollows: 0,
+        followerTotal: runningTotal,
+        movementType: "snapshot",
+        timelinePosition:
+          periodIndex + 1,
+      });
+    }
+  );
+
+  return points;
+}
+
 function buildFollowerChartPoints(
-  growth: VenueFollowerGrowthPoint[]
+  growth: CumulativeFollowerPoint[],
+  periodCount: number
 ): ChartPoint[] {
   if (growth.length === 0) {
     return [];
   }
 
-  const highestValue = Math.max(
-    ...growth.map(
-      (point) => point.newFollowers
+  const baselineValue =
+    growth[0].followerTotal;
+
+  const largestDeviation = Math.max(
+    ...growth.map((point) =>
+      Math.abs(
+        point.followerTotal -
+          baselineValue
+      )
     ),
     1
   );
 
+  const paddedDeviation =
+    largestDeviation * 1.18;
+
   const chartWidth =
     CHART_RIGHT - CHART_LEFT;
 
-  const chartHeight =
-    CHART_BOTTOM - CHART_TOP;
+  const halfChartHeight =
+    (CHART_BOTTOM - CHART_TOP) / 2;
 
-  return growth.map((point, index) => {
+  const timelineLength =
+    Math.max(periodCount, 1);
+
+  return growth.map((point) => {
+    const normalizedTimelinePosition =
+      point.timelinePosition /
+      timelineLength;
+
     const x =
-      growth.length === 1
-        ? CHART_LEFT + chartWidth / 2
-        : CHART_LEFT +
-          (index /
-            (growth.length - 1)) *
-            chartWidth;
+      CHART_LEFT +
+      normalizedTimelinePosition *
+        chartWidth;
+
+    const followerDifference =
+      point.followerTotal -
+      baselineValue;
 
     const y =
-      CHART_BOTTOM -
-      (point.newFollowers /
-        highestValue) *
-        chartHeight;
+      CHART_MIDDLE -
+      (followerDifference /
+        paddedDeviation) *
+        halfChartHeight;
 
     return {
       ...point,
@@ -460,45 +764,110 @@ function buildLinePath(
   return points
     .map((point, index) => {
       const command =
-        index === 0 ? "M" : "L";
+        index === 0
+          ? "M"
+          : "L";
 
       return `${command} ${point.x} ${point.y}`;
     })
     .join(" ");
 }
 
-function buildAreaPath(
+function buildVisibleDateLabels(
   points: ChartPoint[],
-  linePath: string
-) {
-  if (points.length === 0) {
-    return "";
-  }
+  activity: VenueFollowerActivityPoint[],
+  labelInterval: number
+): ChartPoint[] {
+  const snapshotPoints =
+    points.filter(
+      (point) =>
+        point.movementType ===
+        "snapshot"
+    );
 
-  const firstPoint = points[0];
-
-  const lastPoint =
-    points[points.length - 1];
-
-  return [
-    linePath,
-    `L ${lastPoint.x} ${CHART_BOTTOM}`,
-    `L ${firstPoint.x} ${CHART_BOTTOM}`,
-    "Z",
-  ].join(" ");
+  return snapshotPoints.filter(
+    (_, index) =>
+      index === 0 ||
+      index ===
+        activity.length - 1 ||
+      index % labelInterval === 0
+  );
 }
 
-function formatFollowerAverage(
+function buildMovementTooltip(
+  point: ChartPoint
+) {
+  const movementLabel =
+    point.movementType === "follow"
+      ? "Follow"
+      : "Unfollow";
+
+  return (
+    `${formatFollowerActivityDate(
+      point.date,
+      true
+    )}: ${movementLabel} · ` +
+    `${point.followerTotal} total follower${
+      point.followerTotal === 1
+        ? ""
+        : "s"
+    }`
+  );
+}
+
+function getFollowerRangeDetails(
+  range: FollowerGrowthRange
+) {
+  if (range === "last14Days") {
+    return {
+      summaryLabel:
+        "the last 14 days",
+      ariaLabel:
+        "the last 14 days",
+      labelInterval: 3,
+    };
+  }
+
+  if (range === "lastMonth") {
+    return {
+      summaryLabel:
+        "the last month",
+      ariaLabel:
+        "the last month",
+      labelInterval: 7,
+    };
+  }
+
+  if (range === "last6Months") {
+    return {
+      summaryLabel:
+        "the last 6 months",
+      ariaLabel:
+        "the last 6 months",
+      labelInterval: 4,
+    };
+  }
+
+  return {
+    summaryLabel:
+      "the last year",
+    ariaLabel:
+      "the last year",
+    labelInterval: 2,
+  };
+}
+
+function formatSignedFollowerValue(
   value: number
 ) {
-  if (Number.isInteger(value)) {
-    return `${value}`;
+  if (value > 0) {
+    return `+${value}`;
   }
 
-  return value.toFixed(1);
+  return `${value}`;
 }
 
-function formatFollowerGrowthDate(
+function formatFollowerActivityDate(
   dateValue: string,
   includeYear = false
 ) {
@@ -506,7 +875,11 @@ function formatFollowerGrowthDate(
     `${dateValue}T00:00:00.000Z`
   );
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
     return dateValue;
   }
 
@@ -516,7 +889,9 @@ function formatFollowerGrowthDate(
       day: "2-digit",
       month: "short",
       ...(includeYear
-        ? { year: "numeric" }
+        ? {
+            year: "numeric",
+          }
         : {}),
       timeZone: "UTC",
     }
@@ -524,7 +899,10 @@ function formatFollowerGrowthDate(
 }
 
 function formatFollowerAnalyticsUpdatedAt(
-  value: string | null | undefined
+  value:
+    | string
+    | null
+    | undefined
 ) {
   if (!value) {
     return null;
@@ -532,7 +910,11 @@ function formatFollowerAnalyticsUpdatedAt(
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
     return null;
   }
 

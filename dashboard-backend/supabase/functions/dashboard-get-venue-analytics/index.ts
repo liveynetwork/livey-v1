@@ -9,13 +9,28 @@ type AppFollowerGrowthPoint = {
   new_followers?: number;
 };
 
+type AppFollowerActivityPoint = {
+  date?: string;
+  follows?: number;
+  unfollows?: number;
+};
+
 type AppAnalyticsResponse = {
   followers?: {
     total?: number;
     new_last_7_days?: number;
     new_last_30_days?: number;
+
     growth_last_30_days?: AppFollowerGrowthPoint[];
+
+    activity?: {
+      last_14_days?: AppFollowerActivityPoint[];
+      last_month?: AppFollowerActivityPoint[];
+      last_6_months?: AppFollowerActivityPoint[];
+      last_year?: AppFollowerActivityPoint[];
+    };
   };
+
   generated_at?: string;
   error?: string;
 };
@@ -25,11 +40,18 @@ type FollowerGrowthPoint = {
   new_followers: number;
 };
 
+type FollowerActivityPoint = {
+  date: string;
+  follows: number;
+  unfollows: number;
+};
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods":
+    "POST, OPTIONS",
 };
 
 Deno.serve(async (request) => {
@@ -41,14 +63,18 @@ Deno.serve(async (request) => {
 
   if (request.method !== "POST") {
     return jsonResponse(
-      { error: "Method not allowed" },
+      {
+        error: "Method not allowed",
+      },
       405
     );
   }
 
   try {
     const authHeader =
-      request.headers.get("Authorization");
+      request.headers.get(
+        "Authorization"
+      );
 
     if (!authHeader) {
       return jsonResponse(
@@ -67,22 +93,30 @@ Deno.serve(async (request) => {
       | null;
 
     const appVenueId =
-      typeof body?.app_venue_id === "string"
+      typeof body?.app_venue_id ===
+      "string"
         ? body.app_venue_id.trim()
         : "";
 
     if (!appVenueId) {
       return jsonResponse(
-        { error: "Missing app venue ID" },
+        {
+          error:
+            "Missing app venue ID",
+        },
         400
       );
     }
 
     const dashboardSupabaseUrl =
-      Deno.env.get("SUPABASE_URL");
+      Deno.env.get(
+        "SUPABASE_URL"
+      );
 
     const dashboardAnonKey =
-      Deno.env.get("SUPABASE_ANON_KEY");
+      Deno.env.get(
+        "SUPABASE_ANON_KEY"
+      );
 
     const dashboardServiceRoleKey =
       Deno.env.get(
@@ -109,9 +143,11 @@ Deno.serve(async (request) => {
       {
         global: {
           headers: {
-            Authorization: authHeader,
+            Authorization:
+              authHeader,
           },
         },
+
         auth: {
           autoRefreshToken: false,
           persistSession: false,
@@ -122,25 +158,29 @@ Deno.serve(async (request) => {
     const {
       data: { user },
       error: userError,
-    } = await userClient.auth.getUser();
+    } =
+      await userClient.auth.getUser();
 
     if (userError || !user) {
       return jsonResponse(
-        { error: "Not signed in" },
+        {
+          error: "Not signed in",
+        },
         401
       );
     }
 
-    const dashboardAdmin = createClient(
-      dashboardSupabaseUrl,
-      dashboardServiceRoleKey,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
+    const dashboardAdmin =
+      createClient(
+        dashboardSupabaseUrl,
+        dashboardServiceRoleKey,
+        {
+          auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+          },
+        }
+      );
 
     const {
       data: account,
@@ -148,7 +188,10 @@ Deno.serve(async (request) => {
     } = await dashboardAdmin
       .from("dashboard_accounts")
       .select("id")
-      .eq("auth_user_id", user.id)
+      .eq(
+        "auth_user_id",
+        user.id
+      )
       .maybeSingle();
 
     if (accountError) {
@@ -180,7 +223,9 @@ Deno.serve(async (request) => {
       data: venueLink,
       error: venueLinkError,
     } = await dashboardAdmin
-      .from("dashboard_venue_links")
+      .from(
+        "dashboard_venue_links"
+      )
       .select(
         "id, app_venue_id, role"
       )
@@ -188,7 +233,10 @@ Deno.serve(async (request) => {
         "dashboard_account_id",
         account.id
       )
-      .eq("app_venue_id", appVenueId)
+      .eq(
+        "app_venue_id",
+        appVenueId
+      )
       .maybeSingle();
 
     if (venueLinkError) {
@@ -216,15 +264,20 @@ Deno.serve(async (request) => {
       );
     }
 
-    const appSupabaseUrl = Deno.env.get(
-      "LIVEY_APP_SUPABASE_URL"
-    );
+    const appSupabaseUrl =
+      Deno.env.get(
+        "LIVEY_APP_SUPABASE_URL"
+      );
 
-    const sharedSecret = Deno.env.get(
-      "LIVEY_DASHBOARD_SHARED_SECRET"
-    );
+    const sharedSecret =
+      Deno.env.get(
+        "LIVEY_DASHBOARD_SHARED_SECRET"
+      );
 
-    if (!appSupabaseUrl || !sharedSecret) {
+    if (
+      !appSupabaseUrl ||
+      !sharedSecret
+    ) {
       return jsonResponse(
         {
           error:
@@ -238,21 +291,26 @@ Deno.serve(async (request) => {
       `${appSupabaseUrl}/functions/v1/` +
       "app-get-venue-analytics";
 
-    const appResponse = await fetch(
-      appFunctionUrl,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json",
-          "x-livey-dashboard-secret":
-            sharedSecret,
-        },
-        body: JSON.stringify({
-          app_venue_id: appVenueId,
-        }),
-      }
-    );
+    const appResponse =
+      await fetch(
+        appFunctionUrl,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "x-livey-dashboard-secret":
+              sharedSecret,
+          },
+
+          body: JSON.stringify({
+            app_venue_id:
+              appVenueId,
+          }),
+        }
+      );
 
     const appPayload =
       (await appResponse
@@ -280,26 +338,78 @@ Deno.serve(async (request) => {
     return jsonResponse(
       {
         followers: {
-          total: normalizeCount(
-            appPayload?.followers?.total
-          ),
-          new_last_7_days: normalizeCount(
-            appPayload?.followers
-              ?.new_last_7_days
-          ),
-          new_last_30_days: normalizeCount(
-            appPayload?.followers
-              ?.new_last_30_days
-          ),
+          total:
+            normalizeCount(
+              appPayload
+                ?.followers
+                ?.total
+            ),
+
+          new_last_7_days:
+            normalizeCount(
+              appPayload
+                ?.followers
+                ?.new_last_7_days
+            ),
+
+          new_last_30_days:
+            normalizeCount(
+              appPayload
+                ?.followers
+                ?.new_last_30_days
+            ),
+
+          /*
+           * Retained temporarily for
+           * compatibility with older
+           * dashboard code.
+           */
           growth_last_30_days:
             normalizeFollowerGrowth(
-              appPayload?.followers
+              appPayload
+                ?.followers
                 ?.growth_last_30_days
             ),
+
+          activity: {
+            last_14_days:
+              normalizeFollowerActivity(
+                appPayload
+                  ?.followers
+                  ?.activity
+                  ?.last_14_days
+              ),
+
+            last_month:
+              normalizeFollowerActivity(
+                appPayload
+                  ?.followers
+                  ?.activity
+                  ?.last_month
+              ),
+
+            last_6_months:
+              normalizeFollowerActivity(
+                appPayload
+                  ?.followers
+                  ?.activity
+                  ?.last_6_months
+              ),
+
+            last_year:
+              normalizeFollowerActivity(
+                appPayload
+                  ?.followers
+                  ?.activity
+                  ?.last_year
+              ),
+          },
         },
+
         generated_at:
           normalizeGeneratedAt(
-            appPayload?.generated_at
+            appPayload
+              ?.generated_at
           ),
       },
       200
@@ -311,7 +421,10 @@ Deno.serve(async (request) => {
     );
 
     return jsonResponse(
-      { error: "Unexpected server error" },
+      {
+        error:
+          "Unexpected server error",
+      },
       500
     );
   }
@@ -348,22 +461,29 @@ function normalizeFollowerGrowth(
       }
 
       const candidate =
-        point as AppFollowerGrowthPoint;
+        point as
+          AppFollowerGrowthPoint;
 
       const date =
-        typeof candidate.date === "string"
+        typeof candidate.date ===
+        "string"
           ? candidate.date.trim()
           : "";
 
-      if (!isValidDateKey(date)) {
+      if (
+        !isValidDateKey(date)
+      ) {
         return null;
       }
 
       return {
         date,
-        new_followers: normalizeCount(
-          candidate.new_followers
-        ),
+
+        new_followers:
+          normalizeCount(
+            candidate
+              .new_followers
+          ),
       };
     })
     .filter(
@@ -374,21 +494,80 @@ function normalizeFollowerGrowth(
     );
 }
 
+function normalizeFollowerActivity(
+  value: unknown
+): FollowerActivityPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate =
+        point as
+          AppFollowerActivityPoint;
+
+      const date =
+        typeof candidate.date ===
+        "string"
+          ? candidate.date.trim()
+          : "";
+
+      if (
+        !isValidDateKey(date)
+      ) {
+        return null;
+      }
+
+      return {
+        date,
+
+        follows:
+          normalizeCount(
+            candidate.follows
+          ),
+
+        unfollows:
+          normalizeCount(
+            candidate.unfollows
+          ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is FollowerActivityPoint =>
+        point !== null
+    );
+}
+
 function normalizeGeneratedAt(
   value: unknown
 ) {
-  if (typeof value !== "string") {
-    return new Date().toISOString();
+  if (
+    typeof value !== "string"
+  ) {
+    return new Date()
+      .toISOString();
   }
 
-  const date = new Date(value);
+  const date =
+    new Date(value);
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-    return new Date().toISOString();
+    return new Date()
+      .toISOString();
   }
 
   return date.toISOString();
@@ -397,8 +576,20 @@ function normalizeGeneratedAt(
 function isValidDateKey(
   value: string
 ) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(
-    value
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(
+      value
+    )
+  ) {
+    return false;
+  }
+
+  const date = new Date(
+    `${value}T00:00:00.000Z`
+  );
+
+  return !Number.isNaN(
+    date.getTime()
   );
 }
 
@@ -410,11 +601,15 @@ function jsonResponse(
     JSON.stringify(payload),
     {
       status,
+
       headers: {
         ...corsHeaders,
+
         "Content-Type":
           "application/json",
-        "Cache-Control": "no-store",
+
+        "Cache-Control":
+          "no-store",
       },
     }
   );

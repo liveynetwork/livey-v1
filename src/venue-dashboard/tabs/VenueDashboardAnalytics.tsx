@@ -1,14 +1,12 @@
 import type {
   VenueDashboardAnalytics as VenueDashboardAnalyticsData,
   VenueDashboardEvent,
-  VenueDashboardVenue,
 } from "../venueDashboardService";
 import { AnalyticsActivityHealth } from "./analytics/AnalyticsActivityHealth";
 import { AnalyticsAudienceState } from "./analytics/AnalyticsAudienceState";
 import { AnalyticsHero } from "./analytics/AnalyticsHero";
 import { AnalyticsNextActivity } from "./analytics/AnalyticsNextActivity";
 import { AnalyticsProfileHealth } from "./analytics/AnalyticsProfileHealth";
-import { AnalyticsProfileRecommendations } from "./analytics/AnalyticsProfileRecommendations";
 import { AnalyticsPublishingSummary } from "./analytics/AnalyticsPublishingSummary";
 import { AnalyticsPublishingTrend } from "./analytics/AnalyticsPublishingTrend";
 import { calculateAnalyticsPercentage } from "./analytics/analyticsFormatters";
@@ -19,7 +17,6 @@ import type {
 
 type VenueDashboardAnalyticsProps = {
   venueName: string;
-  venue: VenueDashboardVenue;
   events: VenueDashboardEvent[];
   analytics: VenueDashboardAnalyticsData;
   onRefreshAnalytics?: () => void;
@@ -30,7 +27,6 @@ type VenueDashboardAnalyticsProps = {
 
 export function VenueDashboardAnalytics({
   venueName,
-  venue,
   events,
   analytics,
   onRefreshAnalytics,
@@ -95,10 +91,6 @@ export function VenueDashboardAnalytics({
           events={events}
         />
       </section>
-
-      <AnalyticsProfileRecommendations
-        venue={venue}
-      />
 
       <AnalyticsAudienceState />
     </section>

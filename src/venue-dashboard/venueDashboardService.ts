@@ -66,6 +66,31 @@ export type VenueFollowerGrowthPoint = {
   newFollowers: number;
 };
 
+export type VenueFollowerActivityPoint = {
+  date: string;
+  follows: number;
+  unfollows: number;
+};
+
+export type VenueFollowerActivityRanges = {
+  last14Days: VenueFollowerActivityPoint[];
+  lastMonth: VenueFollowerActivityPoint[];
+  last6Months: VenueFollowerActivityPoint[];
+  lastYear: VenueFollowerActivityPoint[];
+};
+
+export type VenueNetFollowerGrowthPoint = {
+  date: string;
+  netFollowers: number;
+};
+
+export type VenueFollowerGrowthRanges = {
+  last14Days: VenueNetFollowerGrowthPoint[];
+  lastMonth: VenueNetFollowerGrowthPoint[];
+  last6Months: VenueNetFollowerGrowthPoint[];
+  lastYear: VenueNetFollowerGrowthPoint[];
+};
+
 export type VenueDashboardAnalytics = {
   totalActivities: number;
   visibleActivities: number;
@@ -85,7 +110,9 @@ export type VenueDashboardAnalytics = {
   newFollowersLast7Days?: number;
   newFollowersLast30Days?: number;
   followerGrowthLast30Days?: VenueFollowerGrowthPoint[];
-  followerAnalyticsGeneratedAt?: string | null;
+followerGrowthRanges?: VenueFollowerGrowthRanges;
+followerActivityRanges?: VenueFollowerActivityRanges;
+followerAnalyticsGeneratedAt?: string | null;
   isFollowerAnalyticsLoading?: boolean;
   followerAnalyticsError?: string;
 };
@@ -95,7 +122,15 @@ export type VenueFollowerAnalytics = {
   newFollowersLast7Days: number;
   newFollowersLast30Days: number;
   followerGrowthLast30Days: VenueFollowerGrowthPoint[];
+  followerGrowthRanges: VenueFollowerGrowthRanges;
+  followerActivityRanges: VenueFollowerActivityRanges;
   generatedAt: string | null;
+};
+
+type VenueFollowerActivityResponsePoint = {
+  date?: string;
+  follows?: number;
+  unfollows?: number;
 };
 
 type VenueFollowerAnalyticsResponse = {
@@ -103,11 +138,20 @@ type VenueFollowerAnalyticsResponse = {
     total?: number;
     new_last_7_days?: number;
     new_last_30_days?: number;
+
     growth_last_30_days?: Array<{
       date?: string;
       new_followers?: number;
     }>;
+
+    activity?: {
+  last_14_days?: VenueFollowerActivityResponsePoint[];
+  last_month?: VenueFollowerActivityResponsePoint[];
+  last_6_months?: VenueFollowerActivityResponsePoint[];
+  last_year?: VenueFollowerActivityResponsePoint[];
+};
   };
+
   generated_at?: string;
 };
 
@@ -205,19 +249,53 @@ export async function getVenueFollowerAnalytics(
     throw error;
   }
 
+  const followerActivityRanges: VenueFollowerActivityRanges = {
+    last14Days: normalizeFollowerActivity(
+      data?.followers?.activity?.last_14_days
+    ),
+
+    lastMonth: normalizeFollowerActivity(
+      data?.followers?.activity?.last_month
+    ),
+
+    last6Months: normalizeFollowerActivity(
+      data?.followers?.activity?.last_6_months
+    ),
+
+    lastYear: normalizeFollowerActivity(
+      data?.followers?.activity?.last_year
+    ),
+  };
+
   return {
     totalFollowers: normalizeAnalyticsCount(
       data?.followers?.total
     ),
+
     newFollowersLast7Days: normalizeAnalyticsCount(
       data?.followers?.new_last_7_days
     ),
+
     newFollowersLast30Days: normalizeAnalyticsCount(
       data?.followers?.new_last_30_days
     ),
+
     followerGrowthLast30Days: normalizeFollowerGrowth(
       data?.followers?.growth_last_30_days
     ),
+
+    /*
+     * Temporary compatibility data.
+     * The current chart still expects net
+     * values until its next update.
+     */
+    followerGrowthRanges:
+      convertFollowerActivityRangesToNet(
+        followerActivityRanges
+      ),
+
+    followerActivityRanges,
+
     generatedAt: normalizeGeneratedAt(
       data?.generated_at
     ),
@@ -789,6 +867,94 @@ function normalizeFollowerGrowth(
       ): point is VenueFollowerGrowthPoint =>
         point !== null
     );
+}
+
+function normalizeFollowerActivity(
+  value: unknown
+): VenueFollowerActivityPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate = point as {
+        date?: unknown;
+        follows?: unknown;
+        unfollows?: unknown;
+      };
+
+      const date =
+        typeof candidate.date === "string"
+          ? candidate.date.trim()
+          : "";
+
+      if (!isValidAnalyticsDateKey(date)) {
+        return null;
+      }
+
+      return {
+        date,
+
+        follows: normalizeAnalyticsCount(
+          candidate.follows
+        ),
+
+        unfollows: normalizeAnalyticsCount(
+          candidate.unfollows
+        ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is VenueFollowerActivityPoint =>
+        point !== null
+    );
+}
+
+function convertFollowerActivityRangesToNet(
+  ranges: VenueFollowerActivityRanges
+): VenueFollowerGrowthRanges {
+  return {
+    last14Days:
+      convertFollowerActivityToNet(
+        ranges.last14Days
+      ),
+
+    lastMonth:
+      convertFollowerActivityToNet(
+        ranges.lastMonth
+      ),
+
+    last6Months:
+      convertFollowerActivityToNet(
+        ranges.last6Months
+      ),
+
+    lastYear:
+      convertFollowerActivityToNet(
+        ranges.lastYear
+      ),
+  };
+}
+
+function convertFollowerActivityToNet(
+  points: VenueFollowerActivityPoint[]
+): VenueNetFollowerGrowthPoint[] {
+  return points.map((point) => ({
+    date: point.date,
+    netFollowers:
+      point.follows -
+      point.unfollows,
+  }));
 }
 
 function normalizeGeneratedAt(

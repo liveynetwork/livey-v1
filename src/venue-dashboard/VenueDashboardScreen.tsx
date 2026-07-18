@@ -161,9 +161,27 @@ export function VenueDashboardScreen({
       newFollowersLast30Days:
   followerAnalytics
     ?.newFollowersLast30Days ?? 0,
+
 followerGrowthLast30Days:
   followerAnalytics
     ?.followerGrowthLast30Days ?? [],
+
+followerGrowthRanges:
+  followerAnalytics?.followerGrowthRanges ?? {
+    last14Days: [],
+    lastMonth: [],
+    last6Months: [],
+    lastYear: [],
+  },
+
+followerActivityRanges:
+  followerAnalytics?.followerActivityRanges ?? {
+    last14Days: [],
+    lastMonth: [],
+    last6Months: [],
+    lastYear: [],
+  },
+
 followerAnalyticsGeneratedAt:
   followerAnalytics?.generatedAt ?? null,
       isFollowerAnalyticsLoading,
@@ -961,7 +979,6 @@ followerAnalyticsGeneratedAt:
     activeVenue.name ||
     "Your venue"
   }
-  venue={activeVenue}
   events={allVenueEvents}
   analytics={analytics}
   onRefreshAnalytics={

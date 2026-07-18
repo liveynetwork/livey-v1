@@ -3,14 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  outline: none;
-}
-
-.venue-dashboard-analytics-profile-card:focus-visible {
-  border-color: rgba(255, 91, 50, 0.72);
-  outline: 3px solid rgba(255, 91, 50, 0.1);
-  outline-offset: 4px;
+  cursor: default;
 }
 
 .venue-dashboard-analytics-profile-ring {
@@ -223,48 +216,47 @@
 }
 
 .venue-dashboard-analytics-profile-card-action {
-  min-height: 44px;
-  display: inline-flex;
+  width: min(100%, 320px);
+  min-height: 58px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 11px;
-  margin-top: 22px;
+  margin-top: 38px;
   border: 1px solid
-    rgba(255, 255, 255, 0.09);
+    rgba(255, 255, 255, 0.1);
   border-radius: 999px;
-  padding: 0 18px;
+  padding: 0 24px;
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.015)
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
     ),
-    rgba(7, 8, 10, 0.46);
-  color: rgba(247, 241, 234, 0.72);
-  font-size: 0.75rem;
+    rgba(7, 8, 10, 0.58);
+  color: rgba(247, 241, 234, 0.82);
+  font-family: inherit;
+  font-size: 0.82rem;
   font-weight: 950;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
   box-shadow:
     inset 0 1px 0
-      rgba(255, 255, 255, 0.025);
+      rgba(255, 255, 255, 0.035),
+    0 12px 28px
+      rgba(0, 0, 0, 0.12);
   transition:
     border-color 180ms ease,
     background 180ms ease,
-    color 180ms ease;
+    color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .venue-dashboard-analytics-profile-card-action
-  span:last-child {
-  width: 25px;
-  height: 25px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  color: #ff805f;
-  background:
-    rgba(255, 91, 50, 0.09);
-  font-size: 0.92rem;
-  line-height: 1;
+  > span {
+  width: 100%;
+  text-align: center;
 }
 
 /* Profile health modal */
@@ -702,15 +694,23 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-analytics-profile-card:hover
-  .venue-dashboard-analytics-profile-card-action,
-.venue-dashboard-analytics-profile-card:focus-visible
-  .venue-dashboard-analytics-profile-card-action {
+  .venue-dashboard-analytics-profile-card-action:hover,
+.venue-dashboard-analytics-profile-card-action:focus-visible {
   border-color:
     rgba(255, 91, 50, 0.55);
   background:
-    rgba(255, 91, 50, 0.09);
-  color: #ffd8cd;
+    linear-gradient(
+      145deg,
+      rgba(255, 91, 50, 0.12),
+      rgba(255, 91, 50, 0.055)
+    ),
+    rgba(7, 8, 10, 0.62);
+  color: #fff0eb;
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.04),
+    0 14px 32px
+      rgba(0, 0, 0, 0.16);
 }
 
   .venue-dashboard-analytics-profile-modal:hover {
@@ -727,6 +727,11 @@
       rgba(255, 91, 50, 0.12);
     color: #ffd8cd;
   }
+
+  .venue-dashboard-analytics-profile-card-action:focus-visible {
+  outline: 3px solid rgba(255, 91, 50, 0.14);
+  outline-offset: 4px;
+}
 
   .venue-dashboard-analytics-profile-fields-card:hover,
 .venue-dashboard-analytics-profile-fields-list
@@ -814,6 +819,13 @@
     width: 170px;
     height: 170px;
   }
+
+  .venue-dashboard-analytics-profile-card-action {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 30px;
+  padding-left: 18px;
+}
 
   .venue-dashboard-analytics-profile-ring-inner {
     width: 140px;

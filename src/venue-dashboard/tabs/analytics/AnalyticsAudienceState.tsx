@@ -19,8 +19,7 @@ export function AnalyticsAudienceState() {
         <p>
           Followers, map impressions, venue opens,
           activity taps, and directions requests will
-          appear here after secure interaction tracking
-          is connected.
+          appear here soon.
         </p>
       </div>
 

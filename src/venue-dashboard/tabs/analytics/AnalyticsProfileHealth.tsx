@@ -2,9 +2,6 @@ import {
   useState,
 } from "react";
 import type {
-  KeyboardEvent,
-} from "react";
-import type {
   VenueDashboardAnalytics,
 } from "../../venueDashboardService";
 import { ProfileCompleteIcon } from "./AnalyticsIcons";
@@ -43,36 +40,15 @@ export function AnalyticsProfileHealth({
     setIsDetailsOpen(true);
   }
 
-  function handleKeyDown(
-    event: KeyboardEvent<HTMLElement>
-  ) {
-    if (
-      event.key !== "Enter" &&
-      event.key !== " "
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-    openDetails();
-  }
-
   function handleFixField(
-  target: EditableProfileFocusTarget
-) {
-  onOpenAccountSettings(target);
-}
+    target: EditableProfileFocusTarget
+  ) {
+    onOpenAccountSettings(target);
+  }
 
   return (
     <>
-      <section
-        className="venue-dashboard-analytics-card venue-dashboard-analytics-profile-card"
-        role="button"
-        tabIndex={0}
-        aria-label={`Open venue profile health details. Current completion is ${profileCompleteness}%`}
-        onClick={openDetails}
-        onKeyDown={handleKeyDown}
-      >
+      <section className="venue-dashboard-analytics-card venue-dashboard-analytics-profile-card">
         <AnalyticsSectionHeading
           eyebrow="Profile health"
           title={`${profileCompleteness}% complete`}
@@ -122,15 +98,16 @@ export function AnalyticsProfileHealth({
           </div>
         )}
 
-        <div className="venue-dashboard-analytics-profile-card-action">
+        <button
+          className="venue-dashboard-analytics-profile-card-action"
+          type="button"
+          onClick={openDetails}
+          aria-label="View venue profile health details"
+        >
           <span>
-            View profile details
-          </span>
-
-          <span aria-hidden="true">
-            →
-          </span>
-        </div>
+  View profile details
+</span>
+        </button>
       </section>
 
       {isDetailsOpen ? (
