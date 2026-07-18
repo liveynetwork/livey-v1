@@ -1,7 +1,11 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 import type {
   VenueDashboardAnalytics,
   VenueFollowerActivityPoint,
+  VenueFollowerTodayPoint,
 } from "../../venueDashboardService";
 import { AnalyticsSectionHeading } from "./AnalyticsSectionHeading";
 import "./AnalyticsFollowerGrowth.css";
@@ -12,6 +16,7 @@ type AnalyticsFollowerGrowthProps = {
 };
 
 type FollowerGrowthRange =
+  | "today"
   | "last14Days"
   | "lastMonth"
   | "last6Months"
@@ -22,6 +27,12 @@ type FollowerMovementType =
   | "follow"
   | "unfollow"
   | "snapshot";
+
+type ChartActivityPoint = {
+  date: string;
+  follows: number;
+  unfollows: number;
+};
 
 type CumulativeFollowerPoint = {
   id: string;
@@ -55,26 +66,73 @@ export function AnalyticsFollowerGrowth({
   onRefresh,
 }: AnalyticsFollowerGrowthProps) {
   const [
+    isAdvancedOpen,
+    setIsAdvancedOpen,
+  ] = useState(false);
+
+  const [
     selectedRange,
     setSelectedRange,
   ] = useState<FollowerGrowthRange>(
-    "last14Days"
+    "today"
   );
+
+  useEffect(() => {
+    if (!isAdvancedOpen) {
+      return;
+    }
+
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
+      if (event.key === "Escape") {
+        setIsAdvancedOpen(false);
+      }
+    };
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      "hidden";
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      document.body.style.overflow =
+        previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [isAdvancedOpen]);
 
   const activityRanges =
     analytics.followerActivityRanges ?? {
+      today: [],
       last14Days: [],
       lastMonth: [],
       last6Months: [],
       lastYear: [],
     };
 
-  const activity =
-    activityRanges[selectedRange];
+  const todayActivity =
+    normalizeTodayActivity(
+      activityRanges.today
+    );
 
-  const rangeDetails =
-    getFollowerRangeDetails(
-      selectedRange
+  const totalFollowers =
+    analytics.totalFollowers ?? 0;
+
+  const lastUpdated =
+    formatFollowerAnalyticsUpdatedAt(
+      analytics
+        .followerAnalyticsGeneratedAt
     );
 
   if (
@@ -85,7 +143,7 @@ export function AnalyticsFollowerGrowth({
         <AnalyticsSectionHeading
           eyebrow="Audience growth"
           title="Follower growth"
-          description="See how your Livey audience changes over time."
+          description="A live view of your venue’s audience today."
         />
 
         <FollowerChartState
@@ -104,7 +162,7 @@ export function AnalyticsFollowerGrowth({
         <AnalyticsSectionHeading
           eyebrow="Audience growth"
           title="Follower growth"
-          description="See how your Livey audience changes over time."
+          description="A live view of your venue’s audience today."
         />
 
         <FollowerChartState
@@ -116,49 +174,154 @@ export function AnalyticsFollowerGrowth({
     );
   }
 
-  const totalFollowers =
-    analytics.totalFollowers ?? 0;
-
-  const cumulativeGrowth =
-    buildCumulativeFollowerGrowth(
-      activity,
+  const todayChartData =
+    buildChartData(
+      todayActivity,
       totalFollowers
     );
 
-  const chartPoints =
-    buildFollowerChartPoints(
-      cumulativeGrowth,
-      activity.length
+  return (
+    <>
+      <section className="venue-dashboard-analytics-card venue-dashboard-analytics-follower-chart-card">
+        <div className="venue-dashboard-analytics-follower-heading">
+          <AnalyticsSectionHeading
+            eyebrow="Audience growth"
+            title="Follower growth"
+            description="See how your Livey audience is moving today."
+          />
+        </div>
+
+        <div className="venue-dashboard-analytics-follower-compact-metric">
+          <span>Followers</span>
+
+          <strong>
+            {totalFollowers}
+          </strong>
+
+          <small>
+            Your current Livey audience
+          </small>
+        </div>
+
+        <div className="venue-dashboard-analytics-follower-today-label">
+          <span>Today</span>
+
+          <small>
+            Cyprus local time
+          </small>
+        </div>
+
+        {todayActivity.length === 0 ? (
+          <FollowerChartState
+            title="No audience data today"
+            description="Today’s follower activity will appear here as it happens."
+          />
+        ) : (
+          <FollowerGrowthChart
+            points={
+              todayChartData.chartPoints
+            }
+            activity={todayActivity}
+            range="today"
+            labelInterval={4}
+            hasMovement={
+              todayChartData
+                .totalMovements > 0
+            }
+          />
+        )}
+
+        <div className="venue-dashboard-analytics-follower-advanced-action">
+          <button
+            type="button"
+            className="venue-dashboard-analytics-follower-advanced-button"
+            onClick={() =>
+              setIsAdvancedOpen(true)
+            }
+          >
+            <span>
+              View advanced analytics
+            </span>
+
+            <ExpandIcon />
+          </button>
+        </div>
+
+        <footer className="venue-dashboard-analytics-follower-chart-footer">
+          <span className="venue-dashboard-analytics-follower-live-status">
+            <i />
+
+            Livey audience data
+          </span>
+
+          <span>
+            {lastUpdated
+              ? `Updated ${lastUpdated}`
+              : "Update time unavailable"}
+          </span>
+        </footer>
+      </section>
+
+      {isAdvancedOpen ? (
+        <FollowerAdvancedModal
+          analytics={analytics}
+          selectedRange={selectedRange}
+          onSelectRange={
+            setSelectedRange
+          }
+          onRefresh={onRefresh}
+          onClose={() =>
+            setIsAdvancedOpen(false)
+          }
+        />
+      ) : null}
+    </>
+  );
+}
+
+function FollowerAdvancedModal({
+  analytics,
+  selectedRange,
+  onSelectRange,
+  onRefresh,
+  onClose,
+}: {
+  analytics: VenueDashboardAnalytics;
+  selectedRange: FollowerGrowthRange;
+  onSelectRange: (
+    range: FollowerGrowthRange
+  ) => void;
+  onRefresh?: () => void;
+  onClose: () => void;
+}) {
+  const activityRanges =
+    analytics.followerActivityRanges ?? {
+      today: [],
+      last14Days: [],
+      lastMonth: [],
+      last6Months: [],
+      lastYear: [],
+    };
+
+  const activity =
+    getSelectedActivity(
+      selectedRange,
+      activityRanges
     );
 
-  const totalFollows =
-    activity.reduce(
-      (total, point) =>
-        total + point.follows,
-      0
+  const totalFollowers =
+    analytics.totalFollowers ?? 0;
+
+  const rangeDetails =
+    getFollowerRangeDetails(
+      selectedRange
     );
 
-  const totalUnfollows =
-    activity.reduce(
-      (total, point) =>
-        total + point.unfollows,
-      0
+  const chartData =
+    buildChartData(
+      activity,
+      totalFollowers
     );
-
-  const netChange =
-    totalFollows -
-    totalUnfollows;
-
-  const activePeriods =
-    activity.filter(
-      (point) =>
-        point.follows > 0 ||
-        point.unfollows > 0
-    ).length;
-
-  const totalMovements =
-    totalFollows +
-    totalUnfollows;
 
   const lastUpdated =
     formatFollowerAnalyticsUpdatedAt(
@@ -167,186 +330,238 @@ export function AnalyticsFollowerGrowth({
     );
 
   return (
-    <section className="venue-dashboard-analytics-card venue-dashboard-analytics-follower-chart-card">
-      <div className="venue-dashboard-analytics-follower-heading">
-        <AnalyticsSectionHeading
-          eyebrow="Audience growth"
-          title="Follower growth"
-          description="See how your total Livey audience changed across the selected period."
-        />
+    <div
+      className="venue-dashboard-analytics-follower-modal-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (
+          event.target ===
+          event.currentTarget
+        ) {
+          onClose();
+        }
+      }}
+    >
+      <section
+        className="venue-dashboard-analytics-follower-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="advanced-follower-analytics-title"
+      >
+        <header className="venue-dashboard-analytics-follower-modal-header">
+          <div>
+            <span>
+              Audience intelligence
+            </span>
 
-        {onRefresh ? (
+            <h2 id="advanced-follower-analytics-title">
+              Advanced follower analytics
+            </h2>
+
+            <p>
+              Explore how your Livey
+              audience changes across
+              different periods.
+            </p>
+          </div>
+
           <button
             type="button"
-            className="venue-dashboard-analytics-refresh-button"
-            disabled={
-              analytics
-                .isFollowerAnalyticsLoading
-            }
-            aria-label="Refresh follower analytics"
-            onClick={onRefresh}
+            className="venue-dashboard-analytics-follower-modal-close"
+            aria-label="Close advanced follower analytics"
+            onClick={onClose}
           >
-            <RefreshIcon />
-
-            <span>
-              {analytics
-                .isFollowerAnalyticsLoading
-                ? "Refreshing"
-                : "Refresh data"}
-            </span>
+            <CloseIcon />
           </button>
-        ) : null}
-      </div>
+        </header>
 
-      <div
-        className="venue-dashboard-analytics-follower-range-selector"
-        aria-label="Follower growth range"
-      >
-        <FollowerRangeButton
-          label="Last 14 days"
-          isActive={
-            selectedRange ===
-            "last14Days"
-          }
-          onClick={() =>
-            setSelectedRange(
+        <div
+          className="venue-dashboard-analytics-follower-range-selector is-advanced"
+          aria-label="Follower growth range"
+        >
+          <FollowerRangeButton
+            label="Today"
+            isActive={
+              selectedRange ===
+              "today"
+            }
+            onClick={() =>
+              onSelectRange("today")
+            }
+          />
+
+          <FollowerRangeButton
+            label="Last 14 days"
+            isActive={
+              selectedRange ===
               "last14Days"
-            )
-          }
-        />
+            }
+            onClick={() =>
+              onSelectRange(
+                "last14Days"
+              )
+            }
+          />
 
-        <FollowerRangeButton
-          label="Last month"
-          isActive={
-            selectedRange ===
-            "lastMonth"
-          }
-          onClick={() =>
-            setSelectedRange(
+          <FollowerRangeButton
+            label="Last month"
+            isActive={
+              selectedRange ===
               "lastMonth"
-            )
-          }
-        />
+            }
+            onClick={() =>
+              onSelectRange(
+                "lastMonth"
+              )
+            }
+          />
 
-        <FollowerRangeButton
-          label="Last 6 months"
-          isActive={
-            selectedRange ===
-            "last6Months"
-          }
-          onClick={() =>
-            setSelectedRange(
+          <FollowerRangeButton
+            label="Last 6 months"
+            isActive={
+              selectedRange ===
               "last6Months"
-            )
-          }
-        />
+            }
+            onClick={() =>
+              onSelectRange(
+                "last6Months"
+              )
+            }
+          />
 
-        <FollowerRangeButton
-          label="Last year"
-          isActive={
-            selectedRange ===
-            "lastYear"
-          }
-          onClick={() =>
-            setSelectedRange(
+          <FollowerRangeButton
+            label="Last year"
+            isActive={
+              selectedRange ===
               "lastYear"
-            )
-          }
-        />
-      </div>
-
-      <div className="venue-dashboard-analytics-follower-chart-meta">
-        <div className="is-primary">
-          <span>Total followers</span>
-
-          <strong>
-            {totalFollowers}
-          </strong>
-
-          <small>
-            Current Livey audience
-          </small>
+            }
+            onClick={() =>
+              onSelectRange(
+                "lastYear"
+              )
+            }
+          />
         </div>
 
-        <div>
-          <span>New follows</span>
+        <div className="venue-dashboard-analytics-follower-chart-meta is-advanced">
+          <div className="is-primary">
+            <span>Followers</span>
 
-          <strong>
-            {totalFollows}
-          </strong>
+            <strong>
+              {totalFollowers}
+            </strong>
 
-          <small>
-            Across{" "}
-            {rangeDetails.summaryLabel}
-          </small>
+            <small>
+              Current Livey audience
+            </small>
+          </div>
+
+          <div>
+            <span>New follows</span>
+
+            <strong>
+              {chartData.totalFollows}
+            </strong>
+
+            <small>
+              Across{" "}
+              {
+                rangeDetails.summaryLabel
+              }
+            </small>
+          </div>
+
+          <div>
+            <span>Unfollows</span>
+
+            <strong>
+              {
+                chartData
+                  .totalUnfollows
+              }
+            </strong>
+
+            <small>
+              Across{" "}
+              {
+                rangeDetails.summaryLabel
+              }
+            </small>
+          </div>
+
+          <div>
+            <span>Net change</span>
+
+            <strong>
+              {formatSignedFollowerValue(
+                chartData.netChange
+              )}
+            </strong>
+
+            <small>
+              Across{" "}
+              {chartData.activePeriods}{" "}
+              active{" "}
+              {chartData
+                .activePeriods === 1
+                ? "period"
+                : "periods"}
+            </small>
+          </div>
         </div>
 
-        <div>
-          <span>Unfollows</span>
+        {activity.length === 0 ? (
+          <FollowerChartState
+            title="No follower history yet"
+            description="Follower activity for this period will appear here once data becomes available."
+          />
+        ) : (
+          <FollowerGrowthChart
+            points={
+              chartData.chartPoints
+            }
+            activity={activity}
+            range={selectedRange}
+            labelInterval={
+              rangeDetails.labelInterval
+            }
+            hasMovement={
+              chartData.totalMovements >
+              0
+            }
+          />
+        )}
 
-          <strong>
-            {totalUnfollows}
-          </strong>
+        <footer className="venue-dashboard-analytics-follower-modal-footer">
+          <span>
+            {lastUpdated
+              ? `Updated ${lastUpdated}`
+              : "Update time unavailable"}
+          </span>
 
-          <small>
-            Across{" "}
-            {rangeDetails.summaryLabel}
-          </small>
-        </div>
+          {onRefresh ? (
+            <button
+              type="button"
+              className="venue-dashboard-analytics-refresh-button"
+              disabled={
+                analytics
+                  .isFollowerAnalyticsLoading
+              }
+              onClick={onRefresh}
+            >
+              <RefreshIcon />
 
-        <div>
-          <span>Net change</span>
-
-          <strong>
-            {formatSignedFollowerValue(
-              netChange
-            )}
-          </strong>
-
-          <small>
-            Across {activePeriods} active{" "}
-            {activePeriods === 1
-              ? "period"
-              : "periods"}
-          </small>
-        </div>
-      </div>
-
-      {activity.length === 0 ? (
-        <FollowerChartState
-          title="No follower history yet"
-          description="Your follower growth line will appear here once audience data becomes available."
-        />
-      ) : (
-        <FollowerGrowthChart
-          points={chartPoints}
-          activity={activity}
-          rangeLabel={
-            rangeDetails.ariaLabel
-          }
-          labelInterval={
-            rangeDetails.labelInterval
-          }
-          hasMovement={
-            totalMovements > 0
-          }
-        />
-      )}
-
-      <footer className="venue-dashboard-analytics-follower-chart-footer">
-        <span className="venue-dashboard-analytics-follower-live-status">
-          <i />
-
-          Livey audience data
-        </span>
-
-        <span>
-          {lastUpdated
-            ? `Updated ${lastUpdated}`
-            : "Update time unavailable"}
-        </span>
-      </footer>
-    </section>
+              <span>
+                {analytics
+                  .isFollowerAnalyticsLoading
+                  ? "Refreshing"
+                  : "Refresh data"}
+              </span>
+            </button>
+          ) : null}
+        </footer>
+      </section>
+    </div>
   );
 }
 
@@ -378,13 +593,13 @@ function FollowerRangeButton({
 function FollowerGrowthChart({
   points,
   activity,
-  rangeLabel,
+  range,
   labelInterval,
   hasMovement,
 }: {
   points: ChartPoint[];
-  activity: VenueFollowerActivityPoint[];
-  rangeLabel: string;
+  activity: ChartActivityPoint[];
+  range: FollowerGrowthRange;
   labelInterval: number;
   hasMovement: boolean;
 }) {
@@ -413,7 +628,11 @@ function FollowerGrowthChart({
         className="venue-dashboard-analytics-follower-chart-svg"
         viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
         role="img"
-        aria-label={`Total follower growth during ${rangeLabel}`}
+        aria-label={`Total follower growth during ${
+          getFollowerRangeDetails(
+            range
+          ).ariaLabel
+        }`}
         preserveAspectRatio="none"
       >
         <ChartGrid />
@@ -440,7 +659,8 @@ function FollowerGrowthChart({
                 >
                   <title>
                     {buildMovementTooltip(
-                      point
+                      point,
+                      range
                     )}
                   </title>
                 </circle>
@@ -460,8 +680,9 @@ function FollowerGrowthChart({
                 }%`,
               }}
             >
-              {formatFollowerActivityDate(
-                point.date
+              {formatActivityLabel(
+                point.date,
+                range
               )}
             </span>
           )
@@ -476,45 +697,29 @@ function ChartGrid() {
     CHART_BOTTOM - CHART_TOP;
 
   const gridLines = [
-    {
-      y: CHART_TOP,
-      className: undefined,
-    },
-    {
-      y:
-        CHART_TOP +
-        chartHeight / 4,
-      className: undefined,
-    },
-    {
-      y: CHART_MIDDLE,
-      className: "is-baseline",
-    },
-    {
-      y:
-        CHART_TOP +
-        (chartHeight / 4) * 3,
-      className: undefined,
-    },
-    {
-      y: CHART_BOTTOM,
-      className: undefined,
-    },
+    CHART_TOP,
+    CHART_TOP + chartHeight / 4,
+    CHART_MIDDLE,
+    CHART_TOP +
+      (chartHeight / 4) * 3,
+    CHART_BOTTOM,
   ];
 
   return (
     <g className="venue-dashboard-analytics-follower-chart-grid">
       {gridLines.map(
-        (line, index) => (
+        (y, index) => (
           <line
-            key={`${line.y}-${index}`}
+            key={`${y}-${index}`}
             className={
-              line.className
+              y === CHART_MIDDLE
+                ? "is-baseline"
+                : undefined
             }
             x1={CHART_LEFT}
             x2={CHART_RIGHT}
-            y1={line.y}
-            y2={line.y}
+            y1={y}
+            y2={y}
           />
         )
       )}
@@ -552,36 +757,100 @@ function FollowerChartState({
   );
 }
 
-function RefreshIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path d="M20 11a8 8 0 0 0-14.8-4.2L3 9" />
-      <path d="M3 4v5h5" />
-      <path d="M4 13a8 8 0 0 0 14.8 4.2L21 15" />
-      <path d="M21 20v-5h-5" />
-    </svg>
-  );
+function buildChartData(
+  activity: ChartActivityPoint[],
+  totalFollowers: number
+) {
+  const cumulativeGrowth =
+    buildCumulativeFollowerGrowth(
+      activity,
+      totalFollowers
+    );
+
+  const chartPoints =
+    buildFollowerChartPoints(
+      cumulativeGrowth,
+      activity.length
+    );
+
+  const totalFollows =
+    activity.reduce(
+      (total, point) =>
+        total + point.follows,
+      0
+    );
+
+  const totalUnfollows =
+    activity.reduce(
+      (total, point) =>
+        total + point.unfollows,
+      0
+    );
+
+  const netChange =
+    totalFollows -
+    totalUnfollows;
+
+  const activePeriods =
+    activity.filter(
+      (point) =>
+        point.follows > 0 ||
+        point.unfollows > 0
+    ).length;
+
+  return {
+    chartPoints,
+    totalFollows,
+    totalUnfollows,
+    netChange,
+    activePeriods,
+    totalMovements:
+      totalFollows +
+      totalUnfollows,
+  };
 }
 
-function AudienceGrowthIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path d="M5 19V9" />
-      <path d="M10 19V5" />
-      <path d="M15 19v-7" />
-      <path d="M20 19V3" />
-    </svg>
+function normalizeTodayActivity(
+  activity: VenueFollowerTodayPoint[]
+): ChartActivityPoint[] {
+  return activity.map((point) => ({
+    date: point.timestamp,
+    follows: point.follows,
+    unfollows: point.unfollows,
+  }));
+}
+
+function normalizeHistoricalActivity(
+  activity: VenueFollowerActivityPoint[]
+): ChartActivityPoint[] {
+  return activity.map((point) => ({
+    date: point.date,
+    follows: point.follows,
+    unfollows: point.unfollows,
+  }));
+}
+
+function getSelectedActivity(
+  range: FollowerGrowthRange,
+  ranges: NonNullable<
+    VenueDashboardAnalytics[
+      "followerActivityRanges"
+    ]
+  >
+): ChartActivityPoint[] {
+  if (range === "today") {
+    return normalizeTodayActivity(
+      ranges.today
+    );
+  }
+
+  return normalizeHistoricalActivity(
+    ranges[range]
   );
 }
 
 function buildCumulativeFollowerGrowth(
-  activity: VenueFollowerActivityPoint[],
+  activity: ChartActivityPoint[],
   currentFollowerTotal: number
 ): CumulativeFollowerPoint[] {
   if (activity.length === 0) {
@@ -775,7 +1044,7 @@ function buildLinePath(
 
 function buildVisibleDateLabels(
   points: ChartPoint[],
-  activity: VenueFollowerActivityPoint[],
+  activity: ChartActivityPoint[],
   labelInterval: number
 ): ChartPoint[] {
   const snapshotPoints =
@@ -795,7 +1064,8 @@ function buildVisibleDateLabels(
 }
 
 function buildMovementTooltip(
-  point: ChartPoint
+  point: ChartPoint,
+  range: FollowerGrowthRange
 ) {
   const movementLabel =
     point.movementType === "follow"
@@ -803,9 +1073,9 @@ function buildMovementTooltip(
       : "Unfollow";
 
   return (
-    `${formatFollowerActivityDate(
+    `${formatActivityTooltipDate(
       point.date,
-      true
+      range
     )}: ${movementLabel} · ` +
     `${point.followerTotal} total follower${
       point.followerTotal === 1
@@ -818,6 +1088,15 @@ function buildMovementTooltip(
 function getFollowerRangeDetails(
   range: FollowerGrowthRange
 ) {
+  if (range === "today") {
+    return {
+      summaryLabel: "today",
+      ariaLabel:
+        "today in Cyprus local time",
+      labelInterval: 4,
+    };
+  }
+
   if (range === "last14Days") {
     return {
       summaryLabel:
@@ -855,6 +1134,39 @@ function getFollowerRangeDetails(
       "the last year",
     labelInterval: 2,
   };
+}
+
+function formatActivityLabel(
+  value: string,
+  range: FollowerGrowthRange
+) {
+  if (range === "today") {
+    const hour =
+      value.slice(11, 13);
+
+    return `${hour}:00`;
+  }
+
+  return formatFollowerActivityDate(
+    value
+  );
+}
+
+function formatActivityTooltipDate(
+  value: string,
+  range: FollowerGrowthRange
+) {
+  if (range === "today") {
+    const hour =
+      value.slice(11, 13);
+
+    return `Today at ${hour}:00`;
+  }
+
+  return formatFollowerActivityDate(
+    value,
+    true
+  );
 }
 
 function formatSignedFollowerValue(
@@ -925,6 +1237,61 @@ function formatFollowerAnalyticsUpdatedAt(
       month: "short",
       hour: "2-digit",
       minute: "2-digit",
+      timeZone: "Europe/Nicosia",
     }
   ).format(date);
+}
+
+function RefreshIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M20 11a8 8 0 0 0-14.8-4.2L3 9" />
+      <path d="M3 4v5h5" />
+      <path d="M4 13a8 8 0 0 0 14.8 4.2L21 15" />
+      <path d="M21 20v-5h-5" />
+    </svg>
+  );
+}
+
+function ExpandIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M8 3H3v5" />
+      <path d="M16 3h5v5" />
+      <path d="M8 21H3v-5" />
+      <path d="M16 21h5v-5" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </svg>
+  );
+}
+
+function AudienceGrowthIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M5 19V9" />
+      <path d="M10 19V5" />
+      <path d="M15 19v-7" />
+      <path d="M20 19V3" />
+    </svg>
+  );
 }

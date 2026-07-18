@@ -176,6 +176,7 @@ followerGrowthRanges:
 
 followerActivityRanges:
   followerAnalytics?.followerActivityRanges ?? {
+    today: [],
     last14Days: [],
     lastMonth: [],
     last6Months: [],

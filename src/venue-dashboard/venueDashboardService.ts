@@ -72,7 +72,14 @@ export type VenueFollowerActivityPoint = {
   unfollows: number;
 };
 
+export type VenueFollowerTodayPoint = {
+  timestamp: string;
+  follows: number;
+  unfollows: number;
+};
+
 export type VenueFollowerActivityRanges = {
+  today: VenueFollowerTodayPoint[];
   last14Days: VenueFollowerActivityPoint[];
   lastMonth: VenueFollowerActivityPoint[];
   last6Months: VenueFollowerActivityPoint[];
@@ -133,6 +140,12 @@ type VenueFollowerActivityResponsePoint = {
   unfollows?: number;
 };
 
+type VenueFollowerTodayResponsePoint = {
+  timestamp?: string;
+  follows?: number;
+  unfollows?: number;
+};
+
 type VenueFollowerAnalyticsResponse = {
   followers?: {
     total?: number;
@@ -145,6 +158,7 @@ type VenueFollowerAnalyticsResponse = {
     }>;
 
     activity?: {
+  today?: VenueFollowerTodayResponsePoint[];
   last_14_days?: VenueFollowerActivityResponsePoint[];
   last_month?: VenueFollowerActivityResponsePoint[];
   last_6_months?: VenueFollowerActivityResponsePoint[];
@@ -250,9 +264,13 @@ export async function getVenueFollowerAnalytics(
   }
 
   const followerActivityRanges: VenueFollowerActivityRanges = {
-    last14Days: normalizeFollowerActivity(
-      data?.followers?.activity?.last_14_days
-    ),
+  today: normalizeFollowerTodayActivity(
+    data?.followers?.activity?.today
+  ),
+
+  last14Days: normalizeFollowerActivity(
+    data?.followers?.activity?.last_14_days
+  ),
 
     lastMonth: normalizeFollowerActivity(
       data?.followers?.activity?.last_month
@@ -869,6 +887,61 @@ function normalizeFollowerGrowth(
     );
 }
 
+function normalizeFollowerTodayActivity(
+  value: unknown
+): VenueFollowerTodayPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate = point as {
+        timestamp?: unknown;
+        follows?: unknown;
+        unfollows?: unknown;
+      };
+
+      const timestamp =
+        typeof candidate.timestamp === "string"
+          ? candidate.timestamp.trim()
+          : "";
+
+      if (
+        !isValidLocalHourTimestamp(
+          timestamp
+        )
+      ) {
+        return null;
+      }
+
+      return {
+        timestamp,
+
+        follows: normalizeAnalyticsCount(
+          candidate.follows
+        ),
+
+        unfollows: normalizeAnalyticsCount(
+          candidate.unfollows
+        ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is VenueFollowerTodayPoint =>
+        point !== null
+    );
+}
+
 function normalizeFollowerActivity(
   value: unknown
 ): VenueFollowerActivityPoint[] {
@@ -975,6 +1048,43 @@ function normalizeGeneratedAt(
   }
 
   return generatedAt.toISOString();
+}
+
+function isValidLocalHourTimestamp(
+  value: string
+): boolean {
+  if (
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:00:00$/.test(
+      value
+    )
+  ) {
+    return false;
+  }
+
+  const [
+    datePart,
+    timePart,
+  ] = value.split("T");
+
+  if (
+    !datePart ||
+    !timePart ||
+    !isValidAnalyticsDateKey(
+      datePart
+    )
+  ) {
+    return false;
+  }
+
+  const hour = Number(
+    timePart.slice(0, 2)
+  );
+
+  return (
+    Number.isInteger(hour) &&
+    hour >= 0 &&
+    hour <= 23
+  );
 }
 
 function isValidAnalyticsDateKey(

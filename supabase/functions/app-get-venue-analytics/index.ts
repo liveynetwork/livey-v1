@@ -35,6 +35,15 @@ type FollowerActivityPoint = {
   unfollows: number;
 };
 
+type TodayFollowerActivityPoint = {
+  timestamp: string;
+  follows: number;
+  unfollows: number;
+};
+
+const LIVEY_TIME_ZONE =
+  "Europe/Nicosia";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -314,10 +323,16 @@ Deno.serve(async (request) => {
       );
 
     const followerEvents =
-      followerActivityResult.data ??
-      [];
+  followerActivityResult.data ??
+  [];
 
-    const last14Days =
+const today =
+  buildTodayFollowerActivitySeries(
+    followerEvents,
+    now
+  );
+
+const last14Days =
       buildDailyFollowerActivitySeries(
         followerEvents,
         now,
@@ -369,8 +384,10 @@ Deno.serve(async (request) => {
             legacyFollowerGrowth,
 
           activity: {
-            last_14_days:
-              last14Days,
+  today,
+
+  last_14_days:
+    last14Days,
 
             last_month:
               lastMonth,
@@ -586,6 +603,70 @@ function createEmptyFollowerGrowthSeries(
       };
     }
   );
+}
+
+function buildTodayFollowerActivitySeries(
+  events: FollowEventRow[],
+  now: Date
+): TodayFollowerActivityPoint[] {
+  const todayDateKey =
+    toLiveyLocalDateKey(now);
+
+  const points = Array.from(
+    {
+      length: 24,
+    },
+    (_, hour) => ({
+      timestamp:
+        `${todayDateKey}T` +
+        `${String(hour).padStart(
+          2,
+          "0"
+        )}:00:00`,
+      follows: 0,
+      unfollows: 0,
+    })
+  );
+
+  events.forEach((event) => {
+    const eventDate = new Date(
+      event.created_at
+    );
+
+    if (
+      Number.isNaN(
+        eventDate.getTime()
+      )
+    ) {
+      return;
+    }
+
+    const localParts =
+      getLiveyLocalDateParts(
+        eventDate
+      );
+
+    if (
+      localParts.dateKey !==
+      todayDateKey
+    ) {
+      return;
+    }
+
+    const point =
+      points[localParts.hour];
+
+    if (!point) {
+      return;
+    }
+
+    addEventToActivityPoint(
+      point,
+      event.action
+    );
+  });
+
+  return points;
 }
 
 function buildDailyFollowerActivitySeries(
@@ -925,6 +1006,96 @@ function startOfUtcMonth(
       date.getUTCMonth(),
       1
     )
+  );
+}
+
+function getLiveyLocalDateParts(
+  date: Date
+): {
+  dateKey: string;
+  hour: number;
+} {
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone:
+          LIVEY_TIME_ZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        hourCycle: "h23",
+      }
+    );
+
+  const parts =
+    formatter.formatToParts(
+      date
+    );
+
+  const year =
+    getDateTimePart(
+      parts,
+      "year"
+    );
+
+  const month =
+    getDateTimePart(
+      parts,
+      "month"
+    );
+
+  const day =
+    getDateTimePart(
+      parts,
+      "day"
+    );
+
+  const hourValue =
+    Number(
+      getDateTimePart(
+        parts,
+        "hour"
+      )
+    );
+
+  return {
+    dateKey:
+      `${year}-${month}-${day}`,
+
+    hour:
+      Number.isInteger(
+        hourValue
+      ) &&
+      hourValue >= 0 &&
+      hourValue <= 23
+        ? hourValue
+        : 0,
+  };
+}
+
+function toLiveyLocalDateKey(
+  date: Date
+): string {
+  return getLiveyLocalDateParts(
+    date
+  ).dateKey;
+}
+
+function getDateTimePart(
+  parts: Intl.DateTimeFormatPart[],
+  type:
+    | "year"
+    | "month"
+    | "day"
+    | "hour"
+): string {
+  return (
+    parts.find(
+      (part) =>
+        part.type === type
+    )?.value ?? ""
   );
 }
 

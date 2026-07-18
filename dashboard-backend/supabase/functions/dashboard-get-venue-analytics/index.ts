@@ -15,6 +15,12 @@ type AppFollowerActivityPoint = {
   unfollows?: number;
 };
 
+type AppFollowerTodayPoint = {
+  timestamp?: string;
+  follows?: number;
+  unfollows?: number;
+};
+
 type AppAnalyticsResponse = {
   followers?: {
     total?: number;
@@ -24,11 +30,12 @@ type AppAnalyticsResponse = {
     growth_last_30_days?: AppFollowerGrowthPoint[];
 
     activity?: {
-      last_14_days?: AppFollowerActivityPoint[];
-      last_month?: AppFollowerActivityPoint[];
-      last_6_months?: AppFollowerActivityPoint[];
-      last_year?: AppFollowerActivityPoint[];
-    };
+  today?: AppFollowerTodayPoint[];
+  last_14_days?: AppFollowerActivityPoint[];
+  last_month?: AppFollowerActivityPoint[];
+  last_6_months?: AppFollowerActivityPoint[];
+  last_year?: AppFollowerActivityPoint[];
+};
   };
 
   generated_at?: string;
@@ -42,6 +49,12 @@ type FollowerGrowthPoint = {
 
 type FollowerActivityPoint = {
   date: string;
+  follows: number;
+  unfollows: number;
+};
+
+type FollowerTodayPoint = {
+  timestamp: string;
   follows: number;
   unfollows: number;
 };
@@ -372,13 +385,21 @@ Deno.serve(async (request) => {
             ),
 
           activity: {
-            last_14_days:
-              normalizeFollowerActivity(
-                appPayload
-                  ?.followers
-                  ?.activity
-                  ?.last_14_days
-              ),
+  today:
+    normalizeFollowerTodayActivity(
+      appPayload
+        ?.followers
+        ?.activity
+        ?.today
+    ),
+
+  last_14_days:
+    normalizeFollowerActivity(
+      appPayload
+        ?.followers
+        ?.activity
+        ?.last_14_days
+    ),
 
             last_month:
               normalizeFollowerActivity(
@@ -494,6 +515,62 @@ function normalizeFollowerGrowth(
     );
 }
 
+function normalizeFollowerTodayActivity(
+  value: unknown
+): FollowerTodayPoint[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((point) => {
+      if (
+        !point ||
+        typeof point !== "object"
+      ) {
+        return null;
+      }
+
+      const candidate =
+        point as
+          AppFollowerTodayPoint;
+
+      const timestamp =
+        typeof candidate.timestamp ===
+        "string"
+          ? candidate.timestamp.trim()
+          : "";
+
+      if (
+        !isValidLocalHourTimestamp(
+          timestamp
+        )
+      ) {
+        return null;
+      }
+
+      return {
+        timestamp,
+
+        follows:
+          normalizeCount(
+            candidate.follows
+          ),
+
+        unfollows:
+          normalizeCount(
+            candidate.unfollows
+          ),
+      };
+    })
+    .filter(
+      (
+        point
+      ): point is FollowerTodayPoint =>
+        point !== null
+    );
+}
+
 function normalizeFollowerActivity(
   value: unknown
 ): FollowerActivityPoint[] {
@@ -571,6 +648,42 @@ function normalizeGeneratedAt(
   }
 
   return date.toISOString();
+}
+
+function isValidLocalHourTimestamp(
+  value: string
+) {
+  if (
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:00:00$/.test(
+      value
+    )
+  ) {
+    return false;
+  }
+
+  const [
+    datePart,
+    timePart,
+  ] = value.split("T");
+
+  if (
+    !datePart ||
+    !timePart ||
+    !isValidDateKey(datePart)
+  ) {
+    return false;
+  }
+
+  const hour =
+    Number(
+      timePart.slice(0, 2)
+    );
+
+  return (
+    Number.isInteger(hour) &&
+    hour >= 0 &&
+    hour <= 23
+  );
 }
 
 function isValidDateKey(

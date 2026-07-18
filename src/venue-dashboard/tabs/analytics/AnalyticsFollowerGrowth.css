@@ -68,31 +68,169 @@
     rgba(255, 155, 128, 0.78);
 }
 
-/* Main follower activity card */
+/* Compact follower card */
 
 .venue-dashboard-analytics-follower-chart-card {
   position: relative;
   overflow: hidden;
-  padding: 38px 34px 26px;
+  padding: 40px 34px 26px;
   background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.045),
+      transparent 34%
+    ),
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.016)
+      rgba(255, 255, 255, 0.032),
+      rgba(255, 255, 255, 0.008)
     ),
     #15171a;
+}
+
+.venue-dashboard-analytics-follower-chart-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 12%;
+  left: 12%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.11),
+      transparent
+    );
+  pointer-events: none;
 }
 
 .venue-dashboard-analytics-follower-heading {
   position: relative;
   display: grid;
   justify-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 24px;
 }
 
 .venue-dashboard-analytics-follower-heading
   .venue-dashboard-analytics-section-heading {
   margin-bottom: 0;
+}
+
+.venue-dashboard-analytics-follower-compact-metric {
+  position: relative;
+  width: min(100%, 380px);
+  min-height: 150px;
+  overflow: hidden;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  margin: 0 auto 24px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+  border-radius: 28px;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(255, 91, 50, 0.08),
+      transparent 44%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.034),
+      rgba(255, 255, 255, 0.008)
+    ),
+    rgba(7, 8, 10, 0.58);
+  text-align: center;
+}
+
+.venue-dashboard-analytics-follower-compact-metric::after {
+  content: "";
+  position: absolute;
+  right: 23%;
+  bottom: 0;
+  left: 23%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 91, 50, 0.44),
+      transparent
+    );
+}
+
+.venue-dashboard-analytics-follower-compact-metric
+  span {
+  color:
+    rgba(247, 241, 234, 0.46);
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-follower-compact-metric
+  strong {
+  color: #ff8b6e;
+  font-size:
+    clamp(3rem, 6vw, 4.8rem);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.075em;
+}
+
+.venue-dashboard-analytics-follower-compact-metric
+  small {
+  color:
+    rgba(247, 241, 234, 0.42);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-analytics-follower-today-label {
+  width: min(100%, 360px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 12px;
+  color:
+    rgba(247, 241, 234, 0.48);
+  text-align: center;
+}
+
+.venue-dashboard-analytics-follower-today-label
+  span {
+  color: #f7f1ea;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-analytics-follower-today-label
+  small {
+  position: relative;
+  padding-left: 11px;
+  color:
+    rgba(247, 241, 234, 0.34);
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.venue-dashboard-analytics-follower-today-label
+  small::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background:
+    rgba(247, 241, 234, 0.28);
+  transform: translateY(-50%);
 }
 
 /* Range selector */
@@ -112,6 +250,13 @@
     rgba(7, 8, 10, 0.42);
 }
 
+.venue-dashboard-analytics-follower-range-selector.is-advanced {
+  width: 100%;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
 .venue-dashboard-analytics-follower-range-selector
   button {
   min-height: 44px;
@@ -128,13 +273,14 @@
   transition:
     border-color 180ms ease,
     background 180ms ease,
-    color 180ms ease;
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .venue-dashboard-analytics-follower-range-selector
   button.is-active {
   border-color:
-    rgba(255, 91, 50, 0.46);
+    rgba(255, 91, 50, 0.48);
   background:
     rgba(255, 91, 50, 0.12);
   color: #ffd8cd;
@@ -273,13 +419,32 @@
   overflow: hidden;
   border: 1px solid
     rgba(255, 255, 255, 0.055);
-  border-radius: 26px;
+  border-radius: 28px;
   padding: 22px 18px 42px;
   background:
-    rgba(7, 8, 10, 0.46);
-  transition:
-    border-color 180ms ease,
-    background 180ms ease;
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.025),
+      transparent 42%
+    ),
+    rgba(7, 8, 10, 0.5);
+}
+
+.venue-dashboard-analytics-follower-chart-shell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 18%;
+  left: 18%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.075),
+      transparent
+    );
+  pointer-events: none;
 }
 
 .venue-dashboard-analytics-follower-chart-svg {
@@ -293,7 +458,7 @@
 .venue-dashboard-analytics-follower-chart-grid
   line {
   stroke:
-    rgba(255, 255, 255, 0.035);
+    rgba(255, 255, 255, 0.032);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
@@ -301,30 +466,14 @@
 .venue-dashboard-analytics-follower-chart-grid
   line.is-baseline {
   stroke:
-    rgba(247, 241, 234, 0.16);
-  stroke-width: 1.15;
+    rgba(247, 241, 234, 0.15);
+  stroke-width: 1.1;
   stroke-dasharray: none;
-}
-
-.venue-dashboard-analytics-follower-chart-area {
-  pointer-events: none;
-}
-
-.venue-dashboard-analytics-follower-chart-area.is-follow {
-  fill:
-    url(#liveyFollowerFollowFill);
-  opacity: 0.16;
-}
-
-.venue-dashboard-analytics-follower-chart-area.is-unfollow {
-  fill:
-    url(#liveyFollowerUnfollowFill);
-  opacity: 0.1;
 }
 
 .venue-dashboard-analytics-follower-chart-line {
   fill: none;
-  stroke-width: 2.4;
+  stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
@@ -332,11 +481,11 @@
 
 .venue-dashboard-analytics-follower-chart-line.is-follow {
   stroke: #ff5b32;
-}
-
-.venue-dashboard-analytics-follower-chart-line.is-unfollow {
-  stroke:
-    rgba(247, 241, 234, 0.62);
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba(255, 91, 50, 0.18)
+    );
 }
 
 .venue-dashboard-analytics-follower-chart-point {
@@ -346,7 +495,8 @@
   transition:
     r 160ms ease,
     fill 160ms ease,
-    stroke 160ms ease;
+    stroke 160ms ease,
+    opacity 160ms ease;
 }
 
 .venue-dashboard-analytics-follower-chart-point.is-positive {
@@ -355,13 +505,6 @@
 
 .venue-dashboard-analytics-follower-chart-point.is-negative {
   fill: #ff3b30;
-}
-
-.venue-dashboard-analytics-follower-chart-point.is-zero {
-  fill:
-    rgba(247, 241, 234, 0.22);
-  stroke:
-    rgba(17, 19, 22, 0.82);
 }
 
 .venue-dashboard-analytics-follower-chart-labels {
@@ -377,11 +520,62 @@
   span {
   position: absolute;
   color:
-    rgba(247, 241, 234, 0.36);
+    rgba(247, 241, 234, 0.34);
   font-size: 0.59rem;
   font-weight: 850;
   white-space: nowrap;
   transform: translateX(-50%);
+}
+
+/* Advanced button */
+
+.venue-dashboard-analytics-follower-advanced-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.venue-dashboard-analytics-follower-advanced-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid
+    rgba(255, 91, 50, 0.3);
+  border-radius: 16px;
+  padding: 0 18px;
+  background:
+    rgba(255, 91, 50, 0.09);
+  color: #ffd6cb;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.venue-dashboard-analytics-follower-advanced-button
+  svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.venue-dashboard-analytics-follower-advanced-button:focus-visible {
+  outline: 2px solid
+    rgba(255, 91, 50, 0.72);
+  outline-offset: 3px;
 }
 
 /* Loading and empty states */
@@ -468,7 +662,7 @@
   line-height: 1.6;
 }
 
-/* Footer */
+/* Compact footer */
 
 .venue-dashboard-analytics-follower-chart-footer {
   min-height: 48px;
@@ -500,6 +694,211 @@
   height: 7px;
   border-radius: 999px;
   background: #ff5b32;
+  box-shadow:
+    0 0 0 4px
+    rgba(255, 91, 50, 0.06);
+}
+
+/* Advanced modal */
+
+.venue-dashboard-analytics-follower-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 28px;
+  background:
+    rgba(5, 6, 8, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter:
+    blur(18px);
+  animation:
+    venue-dashboard-follower-backdrop-enter
+    180ms ease both;
+}
+
+.venue-dashboard-analytics-follower-modal {
+  position: relative;
+  width: min(1180px, 100%);
+  max-height:
+    calc(100vh - 56px);
+  overflow-y: auto;
+  border: 1px solid
+    rgba(255, 255, 255, 0.085);
+  border-radius: 34px;
+  padding: 32px;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(255, 91, 50, 0.075),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255, 255, 255, 0.04),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.028),
+      rgba(255, 255, 255, 0.006)
+    ),
+    #15171b;
+  box-shadow:
+    0 40px 110px
+    rgba(0, 0, 0, 0.52);
+  animation:
+    venue-dashboard-follower-modal-enter
+    210ms ease both;
+}
+
+.venue-dashboard-analytics-follower-modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 14%;
+  left: 14%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.14),
+      transparent
+    );
+}
+
+.venue-dashboard-analytics-follower-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 26px;
+}
+
+.venue-dashboard-analytics-follower-modal-header
+  > div {
+  display: grid;
+  gap: 8px;
+}
+
+.venue-dashboard-analytics-follower-modal-header
+  span {
+  color: #ff8b6e;
+  font-size: 0.65rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-analytics-follower-modal-header
+  h2 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size:
+    clamp(1.9rem, 4vw, 3.15rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.venue-dashboard-analytics-follower-modal-header
+  p {
+  max-width: 620px;
+  margin: 0;
+  color:
+    rgba(247, 241, 234, 0.45);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.6;
+}
+
+.venue-dashboard-analytics-follower-modal-close {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  border: 1px solid
+    rgba(255, 255, 255, 0.075);
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background:
+    rgba(7, 8, 10, 0.48);
+  color:
+    rgba(247, 241, 234, 0.68);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-analytics-follower-modal-close
+  svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+.venue-dashboard-analytics-follower-modal-close:focus-visible {
+  outline: 2px solid
+    rgba(255, 91, 50, 0.72);
+  outline-offset: 3px;
+}
+
+.venue-dashboard-analytics-follower-modal-footer {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 20px;
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.05);
+  padding-top: 18px;
+  color:
+    rgba(247, 241, 234, 0.4);
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.venue-dashboard-analytics-follower-modal-footer
+  .venue-dashboard-analytics-refresh-button {
+  position: static;
+}
+
+@keyframes
+  venue-dashboard-follower-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes
+  venue-dashboard-follower-modal-enter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(14px)
+      scale(0.982);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
 }
 
 /* Hover */
@@ -510,27 +909,16 @@
   .venue-dashboard-analytics-follower-chart-meta
     > div:hover {
     border-color:
-      rgba(255, 91, 50, 0.55);
+      rgba(255, 91, 50, 0.42);
   }
 
   .venue-dashboard-analytics-follower-range-selector
     button:not(.is-active):hover {
     border-color:
-      rgba(255, 91, 50, 0.28);
+      rgba(255, 91, 50, 0.24);
     color:
       rgba(247, 241, 234, 0.82);
-  }
-
-  .venue-dashboard-analytics-follower-chart-shell:hover {
-    border-color:
-      rgba(255, 91, 50, 0.55);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 91, 50, 0.022),
-        rgba(255, 255, 255, 0.006)
-      ),
-      rgba(7, 8, 10, 0.5);
+    transform: translateY(-1px);
   }
 
   .venue-dashboard-analytics-follower-chart-point:hover {
@@ -544,12 +932,28 @@
   }
 
   .venue-dashboard-analytics-follower-chart-point.is-negative:hover {
-  fill: #ff6259;
-}
+    fill: #ff6259;
+  }
 
-  .venue-dashboard-analytics-follower-chart-point.is-zero:hover {
-    fill:
-      rgba(247, 241, 234, 0.44);
+  .venue-dashboard-analytics-follower-advanced-button:hover {
+    border-color:
+      rgba(255, 91, 50, 0.58);
+    background:
+      rgba(255, 91, 50, 0.15);
+    color: #fff0eb;
+    transform: translateY(-1px);
+    box-shadow:
+      0 12px 28px
+      rgba(255, 91, 50, 0.08);
+  }
+
+  .venue-dashboard-analytics-follower-modal-close:hover {
+    border-color:
+      rgba(255, 91, 50, 0.32);
+    background:
+      rgba(255, 91, 50, 0.1);
+    color: #ffd5ca;
+    transform: translateY(-1px);
   }
 }
 
@@ -560,6 +964,11 @@
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
+
+  .venue-dashboard-analytics-follower-range-selector.is-advanced {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -567,9 +976,9 @@
     padding: 30px 22px 22px;
   }
 
-  .venue-dashboard-analytics-follower-range-selector {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+  .venue-dashboard-analytics-follower-compact-metric {
+    min-height: 132px;
+    border-radius: 24px;
   }
 
   .venue-dashboard-analytics-follower-chart-shell {
@@ -600,14 +1009,36 @@
     justify-content: center;
     text-align: center;
   }
+
+  .venue-dashboard-analytics-follower-modal-backdrop {
+    align-items: start;
+    padding: 14px;
+  }
+
+  .venue-dashboard-analytics-follower-modal {
+    max-height: none;
+    border-radius: 28px;
+    padding: 24px 20px;
+  }
+
+  .venue-dashboard-analytics-follower-modal-header {
+    gap: 16px;
+  }
+
+  .venue-dashboard-analytics-follower-range-selector.is-advanced {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .venue-dashboard-analytics-follower-modal-footer {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 560px) {
   .venue-dashboard-analytics-follower-growth {
-    grid-template-columns: 1fr;
-  }
-
-  .venue-dashboard-analytics-follower-range-selector {
     grid-template-columns: 1fr;
   }
 
@@ -619,6 +1050,34 @@
     > div {
     min-height: 94px;
   }
+
+  .venue-dashboard-analytics-follower-range-selector.is-advanced {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-dashboard-analytics-follower-today-label {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .venue-dashboard-analytics-follower-today-label
+    small {
+    padding-left: 0;
+  }
+
+  .venue-dashboard-analytics-follower-today-label
+    small::before {
+    display: none;
+  }
+
+  .venue-dashboard-analytics-follower-advanced-button {
+    width: 100%;
+  }
+
+  .venue-dashboard-analytics-follower-modal-header
+    h2 {
+    padding-right: 4px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -628,8 +1087,14 @@
     button,
   .venue-dashboard-analytics-follower-chart-meta
     > div,
-  .venue-dashboard-analytics-follower-chart-shell,
-  .venue-dashboard-analytics-follower-chart-point {
+  .venue-dashboard-analytics-follower-chart-point,
+  .venue-dashboard-analytics-follower-advanced-button,
+  .venue-dashboard-analytics-follower-modal-close {
     transition-duration: 1ms;
+  }
+
+  .venue-dashboard-analytics-follower-modal-backdrop,
+  .venue-dashboard-analytics-follower-modal {
+    animation-duration: 1ms;
   }
 }
