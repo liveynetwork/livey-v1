@@ -280,14 +280,13 @@
   position: relative;
   width: min(1040px, 100%);
   max-height: calc(100dvh - 56px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
   border: 1px solid
     rgba(255, 255, 255, 0.09);
   border-radius: 36px;
   display: grid;
   gap: 24px;
-  padding: 30px;
+  padding: 8px;
+overflow: hidden;
   background:
     linear-gradient(
       145deg,
@@ -303,6 +302,63 @@
     210ms ease both;
   transition:
     border-color 180ms ease;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll {
+  max-height: calc(100dvh - 72px);
+  display: grid;
+  gap: 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 27px 22px 22px;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-track {
+  margin-block: 12px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-button,
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-button:single-button,
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-button:vertical:end:increment {
+  width: 0;
+  height: 0;
+  display: none;
+  appearance: none;
+  background: transparent;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .venue-dashboard-analytics-profile-modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(247, 241, 234, 0.2)
+      transparent;
+  }
 }
 
 .venue-dashboard-analytics-profile-modal-heading {
@@ -783,11 +839,17 @@
   }
 
   .venue-dashboard-analytics-profile-modal {
-    width: 100%;
-    max-height: calc(100dvh - 20px);
-    border-radius: 30px;
-    padding: 24px 18px 18px;
-  }
+  width: 100%;
+  max-height: calc(100dvh - 20px);
+  border-radius: 30px;
+  padding: 7px;
+}
+
+.venue-dashboard-analytics-profile-modal-scroll {
+  max-height: calc(100dvh - 34px);
+  gap: 24px;
+  padding: 17px 16px 11px 11px;
+}
 
   .venue-dashboard-analytics-profile-modal-heading {
   grid-template-columns:

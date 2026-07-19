@@ -104,159 +104,161 @@ export function AnalyticsProfileHealthModal({
         aria-modal="true"
         aria-labelledby="venue-dashboard-profile-health-modal-title"
       >
-        <header className="venue-dashboard-analytics-profile-modal-heading">
-          <div>
-            <p className="venue-dashboard-eyebrow">
-              Venue health
-            </p>
-
-            <h2 id="venue-dashboard-profile-health-modal-title">
-              Your venue profile
-            </h2>
-
-            <p>
-              Review your editable venue
-              details and see what still
-              needs attention.
-            </p>
-          </div>
-
-          <button
-            className="venue-dashboard-analytics-profile-modal-close"
-            type="button"
-            aria-label="Close venue profile details"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </button>
-        </header>
-
-        <div className="venue-dashboard-analytics-profile-modal-overview">
-          <AnalyticsCompletionRing
-            percentage={percentage}
-            animateWhenVisible={false}
-            animationKey="profile-modal"
-            size="large"
-            ariaLabel={`${percentage}% editable venue profile completeness`}
-          />
-
-          <div className="venue-dashboard-analytics-profile-modal-overview-copy">
-            <span>
-              Editable profile completion
-            </span>
-
-            <strong>
-              {percentage}% complete
-            </strong>
-
-            <p>
-              Complete these details to
-              improve how your venue appears
-              and communicates on Livey.
-            </p>
-          </div>
-        </div>
-
-        <section className="venue-dashboard-analytics-profile-fields-card">
-          <header className="venue-dashboard-analytics-profile-fields-heading">
+        <div className="venue-dashboard-analytics-profile-modal-scroll">
+          <header className="venue-dashboard-analytics-profile-modal-heading">
             <div>
-              <span>
-                Editable details
-              </span>
+              <p className="venue-dashboard-eyebrow">
+                Venue health
+              </p>
+
+              <h2 id="venue-dashboard-profile-health-modal-title">
+                Your venue profile
+              </h2>
 
               <p>
-                {completedFieldCount} of{" "}
-                {editableFields.length} complete
+                Review your editable venue
+                details and see what still
+                needs attention.
               </p>
             </div>
 
-            <strong>
-              {completedFieldCount}/
-              {editableFields.length}
-            </strong>
+            <button
+              className="venue-dashboard-analytics-profile-modal-close"
+              type="button"
+              aria-label="Close venue profile details"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </button>
           </header>
 
-          <div className="venue-dashboard-analytics-profile-fields-list">
-            {editableFields.map(
-              (field) => (
-                <div
-                  className={
-                    field.isComplete
-                      ? "is-complete"
-                      : "is-missing"
-                  }
-                  key={field.target}
-                >
-                  <span
-                    className="venue-dashboard-analytics-profile-field-status-icon"
-                    aria-hidden="true"
+          <div className="venue-dashboard-analytics-profile-modal-overview">
+            <AnalyticsCompletionRing
+              percentage={percentage}
+              animateWhenVisible={false}
+              animationKey="profile-modal"
+              size="large"
+              ariaLabel={`${percentage}% editable venue profile completeness`}
+            />
+
+            <div className="venue-dashboard-analytics-profile-modal-overview-copy">
+              <span>
+                Editable profile completion
+              </span>
+
+              <strong>
+                {percentage}% complete
+              </strong>
+
+              <p>
+                Complete these details to
+                improve how your venue appears
+                and communicates on Livey.
+              </p>
+            </div>
+          </div>
+
+          <section className="venue-dashboard-analytics-profile-fields-card">
+            <header className="venue-dashboard-analytics-profile-fields-heading">
+              <div>
+                <span>
+                  Editable details
+                </span>
+
+                <p>
+                  {completedFieldCount} of{" "}
+                  {editableFields.length} complete
+                </p>
+              </div>
+
+              <strong>
+                {completedFieldCount}/
+                {editableFields.length}
+              </strong>
+            </header>
+
+            <div className="venue-dashboard-analytics-profile-fields-list">
+              {editableFields.map(
+                (field) => (
+                  <div
+                    className={
+                      field.isComplete
+                        ? "is-complete"
+                        : "is-missing"
+                    }
+                    key={field.target}
                   >
-                    {field.isComplete ? (
-                      <CheckIcon />
-                    ) : (
-                      <MissingIcon />
-                    )}
-                  </span>
-
-                  <div className="venue-dashboard-analytics-profile-field-copy">
-                    <strong>
-                      {field.label}
-                    </strong>
-
-                    <span>
-                      {field.isComplete
-                        ? "Complete"
-                        : "Needs attention"}
-                    </span>
-                  </div>
-
-                  {!field.isComplete ? (
-                    <button
-                      className="venue-dashboard-analytics-profile-field-fix"
-                      type="button"
-                      onClick={() =>
-                        handleFixField(
-                          field.target
-                        )
-                      }
-                      aria-label={`Fix ${field.label}`}
+                    <span
+                      className="venue-dashboard-analytics-profile-field-status-icon"
+                      aria-hidden="true"
                     >
-                      <span>
-                        Fix
-                      </span>
-
-                      <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 12h13" />
-                        <path d="m14 7 5 5-5 5" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <span className="venue-dashboard-analytics-profile-field-complete-label">
-                      Ready
+                      {field.isComplete ? (
+                        <CheckIcon />
+                      ) : (
+                        <MissingIcon />
+                      )}
                     </span>
-                  )}
-                </div>
-              )
-            )}
-          </div>
-        </section>
 
-        {missingFields.length === 0 ? (
-          <div className="venue-dashboard-analytics-profile-modal-complete">
-            <strong>
-              Your editable venue profile is
-              complete.
-            </strong>
+                    <div className="venue-dashboard-analytics-profile-field-copy">
+                      <strong>
+                        {field.label}
+                      </strong>
 
-            <span>
-              All profile details you can
-              manage are currently available.
-            </span>
-          </div>
-        ) : null}
+                      <span>
+                        {field.isComplete
+                          ? "Complete"
+                          : "Needs attention"}
+                      </span>
+                    </div>
+
+                    {!field.isComplete ? (
+                      <button
+                        className="venue-dashboard-analytics-profile-field-fix"
+                        type="button"
+                        onClick={() =>
+                          handleFixField(
+                            field.target
+                          )
+                        }
+                        aria-label={`Fix ${field.label}`}
+                      >
+                        <span>
+                          Fix
+                        </span>
+
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 12h13" />
+                          <path d="m14 7 5 5-5 5" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <span className="venue-dashboard-analytics-profile-field-complete-label">
+                        Ready
+                      </span>
+                    )}
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+
+          {missingFields.length === 0 ? (
+            <div className="venue-dashboard-analytics-profile-modal-complete">
+              <strong>
+                Your editable venue profile is
+                complete.
+              </strong>
+
+              <span>
+                All profile details you can
+                manage are currently available.
+              </span>
+            </div>
+          ) : null}
+        </div>
       </section>
     </div>
   );
