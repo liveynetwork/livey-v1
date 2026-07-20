@@ -457,7 +457,7 @@ originalEditingEventRef.current = null;
   target: EditableProfileFocusTarget
 ) {
   setAccountSettingsFocusTarget(target);
-  setActiveSection("account");
+  requestSectionChange("account");
 }
 
   function handleCreateEvent() {
@@ -537,6 +537,82 @@ function hasUnsavedActivityChanges() {
     editingEvent.isActive !==
       originalEvent.isActive
   );
+}
+
+function requestCreateEvent() {
+  if (hasUnsavedActivityChanges()) {
+    setPendingActivityAction({
+      type: "create",
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  handleCreateEvent();
+}
+
+function requestCreateLiveNowEvent() {
+  if (hasUnsavedActivityChanges()) {
+    setPendingActivityAction({
+      type: "create-live-now",
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  handleCreateLiveNowEvent();
+}
+
+function requestSelectEvent(
+  event: VenueDashboardEvent
+) {
+  if (
+    editingEvent?.id === event.id &&
+    editingEvent.mode === "edit"
+  ) {
+    return;
+  }
+
+  if (hasUnsavedActivityChanges()) {
+    setPendingActivityAction({
+      type: "select",
+      event,
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  handleSelectEvent(event);
+}
+
+function requestSectionChange(
+  section: DashboardSection
+) {
+  if (section === activeSection) {
+    return;
+  }
+
+  if (hasUnsavedActivityChanges()) {
+    setPendingActivityAction({
+      type: "section",
+      section,
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  if (
+    activeSection === "activity" &&
+    editingEvent
+  ) {
+    closeActivityEditor();
+  }
+
+  setActiveSection(section);
 }
 
   function handleSelectEvent(
@@ -846,8 +922,8 @@ function handleConfirmDiscardActivityChanges() {
   }
 
   setActiveSection(
-    pendingAction.section
-  );
+  pendingAction.section
+);
 }
 
   async function handleConfirmDeleteEvent() {
@@ -1014,18 +1090,18 @@ setActiveSection("activity");
   return (
     <main className="venue-dashboard-page">
       <VenueDashboardSidebar
-        activeSection={activeSection}
-        venueName={
-          activeVenue?.name ||
-          "Venue owner"
-        }
-        venueLogoUrl={
-          activeVenue?.logo_url || null
-        }
-        onSectionChange={
-          setActiveSection
-        }
-      />
+  activeSection={activeSection}
+  venueName={
+    activeVenue?.name ||
+    "Venue owner"
+  }
+  venueLogoUrl={
+    activeVenue?.logo_url || null
+  }
+  onSectionChange={
+    requestSectionChange
+  }
+/>
 
       <section className="venue-dashboard-main">
         <header className="venue-dashboard-topbar">
@@ -1087,14 +1163,14 @@ setActiveSection("activity");
                   historyEvents.length
                 }
                 onCreateEvent={
-                  handleCreateEvent
-                }
-                onSelectEvent={
-                  handleSelectEvent
-                }
-                onSectionChange={
-                  setActiveSection
-                }
+  requestCreateEvent
+}
+onSelectEvent={
+  requestSelectEvent
+}
+onSectionChange={
+  requestSectionChange
+}
               />
             ) : null}
 
@@ -1107,11 +1183,11 @@ setActiveSection("activity");
                   isDeletingEvent
                 }
                 onCreateEvent={
-                  handleCreateEvent
-                }
-                  onCreateLiveNowEvent={
-                    handleCreateLiveNowEvent
-                }
+  requestCreateEvent
+}
+onCreateLiveNowEvent={
+  requestCreateLiveNowEvent
+}
                 onCancelEditing={
                   handleCancelEditing
                 }
@@ -1122,8 +1198,8 @@ setActiveSection("activity");
                   handleSaveEvent
                 }
                 onSelectEvent={
-                  handleSelectEvent
-                }
+  requestSelectEvent
+}
                 onEditingEventChange={
                   setEditingEvent
                 }
@@ -1193,8 +1269,8 @@ onFocusTargetHandled={() =>
                   handleRefreshDashboard
                 }
                 onSectionChange={
-                  setActiveSection
-                }
+  requestSectionChange
+}
                 onUpdateVenueProfile={
                   handleUpdateVenueProfile
                 }
