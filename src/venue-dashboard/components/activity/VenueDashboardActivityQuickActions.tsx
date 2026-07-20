@@ -1,9 +1,11 @@
 type VenueDashboardActivityQuickActionsProps = {
   onCreateEvent: () => void;
+  onCreateLiveNowEvent: () => void;
 };
 
 export function VenueDashboardActivityQuickActions({
   onCreateEvent,
+  onCreateLiveNowEvent,
 }: VenueDashboardActivityQuickActionsProps) {
   return (
     <section className="venue-dashboard-activity-quick-actions">
@@ -16,8 +18,8 @@ export function VenueDashboardActivityQuickActions({
           <h3>Choose how you want to publish</h3>
 
           <p>
-            Start with a one-time activity now. More publishing tools will be
-            added carefully in later stages.
+            Start something happening now or prepare a one-time activity for
+            later.
           </p>
         </div>
       </div>
@@ -26,7 +28,7 @@ export function VenueDashboardActivityQuickActions({
         <button
           className="venue-dashboard-activity-quick-action is-primary"
           type="button"
-          onClick={onCreateEvent}
+          onClick={onCreateLiveNowEvent}
         >
           <span
             className="venue-dashboard-activity-quick-action-icon"
@@ -39,8 +41,8 @@ export function VenueDashboardActivityQuickActions({
             <strong>Start something live</strong>
 
             <small>
-              Create an activity and set its schedule for what is happening
-              now.
+              Open the editor with a schedule beginning now and ending three
+              hours later.
             </small>
           </span>
 

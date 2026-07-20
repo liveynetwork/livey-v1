@@ -1,6 +1,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -38,6 +39,25 @@ import type {
   EditableProfileFocusTarget,
 } from "./tabs/analytics/AnalyticsProfileHealthModal";
 
+type PendingActivityAction =
+  | {
+      type: "cancel";
+    }
+  | {
+      type: "create";
+    }
+  | {
+      type: "create-live-now";
+    }
+  | {
+      type: "select";
+      event: VenueDashboardEvent;
+    }
+  | {
+      type: "section";
+      section: DashboardSection;
+    };
+    
 type VenueDashboardScreenProps = {
   onReady?: () => void;
 };
@@ -62,6 +82,21 @@ export function VenueDashboardScreen({
 
   const [editingEvent, setEditingEvent] =
     useState<EditingEventState | null>(null);
+
+  const originalEditingEventRef =
+  useRef<EditingEventState | null>(null);
+
+const [
+  pendingActivityAction,
+  setPendingActivityAction,
+] = useState<PendingActivityAction | null>(
+  null
+);
+
+const [
+  isDiscardChangesModalOpen,
+  setIsDiscardChangesModalOpen,
+] = useState(false);
 
   const [currentUser, setCurrentUser] =
     useState<User | null>(null);
@@ -249,7 +284,8 @@ followerAnalyticsGeneratedAt:
         }
 
         setDashboardData(data);
-        setEditingEvent(null);
+setEditingEvent(null);
+originalEditingEventRef.current = null;
       } catch (error) {
         console.error(
           "Failed to load venue dashboard:",
@@ -425,34 +461,103 @@ followerAnalyticsGeneratedAt:
 }
 
   function handleCreateEvent() {
-    setStatusMessage("");
-    setErrorMessage("");
-    setEditingEvent(
-      createEmptyEditingEvent()
-    );
-    setActiveSection("activity");
-  }
+  setStatusMessage("");
+  setErrorMessage("");
+
+  const nextEditingEvent =
+    createEmptyEditingEvent();
+
+  originalEditingEventRef.current =
+    nextEditingEvent;
+
+  setEditingEvent(nextEditingEvent);
+  setActiveSection("activity");
+}
+
+  function handleCreateLiveNowEvent() {
+  setStatusMessage("");
+  setErrorMessage("");
+
+  const nextEditingEvent =
+    createLiveNowEditingEvent();
+
+  originalEditingEventRef.current =
+    nextEditingEvent;
+
+  setEditingEvent(nextEditingEvent);
+  setActiveSection("activity");
+}
 
   function handleCancelEditing() {
-    setStatusMessage("");
-    setErrorMessage("");
-    setEditingEvent(null);
+  setStatusMessage("");
+  setErrorMessage("");
+
+  if (hasUnsavedActivityChanges()) {
+    setPendingActivityAction({
+      type: "cancel",
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
   }
+
+  closeActivityEditor();
+}
+
+function closeActivityEditor() {
+  setEditingEvent(null);
+  originalEditingEventRef.current = null;
+}
+
+function hasUnsavedActivityChanges() {
+  if (!editingEvent) {
+    return false;
+  }
+
+  const originalEvent =
+    originalEditingEventRef.current;
+
+  if (!originalEvent) {
+    return true;
+  }
+
+  return (
+    editingEvent.id !== originalEvent.id ||
+    editingEvent.mode !== originalEvent.mode ||
+    editingEvent.title !== originalEvent.title ||
+    editingEvent.description !==
+      originalEvent.description ||
+    editingEvent.status !== originalEvent.status ||
+    editingEvent.displayTime !==
+      originalEvent.displayTime ||
+    editingEvent.startsAt !==
+      originalEvent.startsAt ||
+    editingEvent.endsAt !==
+      originalEvent.endsAt ||
+    editingEvent.isActive !==
+      originalEvent.isActive
+  );
+}
 
   function handleSelectEvent(
-    event: VenueDashboardEvent
-  ) {
-    if (isEventInHistory(event)) {
-      return;
-    }
-
-    setStatusMessage("");
-    setErrorMessage("");
-    setEditingEvent(
-      mapEventToEditingState(event)
-    );
-    setActiveSection("activity");
+  event: VenueDashboardEvent
+) {
+  if (isEventInHistory(event)) {
+    return;
   }
+
+  setStatusMessage("");
+  setErrorMessage("");
+
+  const nextEditingEvent =
+    mapEventToEditingState(event);
+
+  originalEditingEventRef.current =
+    nextEditingEvent;
+
+  setEditingEvent(nextEditingEvent);
+  setActiveSection("activity");
+}
 
   async function refreshDashboard(
     selectedEventId?: string | null
@@ -474,15 +579,19 @@ followerAnalyticsGeneratedAt:
       );
 
     if (
-      selectedEvent &&
-      !isEventInHistory(selectedEvent)
-    ) {
-      setEditingEvent(
-        mapEventToEditingState(
-          selectedEvent
-        )
-      );
-    }
+  selectedEvent &&
+  !isEventInHistory(selectedEvent)
+) {
+  const nextEditingEvent =
+    mapEventToEditingState(
+      selectedEvent
+    );
+
+  originalEditingEventRef.current =
+    nextEditingEvent;
+
+  setEditingEvent(nextEditingEvent);
+}
   }
 
   async function handleRefreshDashboard() {
@@ -625,7 +734,7 @@ followerAnalyticsGeneratedAt:
 
         await refreshDashboard();
 
-        setEditingEvent(null);
+        closeActivityEditor();
 
         setStatusMessage(
           "Activity created successfully."
@@ -652,7 +761,7 @@ followerAnalyticsGeneratedAt:
 
         await refreshDashboard();
 
-        setEditingEvent(null);
+        closeActivityEditor();
 
         setStatusMessage(
           "Activity updated successfully."
@@ -694,6 +803,53 @@ followerAnalyticsGeneratedAt:
     setIsRemoveActivityModalOpen(false);
   }
 
+  function handleCancelDiscardActivityChanges() {
+  setPendingActivityAction(null);
+  setIsDiscardChangesModalOpen(false);
+}
+
+function handleConfirmDiscardActivityChanges() {
+  const pendingAction =
+    pendingActivityAction;
+
+  setPendingActivityAction(null);
+  setIsDiscardChangesModalOpen(false);
+
+  closeActivityEditor();
+
+  if (!pendingAction) {
+    return;
+  }
+
+  if (pendingAction.type === "cancel") {
+    return;
+  }
+
+  if (pendingAction.type === "create") {
+    handleCreateEvent();
+    return;
+  }
+
+  if (
+    pendingAction.type ===
+    "create-live-now"
+  ) {
+    handleCreateLiveNowEvent();
+    return;
+  }
+
+  if (pendingAction.type === "select") {
+    handleSelectEvent(
+      pendingAction.event
+    );
+    return;
+  }
+
+  setActiveSection(
+    pendingAction.section
+  );
+}
+
   async function handleConfirmDeleteEvent() {
     if (
       !editingEvent ||
@@ -717,7 +873,7 @@ followerAnalyticsGeneratedAt:
 
       await refreshDashboard();
 
-      setEditingEvent(null);
+      closeActivityEditor();
 
       setIsRemoveActivityModalOpen(
         false
@@ -755,13 +911,16 @@ followerAnalyticsGeneratedAt:
 
       await refreshDashboard();
 
-      setEditingEvent(
-        mapEventToEditingState(
-          restoredEvent
-        )
-      );
+      const nextEditingEvent =
+  mapEventToEditingState(
+    restoredEvent
+  );
 
-      setActiveSection("activity");
+originalEditingEventRef.current =
+  nextEditingEvent;
+
+setEditingEvent(nextEditingEvent);
+setActiveSection("activity");
 
       setStatusMessage(
         "Activity restored successfully."
@@ -950,6 +1109,9 @@ followerAnalyticsGeneratedAt:
                 onCreateEvent={
                   handleCreateEvent
                 }
+                  onCreateLiveNowEvent={
+                    handleCreateLiveNowEvent
+                }
                 onCancelEditing={
                   handleCancelEditing
                 }
@@ -1066,10 +1228,10 @@ onFocusTargetHandled={() =>
         tone="danger"
         title="Remove this activity?"
         description={
-          editingEvent
-            ? `"${editingEvent.title || "Untitled activity"}" will be removed from Livey. Removed activities cannot be restored.`
-            : "This activity will be removed from Livey. Removed activities cannot be restored."
-        }
+  editingEvent
+    ? `"${editingEvent.title || "Untitled activity"}" will be removed from Livey and moved to History. Eligible removed activities can be restored later.`
+    : "This activity will be removed from Livey and moved to History. Eligible removed activities can be restored later."
+}
         confirmLabel="Remove activity"
         isProcessing={isDeletingEvent}
         onCancel={
@@ -1079,8 +1241,58 @@ onFocusTargetHandled={() =>
           handleConfirmDeleteEvent
         }
       />
+      <LiveyConfirmModal
+  isOpen={
+    isDiscardChangesModalOpen
+  }
+  title="Discard your changes?"
+  description="Your unsaved activity changes will be lost. You can continue editing or discard them and leave the editor."
+  confirmLabel="Discard changes"
+  onCancel={
+    handleCancelDiscardActivityChanges
+  }
+  onConfirm={
+    handleConfirmDiscardActivityChanges
+  }
+/>
     </main>
   );
+}
+
+function createLiveNowEditingEvent(): EditingEventState {
+  const startsAt = new Date();
+
+  const endsAt = new Date(
+    startsAt.getTime() +
+      3 * 60 * 60 * 1000
+  );
+
+  const startsAtValue =
+    toDateTimeLocalValue(
+      startsAt.toISOString()
+    );
+
+  const endsAtValue =
+    toDateTimeLocalValue(
+      endsAt.toISOString()
+    );
+
+  const preview = getPreviewTiming(
+    startsAtValue,
+    endsAtValue
+  );
+
+  return {
+    id: null,
+    mode: "create",
+    title: "",
+    description: "",
+    status: preview.status,
+    displayTime: preview.displayTime,
+    startsAt: startsAtValue,
+    endsAt: endsAtValue,
+    isActive: true,
+  };
 }
 
 function createEmptyEditingEvent(): EditingEventState {

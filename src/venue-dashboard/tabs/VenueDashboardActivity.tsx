@@ -26,6 +26,7 @@ type VenueDashboardActivityProps = {
   isSaving: boolean;
   isDeletingEvent: boolean;
   onCreateEvent: () => void;
+  onCreateLiveNowEvent: () => void;
   onCancelEditing: () => void;
   onDeleteEvent: () => void;
   onSaveEvent: () => void;
@@ -52,6 +53,7 @@ export function VenueDashboardActivity({
   isSaving,
   isDeletingEvent,
   onCreateEvent,
+  onCreateLiveNowEvent,
   onCancelEditing,
   onDeleteEvent,
   onSaveEvent,
@@ -73,8 +75,11 @@ export function VenueDashboardActivity({
           />
 
           <VenueDashboardActivityQuickActions
-            onCreateEvent={onCreateEvent}
-          />
+  onCreateEvent={onCreateEvent}
+  onCreateLiveNowEvent={
+    onCreateLiveNowEvent
+  }
+/>
 
           {hasSavedActivities ? (
             <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
