@@ -99,104 +99,104 @@ export function AnalyticsPublishingHistoryModal({
         aria-modal="true"
         aria-labelledby="venue-dashboard-analytics-publishing-modal-title"
       >
-        <header className="venue-dashboard-analytics-publishing-modal-heading">
-          <div>
-            <p className="venue-dashboard-eyebrow">
-              Publishing history
-            </p>
+        <div className="venue-dashboard-analytics-publishing-modal-scroll">
+          <header className="venue-dashboard-analytics-publishing-modal-heading">
+            <div>
+              <p className="venue-dashboard-eyebrow">
+                Publishing history
+              </p>
 
-            <h2 id="venue-dashboard-analytics-publishing-modal-title">
-              Activity over time
-            </h2>
+              <h2 id="venue-dashboard-analytics-publishing-modal-title">
+                Activity over time
+              </h2>
 
-            <p>
-              Review how consistently your
-              venue has published new
-              activity.
-            </p>
-          </div>
+              <p>
+                Review how consistently your
+                venue has published new
+                activity.
+              </p>
+            </div>
 
-          <button
-            className="venue-dashboard-analytics-publishing-modal-close"
-            type="button"
-            aria-label="Close publishing history"
-            onClick={onClose}
+            <button
+              className="venue-dashboard-analytics-publishing-modal-close"
+              type="button"
+              aria-label="Close publishing history"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </button>
+          </header>
+
+          <div
+            className="venue-dashboard-analytics-publishing-range-selector"
+            role="group"
+            aria-label="Publishing history range"
           >
-            <CloseIcon />
-          </button>
-        </header>
-
-        <div
-          className="venue-dashboard-analytics-publishing-range-selector"
-          role="group"
-          aria-label="Publishing history range"
-        >
-          {publishingRanges.map(
-            (range) => (
-              <button
-                className={
-                  selectedRange ===
-                  range.value
-                    ? "is-active"
-                    : ""
-                }
-                type="button"
-                key={range.value}
-                aria-pressed={
-                  selectedRange ===
-                  range.value
-                }
-                onClick={() =>
-                  setSelectedRange(
+            {publishingRanges.map(
+              (range) => (
+                <button
+                  className={
+                    selectedRange ===
                     range.value
-                  )
-                }
-              >
-                {range.label}
-              </button>
-            )
-          )}
-        </div>
-
-        <div className="venue-dashboard-analytics-publishing-modal-summary">
-          <div>
-            <span>
-              Activities published
-            </span>
-
-            <strong>
-              {totalPublished}
-            </strong>
+                      ? "is-active"
+                      : ""
+                  }
+                  type="button"
+                  key={range.value}
+                  aria-pressed={
+                    selectedRange ===
+                    range.value
+                  }
+                  onClick={() =>
+                    setSelectedRange(
+                      range.value
+                    )
+                  }
+                >
+                  {range.label}
+                </button>
+              )
+            )}
           </div>
 
-          <small>
-            {activePublishingPeriods === 1
-              ? `Across 1 active period ${selectedRangeDescription}`
-              : `Across ${activePublishingPeriods} active periods ${selectedRangeDescription}`}
-          </small>
-        </div>
+          <div className="venue-dashboard-analytics-publishing-modal-summary">
+            <div>
+              <span>
+                Activities published
+              </span>
 
-        <div className="venue-dashboard-analytics-publishing-modal-chart-scroll">
+              <strong>
+                {totalPublished}
+              </strong>
+            </div>
+
+            <small>
+              {activePublishingPeriods === 1
+                ? `Across 1 active period ${selectedRangeDescription}`
+                : `Across ${activePublishingPeriods} active periods ${selectedRangeDescription}`}
+            </small>
+          </div>
+
           <AnalyticsPublishingChart
             key={selectedRange}
             points={trend}
             variant="history"
             ariaLabel={`${totalPublished} activities published ${selectedRangeDescription}`}
           />
+
+          {totalPublished === 0 ? (
+            <div className="venue-dashboard-analytics-trend-empty">
+              <strong>
+                No activity published
+              </strong>
+
+              <span>
+                New activity published during
+                this period will appear here.
+              </span>
+            </div>
+          ) : null}
         </div>
-
-        {totalPublished === 0 ? (
-          <div className="venue-dashboard-analytics-trend-empty">
-            <strong>
-              No activity published
-            </strong>
-
-            <span>
-              New activity published during
-              this period will appear here.
-            </span>
-          </div>
-        ) : null}
       </section>
     </div>
   );

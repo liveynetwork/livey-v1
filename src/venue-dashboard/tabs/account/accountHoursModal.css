@@ -15,11 +15,10 @@
   position: relative;
   width: min(1040px, 100%);
   max-height: min(860px, calc(100dvh - 56px));
-  overflow: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 38px;
-  padding: 32px;
+  padding: 8px;
   background:
     linear-gradient(
       145deg,
@@ -35,17 +34,62 @@
     box-shadow 240ms ease;
 }
 
-.venue-dashboard-hours-editor-card::-webkit-scrollbar {
-  width: 8px;
+.venue-dashboard-hours-editor-scroll {
+  max-height: min(844px, calc(100dvh - 72px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 24px 29px 24px 24px;
 }
 
-.venue-dashboard-hours-editor-card::-webkit-scrollbar-track {
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-track {
+  margin-block: 12px;
+  border-radius: 999px;
   background: transparent;
 }
 
-.venue-dashboard-hours-editor-card::-webkit-scrollbar-thumb {
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 0;
   border-radius: 999px;
-  background: rgba(247, 241, 234, 0.22);
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-button,
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-button:single-button,
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-button:vertical:end:increment {
+  width: 0;
+  height: 0;
+  display: none;
+  appearance: none;
+  background: transparent;
+}
+
+.venue-dashboard-hours-editor-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .venue-dashboard-hours-editor-scroll {
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(247, 241, 234, 0.2)
+      transparent;
+  }
 }
 
 .venue-dashboard-hours-editor-heading {
@@ -425,8 +469,13 @@
   .venue-dashboard-hours-editor-card {
     width: 100%;
     max-height: calc(100dvh - 24px);
-    padding: 24px 18px 18px;
+    padding: 7px;
     border-radius: 30px;
+  }
+
+  .venue-dashboard-hours-editor-scroll {
+    max-height: calc(100dvh - 38px);
+    padding: 17px 16px 11px 11px;
   }
 
   .venue-dashboard-hours-editor-heading {

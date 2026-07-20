@@ -291,8 +291,9 @@ export function VenueDashboardAuthScreen() {
   return (
     <main className="venue-dashboard-auth-page">
       <section className="venue-dashboard-auth-card">
-        <img
-          className="venue-dashboard-auth-logo"
+        <div className="venue-dashboard-auth-card-scroll">
+          <img
+            className="venue-dashboard-auth-logo"
           src="/Livey-Logo.png"
           alt="Livey"
         />
@@ -527,10 +528,11 @@ export function VenueDashboardAuthScreen() {
             : "Approved by Livey? Create account"}
         </button>
 
-        <p className="venue-dashboard-auth-help">
-          Need access? Contact{" "}
-          <a href="mailto:support@livey.network">support@livey.network</a>.
-        </p>
+          <p className="venue-dashboard-auth-help">
+            Need access? Contact{" "}
+            <a href="mailto:support@livey.network">support@livey.network</a>.
+          </p>
+        </div>
       </section>
     </main>
   );

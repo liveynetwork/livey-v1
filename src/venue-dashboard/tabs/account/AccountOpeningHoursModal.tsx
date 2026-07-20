@@ -81,89 +81,96 @@ export function AccountOpeningHoursModal({
         aria-modal="true"
         aria-labelledby="venue-dashboard-hours-editor-title"
       >
-        <div className="venue-dashboard-hours-editor-heading">
-          <div>
-            <p className="venue-dashboard-eyebrow">Opening hours</p>
+        <div className="venue-dashboard-hours-editor-scroll">
+          <div className="venue-dashboard-hours-editor-heading">
+            <div>
+              <p className="venue-dashboard-eyebrow">Opening hours</p>
 
-            <h2 id="venue-dashboard-hours-editor-title">Edit venue hours</h2>
+              <h2 id="venue-dashboard-hours-editor-title">
+                Edit venue hours
+              </h2>
 
-            <p>
-              Set your weekly opening schedule. These hours are shown inside
-              your Livey venue profile.
-            </p>
+              <p>
+                Set your weekly opening schedule. These hours are shown inside
+                your Livey venue profile.
+              </p>
+            </div>
+
+            <button
+              className="venue-dashboard-hours-editor-close-button"
+              type="button"
+              aria-label="Close opening hours editor"
+              onClick={handleRequestClose}
+            >
+              <CloseIcon />
+            </button>
           </div>
 
-          <button
-            className="venue-dashboard-hours-editor-close-button"
-            type="button"
-            aria-label="Close opening hours editor"
-            onClick={handleRequestClose}
-          >
-            <CloseIcon />
-          </button>
-        </div>
+          <div className="venue-dashboard-hours-editor-panel">
+            <div className="venue-dashboard-hours-editor-table-header">
+              <span>Days</span>
+              <span>Status</span>
+              <span>Opens</span>
+              <span>Closes</span>
+            </div>
 
-        <div className="venue-dashboard-hours-editor-panel">
-          <div className="venue-dashboard-hours-editor-table-header">
-            <span>Days</span>
-            <span>Status</span>
-            <span>Opens</span>
-            <span>Closes</span>
-          </div>
+            <div className="venue-dashboard-hours-editor-list">
+              {openingHoursDraft.map((day, index) => (
+                <div
+                  className="venue-dashboard-hours-editor-row"
+                  key={day.day}
+                >
+                  <strong className="venue-dashboard-hours-day-name">
+                    {day.day}
+                  </strong>
 
-          <div className="venue-dashboard-hours-editor-list">
-            {openingHoursDraft.map((day, index) => (
-              <div className="venue-dashboard-hours-editor-row" key={day.day}>
-                <strong className="venue-dashboard-hours-day-name">
-                  {day.day}
-                </strong>
+                  <div className="venue-dashboard-hours-controls">
+                    <LiveyDashboardDropdown
+                      value={day.isClosed ? "Closed" : "Open"}
+                      options={dayStatusOptions}
+                      onChange={(value) =>
+                        onUpdateOpeningHoursDay(index, {
+                          isClosed: value === "Closed",
+                        })
+                      }
+                    />
 
-                <div className="venue-dashboard-hours-controls">
-                  <LiveyDashboardDropdown
-                    value={day.isClosed ? "Closed" : "Open"}
-                    options={dayStatusOptions}
-                    onChange={(value) =>
-                      onUpdateOpeningHoursDay(index, {
-                        isClosed: value === "Closed",
-                      })
-                    }
-                  />
+                    <LiveyDashboardDropdown
+                      value={day.openTime}
+                      options={timeDropdownOptions}
+                      disabled={day.isClosed}
+                      onChange={(value) =>
+                        onUpdateOpeningHoursDay(index, {
+                          openTime: value,
+                        })
+                      }
+                    />
 
-                  <LiveyDashboardDropdown
-                    value={day.openTime}
-                    options={timeDropdownOptions}
-                    disabled={day.isClosed}
-                    onChange={(value) =>
-                      onUpdateOpeningHoursDay(index, {
-                        openTime: value,
-                      })
-                    }
-                  />
-
-                  <LiveyDashboardDropdown
-                    value={day.closeTime}
-                    options={timeDropdownOptions}
-                    disabled={day.isClosed}
-                    onChange={(value) =>
-                      onUpdateOpeningHoursDay(index, {
-                        closeTime: value,
-                      })
-                    }
-                  />
+                    <LiveyDashboardDropdown
+                      value={day.closeTime}
+                      options={timeDropdownOptions}
+                      disabled={day.isClosed}
+                      onChange={(value) =>
+                        onUpdateOpeningHoursDay(index, {
+                          closeTime: value,
+                        })
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="venue-dashboard-hours-editor-actions">
-          <button
-            className="venue-dashboard-save-button"
-            type="button"
-            onClick={handleApplyChanges}
-          >
-            Save changes
-          </button>
+          <div className="venue-dashboard-hours-editor-actions">
+            <button
+              className="venue-dashboard-save-button"
+              type="button"
+              onClick={handleApplyChanges}
+            >
+              Save changes
+            </button>
+          </div>
         </div>
       </section>
     </div>

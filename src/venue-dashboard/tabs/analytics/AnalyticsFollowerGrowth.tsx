@@ -390,7 +390,8 @@ function FollowerAdvancedModal({
         aria-modal="true"
         aria-labelledby="advanced-follower-analytics-title"
       >
-        <header className="venue-dashboard-analytics-follower-modal-header">
+        <div className="venue-dashboard-analytics-follower-modal-scroll">
+          <header className="venue-dashboard-analytics-follower-modal-header">
           <div>
             <span>
               Audience intelligence
@@ -612,34 +613,35 @@ function FollowerAdvancedModal({
           </>
         )}
 
-        <footer className="venue-dashboard-analytics-follower-modal-footer">
-          <span>
-            {lastUpdated
-              ? `Updated ${lastUpdated}`
-              : "Update time unavailable"}
-          </span>
+          <footer className="venue-dashboard-analytics-follower-modal-footer">
+            <span>
+              {lastUpdated
+                ? `Updated ${lastUpdated}`
+                : "Update time unavailable"}
+            </span>
 
-          {onRefresh ? (
-            <button
-              type="button"
-              className="venue-dashboard-analytics-refresh-button"
-              disabled={
-                analytics
-                  .isFollowerAnalyticsLoading
-              }
-              onClick={onRefresh}
-            >
-              <RefreshIcon />
+            {onRefresh ? (
+              <button
+                type="button"
+                className="venue-dashboard-analytics-refresh-button"
+                disabled={
+                  analytics
+                    .isFollowerAnalyticsLoading
+                }
+                onClick={onRefresh}
+              >
+                <RefreshIcon />
 
-              <span>
-                {analytics
-                  .isFollowerAnalyticsLoading
-                  ? "Refreshing"
-                  : "Refresh data"}
-              </span>
-            </button>
-          ) : null}
-        </footer>
+                <span>
+                  {analytics
+                    .isFollowerAnalyticsLoading
+                    ? "Refreshing"
+                    : "Refresh data"}
+                </span>
+              </button>
+            ) : null}
+          </footer>
+        </div>
       </section>
     </div>
   );

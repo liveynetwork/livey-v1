@@ -466,13 +466,11 @@
   position: relative;
   width: min(1160px, 100%);
   max-height: calc(100dvh - 56px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 36px;
   display: grid;
-  gap: 22px;
-  padding: 30px;
+  padding: 8px;
   background:
     linear-gradient(
       145deg,
@@ -488,6 +486,68 @@
   transition:
     border-color 180ms ease;
 }
+
+.venue-dashboard-analytics-publishing-modal-scroll {
+  max-height: calc(100dvh - 72px);
+  min-width: 0;
+  display: grid;
+  gap: 22px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 22px 27px 22px 22px;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-track {
+  margin-block: 12px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-button,
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-button:single-button,
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-button:vertical:end:increment {
+  width: 0;
+  height: 0;
+  display: none;
+  appearance: none;
+  background: transparent;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .venue-dashboard-analytics-publishing-modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(247, 241, 234, 0.2)
+      transparent;
+  }
+}
+
 
 .venue-dashboard-analytics-publishing-modal-heading {
   display: grid;
@@ -634,25 +694,6 @@
   font-size: 0.7rem;
   font-weight: 800;
   line-height: 1.45;
-}
-
-.venue-dashboard-analytics-publishing-modal-chart-scroll {
-  min-width: 0;
-  overflow-x: auto;
-  padding-bottom: 5px;
-}
-
-.venue-dashboard-analytics-publishing-modal-chart-scroll::-webkit-scrollbar {
-  height: 7px;
-}
-
-.venue-dashboard-analytics-publishing-modal-chart-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.venue-dashboard-analytics-publishing-modal-chart-scroll::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(247, 241, 234, 0.2);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -833,11 +874,17 @@
   }
 
   .venue-dashboard-analytics-publishing-modal {
-    width: 100%;
-    max-height: calc(100dvh - 20px);
-    border-radius: 30px;
-    padding: 24px 18px 18px;
-  }
+  width: 100%;
+  max-height: calc(100dvh - 20px);
+  border-radius: 30px;
+  padding: 7px;
+}
+
+.venue-dashboard-analytics-publishing-modal-scroll {
+  max-height: calc(100dvh - 34px);
+  gap: 22px;
+  padding: 17px 16px 11px 11px;
+}
 
   .venue-dashboard-analytics-publishing-modal-heading {
   grid-template-columns:

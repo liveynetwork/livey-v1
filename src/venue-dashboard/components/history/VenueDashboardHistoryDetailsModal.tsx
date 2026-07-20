@@ -46,75 +46,101 @@ export function VenueDashboardHistoryDetailsModal({
           <CloseIcon />
         </button>
 
-        <header className="venue-dashboard-history-details-heading">
-          <div
-            className="venue-dashboard-history-lock-icon"
-            aria-hidden="true"
-          >
-            <LockIcon />
+        <div className="venue-dashboard-history-details-scroll">
+          <header className="venue-dashboard-history-details-heading">
+            <div
+              className="venue-dashboard-history-lock-icon"
+              aria-hidden="true"
+            >
+              <LockIcon />
+            </div>
+
+            <p className="venue-dashboard-eyebrow">
+              Archived activity
+            </p>
+
+            <h2 id="venue-dashboard-history-details-title">
+              {event.title || "Untitled activity"}
+            </h2>
+          </header>
+
+          <div className="venue-dashboard-history-details-state-row">
+            <span className="venue-dashboard-history-status">
+              <span aria-hidden="true" />
+              {getHistoryEventState(event)}
+            </span>
+
+            <span className="venue-dashboard-history-readonly-pill">
+              <LockSmallIcon />
+              Read only
+            </span>
           </div>
 
-          <p className="venue-dashboard-eyebrow">Archived activity</p>
+          <div className="venue-dashboard-history-details-grid">
+            <DetailItem
+              label="Venue"
+              value={venueName}
+              wide
+            />
 
-          <h2 id="venue-dashboard-history-details-title">
-            {event.title || "Untitled activity"}
-          </h2>
-        </header>
+            <DetailItem
+              label="Description"
+              value={
+                event.description ||
+                "No description was saved."
+              }
+              wide
+            />
 
-        <div className="venue-dashboard-history-details-state-row">
-          <span className="venue-dashboard-history-status">
-            <span aria-hidden="true" />
-            {getHistoryEventState(event)}
-          </span>
+            <DetailItem
+              label="Livey status"
+              value={
+                event.status ||
+                "No status saved"
+              }
+            />
 
-          <span className="venue-dashboard-history-readonly-pill">
-            <LockSmallIcon />
-            Read only
-          </span>
-        </div>
+            <DetailItem
+              label="Display timing"
+              value={
+                event.display_time ||
+                "No display timing saved"
+              }
+            />
 
-        <div className="venue-dashboard-history-details-grid">
-          <DetailItem label="Venue" value={venueName} wide />
+            <DetailItem
+              label="Starts"
+              value={formatHistoryDate(
+                event.starts_at
+              )}
+            />
 
-          <DetailItem
-            label="Description"
-            value={event.description || "No description was saved."}
-            wide
-          />
+            <DetailItem
+              label="Ends"
+              value={formatHistoryDate(
+                event.ends_at
+              )}
+            />
 
-          <DetailItem
-            label="Livey status"
-            value={event.status || "No status saved"}
-          />
+            {wasRemoved ? (
+              <>
+                <DetailItem
+                  label="Removed"
+                  value={formatHistoryDate(
+                    event.deleted_at
+                  )}
+                />
 
-          <DetailItem
-            label="Display timing"
-            value={event.display_time || "No display timing saved"}
-          />
-
-          <DetailItem
-            label="Starts"
-            value={formatHistoryDate(event.starts_at)}
-          />
-
-          <DetailItem
-            label="Ends"
-            value={formatHistoryDate(event.ends_at)}
-          />
-
-          {wasRemoved ? (
-            <>
-              <DetailItem
-                label="Removed"
-                value={formatHistoryDate(event.deleted_at)}
-              />
-
-              <DetailItem
-                label="Removal reason"
-                value={event.deleted_reason || "No reason was saved"}
-              />
-            </>
-          ) : null}
+                <DetailItem
+                  label="Removal reason"
+                  value={
+                    event.deleted_reason ||
+                    "No reason was saved"
+                  }
+                />
+              </>
+            ) : null}
+          </div>
         </div>
       </section>
     </div>
@@ -144,23 +170,37 @@ function DetailItem({
   );
 }
 
-function useModalBehaviour(onClose: () => void) {
+function useModalBehaviour(
+  onClose: () => void
+) {
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const previousOverflow =
+      document.body.style.overflow;
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+      "hidden";
 
-    function handleKeyDown(event: globalThis.KeyboardEvent) {
+    function handleKeyDown(
+      event: globalThis.KeyboardEvent
+    ) {
       if (event.key === "Escape") {
         onClose();
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow =
+        previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
     };
   }, [onClose]);
 }
@@ -169,14 +209,20 @@ function handleBackdropClick(
   event: MouseEvent<HTMLDivElement>,
   onClose: () => void
 ) {
-  if (event.target === event.currentTarget) {
+  if (
+    event.target ===
+    event.currentTarget
+  ) {
     onClose();
   }
 }
 
 function CloseIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <path d="M6 6l12 12" />
       <path d="M18 6L6 18" />
     </svg>

@@ -9,24 +9,91 @@
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at top, rgba(255, 91, 50, 0.16), transparent 34%),
-    linear-gradient(145deg, #11100f 0%, #191715 48%, #0d0d0d 100%);
+    radial-gradient(
+      circle at top,
+      rgba(255, 91, 50, 0.16),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #11100f 0%,
+      #191715 48%,
+      #0d0d0d 100%
+    );
   color: #f7f1ea;
 }
 
 .venue-dashboard-auth-card {
   width: min(100%, 430px);
   max-height: calc(100dvh - 36px);
-  padding: 34px 26px 28px;
-  border-radius: 36px;
-  background: rgba(25, 23, 21, 0.82);
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 36px;
+  padding: 8px;
+  background: rgba(25, 23, 21, 0.82);
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   text-align: center;
+}
+
+.venue-dashboard-auth-card-scroll {
+  max-height: calc(100dvh - 52px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 26px 18px 20px;
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-track {
+  margin-block: 12px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-button,
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-button:single-button,
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-button:vertical:end:increment {
+  width: 0;
+  height: 0;
+  display: none;
+  appearance: none;
+  background: transparent;
+}
+
+.venue-dashboard-auth-card-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .venue-dashboard-auth-card-scroll {
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(247, 241, 234, 0.2)
+      transparent;
+  }
 }
 
 .venue-dashboard-auth-logo {
@@ -67,7 +134,8 @@
 .venue-dashboard-auth-form {
   display: grid;
   gap: 13px;
-  transition: gap 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    gap 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .venue-dashboard-auth-form[data-mode="create-account"] {
@@ -109,7 +177,9 @@
 
 .venue-dashboard-auth-field input:focus {
   border-color: rgba(255, 91, 50, 0.48);
-  box-shadow: 0 0 0 4px rgba(255, 91, 50, 0.12);
+  box-shadow:
+    0 0 0 4px
+    rgba(255, 91, 50, 0.12);
 }
 
 .venue-dashboard-claim-wrap,
@@ -121,9 +191,13 @@
   transform: translateY(-6px);
   pointer-events: none;
   transition:
-    grid-template-rows 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    grid-template-rows
+      280ms
+      cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 180ms ease,
-    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform
+      280ms
+      cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .venue-dashboard-claim-wrap-open,
@@ -257,7 +331,9 @@
   font-weight: 900;
   letter-spacing: -0.02em;
   cursor: pointer;
-  box-shadow: 0 16px 36px rgba(255, 91, 50, 0.2);
+  box-shadow:
+    0 16px 36px
+    rgba(255, 91, 50, 0.2);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -352,8 +428,13 @@
 
   .venue-dashboard-auth-card {
     max-height: calc(100dvh - 24px);
-    padding: 24px 20px 22px;
     border-radius: 30px;
+    padding: 7px;
+  }
+
+  .venue-dashboard-auth-card-scroll {
+    max-height: calc(100dvh - 38px);
+    padding: 17px 13px 15px;
   }
 
   .venue-dashboard-auth-logo {
@@ -366,7 +447,8 @@
   }
 
   .venue-dashboard-auth-copy h1 {
-    font-size: clamp(1.65rem, 7vw, 2.2rem);
+    font-size:
+      clamp(1.65rem, 7vw, 2.2rem);
   }
 
   .venue-dashboard-auth-field input {
