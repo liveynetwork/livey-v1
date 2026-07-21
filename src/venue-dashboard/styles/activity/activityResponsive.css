@@ -1,0 +1,446 @@
+/* =========================================================
+   APPROVED HOVER RULES
+   Matte by default, subtle orange outline on hover.
+   No permanent card glow.
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-activity-overview:hover,
+  .venue-dashboard-activity-quick-actions:hover,
+  .venue-dashboard-activity-empty-state:hover,
+  .venue-dashboard-activity-layout
+    .venue-dashboard-activity-saved-card:hover,
+  .venue-dashboard-activity-editor:hover {
+    border-color: rgba(255, 91, 50, 0.5);
+  }
+
+  .venue-dashboard-activity-reuse-panel:hover,
+  .venue-dashboard-activity-reuse-item:hover {
+    border-color: rgba(255, 91, 50, 0.48);
+  }
+
+  .venue-dashboard-activity-reuse-item:hover {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.034),
+        rgba(255, 255, 255, 0.014)
+      ),
+      rgba(12, 13, 16, 0.72);
+  }
+
+  .venue-dashboard-activity-reuse-close:hover {
+    border-color: rgba(255, 91, 50, 0.34);
+    background: rgba(255, 91, 50, 0.08);
+    color: #ff9a80;
+    transform: translateY(-1px);
+  }
+
+  .venue-dashboard-activity-reuse-meta button:hover,
+  .venue-dashboard-activity-reuse-history:hover,
+  .venue-dashboard-activity-reuse-empty button:hover {
+    border-color: rgba(255, 91, 50, 0.5);
+    background: rgba(255, 91, 50, 0.14);
+    color: #ffb09c;
+    transform: translateY(-1px);
+  }
+
+  .venue-dashboard-activity-overview-side:hover,
+  .venue-dashboard-activity-overview-details > div:hover,
+  .venue-dashboard-activity-overview-metric:hover,
+  .venue-dashboard-activity-empty-state-details > div:hover,
+  .venue-dashboard-activity-editor-section:hover,
+  .venue-dashboard-activity-readiness:hover,
+  .venue-dashboard-activity-preview:hover,
+  .venue-dashboard-activity-warnings:hover,
+  .venue-dashboard-activity-preview-card:hover,
+  .venue-dashboard-activity-timing-feedback:hover,
+  .venue-dashboard-activity-visibility-control:hover {
+    border-color: rgba(255, 91, 50, 0.34);
+  }
+
+  button.venue-dashboard-activity-quick-action:hover {
+    border-color: rgba(255, 91, 50, 0.52);
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 91, 50, 0.065),
+        rgba(255, 255, 255, 0.012)
+      ),
+      rgba(7, 8, 10, 0.58);
+  }
+
+  button.venue-dashboard-activity-quick-action:hover
+    .venue-dashboard-activity-quick-action-arrow {
+    border-color: rgba(255, 91, 50, 0.25);
+    background: rgba(255, 91, 50, 0.08);
+    color: #ff9579;
+  }
+
+  .venue-dashboard-activity-overview-edit:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: rgba(255, 91, 50, 0.13);
+    color: #ffb09b;
+  }
+
+  .venue-dashboard-activity-schedule-presets button:hover {
+    border-color: rgba(255, 91, 50, 0.34);
+    background: rgba(255, 91, 50, 0.075);
+    color: #ff9a80;
+  }
+
+  .venue-dashboard-activity-cancel-button:hover:not(:disabled) {
+    border-color: rgba(255, 91, 50, 0.32);
+    background: rgba(255, 91, 50, 0.075);
+    color: #ff9a80;
+  }
+
+  .venue-dashboard-remove-button:hover:not(:disabled) {
+    border-color: rgba(255, 90, 90, 0.3);
+    background: rgba(255, 70, 70, 0.16);
+    color: #ffd0d0;
+  }
+
+  .venue-dashboard-toggle:hover {
+    border-color: rgba(255, 91, 50, 0.32);
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1080px) {
+  .venue-dashboard-activity-overview {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+
+  .venue-dashboard-activity-editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-editor-sidebar {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .venue-dashboard-activity-warnings {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 860px) {
+  .venue-dashboard-activity-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-overview-side {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(180px, 0.55fr);
+    align-items: stretch;
+  }
+
+  .venue-dashboard-activity-overview-counts {
+    min-width: 0;
+  }
+
+  .venue-dashboard-activity-overview-action,
+  .venue-dashboard-activity-overview-edit {
+    height: 100%;
+    min-height: 112px;
+  }
+
+  .venue-dashboard-activity-quick-actions-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-schedule-presets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .venue-dashboard-activity-layout {
+    gap: 16px;
+  }
+
+  .venue-dashboard-activity-overview,
+  .venue-dashboard-activity-quick-actions,
+  .venue-dashboard-activity-empty-state,
+  .venue-dashboard-activity-saved-card,
+  .venue-dashboard-activity-editor {
+    border-radius: 27px;
+    padding: 20px 17px;
+  }
+
+  .venue-dashboard-activity-reuse-panel {
+    gap: 18px;
+    padding: 23px 17px;
+    border-radius: 27px;
+  }
+
+  .venue-dashboard-activity-reuse-heading {
+    gap: 14px;
+  }
+
+  .venue-dashboard-activity-reuse-heading h2 {
+    font-size: clamp(1.45rem, 7vw, 1.9rem);
+  }
+
+  .venue-dashboard-activity-reuse-heading p {
+    font-size: 0.82rem;
+  }
+
+  .venue-dashboard-activity-reuse-close {
+    width: 39px;
+    height: 39px;
+    border-radius: 13px;
+  }
+
+  .venue-dashboard-activity-reuse-item {
+    grid-template-columns:
+      44px
+      minmax(0, 1fr);
+    gap: 13px;
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .venue-dashboard-activity-reuse-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+  }
+
+  .venue-dashboard-activity-reuse-copy p {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .venue-dashboard-activity-reuse-meta {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    justify-items: start;
+    padding-top: 3px;
+  }
+
+  .venue-dashboard-activity-reuse-meta button {
+    min-width: 112px;
+  }
+
+  .venue-dashboard-activity-reuse-history {
+    width: 100%;
+  }
+
+  .venue-dashboard-activity-reuse-empty {
+    min-height: 290px;
+    padding: 27px 18px;
+  }
+
+  .venue-dashboard-activity-reuse-empty button {
+    width: 100%;
+  }
+
+  .venue-dashboard-activity-section-heading,
+  .venue-dashboard-activity-editor-heading {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .venue-dashboard-activity-section-heading h2 {
+    font-size: clamp(1.4rem, 7vw, 1.9rem);
+  }
+
+  .venue-dashboard-activity-editor-heading h2 {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+  }
+
+  .venue-dashboard-activity-readiness-badge {
+    width: fit-content;
+  }
+
+  .venue-dashboard-activity-overview-copy h2 {
+    font-size: clamp(2rem, 11vw, 2.8rem);
+  }
+
+  .venue-dashboard-activity-overview-details,
+  .venue-dashboard-activity-empty-state-details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-overview-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-overview-action,
+  .venue-dashboard-activity-overview-edit {
+    height: auto;
+    min-height: 54px;
+  }
+
+  .venue-dashboard-activity-quick-action {
+    grid-template-columns:
+      46px
+      minmax(0, 1fr);
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .venue-dashboard-activity-quick-action-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .venue-dashboard-activity-quick-action-arrow,
+  .venue-dashboard-activity-coming-soon {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .venue-dashboard-activity-quick-action-arrow {
+    height: 36px;
+  }
+
+  .venue-dashboard-activity-coming-soon {
+    min-height: 32px;
+  }
+
+  .venue-dashboard-activity-empty-state {
+    min-height: 310px;
+  }
+
+  .venue-dashboard-activity-empty-state-action {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .venue-dashboard-activity-saved-heading {
+    align-items: flex-start;
+  }
+
+  .venue-dashboard-activity-count {
+    min-width: 42px;
+    height: 42px;
+  }
+
+  .venue-dashboard-activity-editor-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-warnings {
+    grid-column: auto;
+  }
+
+  .venue-dashboard-activity-editor-section,
+  .venue-dashboard-activity-readiness,
+  .venue-dashboard-activity-preview,
+  .venue-dashboard-activity-warnings {
+    border-radius: 21px;
+    padding: 17px 15px;
+  }
+
+  .venue-dashboard-activity-editor-section-heading {
+    grid-template-columns:
+      36px
+      minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .venue-dashboard-activity-editor-section-number {
+    width: 36px;
+    height: 36px;
+  }
+
+  .venue-dashboard-activity-editor-date-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-timing-feedback {
+    grid-template-columns:
+      42px
+      minmax(0, 1fr);
+    padding: 14px;
+  }
+
+  .venue-dashboard-activity-timing-feedback-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .venue-dashboard-activity-visibility-control {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-toggle {
+    justify-self: start;
+  }
+
+  .venue-dashboard-activity-editor-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-editor-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .venue-dashboard-activity-overview-counts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-overview-metric {
+    min-height: 92px;
+  }
+
+  .venue-dashboard-activity-schedule-presets {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-quick-action {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-quick-action-copy {
+    justify-items: center;
+  }
+
+  .venue-dashboard-activity-quick-action-copy small {
+    max-width: 310px;
+  }
+
+  .venue-dashboard-activity-editor-section-heading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-editor-section-number {
+    width: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-activity-layout *,
+  .venue-dashboard-activity-layout *::before,
+  .venue-dashboard-activity-layout *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

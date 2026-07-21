@@ -1,0 +1,534 @@
+/* =========================================================
+   EDITOR SHELL
+   ========================================================= */
+
+.venue-dashboard-activity-editor {
+  min-width: 0;
+  display: grid;
+  gap: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 32px;
+  padding: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.043),
+      rgba(255, 255, 255, 0.012)
+    ),
+    #15171a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 22px 48px rgba(0, 0, 0, 0.16);
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-editor-heading {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.venue-dashboard-activity-editor-heading > div:first-child {
+  min-width: 0;
+}
+
+.venue-dashboard-activity-editor-heading h2 {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: #f7f1ea;
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  font-weight: 950;
+  line-height: 1.02;
+  letter-spacing: -0.065em;
+}
+
+.venue-dashboard-activity-editor-heading p {
+  max-width: 660px;
+  margin: 13px 0 0;
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.62;
+}
+
+.venue-dashboard-activity-readiness-badge {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 999px;
+  padding: 0 13px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(247, 241, 234, 0.56);
+  font-size: 0.72rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.venue-dashboard-activity-readiness-badge > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.venue-dashboard-activity-readiness-badge.is-ready {
+  border-color: rgba(255, 91, 50, 0.2);
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff9a80;
+}
+
+.venue-dashboard-activity-editor-layout {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(290px, 0.72fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.venue-dashboard-activity-editor-main,
+.venue-dashboard-activity-editor-sidebar {
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.venue-dashboard-activity-editor-sidebar {
+  position: sticky;
+  top: 20px;
+}
+
+/* =========================================================
+   EDITOR SECTIONS
+   ========================================================= */
+
+.venue-dashboard-activity-editor-section,
+.venue-dashboard-activity-readiness,
+.venue-dashboard-activity-preview,
+.venue-dashboard-activity-warnings {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.028),
+      rgba(255, 255, 255, 0.007)
+    ),
+    rgba(7, 8, 10, 0.5);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-activity-editor-section-heading {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.venue-dashboard-activity-editor-section-number {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: #ff8b6e;
+  background: rgba(255, 91, 50, 0.08);
+  font-size: 0.7rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.venue-dashboard-activity-editor-section-heading h3,
+.venue-dashboard-activity-sidebar-heading h3 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size: 1.02rem;
+  font-weight: 950;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+
+.venue-dashboard-activity-editor-section-heading p {
+  max-width: 650px;
+  margin: 6px 0 0;
+  color: rgba(247, 241, 234, 0.44);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.venue-dashboard-activity-editor-fields {
+  display: grid;
+  gap: 11px;
+}
+
+.venue-dashboard-activity-editor-field {
+  min-width: 0;
+  display: grid;
+  gap: 9px;
+}
+
+.venue-dashboard-activity-editor-field > span {
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.69rem;
+  font-weight: 950;
+  line-height: 1.2;
+  letter-spacing: 0.095em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-editor-field input,
+.venue-dashboard-activity-editor-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 17px;
+  padding: 15px 16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(98, 98, 98, 0.3),
+      rgba(98, 98, 98, 0.16)
+    ),
+    #24262b;
+  color: #f7f1ea;
+  caret-color: #ff5b32;
+  font-size: 0.9rem;
+  font-weight: 800;
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 0 24px rgba(0, 0, 0, 0.07);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.venue-dashboard-activity-editor-field input {
+  min-height: 56px;
+}
+
+.venue-dashboard-activity-editor-field textarea {
+  min-height: 126px;
+  max-height: 230px;
+  resize: vertical;
+  overflow-y: auto;
+  line-height: 1.55;
+}
+
+.venue-dashboard-activity-editor-field input::placeholder,
+.venue-dashboard-activity-editor-field textarea::placeholder {
+  color: rgba(247, 241, 234, 0.35);
+  opacity: 1;
+}
+
+.venue-dashboard-activity-editor-field input:focus,
+.venue-dashboard-activity-editor-field textarea:focus {
+  border-color: rgba(255, 91, 50, 0.34);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(98, 98, 98, 0.38),
+      rgba(98, 98, 98, 0.2)
+    ),
+    #27292e;
+  box-shadow: 0 0 0 3px rgba(255, 91, 50, 0.085);
+}
+
+.venue-dashboard-activity-editor-field textarea {
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(247, 241, 234, 0.2)
+    transparent;
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar {
+  width: 7px;
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-track {
+  margin-block: 12px;
+  background: transparent;
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-button {
+  display: none;
+}
+
+.venue-dashboard-activity-editor-field textarea::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* =========================================================
+   SCHEDULE
+   ========================================================= */
+
+.venue-dashboard-activity-schedule-presets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 13px;
+}
+
+.venue-dashboard-activity-schedule-presets button {
+  min-width: 0;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 13px;
+  padding: 0 11px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(247, 241, 234, 0.68);
+  font-size: 0.74rem;
+  font-weight: 900;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-activity-editor-date-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.venue-dashboard-activity-timing-feedback {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  margin-top: 13px;
+  border: 1px solid rgba(255, 91, 50, 0.13);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255, 91, 50, 0.055);
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-timing-feedback-icon {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  color: #ff8567;
+  background: rgba(255, 91, 50, 0.09);
+}
+
+.venue-dashboard-activity-timing-feedback-icon svg {
+  display: block;
+}
+
+.venue-dashboard-activity-timing-feedback > div:last-child {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.venue-dashboard-activity-timing-feedback span {
+  color: rgba(247, 241, 234, 0.42);
+  font-size: 0.65rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-timing-feedback strong {
+  overflow-wrap: anywhere;
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.venue-dashboard-activity-timing-feedback p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.52);
+  font-size: 0.79rem;
+  font-weight: 750;
+  line-height: 1.48;
+}
+
+/* =========================================================
+   VISIBILITY
+   ========================================================= */
+
+.venue-dashboard-activity-visibility-control {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-visibility-control > div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.venue-dashboard-activity-visibility-control > div > span {
+  color: rgba(247, 241, 234, 0.4);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-visibility-control strong {
+  color: #f7f1ea;
+  font-size: 0.94rem;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.venue-dashboard-activity-visibility-control p {
+  max-width: 610px;
+  margin: 0;
+  color: rgba(247, 241, 234, 0.47);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.venue-dashboard-toggle {
+  position: relative;
+  width: 58px;
+  height: 34px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 999px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  outline: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.venue-dashboard-toggle span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: #f7f1ea;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 160ms ease;
+}
+
+.venue-dashboard-toggle.is-on {
+  border-color: rgba(255, 91, 50, 0.48);
+  background: #ff5b32;
+  box-shadow: 0 0 0 3px rgba(255, 91, 50, 0.07);
+}
+
+.venue-dashboard-toggle.is-on span {
+  transform: translateX(24px);
+}
+
+/* =========================================================
+   EDITOR ACTIONS
+   ========================================================= */
+
+.venue-dashboard-activity-editor-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 11px;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  padding-top: 20px;
+}
+
+.venue-dashboard-activity-editor-actions button {
+  min-height: 56px;
+  border-radius: 17px;
+}
+
+.venue-dashboard-activity-cancel-button {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 22px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(247, 241, 234, 0.7);
+  font-size: 0.84rem;
+  font-weight: 950;
+  cursor: pointer;
+  outline: none;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.venue-dashboard-remove-button {
+  border: 1px solid rgba(255, 90, 90, 0.14);
+  padding: 0 22px;
+  background: rgba(255, 70, 70, 0.1);
+  color: #ffb8b8;
+  font-size: 0.84rem;
+  font-weight: 950;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-activity-editor-actions button:disabled,
+.venue-dashboard-activity-cancel-button:disabled,
+.venue-dashboard-remove-button:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.venue-dashboard-activity-layout button:focus-visible,
+.venue-dashboard-activity-editor-field input:focus-visible,
+.venue-dashboard-activity-editor-field textarea:focus-visible {
+  outline: none;
+  border-color: rgba(255, 91, 50, 0.68);
+  box-shadow: 0 0 0 3px rgba(255, 91, 50, 0.11);
+}

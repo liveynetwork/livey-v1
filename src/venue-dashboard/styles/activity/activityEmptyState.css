@@ -1,0 +1,106 @@
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.venue-dashboard-activity-empty-state {
+  min-width: 0;
+  min-height: 330px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 32px;
+  padding: 34px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.012)
+    ),
+    #15171a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 22px 48px rgba(0, 0, 0, 0.14);
+  text-align: center;
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-empty-state-icon {
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgba(255, 91, 50, 0.17);
+  border-radius: 23px;
+  display: grid;
+  place-items: center;
+  color: #ff8567;
+  background: rgba(255, 91, 50, 0.095);
+}
+
+.venue-dashboard-activity-empty-state-icon svg {
+  display: block;
+}
+
+.venue-dashboard-activity-empty-state-copy {
+  display: grid;
+  justify-items: center;
+}
+
+.venue-dashboard-activity-empty-state-copy h3 {
+  margin: 14px 0 0;
+  color: #f7f1ea;
+  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+
+.venue-dashboard-activity-empty-state-copy p {
+  max-width: 590px;
+  margin: 11px 0 0;
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.88rem;
+  font-weight: 750;
+  line-height: 1.62;
+}
+
+.venue-dashboard-activity-empty-state-details {
+  width: min(100%, 680px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.venue-dashboard-activity-empty-state-details > div {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 18px;
+  padding: 15px;
+  background: rgba(7, 8, 10, 0.4);
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-empty-state-details span {
+  color: rgba(247, 241, 234, 0.39);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-empty-state-details strong {
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.76);
+  font-size: 0.83rem;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.venue-dashboard-activity-empty-state-action {
+  min-width: 210px;
+  min-height: 54px;
+  border-radius: 17px;
+}

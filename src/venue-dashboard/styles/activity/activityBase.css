@@ -1,0 +1,94 @@
+.venue-dashboard-activity-layout {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.venue-dashboard-activity-layout *,
+.venue-dashboard-activity-layout *::before,
+.venue-dashboard-activity-layout *::after {
+  box-sizing: border-box;
+}
+
+.venue-dashboard-activity-layout button,
+.venue-dashboard-activity-layout input,
+.venue-dashboard-activity-layout textarea {
+  font: inherit;
+}
+
+.venue-dashboard-activity-layout button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.venue-dashboard-activity-layout .venue-dashboard-card {
+  width: 100%;
+  min-width: 0;
+  border-color: rgba(255, 255, 255, 0.07);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+/* =========================================================
+   SHARED SECTION TYPOGRAPHY
+   ========================================================= */
+
+.venue-dashboard-activity-section-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  width: fit-content;
+  margin: 0;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 999px;
+  padding: 0 11px;
+  background: rgba(255, 91, 50, 0.075);
+  color: #ff8b6e;
+  font-size: 0.67rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.135em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-section-heading {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.venue-dashboard-activity-section-heading > div {
+  min-width: 0;
+}
+
+.venue-dashboard-activity-section-heading h2,
+.venue-dashboard-activity-section-heading h3 {
+  margin: 13px 0 0;
+  color: #f7f1ea;
+  font-weight: 950;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+}
+
+.venue-dashboard-activity-section-heading h2 {
+  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+}
+
+.venue-dashboard-activity-section-heading h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+}
+
+.venue-dashboard-activity-section-heading p {
+  max-width: 650px;
+  margin: 10px 0 0;
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.88rem;
+  font-weight: 750;
+  line-height: 1.62;
+}

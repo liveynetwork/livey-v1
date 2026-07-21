@@ -7,6 +7,7 @@ import { VenueDashboardActivityEditor } from "../components/activity/VenueDashbo
 import { VenueDashboardActivityEmptyState } from "../components/activity/VenueDashboardActivityEmptyState";
 import { VenueDashboardActivityOverview } from "../components/activity/VenueDashboardActivityOverview";
 import { VenueDashboardActivityQuickActions } from "../components/activity/VenueDashboardActivityQuickActions";
+import { VenueDashboardActivityReusePanel } from "../components/activity/VenueDashboardActivityReusePanel";
 
 export type EditingEventState = {
   id: string | null;
@@ -22,11 +23,19 @@ export type EditingEventState = {
 
 type VenueDashboardActivityProps = {
   activeEvents: VenueDashboardEvent[];
+  historyEvents: VenueDashboardEvent[];
   editingEvent: EditingEventState | null;
+  isReusePanelOpen: boolean;
   isSaving: boolean;
   isDeletingEvent: boolean;
   onCreateEvent: () => void;
   onCreateLiveNowEvent: () => void;
+  onOpenReusePanel: () => void;
+  onCloseReusePanel: () => void;
+  onOpenHistory: () => void;
+  onUsePreviousActivity: (
+    event: VenueDashboardEvent
+  ) => void;
   onCancelEditing: () => void;
   onDeleteEvent: () => void;
   onSaveEvent: () => void;
@@ -49,11 +58,17 @@ type VenueDashboardActivityProps = {
 
 export function VenueDashboardActivity({
   activeEvents,
+  historyEvents,
   editingEvent,
+  isReusePanelOpen,
   isSaving,
   isDeletingEvent,
   onCreateEvent,
   onCreateLiveNowEvent,
+  onOpenReusePanel,
+  onCloseReusePanel,
+  onOpenHistory,
+  onUsePreviousActivity,
   onCancelEditing,
   onDeleteEvent,
   onSaveEvent,
@@ -66,20 +81,66 @@ export function VenueDashboardActivity({
 
   return (
     <section className="venue-dashboard-activity-layout">
-      {!editingEvent ? (
+      {editingEvent ? (
+        <VenueDashboardActivityEditor
+          editingEvent={editingEvent}
+          activeEvents={activeEvents}
+          isSaving={isSaving}
+          isDeletingEvent={
+            isDeletingEvent
+          }
+          onCancelEditing={
+            onCancelEditing
+          }
+          onDeleteEvent={
+            onDeleteEvent
+          }
+          onSaveEvent={
+            onSaveEvent
+          }
+          onEditingEventChange={
+            onEditingEventChange
+          }
+          getPreviewTiming={
+            getPreviewTiming
+          }
+        />
+      ) : isReusePanelOpen ? (
+        <VenueDashboardActivityReusePanel
+          events={historyEvents}
+          onClose={
+            onCloseReusePanel
+          }
+          onUseAgain={
+            onUsePreviousActivity
+          }
+          onOpenHistory={
+            onOpenHistory
+          }
+        />
+      ) : (
         <>
           <VenueDashboardActivityOverview
             events={activeEvents}
-            onCreateEvent={onCreateEvent}
-            onSelectEvent={onSelectEvent}
+            onCreateEvent={
+              onCreateEvent
+            }
+            onSelectEvent={
+              onSelectEvent
+            }
           />
 
           <VenueDashboardActivityQuickActions
-  onCreateEvent={onCreateEvent}
-  onCreateLiveNowEvent={
-    onCreateLiveNowEvent
-  }
-/>
+            onCreateEvent={
+              onCreateEvent
+            }
+            onCreateLiveNowEvent={
+              onCreateLiveNowEvent
+            }
+            onOpenReusePanel={
+              onOpenReusePanel
+            }
+          />
 
           {hasSavedActivities ? (
             <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
@@ -95,8 +156,8 @@ export function VenueDashboardActivity({
 
                   <p>
                     Review what is currently
-                    visible, hidden, or scheduled
-                    for your venue.
+                    visible, hidden, or
+                    scheduled for your venue.
                   </p>
                 </div>
 
@@ -114,35 +175,19 @@ export function VenueDashboardActivity({
 
               <VenueDashboardActiveList
                 events={activeEvents}
-                onSelectEvent={onSelectEvent}
+                onSelectEvent={
+                  onSelectEvent
+                }
               />
             </section>
           ) : (
             <VenueDashboardActivityEmptyState
-              onCreateEvent={onCreateEvent}
+              onCreateEvent={
+                onCreateEvent
+              }
             />
           )}
         </>
-      ) : (
-        <VenueDashboardActivityEditor
-          editingEvent={editingEvent}
-          activeEvents={activeEvents}
-          isSaving={isSaving}
-          isDeletingEvent={
-            isDeletingEvent
-          }
-          onCancelEditing={
-            onCancelEditing
-          }
-          onDeleteEvent={onDeleteEvent}
-          onSaveEvent={onSaveEvent}
-          onEditingEventChange={
-            onEditingEventChange
-          }
-          getPreviewTiming={
-            getPreviewTiming
-          }
-        />
       )}
     </section>
   );

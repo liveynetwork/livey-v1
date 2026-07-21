@@ -83,6 +83,11 @@ export function VenueDashboardScreen({
   const [editingEvent, setEditingEvent] =
     useState<EditingEventState | null>(null);
 
+    const [
+  isActivityReusePanelOpen,
+  setIsActivityReusePanelOpen,
+] = useState(false);
+
   const originalEditingEventRef =
   useRef<EditingEventState | null>(null);
 
@@ -460,9 +465,40 @@ originalEditingEventRef.current = null;
   requestSectionChange("account");
 }
 
+function handleOpenActivityReusePanel() {
+  setStatusMessage("");
+  setErrorMessage("");
+  setIsActivityReusePanelOpen(true);
+  setActiveSection("activity");
+}
+
+function handleCloseActivityReusePanel() {
+  setIsActivityReusePanelOpen(false);
+}
+
+function handleUsePreviousActivity(
+  event: VenueDashboardEvent
+) {
+  setStatusMessage("");
+  setErrorMessage("");
+  setIsActivityReusePanelOpen(false);
+
+  const nextEditingEvent =
+    createEditingEventFromPrevious(
+      event
+    );
+
+  originalEditingEventRef.current =
+    nextEditingEvent;
+
+  setEditingEvent(nextEditingEvent);
+  setActiveSection("activity");
+}
+
   function handleCreateEvent() {
   setStatusMessage("");
   setErrorMessage("");
+  setIsActivityReusePanelOpen(false);
 
   const nextEditingEvent =
     createEmptyEditingEvent();
@@ -477,6 +513,7 @@ originalEditingEventRef.current = null;
   function handleCreateLiveNowEvent() {
   setStatusMessage("");
   setErrorMessage("");
+  setIsActivityReusePanelOpen(false);
 
   const nextEditingEvent =
     createLiveNowEditingEvent();
@@ -612,6 +649,10 @@ function requestSectionChange(
     closeActivityEditor();
   }
 
+  if (section !== "activity") {
+  setIsActivityReusePanelOpen(false);
+}
+
   setActiveSection(section);
 }
 
@@ -624,6 +665,7 @@ function requestSectionChange(
 
   setStatusMessage("");
   setErrorMessage("");
+  setIsActivityReusePanelOpen(false);
 
   const nextEditingEvent =
     mapEventToEditingState(event);
@@ -921,7 +963,13 @@ function handleConfirmDiscardActivityChanges() {
     return;
   }
 
-  setActiveSection(
+  if (
+  pendingAction.section !== "activity"
+) {
+  setIsActivityReusePanelOpen(false);
+}
+
+setActiveSection(
   pendingAction.section
 );
 }
@@ -1176,37 +1224,53 @@ onSectionChange={
 
             {activeSection === "activity" ? (
               <VenueDashboardActivity
-                activeEvents={activeEvents}
-                editingEvent={editingEvent}
-                isSaving={isSaving}
-                isDeletingEvent={
-                  isDeletingEvent
-                }
-                onCreateEvent={
-  requestCreateEvent
+  activeEvents={activeEvents}
+  historyEvents={historyEvents}
+  editingEvent={editingEvent}
+  isReusePanelOpen={
+    isActivityReusePanelOpen
+  }
+  isSaving={isSaving}
+  isDeletingEvent={
+    isDeletingEvent
+  }
+  onCreateEvent={
+    requestCreateEvent
+  }
+  onCreateLiveNowEvent={
+    requestCreateLiveNowEvent
+  }
+  onOpenReusePanel={
+    handleOpenActivityReusePanel
+  }
+  onCloseReusePanel={
+    handleCloseActivityReusePanel
+  }
+  onOpenHistory={() =>
+  requestSectionChange("history")
 }
-onCreateLiveNowEvent={
-  requestCreateLiveNowEvent
+onUsePreviousActivity={
+  handleUsePreviousActivity
 }
-                onCancelEditing={
-                  handleCancelEditing
-                }
-                onDeleteEvent={
-                  handleDeleteEvent
-                }
-                onSaveEvent={
-                  handleSaveEvent
-                }
-                onSelectEvent={
-  requestSelectEvent
+onCancelEditing={
+  handleCancelEditing
 }
-                onEditingEventChange={
-                  setEditingEvent
-                }
-                getPreviewTiming={
-                  getPreviewTiming
-                }
-              />
+  onDeleteEvent={
+    handleDeleteEvent
+  }
+  onSaveEvent={
+    handleSaveEvent
+  }
+  onSelectEvent={
+    requestSelectEvent
+  }
+  onEditingEventChange={
+    setEditingEvent
+  }
+  getPreviewTiming={
+    getPreviewTiming
+  }
+/>
             ) : null}
 
             {activeSection ===
@@ -1333,6 +1397,100 @@ onFocusTargetHandled={() =>
 />
     </main>
   );
+}
+
+function createEditingEventFromPrevious(
+  event: VenueDashboardEvent
+): EditingEventState {
+  const now = new Date();
+
+  const startsAt = new Date(
+    now.getTime() +
+      60 * 60 * 1000
+  );
+
+  const previousDurationMs =
+    getPreviousActivityDurationMs(
+      event
+    );
+
+  const endsAt = new Date(
+    startsAt.getTime() +
+      previousDurationMs
+  );
+
+  const startsAtValue =
+    toDateTimeLocalValue(
+      startsAt.toISOString()
+    );
+
+  const endsAtValue =
+    toDateTimeLocalValue(
+      endsAt.toISOString()
+    );
+
+  const preview = getPreviewTiming(
+    startsAtValue,
+    endsAtValue
+  );
+
+  return {
+    id: null,
+    mode: "create",
+    title: event.title || "",
+    description:
+      event.description || "",
+    status: preview.status,
+    displayTime:
+      preview.displayTime,
+    startsAt: startsAtValue,
+    endsAt: endsAtValue,
+    isActive:
+      event.is_active !== false,
+  };
+}
+
+function getPreviousActivityDurationMs(
+  event: VenueDashboardEvent
+) {
+  const fallbackDurationMs =
+    3 * 60 * 60 * 1000;
+
+  if (
+    !event.starts_at ||
+    !event.ends_at
+  ) {
+    return fallbackDurationMs;
+  }
+
+  const previousStartsAt =
+    new Date(
+      event.starts_at
+    ).getTime();
+
+  const previousEndsAt =
+    new Date(
+      event.ends_at
+    ).getTime();
+
+  if (
+    Number.isNaN(
+      previousStartsAt
+    ) ||
+    Number.isNaN(
+      previousEndsAt
+    )
+  ) {
+    return fallbackDurationMs;
+  }
+
+  const durationMs =
+    previousEndsAt -
+    previousStartsAt;
+
+  return durationMs > 0
+    ? durationMs
+    : fallbackDurationMs;
 }
 
 function createLiveNowEditingEvent(): EditingEventState {

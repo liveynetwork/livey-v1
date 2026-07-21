@@ -1,11 +1,13 @@
 type VenueDashboardActivityQuickActionsProps = {
   onCreateEvent: () => void;
   onCreateLiveNowEvent: () => void;
+  onOpenReusePanel: () => void;
 };
 
 export function VenueDashboardActivityQuickActions({
   onCreateEvent,
   onCreateLiveNowEvent,
+  onOpenReusePanel,
 }: VenueDashboardActivityQuickActionsProps) {
   return (
     <section className="venue-dashboard-activity-quick-actions">
@@ -18,8 +20,8 @@ export function VenueDashboardActivityQuickActions({
           <h3>Choose how you want to publish</h3>
 
           <p>
-            Start something happening now or prepare a one-time activity for
-            later.
+            Start something happening now, schedule a one-time activity, or
+            reuse something your venue published before.
           </p>
         </div>
       </div>
@@ -104,7 +106,11 @@ export function VenueDashboardActivityQuickActions({
           </span>
         </div>
 
-        <div className="venue-dashboard-activity-quick-action is-disabled">
+        <button
+          className="venue-dashboard-activity-quick-action"
+          type="button"
+          onClick={onOpenReusePanel}
+        >
           <span
             className="venue-dashboard-activity-quick-action-icon"
             aria-hidden="true"
@@ -116,14 +122,17 @@ export function VenueDashboardActivityQuickActions({
             <strong>Reuse previous activity</strong>
 
             <small>
-              Copy an earlier activity and choose a new schedule.
+              Copy an earlier activity and prepare it with a fresh schedule.
             </small>
           </span>
 
-          <span className="venue-dashboard-activity-coming-soon">
-            Coming later
+          <span
+            className="venue-dashboard-activity-quick-action-arrow"
+            aria-hidden="true"
+          >
+            <ArrowIcon />
           </span>
-        </div>
+        </button>
       </div>
     </section>
   );

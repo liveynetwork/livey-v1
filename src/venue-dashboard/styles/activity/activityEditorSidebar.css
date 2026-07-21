@@ -1,0 +1,476 @@
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.venue-dashboard-activity-sidebar-heading {
+  min-width: 0;
+}
+
+.venue-dashboard-activity-sidebar-heading h3 {
+  margin-top: 12px;
+}
+
+.venue-dashboard-activity-readiness-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.venue-dashboard-activity-readiness-item {
+  min-width: 0;
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 13px;
+  padding: 8px 11px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.venue-dashboard-activity-readiness-item > span {
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  color: rgba(247, 241, 234, 0.35);
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.venue-dashboard-activity-readiness-item strong {
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.61);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.venue-dashboard-activity-readiness-item.is-complete {
+  border-color: rgba(255, 91, 50, 0.11);
+}
+
+.venue-dashboard-activity-readiness-item.is-complete > span {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff9579;
+}
+
+.venue-dashboard-activity-readiness-item.is-complete strong {
+  color: rgba(247, 241, 234, 0.8);
+}
+
+.venue-dashboard-activity-readiness-message {
+  margin: 14px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  padding-top: 13px;
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.75rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.venue-dashboard-activity-preview-card {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+  margin-top: 17px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 19px;
+  padding: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.014)
+    ),
+    #1b1d21;
+  transition: border-color 180ms ease;
+}
+
+.venue-dashboard-activity-preview-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.venue-dashboard-activity-preview-state {
+  min-height: 27px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 91, 50, 0.17);
+  border-radius: 999px;
+  padding: 0 10px;
+  background: rgba(255, 91, 50, 0.085);
+  color: #ff9579;
+  font-size: 0.65rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.venue-dashboard-activity-preview-state.is-hidden {
+  border-color: rgba(255, 255, 255, 0.065);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(247, 241, 234, 0.42);
+}
+
+.venue-dashboard-activity-preview-card > strong {
+  overflow-wrap: anywhere;
+  color: #f7f1ea;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.venue-dashboard-activity-preview-card > p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.52);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.venue-dashboard-activity-preview-card > small {
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  padding-top: 10px;
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.4);
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.venue-dashboard-activity-warning-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.venue-dashboard-activity-warning {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  border: 1px solid rgba(255, 91, 50, 0.11);
+  border-radius: 14px;
+  padding: 11px;
+  background: rgba(255, 91, 50, 0.045);
+}
+
+.venue-dashboard-activity-warning > span {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 91, 50, 0.15);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #ff8e72;
+  background: rgba(255, 91, 50, 0.075);
+}
+
+.venue-dashboard-activity-warning p {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  color: rgba(247, 241, 234, 0.53);
+  font-size: 0.73rem;
+  font-weight: 750;
+  line-height: 1.48;
+}
+
+.venue-dashboard-activity-warning.is-danger {
+  border-color: rgba(255, 90, 90, 0.15);
+  background: rgba(255, 70, 70, 0.055);
+}
+
+.venue-dashboard-activity-warning.is-danger > span {
+  border-color: rgba(255, 90, 90, 0.18);
+  background: rgba(255, 70, 70, 0.08);
+  color: #ffabab;
+}
+
+/* =========================================================
+   REUSE PREVIOUS ACTIVITY
+   ========================================================= */
+
+.venue-dashboard-activity-reuse-panel {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 22px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 30px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.028),
+      rgba(255, 255, 255, 0.012)
+    ),
+    rgba(7, 8, 10, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 18px 42px rgba(0, 0, 0, 0.14);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease;
+}
+
+.venue-dashboard-activity-reuse-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.venue-dashboard-activity-reuse-heading > div {
+  min-width: 0;
+}
+
+.venue-dashboard-activity-reuse-heading h2 {
+  margin: 8px 0 0;
+  color: #f7f1ea;
+  font-size: clamp(1.55rem, 2.7vw, 2.15rem);
+  font-weight: 950;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.venue-dashboard-activity-reuse-heading p {
+  max-width: 660px;
+  margin: 11px 0 0;
+  color: rgba(247, 241, 234, 0.52);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.venue-dashboard-activity-reuse-close {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 241, 234, 0.66);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-activity-reuse-list {
+  display: grid;
+  gap: 11px;
+}
+
+.venue-dashboard-activity-reuse-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    auto;
+  align-items: center;
+  gap: 16px;
+  padding: 17px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.028),
+      rgba(255, 255, 255, 0.012)
+    ),
+    rgba(12, 13, 16, 0.66);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 10px 24px rgba(0, 0, 0, 0.08);
+  transition:
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.venue-dashboard-activity-reuse-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 17px;
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff8d70;
+}
+
+.venue-dashboard-activity-reuse-copy {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.venue-dashboard-activity-reuse-copy strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #f7f1ea;
+  font-size: 0.98rem;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.venue-dashboard-activity-reuse-copy span {
+  color: rgba(247, 241, 234, 0.4);
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1.35;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-reuse-copy p {
+  min-width: 0;
+  margin: 2px 0 0;
+  overflow: hidden;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.venue-dashboard-activity-reuse-meta {
+  min-width: 116px;
+  display: grid;
+  justify-items: end;
+  gap: 9px;
+}
+
+.venue-dashboard-activity-reuse-state {
+  min-height: 27px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.61rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-activity-reuse-state.is-removed {
+  border-color: rgba(255, 110, 110, 0.14);
+  background: rgba(255, 80, 80, 0.055);
+  color: rgba(255, 150, 150, 0.76);
+}
+
+.venue-dashboard-activity-reuse-meta button,
+.venue-dashboard-activity-reuse-history,
+.venue-dashboard-activity-reuse-empty button {
+  border: 1px solid rgba(255, 91, 50, 0.24);
+  border-radius: 14px;
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff9a80;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-activity-reuse-meta button {
+  min-height: 38px;
+  padding: 0 14px;
+}
+
+.venue-dashboard-activity-reuse-history {
+  width: fit-content;
+  min-height: 42px;
+  justify-self: center;
+  padding: 0 17px;
+}
+
+.venue-dashboard-activity-reuse-empty {
+  min-height: 330px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 11px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 25px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.022),
+      rgba(255, 255, 255, 0.009)
+    ),
+    rgba(12, 13, 16, 0.56);
+  text-align: center;
+}
+
+.venue-dashboard-activity-reuse-empty-icon {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 5px;
+  border: 1px solid rgba(255, 91, 50, 0.17);
+  border-radius: 21px;
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff8d70;
+}
+
+.venue-dashboard-activity-reuse-empty strong {
+  color: #f7f1ea;
+  font-size: 1.14rem;
+  font-weight: 950;
+  letter-spacing: -0.025em;
+}
+
+.venue-dashboard-activity-reuse-empty p {
+  max-width: 440px;
+  margin: 0;
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.82rem;
+  font-weight: 680;
+  line-height: 1.6;
+}
+
+.venue-dashboard-activity-reuse-empty button {
+  min-height: 42px;
+  margin-top: 8px;
+  padding: 0 18px;
+}
+
+.venue-dashboard-activity-reuse-close:focus-visible,
+.venue-dashboard-activity-reuse-meta button:focus-visible,
+.venue-dashboard-activity-reuse-history:focus-visible,
+.venue-dashboard-activity-reuse-empty button:focus-visible {
+  outline: 2px solid rgba(255, 91, 50, 0.72);
+  outline-offset: 3px;
+}
