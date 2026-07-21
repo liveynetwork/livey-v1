@@ -56,6 +56,13 @@ type PendingActivityAction =
   | {
       type: "section";
       section: DashboardSection;
+    }
+  | {
+      type: "refresh";
+    }
+  | {
+      type: "restore";
+      event: VenueDashboardEvent;
     };
     
 type VenueDashboardScreenProps = {
@@ -250,6 +257,13 @@ followerAnalyticsGeneratedAt:
     ).length;
   }, [activeEvents]);
 
+  const hasUnsavedActivityChanges = useMemo(() => {
+  return areEditingEventsDifferent(
+    editingEvent,
+    originalEditingEventRef.current
+  );
+}, [editingEvent]);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -375,6 +389,32 @@ originalEditingEventRef.current = null;
       isMounted = false;
     };
   }, [activeSection, activeVenueId]);
+
+  useEffect(() => {
+  if (!hasUnsavedActivityChanges) {
+    return;
+  }
+
+  function handleBeforeUnload(
+    event: BeforeUnloadEvent
+  ) {
+    event.preventDefault();
+
+    event.returnValue = "";
+  }
+
+  window.addEventListener(
+    "beforeunload",
+    handleBeforeUnload
+  );
+
+  return () => {
+    window.removeEventListener(
+      "beforeunload",
+      handleBeforeUnload
+    );
+  };
+}, [hasUnsavedActivityChanges]);
 
   function handleDismissToast() {
     setStatusMessage("");
@@ -522,7 +562,7 @@ function handleUsePreviousActivity(
   setStatusMessage("");
   setErrorMessage("");
 
-  if (hasUnsavedActivityChanges()) {
+  if (hasUnsavedActivityChanges) {
     setPendingActivityAction({
       type: "cancel",
     });
@@ -539,38 +579,8 @@ function closeActivityEditor() {
   originalEditingEventRef.current = null;
 }
 
-function hasUnsavedActivityChanges() {
-  if (!editingEvent) {
-    return false;
-  }
-
-  const originalEvent =
-    originalEditingEventRef.current;
-
-  if (!originalEvent) {
-    return true;
-  }
-
-  return (
-    editingEvent.id !== originalEvent.id ||
-    editingEvent.mode !== originalEvent.mode ||
-    editingEvent.title !== originalEvent.title ||
-    editingEvent.description !==
-      originalEvent.description ||
-    editingEvent.status !== originalEvent.status ||
-    editingEvent.displayTime !==
-      originalEvent.displayTime ||
-    editingEvent.startsAt !==
-      originalEvent.startsAt ||
-    editingEvent.endsAt !==
-      originalEvent.endsAt ||
-    editingEvent.isActive !==
-      originalEvent.isActive
-  );
-}
-
 function requestCreateEvent() {
-  if (hasUnsavedActivityChanges()) {
+  if (hasUnsavedActivityChanges) {
     setPendingActivityAction({
       type: "create",
     });
@@ -592,7 +602,7 @@ function requestSelectEvent(
     return;
   }
 
-  if (hasUnsavedActivityChanges()) {
+  if (hasUnsavedActivityChanges) {
     setPendingActivityAction({
       type: "select",
       event,
@@ -612,7 +622,7 @@ function requestSectionChange(
     return;
   }
 
-  if (hasUnsavedActivityChanges()) {
+  if (hasUnsavedActivityChanges) {
     setPendingActivityAction({
       type: "section",
       section,
@@ -691,6 +701,19 @@ function requestSectionChange(
   setEditingEvent(nextEditingEvent);
 }
   }
+
+  function requestRefreshDashboard() {
+  if (hasUnsavedActivityChanges) {
+    setPendingActivityAction({
+      type: "refresh",
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  void handleRefreshDashboard();
+}
 
   async function handleRefreshDashboard() {
     try {
@@ -943,15 +966,27 @@ function handleConfirmDiscardActivityChanges() {
     return;
   }
 
-  if (
-  pendingAction.section !== "activity"
-) {
-  setIsActivityReusePanelOpen(false);
-}
+  if (pendingAction.type === "refresh") {
+    void handleRefreshDashboard();
+    return;
+  }
 
-setActiveSection(
-  pendingAction.section
-);
+  if (pendingAction.type === "restore") {
+    void handleRestoreEvent(
+      pendingAction.event
+    );
+    return;
+  }
+
+  if (
+    pendingAction.section !== "activity"
+  ) {
+    setIsActivityReusePanelOpen(false);
+  }
+
+  setActiveSection(
+    pendingAction.section
+  );
 }
 
   async function handleConfirmDeleteEvent() {
@@ -999,6 +1034,22 @@ setActiveSection(
       setIsDeletingEvent(false);
     }
   }
+
+  function requestRestoreEvent(
+  event: VenueDashboardEvent
+) {
+  if (hasUnsavedActivityChanges) {
+    setPendingActivityAction({
+      type: "restore",
+      event,
+    });
+
+    setIsDiscardChangesModalOpen(true);
+    return;
+  }
+
+  void handleRestoreEvent(event);
+}
 
   async function handleRestoreEvent(
     event: VenueDashboardEvent
@@ -1259,8 +1310,8 @@ onSectionChange={
   events={allVenueEvents}
   analytics={analytics}
   onRefreshAnalytics={
-    handleRefreshDashboard
-  }
+  requestRefreshDashboard
+}
   onOpenAccountSettings={
   handleOpenAccountSettings
 }
@@ -1281,8 +1332,8 @@ onSectionChange={
                   isRestoringEvent
                 }
                 onRestoreEvent={
-                  handleRestoreEvent
-                }
+  requestRestoreEvent
+}
               />
             ) : null}
 
@@ -1304,8 +1355,8 @@ onFocusTargetHandled={() =>
   setAccountSettingsFocusTarget(null)
 }
                 onRefreshDashboard={
-                  handleRefreshDashboard
-                }
+  requestRefreshDashboard
+}
                 onSectionChange={
   requestSectionChange
 }
@@ -1370,6 +1421,36 @@ onFocusTargetHandled={() =>
   }
 />
     </main>
+  );
+}
+
+function areEditingEventsDifferent(
+  currentEvent: EditingEventState | null,
+  originalEvent: EditingEventState | null
+) {
+  if (!currentEvent) {
+    return false;
+  }
+
+  if (!originalEvent) {
+    return true;
+  }
+
+  return (
+    currentEvent.id !== originalEvent.id ||
+    currentEvent.mode !== originalEvent.mode ||
+    currentEvent.title !== originalEvent.title ||
+    currentEvent.description !==
+      originalEvent.description ||
+    currentEvent.status !== originalEvent.status ||
+    currentEvent.displayTime !==
+      originalEvent.displayTime ||
+    currentEvent.startsAt !==
+      originalEvent.startsAt ||
+    currentEvent.endsAt !==
+      originalEvent.endsAt ||
+    currentEvent.isActive !==
+      originalEvent.isActive
   );
 }
 
