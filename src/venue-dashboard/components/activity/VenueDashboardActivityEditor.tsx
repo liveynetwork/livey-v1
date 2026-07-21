@@ -68,8 +68,8 @@ export function VenueDashboardActivityEditor({
           </h2>
 
           <p>
-            Add the activity details, choose its schedule, and confirm whether
-            it should be visible on Livey.
+            Add the activity details, choose its schedule, and preview how it
+            will appear to people on Livey.
           </p>
         </div>
 
@@ -281,71 +281,6 @@ export function VenueDashboardActivityEditor({
                 <strong>{editingEvent.status}</strong>
                 <p>{editingEvent.displayTime}</p>
               </div>
-            </div>
-          </section>
-
-          <section className="venue-dashboard-activity-editor-section">
-            <div className="venue-dashboard-activity-editor-section-heading">
-              <span className="venue-dashboard-activity-editor-section-number">
-                03
-              </span>
-
-              <div>
-                <h3>Visibility</h3>
-
-                <p>
-                  Hidden activities remain saved but do not appear to people
-                  using Livey.
-                </p>
-              </div>
-            </div>
-
-            <div className="venue-dashboard-activity-visibility-control">
-              <div>
-                <span>Consumer visibility</span>
-
-                <strong>
-                  {editingEvent.isActive
-                    ? "Visible on Livey"
-                    : "Hidden from Livey"}
-                </strong>
-
-                <p>
-                  {editingEvent.isActive
-                    ? "People can discover this activity while its schedule is active."
-                    : "This activity will remain saved but will not appear publicly."}
-                </p>
-              </div>
-
-              <button
-                className={
-                  editingEvent.isActive
-                    ? "venue-dashboard-toggle is-on"
-                    : "venue-dashboard-toggle"
-                }
-                type="button"
-                onClick={() =>
-                  onEditingEventChange((current) =>
-                    current
-                      ? {
-                          ...current,
-                          isActive:
-                            !current.isActive,
-                        }
-                      : current
-                  )
-                }
-                aria-label={
-                  editingEvent.isActive
-                    ? "Hide activity from Livey"
-                    : "Show activity on Livey"
-                }
-                aria-pressed={
-                  editingEvent.isActive
-                }
-              >
-                <span />
-              </button>
             </div>
           </section>
         </div>
