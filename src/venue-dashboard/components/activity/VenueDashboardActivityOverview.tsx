@@ -12,6 +12,7 @@ export function VenueDashboardActivityOverview({
   onSelectEvent,
 }: VenueDashboardActivityOverviewProps) {
   const overviewEvent = getOverviewEvent(events);
+
   const visibleActivityCount = events.filter(
     (event) => event.is_active !== false
   ).length;
@@ -44,6 +45,14 @@ export function VenueDashboardActivityOverview({
               Create an activity to show people what is happening at your
               venue.
             </p>
+
+            <button
+              className="venue-dashboard-primary-action venue-dashboard-activity-overview-action"
+              type="button"
+              onClick={onCreateEvent}
+            >
+              Create activity
+            </button>
           </div>
         </div>
 
@@ -52,14 +61,6 @@ export function VenueDashboardActivityOverview({
             <span>Visible activities</span>
             <strong>{visibleActivityCount}</strong>
           </div>
-
-          <button
-            className="venue-dashboard-primary-action venue-dashboard-activity-overview-action"
-            type="button"
-            onClick={onCreateEvent}
-          >
-            Create activity
-          </button>
         </div>
       </section>
     );
@@ -67,6 +68,7 @@ export function VenueDashboardActivityOverview({
 
   const isVisible = overviewEvent.is_active !== false;
   const isLive = isEventLive(overviewEvent);
+
   const overviewLabel = isLive
     ? "Live now"
     : isVisible
@@ -111,6 +113,14 @@ export function VenueDashboardActivityOverview({
               overviewEvent.status ||
               "Timing unavailable"}
           </p>
+
+          <button
+            className="venue-dashboard-activity-overview-edit"
+            type="button"
+            onClick={() => onSelectEvent(overviewEvent)}
+          >
+            View activity
+          </button>
         </div>
 
         <div className="venue-dashboard-activity-overview-details">
@@ -146,14 +156,6 @@ export function VenueDashboardActivityOverview({
             <strong>{hiddenActivityCount}</strong>
           </div>
         </div>
-
-        <button
-          className="venue-dashboard-activity-overview-edit"
-          type="button"
-          onClick={() => onSelectEvent(overviewEvent)}
-        >
-          View activity
-        </button>
       </div>
     </section>
   );
@@ -168,9 +170,7 @@ function getOverviewEvent(
 
   const now = Date.now();
 
-  const liveEvent = events.find((event) =>
-    isEventLive(event, now)
-  );
+  const liveEvent = events.find((event) => isEventLive(event, now));
 
   if (liveEvent) {
     return liveEvent;

@@ -52,7 +52,7 @@ export function VenueDashboardActivityQuickActions({
             className="venue-dashboard-activity-quick-action-arrow"
             aria-hidden="true"
           >
-            <ArrowIcon />
+            <PremiumArrowIcon />
           </span>
         </button>
 
@@ -81,7 +81,7 @@ export function VenueDashboardActivityQuickActions({
             className="venue-dashboard-activity-quick-action-arrow"
             aria-hidden="true"
           >
-            <ArrowIcon />
+            <PremiumArrowIcon />
           </span>
         </button>
 
@@ -130,7 +130,7 @@ export function VenueDashboardActivityQuickActions({
             className="venue-dashboard-activity-quick-action-arrow"
             aria-hidden="true"
           >
-            <ArrowIcon />
+            <PremiumArrowIcon />
           </span>
         </button>
       </div>
@@ -146,12 +146,7 @@ function LiveNowIcon() {
       height="21"
       fill="none"
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-        fill="currentColor"
-      />
+      <circle cx="12" cy="12" r="3" fill="currentColor" />
 
       <path
         d="M7.8 7.8a5.94 5.94 0 0 0 0 8.4M16.2 7.8a5.94 5.94 0 0 1 0 8.4"
@@ -259,18 +254,25 @@ function DuplicateIcon() {
   );
 }
 
-function ArrowIcon() {
+function PremiumArrowIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
+      width="19"
+      height="19"
       fill="none"
     >
       <path
-        d="M8 12h8M13 9l3 3-3 3"
+        d="M7.5 12h8.25"
         stroke="currentColor"
-        strokeWidth="1.9"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+
+      <path
+        d="m12.75 8.75 3.25 3.25-3.25 3.25"
+        stroke="currentColor"
+        strokeWidth="1.7"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

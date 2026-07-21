@@ -465,13 +465,6 @@ originalEditingEventRef.current = null;
   requestSectionChange("account");
 }
 
-function handleOpenActivityReusePanel() {
-  setStatusMessage("");
-  setErrorMessage("");
-  setIsActivityReusePanelOpen(true);
-  setActiveSection("activity");
-}
-
 function handleCloseActivityReusePanel() {
   setIsActivityReusePanelOpen(false);
 }
@@ -587,19 +580,6 @@ function requestCreateEvent() {
   }
 
   handleCreateEvent();
-}
-
-function requestCreateLiveNowEvent() {
-  if (hasUnsavedActivityChanges()) {
-    setPendingActivityAction({
-      type: "create-live-now",
-    });
-
-    setIsDiscardChangesModalOpen(true);
-    return;
-  }
-
-  handleCreateLiveNowEvent();
 }
 
 function requestSelectEvent(
@@ -1237,24 +1217,18 @@ onSectionChange={
   onCreateEvent={
     requestCreateEvent
   }
-  onCreateLiveNowEvent={
-    requestCreateLiveNowEvent
-  }
-  onOpenReusePanel={
-    handleOpenActivityReusePanel
-  }
   onCloseReusePanel={
     handleCloseActivityReusePanel
   }
   onOpenHistory={() =>
-  requestSectionChange("history")
-}
-onUsePreviousActivity={
-  handleUsePreviousActivity
-}
-onCancelEditing={
-  handleCancelEditing
-}
+    requestSectionChange("history")
+  }
+  onUsePreviousActivity={
+    handleUsePreviousActivity
+  }
+  onCancelEditing={
+    handleCancelEditing
+  }
   onDeleteEvent={
     handleDeleteEvent
   }

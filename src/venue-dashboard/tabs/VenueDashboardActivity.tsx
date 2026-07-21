@@ -6,7 +6,6 @@ import { VenueDashboardActiveList } from "../components/activity/VenueDashboardA
 import { VenueDashboardActivityEditor } from "../components/activity/VenueDashboardActivityEditor";
 import { VenueDashboardActivityEmptyState } from "../components/activity/VenueDashboardActivityEmptyState";
 import { VenueDashboardActivityOverview } from "../components/activity/VenueDashboardActivityOverview";
-import { VenueDashboardActivityQuickActions } from "../components/activity/VenueDashboardActivityQuickActions";
 import { VenueDashboardActivityReusePanel } from "../components/activity/VenueDashboardActivityReusePanel";
 
 export type EditingEventState = {
@@ -29,8 +28,6 @@ type VenueDashboardActivityProps = {
   isSaving: boolean;
   isDeletingEvent: boolean;
   onCreateEvent: () => void;
-  onCreateLiveNowEvent: () => void;
-  onOpenReusePanel: () => void;
   onCloseReusePanel: () => void;
   onOpenHistory: () => void;
   onUsePreviousActivity: (
@@ -64,8 +61,6 @@ export function VenueDashboardActivity({
   isSaving,
   isDeletingEvent,
   onCreateEvent,
-  onCreateLiveNowEvent,
-  onOpenReusePanel,
   onCloseReusePanel,
   onOpenHistory,
   onUsePreviousActivity,
@@ -130,40 +125,36 @@ export function VenueDashboardActivity({
             }
           />
 
-          <VenueDashboardActivityQuickActions
-            onCreateEvent={
-              onCreateEvent
-            }
-            onCreateLiveNowEvent={
-              onCreateLiveNowEvent
-            }
-            onOpenReusePanel={
-              onOpenReusePanel
-            }
-          />
-
           {hasSavedActivities ? (
             <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
               <div className="venue-dashboard-activity-section-heading venue-dashboard-activity-saved-heading">
                 <div>
                   <span className="venue-dashboard-activity-section-label">
-                    Current schedule
+                    Publishing timeline
                   </span>
 
                   <h2>
-                    Active and upcoming
+                    Your upcoming schedule
                   </h2>
 
                   <p>
-                    Review what is currently
-                    visible, hidden, or
-                    scheduled for your venue.
+                    Review what is live, starting
+                    next, scheduled later, or hidden
+                    from people on Livey.
                   </p>
+
+                  <button
+                    className="venue-dashboard-primary-action venue-dashboard-activity-timeline-create"
+                    type="button"
+                    onClick={onCreateEvent}
+                  >
+                    Create activity
+                  </button>
                 </div>
 
                 <span
                   className="venue-dashboard-activity-count"
-                  aria-label={`${activeEvents.length} current ${
+                  aria-label={`${activeEvents.length} scheduled ${
                     activeEvents.length === 1
                       ? "activity"
                       : "activities"

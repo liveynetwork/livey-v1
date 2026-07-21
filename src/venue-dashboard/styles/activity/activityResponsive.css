@@ -20,13 +20,7 @@
   }
 
   .venue-dashboard-activity-reuse-item:hover {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.034),
-        rgba(255, 255, 255, 0.014)
-      ),
-      rgba(12, 13, 16, 0.72);
+    background: rgba(255, 255, 255, 0.025);
   }
 
   .venue-dashboard-activity-reuse-close:hover {
@@ -61,20 +55,15 @@
 
   button.venue-dashboard-activity-quick-action:hover {
     border-color: rgba(255, 91, 50, 0.52);
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 91, 50, 0.065),
-        rgba(255, 255, 255, 0.012)
-      ),
-      rgba(7, 8, 10, 0.58);
+    background: rgba(255, 91, 50, 0.04);
   }
 
   button.venue-dashboard-activity-quick-action:hover
     .venue-dashboard-activity-quick-action-arrow {
-    border-color: rgba(255, 91, 50, 0.25);
-    background: rgba(255, 91, 50, 0.08);
+    border-color: rgba(255, 91, 50, 0.32);
+    background: rgba(255, 91, 50, 0.075);
     color: #ff9579;
+    transform: translateX(2px);
   }
 
   .venue-dashboard-activity-overview-edit:hover {
@@ -136,9 +125,7 @@
 
   .venue-dashboard-activity-overview-side {
     display: grid;
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(180px, 0.55fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: stretch;
   }
 
@@ -148,12 +135,8 @@
 
   .venue-dashboard-activity-overview-action,
   .venue-dashboard-activity-overview-edit {
-    height: 100%;
-    min-height: 112px;
-  }
-
-  .venue-dashboard-activity-quick-actions-grid {
-    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 54px;
   }
 
   .venue-dashboard-activity-schedule-presets {
@@ -285,38 +268,59 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .venue-dashboard-activity-overview-counts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .venue-dashboard-activity-overview-action,
   .venue-dashboard-activity-overview-edit {
+    width: 100%;
     height: auto;
     min-height: 54px;
   }
 
+  .venue-dashboard-activity-quick-actions {
+    padding: 22px 17px;
+  }
+
+  .venue-dashboard-activity-quick-actions-grid {
+    width: 100%;
+  }
+
   .venue-dashboard-activity-quick-action {
-    grid-template-columns:
-      46px
-      minmax(0, 1fr);
-    min-height: 0;
-    padding: 16px;
+    min-height: 160px;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 12px;
+    padding: 20px 16px;
+    text-align: center;
   }
 
   .venue-dashboard-activity-quick-action-icon {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
   }
 
-  .venue-dashboard-activity-quick-action-arrow,
-  .venue-dashboard-activity-coming-soon {
-    grid-column: 1 / -1;
-    width: 100%;
-    justify-self: stretch;
+  .venue-dashboard-activity-quick-action-copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-quick-action-copy small {
+    max-width: 560px;
+    text-align: center;
   }
 
   .venue-dashboard-activity-quick-action-arrow {
+    width: 46px;
     height: 36px;
+    justify-self: center;
   }
 
   .venue-dashboard-activity-coming-soon {
-    min-height: 32px;
+    width: auto;
+    min-height: 30px;
+    justify-self: center;
   }
 
   .venue-dashboard-activity-empty-state {
@@ -412,13 +416,8 @@
   }
 
   .venue-dashboard-activity-quick-action {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    text-align: center;
-  }
-
-  .venue-dashboard-activity-quick-action-copy {
-    justify-items: center;
+    min-height: 154px;
+    padding: 19px 14px;
   }
 
   .venue-dashboard-activity-quick-action-copy small {
