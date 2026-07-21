@@ -27,6 +27,11 @@ type VenueDashboardActivityProps = {
   isReusePanelOpen: boolean;
   isSaving: boolean;
   isDeletingEvent: boolean;
+  isUpdatingVisibility: boolean;
+updatingVisibilityEventId: string | null;
+onToggleVisibility: (
+  event: VenueDashboardEvent
+) => void;
   onCreateEvent: () => void;
   onCloseReusePanel: () => void;
   onOpenHistory: () => void;
@@ -60,6 +65,9 @@ export function VenueDashboardActivity({
   isReusePanelOpen,
   isSaving,
   isDeletingEvent,
+  isUpdatingVisibility,
+updatingVisibilityEventId,
+onToggleVisibility,
   onCreateEvent,
   onCloseReusePanel,
   onOpenHistory,
@@ -165,11 +173,20 @@ export function VenueDashboardActivity({
               </div>
 
               <VenueDashboardActiveList
-                events={activeEvents}
-                onSelectEvent={
-                  onSelectEvent
-                }
-              />
+  events={activeEvents}
+  isUpdatingVisibility={
+    isUpdatingVisibility
+  }
+  updatingVisibilityEventId={
+    updatingVisibilityEventId
+  }
+  onSelectEvent={
+    onSelectEvent
+  }
+  onToggleVisibility={
+    onToggleVisibility
+  }
+/>
             </section>
           ) : (
             <VenueDashboardActivityEmptyState

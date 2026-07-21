@@ -81,7 +81,7 @@
   grid-template-columns:
     24px
     minmax(0, 1fr)
-    minmax(150px, auto);
+    minmax(210px, auto);
   align-items: center;
   gap: 16px;
   border: 1px solid rgba(255, 255, 255, 0.055);
@@ -308,30 +308,79 @@
   line-height: 1.4;
 }
 
+.venue-dashboard-active-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.venue-dashboard-active-visibility-action,
 .venue-dashboard-active-edit {
   min-height: 38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid rgba(255, 91, 50, 0.17);
   border-radius: 999px;
   padding: 0 13px;
-  background: rgba(255, 91, 50, 0.055);
-  color: #ff9478;
   font-family: inherit;
   font-size: 0.7rem;
   font-weight: 950;
   line-height: 1;
+  white-space: nowrap;
+}
+
+.venue-dashboard-active-visibility-action {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 241, 234, 0.68);
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.venue-dashboard-active-visibility-action.is-show-action {
+  border-color: rgba(255, 91, 50, 0.17);
+  background: rgba(255, 91, 50, 0.055);
+  color: #ff9478;
+}
+
+.venue-dashboard-active-visibility-action.is-hide-action {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(247, 241, 234, 0.62);
+}
+
+.venue-dashboard-active-visibility-action:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+.venue-dashboard-active-visibility-action:focus-visible {
+  border-color: rgba(255, 91, 50, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 91, 50, 0.11);
+}
+
+.venue-dashboard-active-visibility-action svg,
+.venue-dashboard-active-edit svg {
+  flex: 0 0 auto;
+}
+
+.venue-dashboard-active-edit {
+  border: 1px solid rgba(255, 91, 50, 0.17);
+  background: rgba(255, 91, 50, 0.055);
+  color: #ff9478;
   transition:
     border-color 180ms ease,
     background 180ms ease,
     color 180ms ease,
     transform 180ms ease;
-}
-
-.venue-dashboard-active-edit svg {
-  flex: 0 0 auto;
 }
 
 .venue-dashboard-active-item:focus-visible {
@@ -393,9 +442,17 @@
     color: #ffad98;
     transform: translateX(2px);
   }
+
+  .venue-dashboard-active-visibility-action:hover:not(
+      :disabled
+    ) {
+    border-color: rgba(255, 91, 50, 0.4);
+    background: rgba(255, 91, 50, 0.07);
+    color: #ffad98;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
   .venue-dashboard-active-item {
     grid-template-columns:
       24px
@@ -406,6 +463,10 @@
     grid-column: 2;
     justify-items: start;
     text-align: left;
+  }
+
+  .venue-dashboard-active-actions {
+    justify-content: flex-start;
   }
 }
 
@@ -467,7 +528,27 @@
     text-align: center;
   }
 
+  .venue-dashboard-active-actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-active-visibility-action,
   .venue-dashboard-active-edit {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-active-item,
+  .venue-dashboard-active-visibility-action,
+  .venue-dashboard-active-edit {
+    transition: none;
+  }
+
+  .venue-dashboard-active-item:hover
+    .venue-dashboard-active-edit {
+    transform: none;
   }
 }

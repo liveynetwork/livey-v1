@@ -147,6 +147,18 @@ const [
   );
 
   const [
+  visibilityEventToConfirm,
+  setVisibilityEventToConfirm,
+] = useState<VenueDashboardEvent | null>(
+  null
+);
+
+const [
+  updatingVisibilityEventId,
+  setUpdatingVisibilityEventId,
+] = useState<string | null>(null);
+
+  const [
     isFollowerAnalyticsLoading,
     setIsFollowerAnalyticsLoading,
   ] = useState(false);
@@ -783,6 +795,99 @@ function requestSectionChange(
     }
   }
 
+  function requestToggleEventVisibility(
+  event: VenueDashboardEvent
+) {
+  if (event.is_active !== false) {
+    setVisibilityEventToConfirm(event);
+    return;
+  }
+
+  void handleToggleEventVisibility(
+    event,
+    true
+  );
+}
+
+async function handleToggleEventVisibility(
+  event: VenueDashboardEvent,
+  nextIsActive: boolean
+) {
+  if (
+    !event.starts_at ||
+    !event.ends_at
+  ) {
+    setErrorMessage(
+      "This activity does not have a valid schedule and cannot be updated."
+    );
+
+    return;
+  }
+
+  try {
+    setUpdatingVisibilityEventId(
+      event.id
+    );
+
+    setStatusMessage("");
+    setErrorMessage("");
+
+    await updateVenueEvent({
+      eventId: event.id,
+      title: event.title || "",
+      description:
+        event.description || "",
+      startsAt: event.starts_at,
+      endsAt: event.ends_at,
+      isActive: nextIsActive,
+    });
+
+    await refreshDashboard();
+
+    setVisibilityEventToConfirm(null);
+
+    setStatusMessage(
+      nextIsActive
+        ? "Activity is now visible on Livey."
+        : "Activity hidden from Livey."
+    );
+  } catch (error) {
+    console.error(
+      "Failed to update activity visibility:",
+      error
+    );
+
+    setErrorMessage(
+      nextIsActive
+        ? "We could not show this activity on Livey. Please try again."
+        : "We could not hide this activity from Livey. Please try again."
+    );
+  } finally {
+    setUpdatingVisibilityEventId(
+      null
+    );
+  }
+}
+
+function handleCancelVisibilityChange() {
+  if (updatingVisibilityEventId) {
+    return;
+  }
+
+  setVisibilityEventToConfirm(null);
+}
+
+function handleConfirmHideActivity() {
+  if (!visibilityEventToConfirm) {
+    return;
+  }
+
+  void handleToggleEventVisibility(
+    visibilityEventToConfirm,
+    false
+  );
+}
+
   async function handleSaveEvent() {
     if (!editingEvent || !activeVenue) {
       return;
@@ -1271,6 +1376,15 @@ onSectionChange={
   isDeletingEvent={
     isDeletingEvent
   }
+  isUpdatingVisibility={
+  updatingVisibilityEventId !== null
+}
+updatingVisibilityEventId={
+  updatingVisibilityEventId
+}
+onToggleVisibility={
+  requestToggleEventVisibility
+}
   onCreateEvent={
     requestCreateEvent
   }
@@ -1391,6 +1505,33 @@ onFocusTargetHandled={() =>
           onDismiss={handleDismissToast}
         />
       ) : null}
+
+       <LiveyConfirmModal
+  isOpen={
+    visibilityEventToConfirm !== null
+  }
+  title="Hide this activity?"
+  description={
+    visibilityEventToConfirm
+      ? `“${
+          visibilityEventToConfirm.title ||
+          "Untitled activity"
+        }” will no longer appear to people on Livey. You can show it again at any time from the Publishing Timeline.`
+      : "This activity will no longer appear to people on Livey."
+  }
+  confirmLabel="Hide from Livey"
+  cancelLabel="Keep visible"
+  tone="warning"
+  isProcessing={
+    updatingVisibilityEventId !== null
+  }
+  onCancel={
+    handleCancelVisibilityChange
+  }
+  onConfirm={
+    handleConfirmHideActivity
+  }
+/>
 
       <LiveyConfirmModal
         isOpen={

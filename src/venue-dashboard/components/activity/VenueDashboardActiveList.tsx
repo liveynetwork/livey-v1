@@ -8,7 +8,12 @@ import "./VenueDashboardActiveList.css";
 
 type VenueDashboardActiveListProps = {
   events: VenueDashboardEvent[];
+  isUpdatingVisibility: boolean;
+  updatingVisibilityEventId: string | null;
   onSelectEvent: (
+    event: VenueDashboardEvent
+  ) => void;
+  onToggleVisibility: (
     event: VenueDashboardEvent
   ) => void;
 };
@@ -22,7 +27,10 @@ type TimelineGroup = {
 
 export function VenueDashboardActiveList({
   events,
+  isUpdatingVisibility,
+  updatingVisibilityEventId,
   onSelectEvent,
+  onToggleVisibility,
 }: VenueDashboardActiveListProps) {
   const now = Date.now();
   const sortedEvents =
@@ -104,7 +112,14 @@ export function VenueDashboardActiveList({
                   startDate,
                   endDate
                 );
+   
+                const isHidden =
+  event.is_active === false;
 
+const isThisVisibilityUpdating =
+  isUpdatingVisibility &&
+  updatingVisibilityEventId === event.id;
+  
               return (
                 <article
                   className={[
@@ -199,18 +214,65 @@ export function VenueDashboardActiveList({
                   </div>
 
                   <div className="venue-dashboard-active-side">
-                    <strong>
-                      {getRelativeTiming(
-                        event,
-                        now
-                      )}
-                    </strong>
+  <strong>
+    {getRelativeTiming(
+      event,
+      now
+    )}
+  </strong>
 
-                    <span className="venue-dashboard-active-edit">
-                      Edit activity
-                      <ArrowIcon />
-                    </span>
-                  </div>
+  <div className="venue-dashboard-active-actions">
+    <button
+      className={[
+        "venue-dashboard-active-visibility-action",
+        isHidden
+          ? "is-show-action"
+          : "is-hide-action",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      type="button"
+      disabled={
+        isUpdatingVisibility
+      }
+      aria-label={
+        isHidden
+          ? `Show ${
+              event.title ||
+              "this activity"
+            } on Livey`
+          : `Hide ${
+              event.title ||
+              "this activity"
+            } from Livey`
+      }
+      onClick={(clickEvent) => {
+        clickEvent.stopPropagation();
+        onToggleVisibility(event);
+      }}
+      onKeyDown={(keyboardEvent) => {
+        keyboardEvent.stopPropagation();
+      }}
+    >
+      <VisibilityToggleIcon
+        isHidden={isHidden}
+      />
+
+      {isThisVisibilityUpdating
+        ? isHidden
+          ? "Showing..."
+          : "Hiding..."
+        : isHidden
+          ? "Show on Livey"
+          : "Hide from Livey"}
+    </button>
+
+    <span className="venue-dashboard-active-edit">
+      Edit activity
+      <ArrowIcon />
+    </span>
+  </div>
+</div>
                 </article>
               );
             })}
@@ -793,6 +855,64 @@ function MoonIcon() {
     >
       <path
         d="M18.3 15.4A7.2 7.2 0 0 1 8.6 5.7a7.2 7.2 0 1 0 9.7 9.7Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function VisibilityToggleIcon({
+  isHidden,
+}: {
+  isHidden: boolean;
+}) {
+  if (isHidden) {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M3.8 12s3-5.2 8.2-5.2S20.2 12 20.2 12s-3 5.2-8.2 5.2S3.8 12 3.8 12Z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+
+        <circle
+          cx="12"
+          cy="12"
+          r="2.3"
+          stroke="currentColor"
+          strokeWidth="1.7"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 4l16 16"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+
+      <path
+        d="M9.4 7.2A8.6 8.6 0 0 1 12 6.8c5.2 0 8.2 5.2 8.2 5.2a13.8 13.8 0 0 1-2.3 2.9M14.2 14.3a3 3 0 0 1-4.5-3.9M6.2 9C4.6 10.4 3.8 12 3.8 12s3 5.2 8.2 5.2c1 0 1.9-.2 2.7-.5"
         stroke="currentColor"
         strokeWidth="1.7"
         strokeLinecap="round"
