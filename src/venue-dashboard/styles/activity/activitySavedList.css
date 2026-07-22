@@ -1,4 +1,47 @@
 /* =========================================================
+   STANDALONE ACTIVITY PAGE ACTION
+   ========================================================= */
+
+.venue-dashboard-activity-page-action {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 26px;
+  font-family: inherit;
+}
+
+.venue-dashboard-activity-page-create {
+  width: min(100%, 540px);
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ff5b32;
+  border-radius: 18px;
+  padding: 0 24px;
+  background: #ff5b32;
+  box-shadow: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 950;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.venue-dashboard-activity-page-create:focus-visible {
+  border-color: #ff7958;
+  outline: 2px solid rgba(255, 91, 50, 0.78);
+  outline-offset: 4px;
+  box-shadow: none;
+}
+
+/* =========================================================
    PUBLISHING TIMELINE CARD
    ========================================================= */
 
@@ -41,11 +84,11 @@
 .venue-dashboard-activity-count {
   min-width: 44px;
   height: 44px;
-  border: 1px solid rgba(255, 91, 50, 0.16);
-  border-radius: 15px;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 15px;
   padding: 0 11px;
   background: rgba(255, 91, 50, 0.06);
   color: #ff9478;
@@ -55,10 +98,33 @@
   line-height: 1;
 }
 
-.venue-dashboard-activity-timeline-create {
-  width: min(100%, 280px);
-  min-height: 52px;
-  margin-top: 20px;
-  border-radius: 17px;
-  font-family: inherit;
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-activity-page-create:hover {
+    border-color: #ff6844;
+    background: #ff6844;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .venue-dashboard-activity-page-action {
+    margin-bottom: 20px;
+  }
+
+  .venue-dashboard-activity-page-create {
+    width: 100%;
+    min-height: 52px;
+    border-radius: 17px;
+  }
+
+  .venue-dashboard-activity-saved-card {
+    border-radius: 25px;
+    padding: 20px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-activity-page-create {
+    transition: none;
+  }
 }

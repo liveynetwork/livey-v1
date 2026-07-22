@@ -28,10 +28,10 @@ type VenueDashboardActivityProps = {
   isSaving: boolean;
   isDeletingEvent: boolean;
   isUpdatingVisibility: boolean;
-updatingVisibilityEventId: string | null;
-onToggleVisibility: (
-  event: VenueDashboardEvent
-) => void;
+  updatingVisibilityEventId: string | null;
+  onToggleVisibility: (
+    event: VenueDashboardEvent
+  ) => void;
   onCreateEvent: () => void;
   onCloseReusePanel: () => void;
   onOpenHistory: () => void;
@@ -66,8 +66,8 @@ export function VenueDashboardActivity({
   isSaving,
   isDeletingEvent,
   isUpdatingVisibility,
-updatingVisibilityEventId,
-onToggleVisibility,
+  updatingVisibilityEventId,
+  onToggleVisibility,
   onCreateEvent,
   onCloseReusePanel,
   onOpenHistory,
@@ -146,18 +146,11 @@ onToggleVisibility,
                   </h2>
 
                   <p>
-                    Review what is live, starting
-                    next, scheduled later, or hidden
-                    from people on Livey.
+                    Review what is live,
+                    starting next, scheduled
+                    later, or hidden from people
+                    on Livey.
                   </p>
-
-                  <button
-                    className="venue-dashboard-primary-action venue-dashboard-activity-timeline-create"
-                    type="button"
-                    onClick={onCreateEvent}
-                  >
-                    Create activity
-                  </button>
                 </div>
 
                 <span
@@ -173,20 +166,20 @@ onToggleVisibility,
               </div>
 
               <VenueDashboardActiveList
-  events={activeEvents}
-  isUpdatingVisibility={
-    isUpdatingVisibility
-  }
-  updatingVisibilityEventId={
-    updatingVisibilityEventId
-  }
-  onSelectEvent={
-    onSelectEvent
-  }
-  onToggleVisibility={
-    onToggleVisibility
-  }
-/>
+                events={activeEvents}
+                isUpdatingVisibility={
+                  isUpdatingVisibility
+                }
+                updatingVisibilityEventId={
+                  updatingVisibilityEventId
+                }
+                onSelectEvent={
+                  onSelectEvent
+                }
+                onToggleVisibility={
+                  onToggleVisibility
+                }
+              />
             </section>
           ) : (
             <VenueDashboardActivityEmptyState

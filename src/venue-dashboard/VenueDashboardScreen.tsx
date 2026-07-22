@@ -1310,6 +1310,22 @@ setActiveSection("activity");
           </div>
         </header>
 
+        {activeSection === "activity" &&
+!editingEvent &&
+!isActivityReusePanelOpen &&
+!isLoading &&
+hasVenues ? (
+  <div className="venue-dashboard-activity-page-action">
+    <button
+      className="venue-dashboard-activity-page-create"
+      type="button"
+      onClick={requestCreateEvent}
+    >
+      Create activity
+    </button>
+  </div>
+) : null}
+
         {isLoading ? (
           <section className="venue-dashboard-card">
             <p className="venue-dashboard-muted">
