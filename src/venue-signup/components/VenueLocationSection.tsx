@@ -1,5 +1,6 @@
-import type { VenueRequestCity } from "../../services/venueRequests";
-import { cities } from "../venueSignupConfig";
+import type { VenueAddressSuggestion } from "../../services/mapboxAddressSearch";
+import { VenueAddressSearch } from "./VenueAddressSearch";
+import { VenueCityDropdown } from "./VenueCityDropdown";
 import type {
   LocationPreviewState,
   UpdateVenueSignupField,
@@ -19,55 +20,78 @@ export function VenueLocationSection({
 }: VenueLocationSectionProps) {
   const hasGoogleMapsLink = form.googleMapsUrl.trim().length > 0;
 
+  function handleAddressSelected(
+    suggestion: VenueAddressSuggestion
+  ) {
+    updateField("address", suggestion.fullAddress);
+
+    if (suggestion.area) {
+      updateField("area", suggestion.area);
+    }
+
+    if (suggestion.city) {
+      updateField("city", suggestion.city);
+    }
+  }
+
   return (
-    <section className="livey-venue-signup-section">
-      <div>
+    <section className="livey-venue-signup-section livey-venue-location-section">
+      <div className="livey-venue-signup-section-heading">
         <p className="livey-venue-signup-section-kicker">Step 2</p>
+
         <h2>Location</h2>
 
         <p className="livey-venue-signup-section-note">
-          Paste your Google Maps link if you have one. Livey will try to detect
-          the exact pin, and we will still verify it before approval.
+          Search for your address, check the detected area, then add a
+          Google Maps link for the most precise venue pin.
+        </p>
+      </div>
+
+      <div className="livey-venue-city-field">
+        <span className="livey-venue-city-label">City</span>
+
+        <VenueCityDropdown
+          value={form.city}
+          onChange={(city) => updateField("city", city)}
+        />
+      </div>
+
+      <label>
+        Area
+
+        <input
+          value={form.area}
+          onChange={(event) =>
+            updateField("area", event.target.value)
+          }
+          placeholder="Automatically filled after selecting an address"
+          autoComplete="address-level2"
+        />
+      </label>
+
+      <div className="livey-venue-address-field">
+        <span className="livey-venue-address-label">
+          Full address
+        </span>
+
+        <VenueAddressSearch
+          value={form.address}
+          city={form.city}
+          onValueChange={(address) =>
+            updateField("address", address)
+          }
+          onSelect={handleAddressSelected}
+        />
+
+        <p className="livey-venue-address-help">
+          Select a result to automatically fill the full address and
+          detected area.
         </p>
       </div>
 
       <label>
-        City
-        <select
-          value={form.city}
-          onChange={(event) =>
-            updateField("city", event.target.value as VenueRequestCity)
-          }
-        >
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label>
-        Area
-        <input
-          value={form.area}
-          onChange={(event) => updateField("area", event.target.value)}
-          placeholder="Example: Old Town, Marina, Kato Paphos"
-        />
-      </label>
-
-      <label>
-        Full address
-        <input
-          value={form.address}
-          onChange={(event) => updateField("address", event.target.value)}
-          placeholder="Street, number, area"
-          autoComplete="street-address"
-        />
-      </label>
-
-      <label>
         Google Maps link
+
         <input
           value={form.googleMapsUrl}
           onChange={(event) =>

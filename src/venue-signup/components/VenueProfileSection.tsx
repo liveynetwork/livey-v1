@@ -1,6 +1,5 @@
 import type { ChangeEvent } from "react";
-import type { VenueRequestCategory } from "../../services/venueRequests";
-import { categories } from "../venueSignupConfig";
+import { VenueCategoryDropdown } from "./VenueCategoryDropdown";
 import type {
   UpdateVenueSignupField,
   VenueSignupFormState,
@@ -63,25 +62,16 @@ export function VenueProfileSection({
         </div>
       </label>
 
-      <label>
-        Category
+      <div className="livey-venue-category-field">
+        <span className="livey-venue-category-label">Category</span>
 
-        <select
+        <VenueCategoryDropdown
           value={form.category}
-          onChange={(event) =>
-            updateField(
-              "category",
-              event.target.value as VenueRequestCategory
-            )
+          onChange={(category) =>
+            updateField("category", category)
           }
-        >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </label>
+        />
+      </div>
 
       <label>
         Short description
