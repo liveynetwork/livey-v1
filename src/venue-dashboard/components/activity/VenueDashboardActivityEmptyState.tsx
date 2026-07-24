@@ -1,10 +1,4 @@
-type VenueDashboardActivityEmptyStateProps = {
-  onCreateEvent: () => void;
-};
-
-export function VenueDashboardActivityEmptyState({
-  onCreateEvent,
-}: VenueDashboardActivityEmptyStateProps) {
+export function VenueDashboardActivityEmptyState() {
   return (
     <section className="venue-dashboard-activity-empty-state">
       <div
@@ -39,13 +33,6 @@ export function VenueDashboardActivityEmptyState({
         </div>
       </div>
 
-      <button
-        className="venue-dashboard-primary-action venue-dashboard-activity-empty-state-action"
-        type="button"
-        onClick={onCreateEvent}
-      >
-        Create activity
-      </button>
     </section>
   );
 }

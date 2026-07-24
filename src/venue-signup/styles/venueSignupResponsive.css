@@ -1,0 +1,104 @@
+@media (min-width: 560px) {
+  .livey-venue-time-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .livey-venue-closed-day-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 760px) {
+  .livey-venue-signup-screen {
+    padding-inline: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .livey-venue-signup-screen {
+    padding:
+      calc(env(safe-area-inset-top) + 18px)
+      16px
+      calc(env(safe-area-inset-bottom) + 24px);
+  }
+
+  .livey-venue-signup-hero {
+    margin-bottom: 34px;
+  }
+
+  .livey-venue-signup-form {
+    gap: 16px;
+  }
+
+  .livey-venue-signup-section {
+    gap: 17px;
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+
+  .livey-venue-signup-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .livey-venue-signup-footer,
+  .livey-venue-thank-you-card {
+    border-radius: 24px;
+  }
+
+  .livey-venue-signup-footer {
+    padding: 28px 18px;
+  }
+
+  .livey-venue-thank-you-card {
+    min-height: calc(100dvh - 160px);
+    padding: 30px 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .livey-venue-logo-upload-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .livey-venue-logo-preview {
+    margin: 0 auto;
+  }
+
+  .livey-venue-logo-upload-copy {
+    display: grid;
+    justify-items: center;
+  }
+
+  .livey-venue-logo-upload-button {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .livey-venue-closed-day-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .livey-venue-signup-footer-links {
+    gap: 14px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-signup-section,
+  .livey-venue-thank-you-card {
+    animation: none;
+  }
+
+  .livey-venue-signup-section,
+  .livey-venue-logo-upload-card,
+  .livey-venue-logo-upload-button,
+  .livey-venue-closed-day,
+  .livey-venue-next-steps div,
+  .livey-venue-signup-submit,
+  .livey-venue-signup-footer,
+  .livey-venue-thank-you-card {
+    transition: none;
+  }
+}

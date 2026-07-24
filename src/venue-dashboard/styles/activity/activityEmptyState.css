@@ -4,38 +4,40 @@
 
 .venue-dashboard-activity-empty-state {
   min-width: 0;
-  min-height: 330px;
+  min-height: 430px;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 18px;
+  gap: 22px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.075);
   border-radius: 32px;
-  padding: 34px;
+  padding: 48px 38px;
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.012)
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.009)
     ),
     #15171a;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 22px 48px rgba(0, 0, 0, 0.14);
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  font-family: inherit;
   text-align: center;
-  transition: border-color 180ms ease;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-activity-empty-state-icon {
-  width: 70px;
-  height: 70px;
-  border: 1px solid rgba(255, 91, 50, 0.17);
-  border-radius: 23px;
+  width: 74px;
+  height: 74px;
   display: grid;
   place-items: center;
+  border: 1px solid rgba(255, 91, 50, 0.19);
+  border-radius: 24px;
+  background: rgba(255, 91, 50, 0.09);
   color: #ff8567;
-  background: rgba(255, 91, 50, 0.095);
 }
 
 .venue-dashboard-activity-empty-state-icon svg {
@@ -48,59 +50,111 @@
 }
 
 .venue-dashboard-activity-empty-state-copy h3 {
-  margin: 14px 0 0;
+  margin: 15px 0 0;
   color: #f7f1ea;
-  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
+  font-family: inherit;
+  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
   font-weight: 950;
-  line-height: 1.1;
-  letter-spacing: -0.05em;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  text-align: center;
 }
 
 .venue-dashboard-activity-empty-state-copy p {
-  max-width: 590px;
-  margin: 11px 0 0;
+  max-width: 620px;
+  margin: 12px 0 0;
   color: rgba(247, 241, 234, 0.5);
-  font-size: 0.88rem;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 750;
-  line-height: 1.62;
+  line-height: 1.65;
+  text-align: center;
 }
 
 .venue-dashboard-activity-empty-state-details {
-  width: min(100%, 680px);
+  width: min(100%, 720px);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .venue-dashboard-activity-empty-state-details > div {
   min-width: 0;
+  min-height: 86px;
   display: grid;
-  gap: 7px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 18px;
-  padding: 15px;
-  background: rgba(7, 8, 10, 0.4);
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.058);
+  border-radius: 19px;
+  padding: 18px;
+  background: rgba(7, 8, 10, 0.43);
+  box-shadow: none;
+  text-align: center;
   transition: border-color 180ms ease;
 }
 
 .venue-dashboard-activity-empty-state-details span {
   color: rgba(247, 241, 234, 0.39);
+  font-family: inherit;
   font-size: 0.66rem;
   font-weight: 950;
+  line-height: 1.3;
   letter-spacing: 0.1em;
+  text-align: center;
   text-transform: uppercase;
 }
 
 .venue-dashboard-activity-empty-state-details strong {
   overflow-wrap: anywhere;
-  color: rgba(247, 241, 234, 0.76);
-  font-size: 0.83rem;
+  color: rgba(247, 241, 234, 0.78);
+  font-family: inherit;
+  font-size: 0.84rem;
   font-weight: 900;
   line-height: 1.4;
+  text-align: center;
 }
 
-.venue-dashboard-activity-empty-state-action {
-  min-width: 210px;
-  min-height: 54px;
-  border-radius: 17px;
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-activity-empty-state:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .venue-dashboard-activity-empty-state-details > div:hover {
+    border-color: rgba(255, 91, 50, 0.28);
+  }
+}
+
+@media (max-width: 620px) {
+  .venue-dashboard-activity-empty-state {
+    min-height: 0;
+    gap: 20px;
+    border-radius: 26px;
+    padding: 38px 18px;
+  }
+
+  .venue-dashboard-activity-empty-state-icon {
+    width: 66px;
+    height: 66px;
+    border-radius: 21px;
+  }
+
+  .venue-dashboard-activity-empty-state-copy h3 {
+    font-size: clamp(1.45rem, 8vw, 1.9rem);
+  }
+
+  .venue-dashboard-activity-empty-state-copy p {
+    font-size: 0.84rem;
+  }
+
+  .venue-dashboard-activity-empty-state-details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-activity-empty-state,
+  .venue-dashboard-activity-empty-state-details > div {
+    transition: none;
+  }
 }

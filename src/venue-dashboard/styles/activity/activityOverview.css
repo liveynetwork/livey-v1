@@ -8,9 +8,9 @@
   width: 100%;
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: 24px;
+  gap: 14px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 32px;
@@ -24,58 +24,24 @@
     background 180ms ease;
 }
 
-.venue-dashboard-activity-overview::before {
-  display: none;
-  content: none;
-}
-
+.venue-dashboard-activity-overview::before,
 .venue-dashboard-activity-overview.is-live::before {
   display: none;
   content: none;
 }
 
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
 .venue-dashboard-activity-overview-main {
   min-width: 0;
+  width: 100%;
   display: grid;
   justify-items: center;
   align-content: center;
   gap: 20px;
   text-align: center;
-}
-
-.venue-dashboard-activity-overview-status {
-  width: fit-content;
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  border: 1px solid rgba(255, 255, 255, 0.075);
-  border-radius: 999px;
-  padding: 0 13px;
-  background: rgba(255, 255, 255, 0.035);
-  color: rgba(247, 241, 234, 0.62);
-  font-family: inherit;
-  font-size: 0.76rem;
-  font-weight: 950;
-  line-height: 1;
-}
-
-.venue-dashboard-activity-overview-status.is-live {
-  border-color: rgba(255, 91, 50, 0.22);
-  background: rgba(255, 91, 50, 0.08);
-  color: #ff9b82;
-}
-
-.venue-dashboard-activity-overview-status.is-hidden {
-  color: rgba(247, 241, 234, 0.42);
-}
-
-.venue-dashboard-activity-overview-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: currentColor;
 }
 
 .venue-dashboard-activity-overview-copy {
@@ -110,34 +76,59 @@
   text-align: center;
 }
 
-.venue-dashboard-activity-overview-action,
+/* =========================================================
+   VIEW ACTIVITY ACTION
+   ========================================================= */
+
 .venue-dashboard-activity-overview-edit {
   width: min(100%, 280px);
   min-height: 54px;
   margin-top: 22px;
-  border-radius: 17px;
-  font-family: inherit;
-}
-
-.venue-dashboard-activity-overview-edit {
   border: 1px solid rgba(255, 91, 50, 0.18);
+  border-radius: 17px;
   padding: 0 20px;
   background: rgba(255, 91, 50, 0.085);
   color: #ff9a80;
+  font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 950;
+  font-weight: 700;
+  font-synthesis: weight;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: center;
   cursor: pointer;
+  appearance: none;
   transition:
     border-color 180ms ease,
     background 180ms ease,
     color 180ms ease;
 }
 
+.venue-dashboard-activity-overview-edit:hover {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.11);
+  color: #ffad98;
+}
+
+.venue-dashboard-activity-overview-edit:focus-visible {
+  outline: 2px solid rgba(255, 91, 50, 0.82);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   VISIBILITY
+   ========================================================= */
+
 .venue-dashboard-activity-overview-details {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-items: center;
   gap: 10px;
+}
+
+.venue-dashboard-activity-overview-visibility {
+  width: calc((100% - 10px) / 2);
+  max-width: 100%;
 }
 
 .venue-dashboard-activity-overview-details > div {
@@ -175,6 +166,10 @@
   line-height: 1.4;
   text-align: center;
 }
+
+/* =========================================================
+   VISIBLE AND HIDDEN COUNTS
+   ========================================================= */
 
 .venue-dashboard-activity-overview-side {
   min-width: 0;
@@ -221,4 +216,38 @@
   line-height: 1;
   letter-spacing: -0.055em;
   text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .venue-dashboard-activity-overview {
+    border-radius: 26px;
+    padding: 24px 18px;
+  }
+
+  .venue-dashboard-activity-overview-visibility {
+    width: 100%;
+  }
+
+  .venue-dashboard-activity-overview-counts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-dashboard-activity-overview-edit {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-activity-overview,
+  .venue-dashboard-activity-overview-edit,
+  .venue-dashboard-activity-overview-details > div,
+  .venue-dashboard-activity-overview-side,
+  .venue-dashboard-activity-overview-metric {
+    transition: none;
+  }
 }

@@ -1,16 +1,30 @@
 /* =========================================================
-   SIDEBAR
+   EDITOR SIDEBAR
    ========================================================= */
 
 .venue-dashboard-activity-sidebar-heading {
   min-width: 0;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  text-align: center;
 }
 
 .venue-dashboard-activity-sidebar-heading h3 {
-  margin-top: 12px;
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+/* =========================================================
+   PUBLISHING READINESS
+   ========================================================= */
+
+.venue-dashboard-activity-readiness {
+  align-content: start;
 }
 
 .venue-dashboard-activity-readiness-list {
+  width: 100%;
   display: grid;
   gap: 8px;
   margin-top: 17px;
@@ -18,135 +32,204 @@
 
 .venue-dashboard-activity-readiness-item {
   min-width: 0;
-  min-height: 42px;
+  min-height: 54px;
   display: grid;
-  grid-template-columns: 25px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 13px;
-  padding: 8px 11px;
-  background: rgba(255, 255, 255, 0.025);
+  border-radius: 14px;
+  padding: 9px 12px;
+  background: #17191c;
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-activity-readiness-item::after {
+  content: "";
+  width: 32px;
+  height: 1px;
 }
 
 .venue-dashboard-activity-readiness-item > span {
-  width: 25px;
-  height: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.075);
-  border-radius: 9px;
+  width: 29px;
+  height: 29px;
   display: grid;
   place-items: center;
+  justify-self: center;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 10px;
+  background: #202226;
   color: rgba(247, 241, 234, 0.35);
-  background: rgba(255, 255, 255, 0.035);
-  font-size: 0.72rem;
-  font-weight: 950;
+  font-family: inherit;
+  line-height: 1;
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-activity-readiness-item > span svg {
+  display: block;
 }
 
 .venue-dashboard-activity-readiness-item strong {
+  min-width: 0;
   overflow-wrap: anywhere;
   color: rgba(247, 241, 234, 0.61);
+  font-family: inherit;
   font-size: 0.76rem;
   font-weight: 900;
   line-height: 1.35;
+  text-align: center;
 }
 
 .venue-dashboard-activity-readiness-item.is-complete {
-  border-color: rgba(255, 91, 50, 0.11);
+  border-color: rgba(255, 91, 50, 0.16);
+  background: #191817;
 }
 
 .venue-dashboard-activity-readiness-item.is-complete > span {
-  border-color: rgba(255, 91, 50, 0.18);
-  background: rgba(255, 91, 50, 0.09);
-  color: #ff9579;
+  border-color: rgba(255, 91, 50, 0.28);
+  background: #241b19;
+  color: #ff8d70;
 }
 
 .venue-dashboard-activity-readiness-item.is-complete strong {
-  color: rgba(247, 241, 234, 0.8);
+  color: rgba(247, 241, 234, 0.82);
 }
 
 .venue-dashboard-activity-readiness-message {
+  width: 100%;
   margin: 14px 0 0;
   border-top: 1px solid rgba(255, 255, 255, 0.055);
   padding-top: 13px;
   color: rgba(247, 241, 234, 0.46);
+  font-family: inherit;
   font-size: 0.75rem;
   font-weight: 750;
   line-height: 1.5;
+  text-align: center;
+}
+
+.venue-dashboard-activity-readiness-message.is-ready {
+  color: #ff9478;
+}
+
+/* =========================================================
+   LIVEY CONSUMER PREVIEW
+   ========================================================= */
+
+.venue-dashboard-activity-preview {
+  align-content: start;
 }
 
 .venue-dashboard-activity-preview-card {
   min-width: 0;
+  width: 100%;
   display: grid;
-  gap: 10px;
+  justify-items: center;
+  gap: 14px;
   margin-top: 17px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.065);
-  border-radius: 19px;
-  padding: 16px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.014)
-    ),
-    #1b1d21;
-  transition: border-color 180ms ease;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 22px;
+  padding: 24px 18px;
+  background: #1c1e22;
+  box-shadow: none;
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-activity-preview-top {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .venue-dashboard-activity-preview-state {
   min-height: 27px;
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(255, 91, 50, 0.17);
+  justify-content: center;
+  border: 1px solid rgba(255, 91, 50, 0.2);
   border-radius: 999px;
   padding: 0 10px;
-  background: rgba(255, 91, 50, 0.085);
+  background: #241b19;
   color: #ff9579;
-  font-size: 0.65rem;
+  font-family: inherit;
+  font-size: 0.64rem;
   font-weight: 950;
   line-height: 1;
+  text-align: center;
 }
 
 .venue-dashboard-activity-preview-state.is-hidden {
-  border-color: rgba(255, 255, 255, 0.065);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.07);
+  background: #202226;
   color: rgba(247, 241, 234, 0.42);
 }
 
-.venue-dashboard-activity-preview-card > strong {
+.venue-dashboard-activity-preview-title {
+  max-width: 100%;
   overflow-wrap: anywhere;
   color: #f7f1ea;
-  font-size: 1rem;
+  font-family: inherit;
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
   font-weight: 950;
-  line-height: 1.35;
+  line-height: 1.17;
+  letter-spacing: -0.035em;
+  text-align: center;
 }
 
-.venue-dashboard-activity-preview-card > p {
+.venue-dashboard-activity-preview-description {
+  max-width: 290px;
   margin: 0;
   overflow-wrap: anywhere;
   color: rgba(247, 241, 234, 0.52);
-  font-size: 0.78rem;
-  font-weight: 750;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 720;
   line-height: 1.5;
+  text-align: center;
 }
 
-.venue-dashboard-activity-preview-card > small {
+.venue-dashboard-activity-preview-timing {
+  width: 100%;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.055);
-  padding-top: 10px;
-  overflow-wrap: anywhere;
-  color: rgba(247, 241, 234, 0.4);
-  font-size: 0.7rem;
+  padding-top: 11px;
+  color: rgba(247, 241, 234, 0.43);
+  font-family: inherit;
+  font-size: 0.69rem;
   font-weight: 850;
-  line-height: 1.45;
+  line-height: 1.4;
+  text-align: center;
 }
+
+.venue-dashboard-activity-preview-timing svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: #ff8567;
+}
+
+/* =========================================================
+   SCHEDULE WARNINGS
+   ========================================================= */
 
 .venue-dashboard-activity-warning-list {
+  width: 100%;
   display: grid;
   gap: 8px;
   margin-top: 17px;
@@ -155,44 +238,69 @@
 .venue-dashboard-activity-warning {
   min-width: 0;
   display: grid;
-  grid-template-columns: 30px minmax(0, 1fr);
-  align-items: start;
+  justify-items: center;
   gap: 10px;
   border: 1px solid rgba(255, 91, 50, 0.11);
   border-radius: 14px;
-  padding: 11px;
-  background: rgba(255, 91, 50, 0.045);
+  padding: 13px;
+  background: #191817;
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-activity-warning > span {
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(255, 91, 50, 0.15);
-  border-radius: 10px;
   display: grid;
   place-items: center;
+  border: 1px solid rgba(255, 91, 50, 0.15);
+  border-radius: 10px;
+  background: #241b19;
   color: #ff8e72;
-  background: rgba(255, 91, 50, 0.075);
+}
+
+.venue-dashboard-activity-warning > span svg {
+  display: block;
 }
 
 .venue-dashboard-activity-warning p {
-  margin: 4px 0 0;
+  margin: 0;
   overflow-wrap: anywhere;
   color: rgba(247, 241, 234, 0.53);
+  font-family: inherit;
   font-size: 0.73rem;
   font-weight: 750;
   line-height: 1.48;
+  text-align: center;
 }
 
 .venue-dashboard-activity-warning.is-danger {
   border-color: rgba(255, 90, 90, 0.15);
-  background: rgba(255, 70, 70, 0.055);
+  background: #1e1718;
 }
 
 .venue-dashboard-activity-warning.is-danger > span {
   border-color: rgba(255, 90, 90, 0.18);
-  background: rgba(255, 70, 70, 0.08);
+  background: #27191b;
   color: #ffabab;
+}
+
+/* =========================================================
+   CARD HOVER RULES
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-activity-readiness-item:hover,
+  .venue-dashboard-activity-preview-card:hover,
+  .venue-dashboard-activity-warning:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .venue-dashboard-activity-readiness-item:hover {
+    background: #1b1918;
+  }
 }
 
 /* =========================================================
@@ -207,16 +315,8 @@
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 30px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.028),
-      rgba(255, 255, 255, 0.012)
-    ),
-    rgba(7, 8, 10, 0.58);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 18px 42px rgba(0, 0, 0, 0.14);
+  background: #111316;
+  box-shadow: none;
   transition:
     border-color 220ms ease,
     background 220ms ease;
@@ -236,6 +336,7 @@
 .venue-dashboard-activity-reuse-heading h2 {
   margin: 8px 0 0;
   color: #f7f1ea;
+  font-family: inherit;
   font-size: clamp(1.55rem, 2.7vw, 2.15rem);
   font-weight: 950;
   line-height: 1.08;
@@ -246,6 +347,7 @@
   max-width: 660px;
   margin: 11px 0 0;
   color: rgba(247, 241, 234, 0.52);
+  font-family: inherit;
   font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.65;
@@ -260,9 +362,10 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 0;
-  background: rgba(255, 255, 255, 0.025);
+  background: #1b1d21;
   color: rgba(247, 241, 234, 0.66);
   cursor: pointer;
+  box-shadow: none;
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -287,16 +390,8 @@
   padding: 17px 18px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 22px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.028),
-      rgba(255, 255, 255, 0.012)
-    ),
-    rgba(12, 13, 16, 0.66);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.02),
-    0 10px 24px rgba(0, 0, 0, 0.08);
+  background: #17191c;
+  box-shadow: none;
   transition:
     border-color 200ms ease,
     background 200ms ease,
@@ -310,7 +405,7 @@
   place-items: center;
   border: 1px solid rgba(255, 91, 50, 0.16);
   border-radius: 17px;
-  background: rgba(255, 91, 50, 0.09);
+  background: #241b19;
   color: #ff8d70;
 }
 
@@ -324,6 +419,7 @@
   min-width: 0;
   overflow: hidden;
   color: #f7f1ea;
+  font-family: inherit;
   font-size: 0.98rem;
   font-weight: 900;
   line-height: 1.3;
@@ -334,6 +430,7 @@
 
 .venue-dashboard-activity-reuse-copy span {
   color: rgba(247, 241, 234, 0.4);
+  font-family: inherit;
   font-size: 0.68rem;
   font-weight: 850;
   line-height: 1.35;
@@ -346,6 +443,7 @@
   margin: 2px 0 0;
   overflow: hidden;
   color: rgba(247, 241, 234, 0.48);
+  font-family: inherit;
   font-size: 0.78rem;
   font-weight: 650;
   line-height: 1.5;
@@ -368,8 +466,9 @@
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 999px;
   padding: 0 10px;
-  background: rgba(255, 255, 255, 0.025);
+  background: #1f2125;
   color: rgba(247, 241, 234, 0.5);
+  font-family: inherit;
   font-size: 0.61rem;
   font-weight: 900;
   line-height: 1;
@@ -379,7 +478,7 @@
 
 .venue-dashboard-activity-reuse-state.is-removed {
   border-color: rgba(255, 110, 110, 0.14);
-  background: rgba(255, 80, 80, 0.055);
+  background: #24191b;
   color: rgba(255, 150, 150, 0.76);
 }
 
@@ -388,13 +487,14 @@
 .venue-dashboard-activity-reuse-empty button {
   border: 1px solid rgba(255, 91, 50, 0.24);
   border-radius: 14px;
-  background: rgba(255, 91, 50, 0.09);
+  background: #241b19;
   color: #ff9a80;
   font: inherit;
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.015em;
   cursor: pointer;
+  box-shadow: none;
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -423,13 +523,8 @@
   padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 25px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.022),
-      rgba(255, 255, 255, 0.009)
-    ),
-    rgba(12, 13, 16, 0.56);
+  background: #17191c;
+  box-shadow: none;
   text-align: center;
 }
 
@@ -441,12 +536,13 @@
   margin-bottom: 5px;
   border: 1px solid rgba(255, 91, 50, 0.17);
   border-radius: 21px;
-  background: rgba(255, 91, 50, 0.09);
+  background: #241b19;
   color: #ff8d70;
 }
 
 .venue-dashboard-activity-reuse-empty strong {
   color: #f7f1ea;
+  font-family: inherit;
   font-size: 1.14rem;
   font-weight: 950;
   letter-spacing: -0.025em;
@@ -456,6 +552,7 @@
   max-width: 440px;
   margin: 0;
   color: rgba(247, 241, 234, 0.48);
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 680;
   line-height: 1.6;
@@ -473,4 +570,94 @@
 .venue-dashboard-activity-reuse-empty button:focus-visible {
   outline: 2px solid rgba(255, 91, 50, 0.72);
   outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* =========================================================
+   REUSE HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-activity-reuse-panel:hover,
+  .venue-dashboard-activity-reuse-item:hover,
+  .venue-dashboard-activity-reuse-empty:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .venue-dashboard-activity-reuse-close:hover,
+  .venue-dashboard-activity-reuse-meta button:hover,
+  .venue-dashboard-activity-reuse-history:hover,
+  .venue-dashboard-activity-reuse-empty button:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: #291d1a;
+    color: #ffad98;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .venue-dashboard-activity-readiness-item {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding: 11px;
+  }
+
+  .venue-dashboard-activity-readiness-item::after {
+    display: none;
+  }
+
+  .venue-dashboard-activity-reuse-heading {
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-reuse-heading > div {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-reuse-item {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-reuse-copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .venue-dashboard-activity-reuse-copy strong,
+  .venue-dashboard-activity-reuse-copy p {
+    white-space: normal;
+  }
+
+  .venue-dashboard-activity-reuse-meta {
+    min-width: 0;
+    justify-items: center;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-activity-readiness-item,
+  .venue-dashboard-activity-preview-card,
+  .venue-dashboard-activity-warning,
+  .venue-dashboard-activity-reuse-panel,
+  .venue-dashboard-activity-reuse-close,
+  .venue-dashboard-activity-reuse-item,
+  .venue-dashboard-activity-reuse-meta button,
+  .venue-dashboard-activity-reuse-history,
+  .venue-dashboard-activity-reuse-empty,
+  .venue-dashboard-activity-reuse-empty button {
+    transition: none;
+  }
 }

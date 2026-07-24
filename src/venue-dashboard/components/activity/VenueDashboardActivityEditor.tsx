@@ -51,6 +51,24 @@ export function VenueDashboardActivityEditor({
     activeEvents
   );
 
+  const previewTitle =
+    editingEvent.title.trim() ||
+    "Your activity title";
+
+  const previewDescription =
+    editingEvent.description.trim() ||
+    "Your activity description will appear here.";
+
+  const previewTiming =
+    editingEvent.displayTime ||
+    "Choose a start and end time";
+
+  const titleLength =
+  editingEvent.title.length;
+
+const descriptionLength =
+  editingEvent.description.length;
+
   return (
     <section className="venue-dashboard-activity-editor">
       <div className="venue-dashboard-activity-editor-heading">
@@ -72,30 +90,12 @@ export function VenueDashboardActivityEditor({
             will appear to people on Livey.
           </p>
         </div>
-
-        <div
-          className={
-            readiness.isReady
-              ? "venue-dashboard-activity-readiness-badge is-ready"
-              : "venue-dashboard-activity-readiness-badge"
-          }
-        >
-          <span aria-hidden="true" />
-
-          {readiness.isReady
-            ? "Ready to publish"
-            : `${readiness.completedCount}/${readiness.totalCount} ready`}
-        </div>
       </div>
 
       <div className="venue-dashboard-activity-editor-layout">
         <div className="venue-dashboard-activity-editor-main">
           <section className="venue-dashboard-activity-editor-section">
             <div className="venue-dashboard-activity-editor-section-heading">
-              <span className="venue-dashboard-activity-editor-section-number">
-                01
-              </span>
-
               <div>
                 <h3>Activity details</h3>
 
@@ -108,52 +108,76 @@ export function VenueDashboardActivityEditor({
 
             <div className="venue-dashboard-activity-editor-fields">
               <label className="venue-dashboard-activity-editor-field">
-                <span>Activity title</span>
+  <span>Activity title</span>
 
-                <input
-                  value={editingEvent.title}
-                  onChange={(event) =>
-                    onEditingEventChange((current) =>
-                      current
-                        ? {
-                            ...current,
-                            title: event.target.value,
-                          }
-                        : current
-                    )
-                  }
-                  placeholder="For example, Friday Night DJ"
-                />
-              </label>
+  <div className="venue-dashboard-activity-title-field">
+    <input
+      value={editingEvent.title}
+      maxLength={40}
+      onChange={(event) =>
+        onEditingEventChange((current) =>
+          current
+            ? {
+                ...current,
+                title: event.target.value,
+              }
+            : current
+        )
+      }
+      placeholder="For example, Friday Night DJ"
+    />
+
+    <small
+      className={
+        titleLength >= 36
+          ? "is-near-limit"
+          : ""
+      }
+      aria-live="polite"
+    >
+      {titleLength}/40
+    </small>
+  </div>
+</label>
 
               <label className="venue-dashboard-activity-editor-field">
                 <span>Description</span>
 
-                <textarea
-                  value={editingEvent.description}
-                  onChange={(event) =>
-                    onEditingEventChange((current) =>
-                      current
-                        ? {
-                            ...current,
-                            description:
-                              event.target.value,
-                          }
-                        : current
-                    )
-                  }
-                  placeholder="Tell people what they can expect."
-                />
+                <div className="venue-dashboard-activity-description-field">
+                  <textarea
+                    value={editingEvent.description}
+                    maxLength={200}
+                    onChange={(event) =>
+                      onEditingEventChange((current) =>
+                        current
+                          ? {
+                              ...current,
+                              description:
+                                event.target.value,
+                            }
+                          : current
+                      )
+                    }
+                    placeholder="Tell people what they can expect."
+                  />
+
+                  <small
+                    className={
+                      descriptionLength >= 180
+                        ? "is-near-limit"
+                        : ""
+                    }
+                    aria-live="polite"
+                  >
+                    {descriptionLength}/200
+                  </small>
+                </div>
               </label>
             </div>
           </section>
 
           <section className="venue-dashboard-activity-editor-section">
             <div className="venue-dashboard-activity-editor-section-heading">
-              <span className="venue-dashboard-activity-editor-section-number">
-                02
-              </span>
-
               <div>
                 <h3>Schedule</h3>
 
@@ -310,7 +334,9 @@ export function VenueDashboardActivityEditor({
                   key={item.label}
                 >
                   <span aria-hidden="true">
-                    {item.isComplete ? "✓" : ""}
+                    {item.isComplete ? (
+                      <CheckIcon />
+                    ) : null}
                   </span>
 
                   <strong>{item.label}</strong>
@@ -322,7 +348,11 @@ export function VenueDashboardActivityEditor({
               <p className="venue-dashboard-activity-readiness-message">
                 {readiness.message}
               </p>
-            ) : null}
+            ) : (
+              <p className="venue-dashboard-activity-readiness-message is-ready">
+                Your activity is ready to publish.
+              </p>
+            )}
           </section>
 
           <section className="venue-dashboard-activity-preview">
@@ -335,35 +365,34 @@ export function VenueDashboardActivityEditor({
             </div>
 
             <div className="venue-dashboard-activity-preview-card">
-              <div className="venue-dashboard-activity-preview-top">
-                <span
-                  className={
-                    editingEvent.isActive
-                      ? "venue-dashboard-activity-preview-state"
-                      : "venue-dashboard-activity-preview-state is-hidden"
-                  }
-                >
-                  {editingEvent.isActive
-                    ? editingEvent.status
-                    : "Hidden"}
-                </span>
-              </div>
+  <div className="venue-dashboard-activity-preview-top">
+    <span
+      className={
+        editingEvent.isActive
+          ? "venue-dashboard-activity-preview-state"
+          : "venue-dashboard-activity-preview-state is-hidden"
+      }
+    >
+      {editingEvent.isActive
+        ? editingEvent.status
+        : "Hidden"}
+    </span>
+  </div>
 
-              <strong>
-                {editingEvent.title.trim() ||
-                  "Your activity title"}
-              </strong>
+  <strong className="venue-dashboard-activity-preview-title">
+    {previewTitle}
+  </strong>
 
-              <p>
-                {editingEvent.description.trim() ||
-                  "Your activity description will appear here."}
-              </p>
+  <p className="venue-dashboard-activity-preview-description">
+    {previewDescription}
+  </p>
 
-              <small>
-                {editingEvent.displayTime ||
-                  "Choose a start and end time"}
-              </small>
-            </div>
+  <div className="venue-dashboard-activity-preview-timing">
+    <TimingIcon />
+
+    <span>{previewTiming}</span>
+  </div>
+</div>
           </section>
 
           {warnings.length > 0 ? (
@@ -652,7 +681,10 @@ function getScheduleWarnings(
 
   if (overlappingEvent) {
     warnings.push({
-      message: `This schedule overlaps with "${overlappingEvent.title || "another activity"}".`,
+      message: `This schedule overlaps with "${
+        overlappingEvent.title ||
+        "another activity"
+      }".`,
       tone: "info",
     });
   }
@@ -672,6 +704,7 @@ function applySchedulePreset(
 
   if (preset === "live-now") {
     startsAt = new Date(now);
+
     endsAt = new Date(
       now.getTime() +
         3 * 60 * 60 * 1000
@@ -690,9 +723,11 @@ function applySchedulePreset(
     endsAt.setHours(23, 0, 0, 0);
   } else if (preset === "tomorrow") {
     startsAt = new Date(now);
+
     startsAt.setDate(
       startsAt.getDate() + 1
     );
+
     startsAt.setHours(19, 0, 0, 0);
 
     endsAt = new Date(startsAt);
@@ -700,6 +735,7 @@ function applySchedulePreset(
   } else {
     startsAt =
       getNextSaturday(now);
+
     startsAt.setHours(20, 0, 0, 0);
 
     endsAt = new Date(startsAt);
@@ -777,6 +813,25 @@ function getNextSaturday(
   );
 
   return date;
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="15"
+      height="15"
+      fill="none"
+    >
+      <path
+        d="m6.5 12.5 3.4 3.4 7.6-8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }
 
 function TimingIcon() {

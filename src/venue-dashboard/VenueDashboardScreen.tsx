@@ -33,6 +33,7 @@ import { VenueDashboardAnalytics } from "./tabs/VenueDashboardAnalytics";
 import { VenueDashboardHistory } from "./tabs/VenueDashboardHistory";
 import { VenueDashboardHome } from "./tabs/VenueDashboardHome";
 import "./VenueDashboardScreen.css";
+import { VenueDashboardActivityCreateCard } from "./components/activity/VenueDashboardActivityCreateCard";
 import { LiveyConfirmModal } from "./components/LiveyConfirmModal";
 import { LiveyToast } from "./components/LiveyToast";
 import type {
@@ -1315,15 +1316,9 @@ setActiveSection("activity");
 !isActivityReusePanelOpen &&
 !isLoading &&
 hasVenues ? (
-  <div className="venue-dashboard-activity-page-action">
-    <button
-      className="venue-dashboard-activity-page-create"
-      type="button"
-      onClick={requestCreateEvent}
-    >
-      Create activity
-    </button>
-  </div>
+  <VenueDashboardActivityCreateCard
+    onCreateEvent={requestCreateEvent}
+  />
 ) : null}
 
         {isLoading ? (

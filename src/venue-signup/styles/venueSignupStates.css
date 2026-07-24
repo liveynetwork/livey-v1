@@ -1,0 +1,181 @@
+.livey-venue-signup-alert {
+  margin: 0;
+  border-radius: 16px;
+  padding: 13px 15px;
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.livey-venue-signup-alert.error {
+  border: 1px solid rgba(255, 70, 70, 0.2);
+  background: rgba(255, 70, 70, 0.14);
+  color: #ffb8b8;
+}
+
+.livey-venue-signup-alert.success {
+  border: 1px solid rgba(50, 220, 130, 0.2);
+  background: rgba(50, 220, 130, 0.14);
+  color: #b9ffd8;
+}
+
+.livey-location-detection-card {
+  display: grid;
+  gap: 6px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 20px;
+  background: rgba(7, 8, 10, 0.44);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-location-detection-card.detected,
+.livey-location-detection-card.resolved {
+  border-color: rgba(255, 91, 50, 0.28);
+  background: rgba(255, 91, 50, 0.08);
+}
+
+.livey-location-detection-card.checking {
+  border-color: rgba(255, 255, 255, 0.085);
+  background: rgba(7, 8, 10, 0.5);
+}
+
+.livey-location-detection-card p {
+  margin: 0;
+  color: #f7f1ea;
+  font-size: 0.9rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.livey-location-detection-card span {
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.livey-venue-next-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.045)
+    ),
+    #15171b;
+}
+
+.livey-venue-next-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.livey-venue-next-steps div {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 18px;
+  background: rgba(7, 8, 10, 0.44);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-next-steps strong {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 91, 50, 0.16);
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 91, 50, 0.1);
+  color: #ff805f;
+  font-size: 0.84rem;
+  font-weight: 950;
+}
+
+.livey-venue-next-steps span {
+  min-width: 0;
+  color: rgba(247, 241, 234, 0.68);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.livey-venue-thank-you-card {
+  width: min(100%, 620px);
+  min-height: calc(100dvh - 220px);
+  margin: 0 auto;
+  padding: 38px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.045)
+    ),
+    #15171b;
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.22);
+  color: #f7f1ea;
+  text-align: center;
+  transition: border-color 180ms ease;
+  animation: livey-card-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.livey-venue-thank-you-logo {
+  width: clamp(140px, 28vw, 170px);
+  height: clamp(140px, 28vw, 170px);
+  margin-bottom: -8px;
+  object-fit: contain;
+}
+
+.livey-venue-thank-you-card h1 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size: clamp(2.2rem, 11vw, 4rem);
+  font-weight: 950;
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+  text-wrap: balance;
+}
+
+.livey-venue-thank-you-card p {
+  max-width: 32rem;
+  margin: 0;
+  color: rgba(247, 241, 234, 0.54);
+  font-size: 0.94rem;
+  font-weight: 750;
+  line-height: 1.7;
+}
+
+.livey-venue-thank-you-card span {
+  max-width: 30rem;
+  color: rgba(247, 241, 234, 0.46);
+  font-size: 0.86rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-venue-next-steps div:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: rgba(7, 8, 10, 0.5);
+  }
+
+  .livey-venue-thank-you-card:hover {
+    border-color: rgba(255, 91, 50, 0.55);
+  }
+}

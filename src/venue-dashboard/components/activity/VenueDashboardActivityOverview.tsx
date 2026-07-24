@@ -8,7 +8,6 @@ type VenueDashboardActivityOverviewProps = {
 
 export function VenueDashboardActivityOverview({
   events,
-  onCreateEvent,
   onSelectEvent,
 }: VenueDashboardActivityOverviewProps) {
   const overviewEvent = getOverviewEvent(events);
@@ -21,59 +20,16 @@ export function VenueDashboardActivityOverview({
     (event) => event.is_active === false
   ).length;
 
+  /*
+   * The dedicated Activity Empty State handles the no-activity experience.
+   * Avoid rendering a second card that communicates the same information.
+   */
   if (!overviewEvent) {
-    return (
-      <section className="venue-dashboard-activity-overview">
-        <div className="venue-dashboard-activity-overview-main">
-          <div className="venue-dashboard-activity-overview-status">
-            <span
-              className="venue-dashboard-activity-overview-status-dot"
-              aria-hidden="true"
-            />
-
-            <span>No activity</span>
-          </div>
-
-          <div className="venue-dashboard-activity-overview-copy">
-            <span className="venue-dashboard-activity-section-label">
-              Livey visibility
-            </span>
-
-            <h2>Nothing is live right now</h2>
-
-            <p>
-              Create an activity to show people what is happening at your
-              venue.
-            </p>
-
-            <button
-              className="venue-dashboard-primary-action venue-dashboard-activity-overview-action"
-              type="button"
-              onClick={onCreateEvent}
-            >
-              Create activity
-            </button>
-          </div>
-        </div>
-
-        <div className="venue-dashboard-activity-overview-side">
-          <div className="venue-dashboard-activity-overview-metric">
-            <span>Visible activities</span>
-            <strong>{visibleActivityCount}</strong>
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   const isVisible = overviewEvent.is_active !== false;
   const isLive = isEventLive(overviewEvent);
-
-  const overviewLabel = isLive
-    ? "Live now"
-    : isVisible
-      ? "Next activity"
-      : "Hidden activity";
 
   return (
     <section
@@ -84,23 +40,6 @@ export function VenueDashboardActivityOverview({
       }
     >
       <div className="venue-dashboard-activity-overview-main">
-        <div
-          className={
-            isLive
-              ? "venue-dashboard-activity-overview-status is-live"
-              : isVisible
-                ? "venue-dashboard-activity-overview-status"
-                : "venue-dashboard-activity-overview-status is-hidden"
-          }
-        >
-          <span
-            className="venue-dashboard-activity-overview-status-dot"
-            aria-hidden="true"
-          />
-
-          <span>{overviewLabel}</span>
-        </div>
-
         <div className="venue-dashboard-activity-overview-copy">
           <span className="venue-dashboard-activity-section-label">
             Current Livey activity
@@ -124,21 +63,11 @@ export function VenueDashboardActivityOverview({
         </div>
 
         <div className="venue-dashboard-activity-overview-details">
-          <div>
+          <div className="venue-dashboard-activity-overview-visibility">
             <span>Visibility</span>
 
             <strong>
               {isVisible ? "Visible on Livey" : "Hidden from Livey"}
-            </strong>
-          </div>
-
-          <div>
-            <span>Activity state</span>
-
-            <strong>
-              {isLive
-                ? "Currently happening"
-                : overviewEvent.status || "Scheduled"}
             </strong>
           </div>
         </div>

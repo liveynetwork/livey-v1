@@ -153,16 +153,6 @@ export function VenueDashboardActivity({
                   </p>
                 </div>
 
-                <span
-                  className="venue-dashboard-activity-count"
-                  aria-label={`${activeEvents.length} scheduled ${
-                    activeEvents.length === 1
-                      ? "activity"
-                      : "activities"
-                  }`}
-                >
-                  {activeEvents.length}
-                </span>
               </div>
 
               <VenueDashboardActiveList
@@ -182,11 +172,7 @@ export function VenueDashboardActivity({
               />
             </section>
           ) : (
-            <VenueDashboardActivityEmptyState
-              onCreateEvent={
-                onCreateEvent
-              }
-            />
+            <VenueDashboardActivityEmptyState />
           )}
         </>
       )}
