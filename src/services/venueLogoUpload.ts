@@ -21,6 +21,48 @@ function getFileExtension(file: File) {
   return "jpeg";
 }
 
+function createFallbackUuid() {
+  const randomValues = new Uint8Array(16);
+
+  if (
+    typeof globalThis.crypto !== "undefined" &&
+    typeof globalThis.crypto.getRandomValues === "function"
+  ) {
+    globalThis.crypto.getRandomValues(randomValues);
+
+    randomValues[6] = (randomValues[6] & 0x0f) | 0x40;
+    randomValues[8] = (randomValues[8] & 0x3f) | 0x80;
+
+    const hex = Array.from(randomValues, (value) =>
+      value.toString(16).padStart(2, "0")
+    );
+
+    return [
+      hex.slice(0, 4).join(""),
+      hex.slice(4, 6).join(""),
+      hex.slice(6, 8).join(""),
+      hex.slice(8, 10).join(""),
+      hex.slice(10, 16).join(""),
+    ].join("-");
+  }
+
+  const timestamp = Date.now().toString(36);
+  const randomPart = Math.random().toString(36).slice(2, 14);
+
+  return `${timestamp}-${randomPart}`;
+}
+
+function createUploadId() {
+  if (
+    typeof globalThis.crypto !== "undefined" &&
+    typeof globalThis.crypto.randomUUID === "function"
+  ) {
+    return globalThis.crypto.randomUUID();
+  }
+
+  return createFallbackUuid();
+}
+
 export function validateVenueLogoFile(file: File) {
   if (!allowedLogoTypes.includes(file.type)) {
     throw new Error("Please upload a PNG, JPG, JPEG, or WebP image.");
@@ -39,7 +81,8 @@ export async function uploadVenueLogo(
 
   const extension = getFileExtension(file);
   const folder = options.folder ?? "requests";
-  const filePath = `${folder}/${crypto.randomUUID()}.${extension}`;
+  const uploadId = createUploadId();
+  const filePath = `${folder}/${uploadId}.${extension}`;
 
   const { error: uploadError } = await supabase.storage
     .from(VENUE_LOGO_BUCKET)

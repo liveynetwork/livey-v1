@@ -445,14 +445,15 @@ export function VenueSignupScreen() {
           ) : null}
 
           <button
-            className="livey-venue-signup-submit"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting
-              ? "Submitting..."
-              : "Submit for approval"}
-          </button>
+  className="livey-venue-signup-submit"
+  type="submit"
+  disabled={isSubmitting}
+  aria-busy={isSubmitting}
+>
+  <span key={isSubmitting ? "submitting" : "idle"}>
+    {isSubmitting ? "Submitting…" : "Submit for approval"}
+  </span>
+</button>
 
           <p className="livey-venue-signup-disclaimer">
             Submitting this form does not publish your
