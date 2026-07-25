@@ -104,8 +104,10 @@ box-shadow: none;
 
 .venue-dashboard-activity-editor-sidebar
   > .venue-dashboard-activity-warnings {
-  grid-column: 2;
+  grid-column: 1 / -1;
   grid-row: 3;
+  width: min(100%, 720px);
+  justify-self: center;
 }
 
 /* =========================================================
@@ -278,7 +280,6 @@ box-shadow: none;
   overflow-y: auto;
   line-height: 1.65;
   text-align: center;
-  align-content: center;
 }
 
 .venue-dashboard-activity-description-field small {

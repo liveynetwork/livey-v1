@@ -5,6 +5,7 @@ import type {
 import type {
   EditingEventState,
 } from "../../tabs/VenueDashboardActivity";
+import { VenueDashboardDateTimePicker } from "./VenueDashboardDateTimePicker";
 
 type VenueDashboardActivityEditorProps = {
   editingEvent: EditingEventState;
@@ -243,54 +244,46 @@ const descriptionLength =
             </div>
 
             <div className="venue-dashboard-activity-editor-date-grid">
-              <label className="venue-dashboard-activity-editor-field">
-                <span>Starts</span>
+  <VenueDashboardDateTimePicker
+    label="Starts"
+    value={editingEvent.startsAt}
+    disabled={isSaving || isDeletingEvent}
+    onChange={(startsAtValue) =>
+      onEditingEventChange((current) =>
+        current
+          ? {
+              ...current,
+              startsAt: startsAtValue,
+              ...getPreviewTiming(
+                startsAtValue,
+                current.endsAt
+              ),
+            }
+          : current
+      )
+    }
+  />
 
-                <input
-                  type="datetime-local"
-                  value={editingEvent.startsAt}
-                  onChange={(event) =>
-                    onEditingEventChange((current) =>
-                      current
-                        ? {
-                            ...current,
-                            startsAt:
-                              event.target.value,
-                            ...getPreviewTiming(
-                              event.target.value,
-                              current.endsAt
-                            ),
-                          }
-                        : current
-                    )
-                  }
-                />
-              </label>
-
-              <label className="venue-dashboard-activity-editor-field">
-                <span>Ends</span>
-
-                <input
-                  type="datetime-local"
-                  value={editingEvent.endsAt}
-                  onChange={(event) =>
-                    onEditingEventChange((current) =>
-                      current
-                        ? {
-                            ...current,
-                            endsAt:
-                              event.target.value,
-                            ...getPreviewTiming(
-                              current.startsAt,
-                              event.target.value
-                            ),
-                          }
-                        : current
-                    )
-                  }
-                />
-              </label>
-            </div>
+  <VenueDashboardDateTimePicker
+    label="Ends"
+    value={editingEvent.endsAt}
+    disabled={isSaving || isDeletingEvent}
+    onChange={(endsAtValue) =>
+      onEditingEventChange((current) =>
+        current
+          ? {
+              ...current,
+              endsAt: endsAtValue,
+              ...getPreviewTiming(
+                current.startsAt,
+                endsAtValue
+              ),
+            }
+          : current
+      )
+    }
+  />
+</div>
 
             <div className="venue-dashboard-activity-timing-feedback">
               <div

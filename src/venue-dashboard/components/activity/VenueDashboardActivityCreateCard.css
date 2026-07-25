@@ -33,24 +33,6 @@
     background 180ms ease;
 }
 
-.venue-dashboard-activity-create-card::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: -150px;
-  left: 50%;
-  width: 440px;
-  height: 260px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 91, 50, 0.065),
-    rgba(255, 91, 50, 0) 70%
-  );
-  pointer-events: none;
-  transform: translateX(-50%);
-}
-
 /* =========================================================
    COPY
    ========================================================= */
@@ -165,26 +147,6 @@
 .venue-dashboard-activity-create-card-benefits
   span[aria-hidden="true"] {
   color: rgba(255, 91, 50, 0.62);
-}
-
-/* =========================================================
-   BOTTOM ACCENT
-   ========================================================= */
-
-.venue-dashboard-activity-create-card-accent {
-  position: absolute;
-  right: 20%;
-  bottom: 0;
-  left: 20%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 91, 50, 0),
-    rgba(255, 91, 50, 0.6),
-    rgba(255, 91, 50, 0)
-  );
-  opacity: 0.7;
-  pointer-events: none;
 }
 
 /* =========================================================

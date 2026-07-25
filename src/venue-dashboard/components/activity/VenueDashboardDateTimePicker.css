@@ -1,0 +1,734 @@
+/* =========================================================
+   LIVEY DATE-TIME PICKER
+   ========================================================= */
+
+.venue-dashboard-date-time-picker {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  display: grid;
+  gap: 12px;
+  font-family: inherit;
+  text-align: center;
+}
+
+.venue-dashboard-date-time-picker.is-open::before {
+  content: "";
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(5, 6, 8, 0.66);
+  backdrop-filter: blur(3px);
+}
+
+.venue-dashboard-date-time-picker-label {
+  color: rgba(247, 241, 234, 0.46);
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 950;
+  line-height: 1.2;
+  letter-spacing: 0.095em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   TRIGGER
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-trigger {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 17px;
+  padding: 0 18px 0 20px;
+  background: #2a2c31;
+  box-shadow: none;
+  color: #f7f1ea;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-date-time-picker-value {
+  min-width: 0;
+  overflow: hidden;
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 850;
+  line-height: 1.35;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.venue-dashboard-date-time-picker-value.is-placeholder {
+  color: rgba(247, 241, 234, 0.35);
+}
+
+.venue-dashboard-date-time-picker-trigger svg {
+  display: block;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.52);
+  transition: color 180ms ease;
+}
+
+.venue-dashboard-date-time-picker.is-open
+  .venue-dashboard-date-time-picker-trigger {
+  border-color: rgba(255, 91, 50, 0.68);
+  background: #2d2f34;
+}
+
+.venue-dashboard-date-time-picker.is-open
+  .venue-dashboard-date-time-picker-trigger
+  svg {
+  color: #ff805f;
+}
+
+.venue-dashboard-date-time-picker-trigger:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   PICKER PANEL
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-panel {
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  width: min(390px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  display: grid;
+  gap: 18px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 22px;
+  padding: 18px;
+  background: #15171b;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.62);
+  color: #f7f1ea;
+  text-align: left;
+  transform: translate(-50%, -50%);
+  animation:
+    venue-dashboard-date-time-picker-enter
+    160ms ease both;
+}
+
+/* =========================================================
+   MONTH HEADER
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-header {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 10px;
+}
+
+.venue-dashboard-date-time-picker-header strong {
+  overflow: hidden;
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 950;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.venue-dashboard-date-time-picker-navigation {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: none;
+  color: rgba(247, 241, 234, 0.68);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-date-time-picker-navigation svg {
+  display: block;
+}
+
+/* =========================================================
+   WEEKDAYS
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.venue-dashboard-date-time-picker-weekdays span {
+  color: rgba(247, 241, 234, 0.34);
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   CALENDAR
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.venue-dashboard-date-time-picker-day {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(247, 241, 234, 0.78);
+  font-family: inherit;
+  font-size: 0.73rem;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.venue-dashboard-date-time-picker-day.is-outside {
+  color: rgba(247, 241, 234, 0.22);
+}
+
+.venue-dashboard-date-time-picker-day.is-today::after {
+  content: "";
+  position: absolute;
+  right: 50%;
+  bottom: 4px;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: #ff805f;
+  transform: translateX(50%);
+}
+
+.venue-dashboard-date-time-picker-day.is-selected {
+  border-color: #ff5b32;
+  background: #ff5b32;
+  color: #ffffff;
+}
+
+.venue-dashboard-date-time-picker-day.is-selected::after {
+  background: #ffffff;
+}
+
+/* =========================================================
+   TIME SECTION
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-time-section {
+  display: grid;
+  gap: 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+  padding-top: 17px;
+}
+
+.venue-dashboard-date-time-picker-time-heading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(247, 241, 234, 0.52);
+  text-align: center;
+}
+
+.venue-dashboard-date-time-picker-time-heading svg {
+  display: block;
+  color: #ff805f;
+}
+
+.venue-dashboard-date-time-picker-time-heading span {
+  font-family: inherit;
+  font-size: 0.67rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.095em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-date-time-picker-time-controls {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+  align-items: end;
+  gap: 10px;
+}
+
+.venue-dashboard-date-time-picker-time-controls label {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.venue-dashboard-date-time-picker-time-controls label > span {
+  color: rgba(247, 241, 234, 0.35);
+  font-family: inherit;
+  font-size: 0.61rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.075em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   CUSTOM TIME DROPDOWNS
+   ========================================================= */
+
+.venue-dashboard-time-dropdown {
+  position: relative;
+  z-index: 5;
+  min-width: 0;
+  width: 100%;
+}
+
+.venue-dashboard-time-dropdown.is-open {
+  z-index: 250;
+}
+
+.venue-dashboard-time-dropdown-trigger {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 13px;
+  padding: 0 12px 0 14px;
+  background: #24262b;
+  box-shadow: none;
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-time-dropdown-trigger:focus,
+.venue-dashboard-time-dropdown-trigger:focus-visible,
+.venue-dashboard-time-dropdown.is-open
+  .venue-dashboard-time-dropdown-trigger {
+  border-color: rgba(255, 91, 50, 0.58);
+  background: #292b30;
+  outline: none;
+  box-shadow: none;
+}
+
+.venue-dashboard-time-dropdown-chevron {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.46);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-time-dropdown.is-open
+  .venue-dashboard-time-dropdown-chevron {
+  color: #ff805f;
+  transform: rotate(180deg);
+}
+
+.venue-dashboard-time-dropdown-menu {
+  position: absolute;
+  z-index: 300;
+  bottom: calc(100% + 7px);
+  right: 0;
+  left: 0;
+  max-height: 230px;
+  display: grid;
+  gap: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 17px;
+  padding: 7px;
+  background: rgba(12, 13, 16, 0.99);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
+  animation:
+    venue-dashboard-time-dropdown-open
+    160ms ease both;
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(247, 241, 234, 0.2)
+    transparent;
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar {
+  width: 7px;
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar-track {
+  margin-block: 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.venue-dashboard-time-dropdown-option {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0 10px;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(247, 241, 234, 0.64);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.venue-dashboard-time-dropdown-option.is-selected {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+}
+
+.venue-dashboard-time-dropdown-option.is-active,
+.venue-dashboard-time-dropdown-option:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.venue-dashboard-time-dropdown-check {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  color: #ff805f;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.venue-dashboard-date-time-picker-time-separator {
+  padding-bottom: 14px;
+  color: rgba(247, 241, 234, 0.48);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+/* =========================================================
+   FOOTER ACTIONS
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-footer {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+  gap: 9px;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+  padding-top: 17px;
+}
+
+.venue-dashboard-date-time-picker-footer button {
+  min-width: 0;
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 0 12px;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: 0.71rem;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.venue-dashboard-date-time-picker-clear,
+.venue-dashboard-date-time-picker-today {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(247, 241, 234, 0.66);
+}
+
+.venue-dashboard-date-time-picker-done {
+  border: 1px solid #ff5b32;
+  background: #ff5b32;
+  color: #ffffff;
+}
+
+.venue-dashboard-date-time-picker-clear:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.venue-dashboard-date-time-picker-trigger:focus-visible,
+.venue-dashboard-date-time-picker-navigation:focus-visible,
+.venue-dashboard-date-time-picker-day:focus-visible,
+.venue-dashboard-date-time-picker-footer button:focus-visible {
+  border-color: rgba(255, 91, 50, 0.72);
+  outline: 2px solid rgba(255, 91, 50, 0.42);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-date-time-picker-trigger:hover {
+    border-color: rgba(255, 91, 50, 0.28);
+    background: #2d2f34;
+  }
+
+  .venue-dashboard-date-time-picker-trigger:hover svg {
+    color: #ff805f;
+  }
+
+  .venue-dashboard-date-time-picker-navigation:hover {
+    border-color: rgba(255, 91, 50, 0.38);
+    background: rgba(255, 91, 50, 0.065);
+    color: #ff9a80;
+  }
+
+  .venue-dashboard-date-time-picker-day:hover {
+    border-color: rgba(255, 91, 50, 0.28);
+    background: rgba(255, 91, 50, 0.065);
+    color: #ff9a80;
+  }
+
+  .venue-dashboard-date-time-picker-day.is-selected:hover {
+    border-color: #ff6844;
+    background: #ff6844;
+    color: #ffffff;
+  }
+
+  .venue-dashboard-time-dropdown-trigger:hover {
+  border-color: rgba(255, 91, 50, 0.34);
+  background: #292b30;
+}
+
+.venue-dashboard-time-dropdown-option:hover {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-time-dropdown-menu::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+
+  .venue-dashboard-date-time-picker-clear:hover,
+  .venue-dashboard-date-time-picker-today:hover {
+    border-color: rgba(255, 91, 50, 0.38);
+    background: rgba(255, 91, 50, 0.065);
+    color: #ff9a80;
+  }
+
+  .venue-dashboard-date-time-picker-done:hover {
+    border-color: #ff6844;
+    background: #ff6844;
+    transform: translateY(-1px);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .venue-dashboard-date-time-picker-panel {
+    width: min(380px, calc(100vw - 48px));
+  }
+
+  .venue-dashboard-date-time-picker-trigger,
+.venue-dashboard-time-dropdown-trigger {
+  font-size: 16px;
+}
+}
+
+@media (max-width: 460px) {
+  .venue-dashboard-date-time-picker-panel {
+  width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  border-radius: 21px;
+  padding: 16px;
+}
+
+  .venue-dashboard-date-time-picker-calendar {
+    gap: 4px;
+  }
+
+  .venue-dashboard-date-time-picker-day {
+    border-radius: 10px;
+    font-size: 0.7rem;
+  }
+
+  .venue-dashboard-date-time-picker-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .venue-dashboard-date-time-picker-done {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes venue-dashboard-date-time-picker-enter {
+  from {
+    opacity: 0;
+    transform:
+      translate(-50%, -48%)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+@keyframes venue-dashboard-time-dropdown-open {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-date-time-picker-trigger,
+  .venue-dashboard-date-time-picker-trigger svg,
+  .venue-dashboard-date-time-picker-navigation,
+  .venue-dashboard-date-time-picker-day,
+  .venue-dashboard-time-dropdown-trigger,
+.venue-dashboard-time-dropdown-chevron,
+.venue-dashboard-time-dropdown-option,
+  .venue-dashboard-date-time-picker-footer button {
+    transition: none;
+  }
+
+  .venue-dashboard-date-time-picker-panel {
+    animation: none;
+  }
+
+  .venue-dashboard-date-time-picker-done:hover {
+    transform: none;
+  }
+}
