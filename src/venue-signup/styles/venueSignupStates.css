@@ -20,6 +20,8 @@
   color: #b9ffd8;
 }
 
+/* Location status */
+
 .livey-location-detection-card {
   min-width: 0;
   display: grid;
@@ -126,6 +128,8 @@
   }
 }
 
+/* Final-step base background */
+
 .livey-venue-next-card {
   background:
     linear-gradient(
@@ -136,59 +140,19 @@
     #15171b;
 }
 
-.livey-venue-next-steps {
-  display: grid;
-  gap: 10px;
-}
-
-.livey-venue-next-steps div {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
-  gap: 11px;
-  align-items: center;
-  padding: 13px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 18px;
-  background: rgba(7, 8, 10, 0.44);
-  transition:
-    border-color 180ms ease,
-    background 180ms ease;
-}
-
-.livey-venue-next-steps strong {
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(255, 91, 50, 0.16);
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 91, 50, 0.1);
-  color: #ff805f;
-  font-size: 0.84rem;
-  font-weight: 950;
-}
-
-.livey-venue-next-steps span {
-  min-width: 0;
-  color: rgba(247, 241, 234, 0.68);
-  font-size: 0.86rem;
-  font-weight: 800;
-  line-height: 1.45;
-}
+/* Submission success */
 
 .livey-venue-thank-you-card {
   width: min(100%, 620px);
-  min-height: calc(100dvh - 220px);
+  min-height: 0;
   margin: 0 auto;
-  padding: 38px 26px;
+  padding: 68px 26px;
   border: 1px solid rgba(255, 255, 255, 0.085);
   border-radius: 34px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 24px;
   background:
     linear-gradient(
       145deg,
@@ -203,17 +167,27 @@
   animation: livey-card-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+.livey-venue-thank-you-logo-frame {
+  width: 210px;
+  height: 82px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
 .livey-venue-thank-you-logo {
-  width: clamp(140px, 28vw, 170px);
-  height: clamp(140px, 28vw, 170px);
-  margin-bottom: -8px;
+  width: clamp(175px, 32vw, 210px);
+  height: clamp(175px, 32vw, 210px);
+  margin: -48px 0 -48px;
+  display: block;
   object-fit: contain;
 }
 
 .livey-venue-thank-you-card h1 {
+  width: min(100%, 520px);
   margin: 0;
   color: #f7f1ea;
-  font-size: clamp(2.2rem, 11vw, 4rem);
+  font-size: clamp(2.2rem, 10vw, 4rem);
   font-weight: 950;
   line-height: 0.94;
   letter-spacing: -0.07em;
@@ -221,20 +195,23 @@
 }
 
 .livey-venue-thank-you-card p {
-  max-width: 32rem;
+  width: min(100%, 32rem);
   margin: 0;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.94rem;
   font-weight: 750;
   line-height: 1.7;
+  text-wrap: balance;
 }
 
 .livey-venue-thank-you-card span {
-  max-width: 30rem;
+  width: min(100%, 30rem);
+  margin: 0;
   color: rgba(247, 241, 234, 0.46);
   font-size: 0.86rem;
   font-weight: 750;
   line-height: 1.55;
+  text-wrap: balance;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -242,22 +219,48 @@
     border-color: rgba(255, 91, 50, 0.38);
   }
 
-  .livey-venue-next-steps div:hover {
-    border-color: rgba(255, 91, 50, 0.42);
-    background: rgba(7, 8, 10, 0.5);
-  }
-
   .livey-venue-thank-you-card:hover {
     border-color: rgba(255, 91, 50, 0.55);
   }
 }
 
+@media (max-width: 560px) {
+  .livey-venue-thank-you-card {
+    width: 100%;
+    padding: 58px 20px;
+    border-radius: 28px;
+    gap: 22px;
+  }
+
+  .livey-venue-thank-you-logo-frame {
+    width: 190px;
+    height: 74px;
+  }
+
+  .livey-venue-thank-you-card h1 {
+    font-size: clamp(2.25rem, 13vw, 3.25rem);
+    line-height: 0.95;
+  }
+
+  .livey-venue-thank-you-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .livey-venue-thank-you-card span {
+    font-size: 0.83rem;
+    line-height: 1.6;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .livey-location-detection-card {
+  .livey-location-detection-card,
+  .livey-venue-thank-you-card {
     transition: none;
   }
 
-  .livey-location-detection-spinner {
+  .livey-location-detection-spinner,
+  .livey-venue-thank-you-card {
     animation: none;
   }
 }

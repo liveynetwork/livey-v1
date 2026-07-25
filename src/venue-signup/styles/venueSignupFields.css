@@ -1,0 +1,151 @@
+.livey-venue-signup-section-heading {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.livey-venue-signup-section-heading .livey-venue-signup-section-kicker {
+  margin: 0;
+}
+
+.livey-venue-signup-section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.65rem, 4vw, 2rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.livey-venue-signup-section {
+  overflow: visible;
+}
+
+.livey-venue-location-section {
+  position: relative;
+  z-index: 10;
+  overflow: visible;
+}
+
+.livey-venue-location-section:focus-within {
+  z-index: 80;
+}
+
+.livey-venue-contact-section {
+  position: relative;
+  z-index: 5;
+  overflow: visible;
+}
+
+.livey-venue-contact-section:focus-within {
+  z-index: 70;
+}
+
+.livey-venue-signup-section label {
+  min-width: 0;
+  display: grid;
+  gap: 11px;
+  color: rgba(247, 241, 234, 0.78);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.livey-venue-signup-section input,
+.livey-venue-signup-section select,
+.livey-venue-signup-section textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 17px;
+  padding: 14px 15px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font: inherit;
+  font-weight: 700;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-field-shell {
+  position: relative;
+  min-width: 0;
+}
+
+.livey-venue-field-shell input {
+  padding-right: 70px;
+}
+
+.livey-venue-textarea-shell textarea {
+  padding-right: 72px;
+  padding-bottom: 38px;
+}
+
+.livey-venue-field-counter {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  z-index: 1;
+  color: rgba(247, 241, 234, 0.38);
+  font-size: 0.7rem;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 180ms ease;
+}
+
+.livey-venue-field-counter.is-near-limit {
+  color: #ff805f;
+}
+
+.livey-venue-textarea-counter {
+  bottom: 15px;
+}
+
+.livey-venue-signup-section textarea {
+  min-height: 126px;
+  resize: none;
+}
+
+.livey-venue-signup-section select {
+  appearance: none;
+}
+
+.livey-venue-signup-section select option {
+  color: #111;
+}
+
+.livey-venue-signup-section input::placeholder,
+.livey-venue-signup-section textarea::placeholder {
+  color: rgba(247, 241, 234, 0.38);
+}
+
+.livey-venue-signup-section input:focus,
+.livey-venue-signup-section select:focus,
+.livey-venue-signup-section textarea:focus,
+.livey-venue-signup-section input:focus-visible,
+.livey-venue-signup-section select:focus-visible,
+.livey-venue-signup-section textarea:focus-visible {
+  border-color: rgba(255, 91, 50, 0.52);
+  outline: none;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-venue-signup-section input:hover,
+  .livey-venue-signup-section select:hover,
+  .livey-venue-signup-section textarea:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-signup-section input,
+  .livey-venue-signup-section select,
+  .livey-venue-signup-section textarea,
+  .livey-venue-field-counter {
+    transition: none;
+  }
+}

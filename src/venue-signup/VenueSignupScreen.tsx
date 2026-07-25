@@ -421,12 +421,11 @@ export function VenueSignupScreen() {
           />
 
           <VenueOpeningInfoSection
-            form={form}
-            updateField={updateField}
-            onUpdateOpeningHoursDay={
-              updateOpeningHoursDay
-            }
-          />
+  form={form}
+  onUpdateOpeningHoursDay={
+    updateOpeningHoursDay
+  }
+/>
 
           <VenueSubmissionSection
             form={form}

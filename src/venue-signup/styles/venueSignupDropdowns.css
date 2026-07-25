@@ -1,0 +1,504 @@
+/* Shared dropdown entrance animation */
+
+@keyframes livey-venue-dropdown-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Category dropdown */
+
+.livey-venue-category-field {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.livey-venue-category-label {
+  color: rgba(247, 241, 234, 0.78);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.livey-venue-category-dropdown {
+  position: relative;
+  min-width: 0;
+  z-index: 5;
+}
+
+.livey-venue-category-dropdown.is-open {
+  z-index: 30;
+}
+
+.livey-venue-category-trigger {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 15px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-category-trigger:focus,
+.livey-venue-category-trigger:focus-visible,
+.livey-venue-category-dropdown.is-open .livey-venue-category-trigger {
+  border-color: rgba(255, 91, 50, 0.52);
+  outline: none;
+  box-shadow: none;
+}
+
+.livey-venue-category-chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.5);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.livey-venue-category-dropdown.is-open .livey-venue-category-chevron {
+  color: #ff805f;
+  transform: rotate(180deg);
+}
+
+.livey-venue-category-menu {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  display: grid;
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 19px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    ),
+    #15171b;
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.42);
+  animation: livey-venue-dropdown-open 160ms ease both;
+}
+
+.livey-venue-category-option {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.64);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.livey-venue-category-option.is-selected {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+}
+
+.livey-venue-category-option.is-active,
+.livey-venue-category-option:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.livey-venue-category-check {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #ff805f;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* City dropdown */
+
+.livey-venue-city-field {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.livey-venue-city-label {
+  color: rgba(247, 241, 234, 0.78);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.livey-venue-city-dropdown {
+  position: relative;
+  min-width: 0;
+  z-index: 5;
+}
+
+.livey-venue-city-dropdown.is-open {
+  z-index: 120;
+}
+
+.livey-venue-city-trigger {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 15px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-city-trigger:focus,
+.livey-venue-city-trigger:focus-visible,
+.livey-venue-city-dropdown.is-open .livey-venue-city-trigger {
+  border-color: rgba(255, 91, 50, 0.52);
+  outline: none;
+  box-shadow: none;
+}
+
+.livey-venue-city-chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.5);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.livey-venue-city-dropdown.is-open .livey-venue-city-chevron {
+  color: #ff805f;
+  transform: rotate(180deg);
+}
+
+.livey-venue-city-menu {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  display: grid;
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 19px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    ),
+    #15171b;
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.42);
+  animation: livey-venue-dropdown-open 160ms ease both;
+}
+
+.livey-venue-city-option {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.64);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.livey-venue-city-option.is-selected {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+}
+
+.livey-venue-city-option.is-active,
+.livey-venue-city-option:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.livey-venue-city-check {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #ff805f;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Contact method dropdown */
+
+.livey-venue-contact-method-field {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.livey-venue-contact-method-label {
+  color: rgba(247, 241, 234, 0.78);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.livey-venue-contact-method-dropdown {
+  position: relative;
+  min-width: 0;
+  z-index: 5;
+}
+
+.livey-venue-contact-method-dropdown.is-open {
+  z-index: 120;
+}
+
+.livey-venue-contact-method-trigger {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 15px;
+  background: rgba(8, 9, 11, 0.8);
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-contact-method-trigger:focus,
+.livey-venue-contact-method-trigger:focus-visible,
+.livey-venue-contact-method-dropdown.is-open
+  .livey-venue-contact-method-trigger {
+  border-color: rgba(255, 91, 50, 0.52);
+  outline: none;
+  box-shadow: none;
+}
+
+.livey-venue-contact-method-chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.5);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.livey-venue-contact-method-dropdown.is-open
+  .livey-venue-contact-method-chevron {
+  color: #ff805f;
+  transform: rotate(180deg);
+}
+
+.livey-venue-contact-method-menu {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  display: grid;
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 19px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    ),
+    #15171b;
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.42);
+  animation: livey-venue-dropdown-open 160ms ease both;
+}
+
+.livey-venue-contact-method-option {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.64);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.livey-venue-contact-method-option.is-selected {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+}
+
+.livey-venue-contact-method-option.is-active,
+.livey-venue-contact-method-option:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.livey-venue-contact-method-check {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #ff805f;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-venue-category-trigger:hover,
+  .livey-venue-city-trigger:hover,
+  .livey-venue-contact-method-trigger:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .livey-venue-category-option:hover,
+  .livey-venue-city-option:hover,
+  .livey-venue-contact-method-option:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: rgba(255, 91, 50, 0.08);
+    color: #f7f1ea;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-category-trigger,
+  .livey-venue-category-chevron,
+  .livey-venue-category-option,
+  .livey-venue-city-trigger,
+  .livey-venue-city-chevron,
+  .livey-venue-city-option,
+  .livey-venue-contact-method-trigger,
+  .livey-venue-contact-method-chevron,
+  .livey-venue-contact-method-option {
+    transition: none;
+  }
+
+  .livey-venue-category-menu,
+  .livey-venue-city-menu,
+  .livey-venue-contact-method-menu {
+    animation: none;
+  }
+}

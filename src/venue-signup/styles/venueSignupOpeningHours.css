@@ -1,0 +1,398 @@
+.livey-venue-opening-section {
+  position: relative;
+  z-index: 4;
+  overflow: visible;
+}
+
+.livey-venue-opening-section:focus-within {
+  z-index: 75;
+}
+
+.livey-venue-opening-panel {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 25px;
+  background: rgba(7, 8, 10, 0.44);
+}
+
+.livey-venue-opening-table-heading {
+  display: grid;
+  grid-template-columns:
+    minmax(90px, 0.8fr)
+    minmax(105px, 1fr)
+    minmax(105px, 1fr)
+    minmax(105px, 1fr);
+  gap: 10px;
+  padding: 4px 13px 11px;
+}
+
+.livey-venue-opening-table-heading span {
+  color: rgba(247, 241, 234, 0.38);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.livey-venue-opening-table-heading span:first-child {
+  text-align: left;
+}
+
+.livey-venue-opening-list {
+  display: grid;
+  gap: 9px;
+}
+
+.livey-venue-opening-row {
+  position: relative;
+  min-width: 0;
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: minmax(90px, 0.8fr) minmax(0, 3fr);
+  gap: 10px;
+  align-items: center;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 19px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(255, 255, 255, 0.008);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-opening-day {
+  min-width: 0;
+  color: #f7f1ea;
+  font-size: 0.85rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.livey-venue-opening-controls {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.livey-venue-opening-control {
+  min-width: 0;
+}
+
+.livey-venue-opening-control > span {
+  display: none;
+}
+
+.livey-venue-hours-dropdown {
+  position: relative;
+  min-width: 0;
+  z-index: 5;
+}
+
+.livey-venue-hours-dropdown.is-open {
+  z-index: 180;
+}
+
+.livey-venue-hours-trigger {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px 0 13px;
+  background: rgba(8, 9, 11, 0.82);
+  color: #f7f1ea;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: normal;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    opacity 180ms ease;
+}
+
+.livey-venue-hours-trigger:focus,
+.livey-venue-hours-trigger:focus-visible,
+.livey-venue-hours-dropdown.is-open .livey-venue-hours-trigger {
+  border-color: rgba(255, 91, 50, 0.52);
+  outline: none;
+  box-shadow: none;
+}
+
+.livey-venue-hours-dropdown.is-disabled .livey-venue-hours-trigger {
+  opacity: 0.34;
+  cursor: not-allowed;
+}
+
+.livey-venue-hours-chevron {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: rgba(247, 241, 234, 0.46);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.livey-venue-hours-dropdown.is-open .livey-venue-hours-chevron {
+  color: #ff805f;
+  transform: rotate(180deg);
+}
+
+.livey-venue-hours-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  left: 0;
+  z-index: 200;
+  max-height: 230px;
+  overflow-y: auto;
+  display: grid;
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 17px;
+  background: rgba(12, 13, 16, 0.99);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
+  animation: livey-venue-dropdown-open 160ms ease both;
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(247, 241, 234, 0.2)
+    transparent;
+}
+
+.livey-venue-hours-menu::-webkit-scrollbar {
+  width: 7px;
+}
+
+.livey-venue-hours-menu::-webkit-scrollbar-track {
+  margin-block: 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.livey-venue-hours-menu::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.livey-venue-hours-menu::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.livey-venue-hours-option {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  padding: 0 10px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.64);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.livey-venue-hours-option.is-selected {
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
+  color: #ffd8cd;
+}
+
+.livey-venue-hours-option.is-active,
+.livey-venue-hours-option:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.livey-venue-hours-check {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  color: #ff805f;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Legacy opening-hours compatibility selectors.
+   Keep until component usage has been fully confirmed. */
+
+.livey-venue-time-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.livey-venue-closed-days {
+  display: grid;
+  gap: 10px;
+}
+
+.livey-venue-closed-days p {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.78);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.livey-venue-closed-day-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.livey-venue-closed-day {
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 16px;
+  padding: 0 8px;
+  background: rgba(8, 9, 11, 0.72);
+  color: rgba(247, 241, 234, 0.68);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.livey-venue-closed-day.selected {
+  border-color: rgba(255, 91, 50, 0.55);
+  background: rgba(255, 91, 50, 0.14);
+  color: #ffd8cd;
+}
+
+.livey-venue-closed-day:focus-visible {
+  border-color: rgba(255, 91, 50, 0.55);
+  outline: 2px solid rgba(255, 91, 50, 0.32);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-venue-opening-row:hover {
+    border-color: rgba(255, 91, 50, 0.32);
+  }
+
+  .livey-venue-hours-trigger:hover:not(:disabled) {
+    border-color: rgba(255, 91, 50, 0.34);
+  }
+
+  .livey-venue-hours-option:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: rgba(255, 91, 50, 0.08);
+    color: #f7f1ea;
+  }
+
+  .livey-venue-hours-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 91, 50, 0.55);
+  }
+
+  .livey-venue-hours-menu::-webkit-scrollbar-thumb:active {
+    background: #ff5b32;
+  }
+
+  .livey-venue-closed-day:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    color: #f7f1ea;
+  }
+}
+
+@media (max-width: 720px) {
+  .livey-venue-opening-panel {
+    padding: 8px;
+    border-radius: 22px;
+  }
+
+  .livey-venue-opening-table-heading {
+    display: none;
+  }
+
+  .livey-venue-opening-row {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    padding: 15px 13px;
+  }
+
+  .livey-venue-opening-day {
+    text-align: center;
+  }
+
+  .livey-venue-opening-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .livey-venue-opening-control {
+    display: grid;
+    gap: 7px;
+  }
+
+  .livey-venue-opening-control > span {
+    display: block;
+    color: rgba(247, 241, 234, 0.42);
+    font-size: 0.66rem;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .livey-venue-hours-trigger {
+    min-height: 48px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-opening-row,
+  .livey-venue-hours-trigger,
+  .livey-venue-hours-chevron,
+  .livey-venue-hours-option,
+  .livey-venue-closed-day {
+    transition: none;
+  }
+
+  .livey-venue-hours-menu {
+    animation: none;
+  }
+}

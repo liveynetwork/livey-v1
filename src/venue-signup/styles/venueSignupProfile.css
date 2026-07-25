@@ -1,0 +1,112 @@
+.livey-venue-logo-upload-card {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 24px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 22px;
+  background: rgba(7, 8, 10, 0.44);
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.livey-venue-logo-upload-copy {
+  width: min(100%, 430px);
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.livey-venue-logo-upload-copy h3 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size: 1.08rem;
+  font-weight: 950;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.livey-venue-logo-upload-copy p {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.livey-venue-logo-preview {
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 91, 50, 0.2);
+  border-radius: 30px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 91, 50, 0.1);
+  color: #ff805f;
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.livey-venue-logo-preview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.livey-venue-logo-upload-button {
+  width: fit-content;
+  min-width: 148px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 91, 50, 0.2);
+  border-radius: 16px;
+  display: inline-grid !important;
+  place-items: center;
+  padding: 0 18px;
+  background: rgba(255, 91, 50, 0.1);
+  color: #ff805f !important;
+  font-size: 0.82rem !important;
+  font-weight: 950 !important;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.livey-venue-logo-upload-button input {
+  display: none;
+}
+
+.livey-venue-logo-selected-note {
+  color: rgba(247, 241, 234, 0.48);
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .livey-venue-logo-upload-card:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .livey-venue-logo-upload-button:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    background: rgba(255, 91, 50, 0.14);
+    color: #ffd8cd !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-venue-logo-upload-card,
+  .livey-venue-logo-upload-button {
+    transition: none;
+  }
+}

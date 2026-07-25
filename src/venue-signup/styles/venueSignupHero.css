@@ -10,9 +10,9 @@
 
 .livey-venue-signup-logo {
   display: block;
-  width: clamp(140px, 28vw, 170px);
-  height: clamp(140px, 28vw, 170px);
-  margin: 0 0 -8px;
+  width: clamp(155px, 27vw, 200px);
+  height: clamp(155px, 27vw, 200px);
+  margin: -58px 0 -50px;
   object-fit: contain;
   filter: none;
 }
