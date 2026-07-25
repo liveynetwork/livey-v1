@@ -1,160 +1,127 @@
-import type {
-  VenueRequestDay,
-  VenueRequestLiveStatus,
-} from "../../services/venueRequests";
+import type { VenueRequestLiveStatus } from "../../services/venueRequests";
 import {
-  days,
   liveStatuses,
+  openingStatusOptions,
   timeOptions,
 } from "../venueSignupConfig";
 import type {
   UpdateVenueSignupField,
+  VenueOpeningHoursDay,
   VenueSignupFormState,
 } from "../venueSignupTypes";
+import { VenueHoursDropdown } from "./VenueHoursDropdown";
 
 type VenueOpeningInfoSectionProps = {
   form: VenueSignupFormState;
   updateField: UpdateVenueSignupField;
-  onToggleClosedDay: (day: VenueRequestDay) => void;
+  onUpdateOpeningHoursDay: (
+    dayIndex: number,
+    updates: Partial<VenueOpeningHoursDay>
+  ) => void;
 };
 
 export function VenueOpeningInfoSection({
   form,
   updateField,
-  onToggleClosedDay,
+  onUpdateOpeningHoursDay,
 }: VenueOpeningInfoSectionProps) {
   return (
-    <section className="livey-venue-signup-section">
-      <div>
+    <section className="livey-venue-signup-section livey-venue-opening-section">
+      <div className="livey-venue-signup-section-heading">
         <p className="livey-venue-signup-section-kicker">Step 4</p>
-        <h2>Opening info</h2>
+
+        <h2>Opening hours</h2>
 
         <p className="livey-venue-signup-section-note">
-          Choose your usual opening times. You can mark closed days separately.
+          Set the weekly schedule people will see on your Livey venue profile.
         </p>
       </div>
 
-      <div className="livey-venue-time-grid">
-        <label>
-          Weekday opens
-          <select
-            value={form.weekdayOpenTime}
-            onChange={(event) =>
-              updateField("weekdayOpenTime", event.target.value)
-            }
-          >
-            {timeOptions.map((time) => (
-              <option
-                key={`weekday-open-${time}`}
-                value={time === "Closed" ? "" : time}
-              >
-                {time}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="livey-venue-opening-panel">
+        <div className="livey-venue-opening-table-heading">
+          <span>Day</span>
+          <span>Status</span>
+          <span>Opens</span>
+          <span>Closes</span>
+        </div>
 
-        <label>
-          Weekday closes
-          <select
-            value={form.weekdayCloseTime}
-            onChange={(event) =>
-              updateField("weekdayCloseTime", event.target.value)
-            }
-          >
-            {timeOptions.map((time) => (
-              <option
-                key={`weekday-close-${time}`}
-                value={time === "Closed" ? "" : time}
-              >
-                {time}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+        <div className="livey-venue-opening-list">
+          {form.openingHoursSchedule.map((day, index) => (
+            <div className="livey-venue-opening-row" key={day.day}>
+              <strong className="livey-venue-opening-day">
+                {day.day}
+              </strong>
 
-      <div className="livey-venue-time-grid">
-        <label>
-          Weekend opens
-          <select
-            value={form.weekendOpenTime}
-            onChange={(event) =>
-              updateField("weekendOpenTime", event.target.value)
-            }
-          >
-            {timeOptions.map((time) => (
-              <option
-                key={`weekend-open-${time}`}
-                value={time === "Closed" ? "" : time}
-              >
-                {time}
-              </option>
-            ))}
-          </select>
-        </label>
+              <div className="livey-venue-opening-controls">
+                <div className="livey-venue-opening-control">
+                  <span>Status</span>
 
-        <label>
-          Weekend closes
-          <select
-            value={form.weekendCloseTime}
-            onChange={(event) =>
-              updateField("weekendCloseTime", event.target.value)
-            }
-          >
-            {timeOptions.map((time) => (
-              <option
-                key={`weekend-close-${time}`}
-                value={time === "Closed" ? "" : time}
-              >
-                {time}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+                  <VenueHoursDropdown
+                    value={day.isClosed ? "Closed" : "Open"}
+                    options={openingStatusOptions}
+                    ariaLabel={`${day.day} opening status`}
+                    onChange={(status) =>
+                      onUpdateOpeningHoursDay(index, {
+                        isClosed: status === "Closed",
+                      })
+                    }
+                  />
+                </div>
 
-      <div className="livey-venue-closed-days">
-        <p>Closed days</p>
+                <div className="livey-venue-opening-control">
+                  <span>Opens</span>
 
-        <div className="livey-venue-closed-day-grid">
-          {days.map((day) => {
-            const isSelected = form.closedDays.includes(day);
+                  <VenueHoursDropdown
+                    value={day.openTime}
+                    options={timeOptions}
+                    ariaLabel={`${day.day} opening time`}
+                    disabled={day.isClosed}
+                    onChange={(openTime) =>
+                      onUpdateOpeningHoursDay(index, {
+                        openTime,
+                      })
+                    }
+                  />
+                </div>
 
-            return (
-              <button
-                className={`livey-venue-closed-day ${
-                  isSelected ? "selected" : ""
-                }`}
-                key={day}
-                type="button"
-                onClick={() => onToggleClosedDay(day)}
-              >
-                {day.slice(0, 3)}
-              </button>
-            );
-          })}
+                <div className="livey-venue-opening-control">
+                  <span>Closes</span>
+
+                  <VenueHoursDropdown
+                    value={day.closeTime}
+                    options={timeOptions}
+                    ariaLabel={`${day.day} closing time`}
+                    disabled={day.isClosed}
+                    onChange={(closeTime) =>
+                      onUpdateOpeningHoursDay(index, {
+                        closeTime,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <label>
-        Current status
-        <select
+      <div className="livey-venue-contact-method-field">
+        <span className="livey-venue-contact-method-label">
+          Current status
+        </span>
+
+        <VenueHoursDropdown
           value={form.openStatus}
-          onChange={(event) =>
+          options={liveStatuses}
+          ariaLabel="Current venue status"
+          onChange={(status) =>
             updateField(
               "openStatus",
-              event.target.value as VenueRequestLiveStatus
+              status as VenueRequestLiveStatus
             )
           }
-        >
-          {liveStatuses.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-      </label>
+        />
+      </div>
     </section>
   );
 }

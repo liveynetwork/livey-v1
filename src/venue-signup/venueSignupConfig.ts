@@ -5,7 +5,10 @@ import type {
   VenueRequestDay,
   VenueRequestLiveStatus,
 } from "../services/venueRequests";
-import type { VenueSignupFormState } from "./venueSignupTypes";
+import type {
+  VenueOpeningHoursDay,
+  VenueSignupFormState,
+} from "./venueSignupTypes";
 
 export const categories: VenueRequestCategory[] = [
   "Cafes",
@@ -50,8 +53,12 @@ export const days: VenueRequestDay[] = [
   "Sunday",
 ];
 
-export const timeOptions = [
+export const openingStatusOptions = [
+  "Open",
   "Closed",
+];
+
+export const timeOptions = [
   "00:00",
   "00:30",
   "01:00",
@@ -102,35 +109,89 @@ export const timeOptions = [
   "23:30",
 ];
 
-export const initialForm: VenueSignupFormState = {
-  venueName: "",
-  category: "Restaurants",
-  description: "",
+export const initialOpeningHoursSchedule: VenueOpeningHoursDay[] = [
+  {
+    day: "Monday",
+    isClosed: false,
+    openTime: "09:00",
+    closeTime: "18:00",
+  },
+  {
+    day: "Tuesday",
+    isClosed: false,
+    openTime: "09:00",
+    closeTime: "18:00",
+  },
+  {
+    day: "Wednesday",
+    isClosed: false,
+    openTime: "09:00",
+    closeTime: "18:00",
+  },
+  {
+    day: "Thursday",
+    isClosed: false,
+    openTime: "09:00",
+    closeTime: "18:00",
+  },
+  {
+    day: "Friday",
+    isClosed: false,
+    openTime: "09:00",
+    closeTime: "18:00",
+  },
+  {
+    day: "Saturday",
+    isClosed: false,
+    openTime: "10:00",
+    closeTime: "22:00",
+  },
+  {
+    day: "Sunday",
+    isClosed: false,
+    openTime: "10:00",
+    closeTime: "22:00",
+  },
+];
 
-  city: "Limassol",
-  area: "",
-  address: "",
-  googleMapsUrl: "",
+export function createInitialVenueSignupForm(): VenueSignupFormState {
+  return {
+    venueName: "",
+    category: "Restaurants",
+    description: "",
 
-  contactName: "",
-  contactEmail: "",
-  contactPhone: "",
-  instagramUrl: "",
-  websiteUrl: "",
-  bestContactMethod: "Email",
-  submitterConfirmedAccuracy: false,
+    city: "Limassol",
+    area: "",
+    address: "",
+    googleMapsUrl: "",
 
-  weekdayOpenTime: "09:00",
-  weekdayCloseTime: "18:00",
-  weekendOpenTime: "10:00",
-  weekendCloseTime: "22:00",
-  closedDays: [],
-  openStatus: "Open now",
+    contactName: "",
+    contactEmail: "",
+    contactPhone: "",
+    instagramUrl: "",
+    websiteUrl: "",
+    bestContactMethod: "Email",
+    submitterConfirmedAccuracy: false,
 
-  firstEventTitle: "",
-  firstEventDescription: "",
-  firstEventStatus: "Tonight",
-  firstEventDisplayTime: "",
-  firstEventStartsAt: "",
-  firstEventEndsAt: "",
-};
+    openingHoursSchedule: initialOpeningHoursSchedule.map((day) => ({
+      ...day,
+    })),
+
+    weekdayOpenTime: "09:00",
+    weekdayCloseTime: "18:00",
+    weekendOpenTime: "10:00",
+    weekendCloseTime: "22:00",
+    closedDays: [],
+    openStatus: "Open now",
+
+    firstEventTitle: "",
+    firstEventDescription: "",
+    firstEventStatus: "Tonight",
+    firstEventDisplayTime: "",
+    firstEventStartsAt: "",
+    firstEventEndsAt: "",
+  };
+}
+
+export const initialForm: VenueSignupFormState =
+  createInitialVenueSignupForm();

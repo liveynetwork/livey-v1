@@ -21,12 +21,15 @@
 }
 
 .livey-location-detection-card {
+  min-width: 0;
   display: grid;
-  gap: 6px;
-  padding: 15px;
+  justify-items: center;
+  gap: 12px;
+  padding: 22px 18px;
   border: 1px solid rgba(255, 255, 255, 0.065);
-  border-radius: 20px;
+  border-radius: 22px;
   background: rgba(7, 8, 10, 0.44);
+  text-align: center;
   transition:
     border-color 180ms ease,
     background 180ms ease;
@@ -34,8 +37,8 @@
 
 .livey-location-detection-card.detected,
 .livey-location-detection-card.resolved {
-  border-color: rgba(255, 91, 50, 0.28);
-  background: rgba(255, 91, 50, 0.08);
+  border-color: rgba(255, 91, 50, 0.24);
+  background: rgba(255, 91, 50, 0.065);
 }
 
 .livey-location-detection-card.checking {
@@ -43,19 +46,84 @@
   background: rgba(7, 8, 10, 0.5);
 }
 
+.livey-location-detection-card.manual {
+  border-color: rgba(255, 255, 255, 0.075);
+  background: rgba(7, 8, 10, 0.46);
+}
+
+.livey-location-detection-icon {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 91, 50, 0.18);
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 91, 50, 0.09);
+  color: #ff805f;
+}
+
+.livey-location-detection-card.manual
+  .livey-location-detection-icon {
+  border-color: rgba(255, 255, 255, 0.085);
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(247, 241, 234, 0.58);
+}
+
+.livey-location-detection-card.checking
+  .livey-location-detection-icon {
+  border-color: rgba(255, 255, 255, 0.085);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.livey-location-detection-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.livey-location-detection-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(247, 241, 234, 0.16);
+  border-top-color: #ff805f;
+  border-radius: 999px;
+  animation: livey-location-status-spin 700ms linear infinite;
+}
+
+.livey-location-detection-copy {
+  width: min(100%, 440px);
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+
 .livey-location-detection-card p {
   margin: 0;
   color: #f7f1ea;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 950;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-align: center;
 }
 
 .livey-location-detection-card span {
   color: rgba(247, 241, 234, 0.5);
   font-size: 0.82rem;
   font-weight: 750;
-  line-height: 1.5;
+  line-height: 1.55;
+  text-align: center;
+  text-wrap: balance;
+}
+
+@keyframes livey-location-status-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .livey-venue-next-card {
@@ -170,6 +238,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .livey-location-detection-card:hover {
+    border-color: rgba(255, 91, 50, 0.38);
+  }
+
   .livey-venue-next-steps div:hover {
     border-color: rgba(255, 91, 50, 0.42);
     background: rgba(7, 8, 10, 0.5);
@@ -177,5 +249,15 @@
 
   .livey-venue-thank-you-card:hover {
     border-color: rgba(255, 91, 50, 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .livey-location-detection-card {
+    transition: none;
+  }
+
+  .livey-location-detection-spinner {
+    animation: none;
   }
 }

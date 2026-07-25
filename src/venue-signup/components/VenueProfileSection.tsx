@@ -35,7 +35,12 @@ export function VenueProfileSection({
     <section className="livey-venue-signup-section livey-venue-profile-section">
       <div className="livey-venue-signup-section-heading">
         <p className="livey-venue-signup-section-kicker">Step 1</p>
+
         <h2>Venue profile</h2>
+
+        <p className="livey-venue-signup-section-note">
+          Introduce your venue with the details people will see across Livey.
+        </p>
       </div>
 
       <label>

@@ -21,6 +21,13 @@ export type ResolveGoogleMapsLinkResponse = {
   error: string | null;
 };
 
+export type VenueOpeningHoursDay = {
+  day: VenueRequestDay;
+  isClosed: boolean;
+  openTime: string;
+  closeTime: string;
+};
+
 export type VenueSignupFormState = {
   venueName: string;
   category: VenueRequestCategory;
@@ -39,11 +46,19 @@ export type VenueSignupFormState = {
   bestContactMethod: VenueRequestContactMethod;
   submitterConfirmedAccuracy: boolean;
 
+  openingHoursSchedule: VenueOpeningHoursDay[];
+
+  /*
+   * Legacy compatibility fields.
+   * These remain because the current Supabase table and email flow
+   * still use weekday/weekend values alongside the formatted schedule.
+   */
   weekdayOpenTime: string;
   weekdayCloseTime: string;
   weekendOpenTime: string;
   weekendCloseTime: string;
   closedDays: VenueRequestDay[];
+
   openStatus: VenueRequestLiveStatus;
 
   firstEventTitle: string;

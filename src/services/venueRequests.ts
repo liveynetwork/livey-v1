@@ -35,7 +35,17 @@ export type VenueRequestDay =
   | "Saturday"
   | "Sunday";
 
-export type VenueRequestContactMethod = "Email" | "Phone" | "Instagram";
+export type VenueRequestOpeningHoursDay = {
+  day: VenueRequestDay;
+  isClosed: boolean;
+  openTime: string;
+  closeTime: string;
+};
+
+export type VenueRequestContactMethod =
+  | "Email"
+  | "Phone"
+  | "Instagram";
 
 type ResolvedLocation = {
   latitude: number | null;
@@ -78,11 +88,18 @@ export type SubmitVenueRequestInput = {
   bestContactMethod: VenueRequestContactMethod;
   submitterConfirmedAccuracy: boolean;
 
+  openingHoursSchedule: VenueRequestOpeningHoursDay[];
+
+  /*
+   * Legacy compatibility values retained for the current database columns,
+   * email flow, Make.com scenario, Google Sheet, and approval workflow.
+   */
   weekdayOpenTime: string;
   weekdayCloseTime: string;
   weekendOpenTime: string;
   weekendCloseTime: string;
   closedDays: VenueRequestDay[];
+
   openStatus: VenueRequestLiveStatus;
 
   firstEventTitle: string;
@@ -93,12 +110,33 @@ export type SubmitVenueRequestInput = {
   firstEventEndsAt: string;
 };
 
+type LegacyOpeningHours = {
+  weekdayOpenTime: string;
+  weekdayCloseTime: string;
+  weekendOpenTime: string;
+  weekendCloseTime: string;
+  closedDays: VenueRequestDay[];
+};
+
 function cleanOptional(value: string) {
   const trimmed = value.trim();
+
   return trimmed.length > 0 ? trimmed : null;
 }
 
 function formatOpeningHours(input: SubmitVenueRequestInput) {
+  if (input.openingHoursSchedule.length > 0) {
+    return input.openingHoursSchedule
+      .map((day) => {
+        if (day.isClosed) {
+          return `${day.day}: Closed`;
+        }
+
+        return `${day.day}: ${day.openTime}–${day.closeTime}`;
+      })
+      .join(" • ");
+  }
+
   const weekdayHours =
     input.weekdayOpenTime && input.weekdayCloseTime
       ? `Weekdays ${input.weekdayOpenTime}–${input.weekdayCloseTime}`
@@ -114,7 +152,68 @@ function formatOpeningHours(input: SubmitVenueRequestInput) {
       ? `Closed: ${input.closedDays.join(", ")}`
       : null;
 
-  return [weekdayHours, weekendHours, closedDays].filter(Boolean).join(" • ");
+  return [weekdayHours, weekendHours, closedDays]
+    .filter(Boolean)
+    .join(" • ");
+}
+
+function deriveLegacyOpeningHours(
+  input: SubmitVenueRequestInput
+): LegacyOpeningHours {
+  if (input.openingHoursSchedule.length === 0) {
+    return {
+      weekdayOpenTime: input.weekdayOpenTime,
+      weekdayCloseTime: input.weekdayCloseTime,
+      weekendOpenTime: input.weekendOpenTime,
+      weekendCloseTime: input.weekendCloseTime,
+      closedDays: input.closedDays,
+    };
+  }
+
+  const weekdayDays = input.openingHoursSchedule.filter(
+    (day) =>
+      day.day === "Monday" ||
+      day.day === "Tuesday" ||
+      day.day === "Wednesday" ||
+      day.day === "Thursday" ||
+      day.day === "Friday"
+  );
+
+  const weekendDays = input.openingHoursSchedule.filter(
+    (day) =>
+      day.day === "Saturday" ||
+      day.day === "Sunday"
+  );
+
+  const firstOpenWeekday = weekdayDays.find(
+    (day) => !day.isClosed
+  );
+
+  const firstOpenWeekend = weekendDays.find(
+    (day) => !day.isClosed
+  );
+
+  return {
+    weekdayOpenTime:
+      firstOpenWeekday?.openTime ??
+      input.weekdayOpenTime,
+
+    weekdayCloseTime:
+      firstOpenWeekday?.closeTime ??
+      input.weekdayCloseTime,
+
+    weekendOpenTime:
+      firstOpenWeekend?.openTime ??
+      input.weekendOpenTime,
+
+    weekendCloseTime:
+      firstOpenWeekend?.closeTime ??
+      input.weekendCloseTime,
+
+    closedDays: input.openingHoursSchedule
+      .filter((day) => day.isClosed)
+      .map((day) => day.day),
+  };
 }
 
 async function resolveVenueLocation(
@@ -131,7 +230,8 @@ async function resolveVenueLocation(
     };
   }
 
-  const localCoordinates = extractGoogleMapsCoordinates(trimmedGoogleMapsUrl);
+  const localCoordinates =
+    extractGoogleMapsCoordinates(trimmedGoogleMapsUrl);
 
   if (localCoordinates) {
     return {
@@ -154,7 +254,10 @@ async function resolveVenueLocation(
       );
 
     if (error) {
-      console.warn("Google Maps link resolver failed:", error);
+      console.warn(
+        "Google Maps link resolver failed:",
+        error
+      );
 
       return {
         latitude: null,
@@ -165,7 +268,11 @@ async function resolveVenueLocation(
       };
     }
 
-    if (data?.success && data.latitude !== null && data.longitude !== null) {
+    if (
+      data?.success &&
+      data.latitude !== null &&
+      data.longitude !== null
+    ) {
       return {
         latitude: data.latitude,
         longitude: data.longitude,
@@ -183,7 +290,10 @@ async function resolveVenueLocation(
         "Could not extract coordinates from Google Maps link. Manual verification is required.",
     };
   } catch (error) {
-    console.warn("Google Maps link resolver crashed:", error);
+    console.warn(
+      "Google Maps link resolver crashed:",
+      error
+    );
 
     return {
       latitude: null,
@@ -204,7 +314,8 @@ async function sendVenueRequestEmails({
   openingHours: string;
   resolvedLocation: ResolvedLocation;
 }) {
-  const hasFirstEvent = input.firstEventTitle.trim().length > 0;
+  const hasFirstEvent =
+    input.firstEventTitle.trim().length > 0;
 
   try {
     const { data, error } =
@@ -220,7 +331,9 @@ async function sendVenueRequestEmails({
             googleMapsUrl: cleanOptional(input.googleMapsUrl),
 
             contactName: input.contactName.trim(),
-            contactEmail: input.contactEmail.trim().toLowerCase(),
+            contactEmail: input.contactEmail
+              .trim()
+              .toLowerCase(),
             contactPhone: cleanOptional(input.contactPhone),
             instagramUrl: cleanOptional(input.instagramUrl),
             websiteUrl: cleanOptional(input.websiteUrl),
@@ -229,24 +342,34 @@ async function sendVenueRequestEmails({
             latitude: resolvedLocation.latitude,
             longitude: resolvedLocation.longitude,
             locationSource: resolvedLocation.locationSource,
-            locationResolutionError: resolvedLocation.locationResolutionError,
+            locationResolutionError:
+              resolvedLocation.locationResolutionError,
 
             openingHours: cleanOptional(openingHours),
+            openingHoursSchedule:
+              input.openingHoursSchedule,
             openStatus: input.openStatus,
 
             firstEventTitle: hasFirstEvent
               ? input.firstEventTitle.trim()
               : null,
+
             firstEventDescription: hasFirstEvent
               ? cleanOptional(input.firstEventDescription)
               : null,
-            firstEventStatus: hasFirstEvent ? input.firstEventStatus : null,
+
+            firstEventStatus: hasFirstEvent
+              ? input.firstEventStatus
+              : null,
+
             firstEventDisplayTime: hasFirstEvent
               ? cleanOptional(input.firstEventDisplayTime)
               : null,
+
             firstEventStartsAt: hasFirstEvent
               ? cleanOptional(input.firstEventStartsAt)
               : null,
+
             firstEventEndsAt: hasFirstEvent
               ? cleanOptional(input.firstEventEndsAt)
               : null,
@@ -255,83 +378,156 @@ async function sendVenueRequestEmails({
       );
 
     if (error) {
-      console.warn("Venue request email function failed:", error);
+      console.warn(
+        "Venue request email function failed:",
+        error
+      );
       return;
     }
 
     if (!data?.success) {
-      console.warn("Venue request email was not sent:", data?.error);
+      console.warn(
+        "Venue request email was not sent:",
+        data?.error
+      );
     }
   } catch (error) {
-    console.warn("Venue request email request crashed:", error);
+    console.warn(
+      "Venue request email request crashed:",
+      error
+    );
   }
 }
 
-export async function submitVenueRequest(input: SubmitVenueRequestInput) {
+export async function submitVenueRequest(
+  input: SubmitVenueRequestInput
+) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const hasFirstEvent = input.firstEventTitle.trim().length > 0;
+  const hasFirstEvent =
+    input.firstEventTitle.trim().length > 0;
+
   const openingHours = formatOpeningHours(input);
-  const resolvedLocation = await resolveVenueLocation(input.googleMapsUrl);
-  const logoUrl = input.logoFile ? await uploadVenueLogo(input.logoFile) : null;
 
-  const { error } = await supabase.from("venue_requests").insert({
-    owner_user_id: user?.id ?? null,
+  const legacyOpeningHours =
+    deriveLegacyOpeningHours(input);
 
-    venue_name: input.venueName.trim(),
-    category: input.category,
-    description: cleanOptional(input.description),
-    logo_url: logoUrl,
+  const resolvedLocation =
+    await resolveVenueLocation(input.googleMapsUrl);
 
-    city: input.city,
-    area: cleanOptional(input.area),
-    address: input.address.trim(),
-    google_maps_url: cleanOptional(input.googleMapsUrl),
-    latitude: resolvedLocation.latitude,
-    longitude: resolvedLocation.longitude,
-    location_source: resolvedLocation.locationSource,
-    location_verified: false,
-    location_resolution_error: resolvedLocation.locationResolutionError,
+  const logoUrl = input.logoFile
+    ? await uploadVenueLogo(input.logoFile)
+    : null;
 
-    contact_name: input.contactName.trim(),
-    contact_email: input.contactEmail.trim().toLowerCase(),
-    contact_phone: cleanOptional(input.contactPhone),
-    instagram_url: cleanOptional(input.instagramUrl),
-    website_url: cleanOptional(input.websiteUrl),
-    best_contact_method: input.bestContactMethod,
-    submitter_confirmed_accuracy: input.submitterConfirmedAccuracy,
+  const { error } = await supabase
+    .from("venue_requests")
+    .insert({
+      owner_user_id: user?.id ?? null,
 
-    weekday_open_time: cleanOptional(input.weekdayOpenTime),
-    weekday_close_time: cleanOptional(input.weekdayCloseTime),
-    weekend_open_time: cleanOptional(input.weekendOpenTime),
-    weekend_close_time: cleanOptional(input.weekendCloseTime),
-    closed_days: input.closedDays,
-    opening_hours: cleanOptional(openingHours),
-    open_status: input.openStatus,
+      venue_name: input.venueName.trim(),
+      category: input.category,
+      description: cleanOptional(input.description),
+      logo_url: logoUrl,
 
-    first_event_title: hasFirstEvent ? input.firstEventTitle.trim() : null,
-    first_event_description: hasFirstEvent
-      ? cleanOptional(input.firstEventDescription)
-      : null,
-    first_event_status: hasFirstEvent ? input.firstEventStatus : null,
-    first_event_display_time: hasFirstEvent
-      ? cleanOptional(input.firstEventDisplayTime)
-      : null,
-    first_event_starts_at: hasFirstEvent
-      ? cleanOptional(input.firstEventStartsAt)
-      : null,
-    first_event_ends_at: hasFirstEvent
-      ? cleanOptional(input.firstEventEndsAt)
-      : null,
+      city: input.city,
+      area: cleanOptional(input.area),
+      address: input.address.trim(),
+      google_maps_url: cleanOptional(
+        input.googleMapsUrl
+      ),
+      latitude: resolvedLocation.latitude,
+      longitude: resolvedLocation.longitude,
+      location_source: resolvedLocation.locationSource,
+      location_verified: false,
+      location_resolution_error:
+        resolvedLocation.locationResolutionError,
 
-    status: "pending",
-  });
+      contact_name: input.contactName.trim(),
+      contact_email: input.contactEmail
+        .trim()
+        .toLowerCase(),
+      contact_phone: cleanOptional(
+        input.contactPhone
+      ),
+      instagram_url: cleanOptional(
+        input.instagramUrl
+      ),
+      website_url: cleanOptional(
+        input.websiteUrl
+      ),
+      best_contact_method:
+        input.bestContactMethod,
+      submitter_confirmed_accuracy:
+        input.submitterConfirmedAccuracy,
+
+      opening_hours_schedule:
+        input.openingHoursSchedule,
+
+      weekday_open_time: cleanOptional(
+        legacyOpeningHours.weekdayOpenTime
+      ),
+      weekday_close_time: cleanOptional(
+        legacyOpeningHours.weekdayCloseTime
+      ),
+      weekend_open_time: cleanOptional(
+        legacyOpeningHours.weekendOpenTime
+      ),
+      weekend_close_time: cleanOptional(
+        legacyOpeningHours.weekendCloseTime
+      ),
+      closed_days:
+        legacyOpeningHours.closedDays,
+      opening_hours: cleanOptional(
+        openingHours
+      ),
+      open_status: input.openStatus,
+
+      first_event_title: hasFirstEvent
+        ? input.firstEventTitle.trim()
+        : null,
+
+      first_event_description: hasFirstEvent
+        ? cleanOptional(
+            input.firstEventDescription
+          )
+        : null,
+
+      first_event_status: hasFirstEvent
+        ? input.firstEventStatus
+        : null,
+
+      first_event_display_time: hasFirstEvent
+        ? cleanOptional(
+            input.firstEventDisplayTime
+          )
+        : null,
+
+      first_event_starts_at: hasFirstEvent
+        ? cleanOptional(
+            input.firstEventStartsAt
+          )
+        : null,
+
+      first_event_ends_at: hasFirstEvent
+        ? cleanOptional(
+            input.firstEventEndsAt
+          )
+        : null,
+
+      status: "pending",
+    });
 
   if (error) {
-    console.error("Failed to submit venue request:", error);
-    throw new Error("Could not submit your venue request. Please try again.");
+    console.error(
+      "Failed to submit venue request:",
+      error
+    );
+
+    throw new Error(
+      "Could not submit your venue request. Please try again."
+    );
   }
 
   await sendVenueRequestEmails({

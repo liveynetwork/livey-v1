@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import {
-  submitVenueRequest,
-  type VenueRequestDay,
-} from "../services/venueRequests";
+import { submitVenueRequest } from "../services/venueRequests";
 import { supabase } from "../lib/supabase";
 import { extractGoogleMapsCoordinates } from "../utils/googleMapsLink";
 import { LiveyImageCropper } from "../components/image-crop/LiveyImageCropper";
@@ -15,26 +12,45 @@ import { VenueSubmissionSection } from "./components/VenueSubmissionSection";
 import { VenueSignupFooter } from "./components/VenueSignupFooter";
 import { VenueSignupHero } from "./components/VenueSignupHero";
 import { VenueSignupSuccess } from "./components/VenueSignupSuccess";
-import { initialForm } from "./venueSignupConfig";
+import {
+  createInitialVenueSignupForm,
+  initialForm,
+} from "./venueSignupConfig";
 import type {
   LocationPreviewState,
   ResolveGoogleMapsLinkResponse,
+  VenueOpeningHoursDay,
   VenueSignupFormState,
 } from "./venueSignupTypes";
 import "./VenueSignupScreen.css";
 
 export function VenueSignupScreen() {
-  const [form, setForm] = useState<VenueSignupFormState>(initialForm);
+  const [form, setForm] =
+    useState<VenueSignupFormState>(initialForm);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
-  const [imageToCropSrc, setImageToCropSrc] = useState<string | null>(null);
-  const [imageToCropName, setImageToCropName] = useState("");
+  const [submitMessage, setSubmitMessage] =
+    useState<string | null>(null);
+  const [submitError, setSubmitError] =
+    useState<string | null>(null);
+
+  const [logoFile, setLogoFile] =
+    useState<File | null>(null);
+
+  const [logoPreviewUrl, setLogoPreviewUrl] =
+    useState<string | null>(null);
+
+  const [imageToCropSrc, setImageToCropSrc] =
+    useState<string | null>(null);
+
+  const [imageToCropName, setImageToCropName] =
+    useState("");
+
   const [locationPreviewState, setLocationPreviewState] =
     useState<LocationPreviewState>("idle");
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const [hasSubmitted, setHasSubmitted] =
+    useState(false);
 
   useEffect(() => {
     return () => {
@@ -56,7 +72,8 @@ export function VenueSignupScreen() {
       return;
     }
 
-    const localCoordinates = extractGoogleMapsCoordinates(googleMapsUrl);
+    const localCoordinates =
+      extractGoogleMapsCoordinates(googleMapsUrl);
 
     if (localCoordinates) {
       setLocationPreviewState("detected");
@@ -104,7 +121,10 @@ export function VenueSignupScreen() {
 
         setLocationPreviewState("manual");
       } catch (error) {
-        console.warn("Google Maps preview resolver failed:", error);
+        console.warn(
+          "Google Maps preview resolver failed:",
+          error
+        );
 
         if (!isCancelled) {
           setLocationPreviewState("manual");
@@ -112,7 +132,10 @@ export function VenueSignupScreen() {
       }
     }
 
-    const timeoutId = window.setTimeout(checkShareLink, 600);
+    const timeoutId = window.setTimeout(
+      checkShareLink,
+      600
+    );
 
     return () => {
       isCancelled = true;
@@ -120,7 +143,9 @@ export function VenueSignupScreen() {
     };
   }, [form.googleMapsUrl]);
 
-  function updateField<Key extends keyof VenueSignupFormState>(
+  function updateField<
+    Key extends keyof VenueSignupFormState,
+  >(
     key: Key,
     value: VenueSignupFormState[Key]
   ) {
@@ -130,15 +155,75 @@ export function VenueSignupScreen() {
     }));
   }
 
-  function toggleClosedDay(day: VenueRequestDay) {
+  function updateOpeningHoursDay(
+    dayIndex: number,
+    updates: Partial<VenueOpeningHoursDay>
+  ) {
     setForm((current) => {
-      const isSelected = current.closedDays.includes(day);
+      const openingHoursSchedule =
+        current.openingHoursSchedule.map(
+          (day, index) =>
+            index === dayIndex
+              ? {
+                  ...day,
+                  ...updates,
+                }
+              : day
+        );
+
+      const weekdayDays =
+        openingHoursSchedule.filter(
+          (day) =>
+            day.day === "Monday" ||
+            day.day === "Tuesday" ||
+            day.day === "Wednesday" ||
+            day.day === "Thursday" ||
+            day.day === "Friday"
+        );
+
+      const weekendDays =
+        openingHoursSchedule.filter(
+          (day) =>
+            day.day === "Saturday" ||
+            day.day === "Sunday"
+        );
+
+      const firstOpenWeekday =
+        weekdayDays.find(
+          (day) => !day.isClosed
+        );
+
+      const firstOpenWeekend =
+        weekendDays.find(
+          (day) => !day.isClosed
+        );
+
+      const closedDays =
+        openingHoursSchedule
+          .filter((day) => day.isClosed)
+          .map((day) => day.day);
 
       return {
         ...current,
-        closedDays: isSelected
-          ? current.closedDays.filter((closedDay) => closedDay !== day)
-          : [...current.closedDays, day],
+        openingHoursSchedule,
+
+        weekdayOpenTime:
+          firstOpenWeekday?.openTime ??
+          current.weekdayOpenTime,
+
+        weekdayCloseTime:
+          firstOpenWeekday?.closeTime ??
+          current.weekdayCloseTime,
+
+        weekendOpenTime:
+          firstOpenWeekend?.openTime ??
+          current.weekendOpenTime,
+
+        weekendCloseTime:
+          firstOpenWeekend?.closeTime ??
+          current.weekendCloseTime,
+
+        closedDays,
       };
     });
   }
@@ -151,7 +236,9 @@ export function VenueSignupScreen() {
     }
 
     if (!file.type.startsWith("image/")) {
-      setSubmitError("Please upload an image file for your venue logo.");
+      setSubmitError(
+        "Please upload an image file for your venue logo."
+      );
       return;
     }
 
@@ -180,7 +267,10 @@ export function VenueSignupScreen() {
     setImageToCropName("");
   }
 
-  function handleSaveLogoCrop(file: File, previewUrl: string) {
+  function handleSaveLogoCrop(
+    file: File,
+    previewUrl: string
+  ) {
     setLogoFile(file);
 
     setLogoPreviewUrl((currentPreviewUrl) => {
@@ -202,7 +292,9 @@ export function VenueSignupScreen() {
     setImageToCropName("");
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setSubmitMessage(null);
@@ -243,7 +335,7 @@ export function VenueSignupScreen() {
         logoFile,
       });
 
-      setForm(initialForm);
+      setForm(createInitialVenueSignupForm());
       setLogoFile(null);
       setImageToCropName("");
       setLocationPreviewState("idle");
@@ -290,7 +382,9 @@ export function VenueSignupScreen() {
       {imageToCropSrc ? (
         <LiveyImageCropper
           imageSrc={imageToCropSrc}
-          fileName={imageToCropName || "venue-logo"}
+          fileName={
+            imageToCropName || "venue-logo"
+          }
           title="Crop venue logo"
           description="Move and zoom the image until your venue logo looks clean and centered."
           onCancel={handleCancelLogoCrop}
@@ -301,7 +395,10 @@ export function VenueSignupScreen() {
       <main className="livey-venue-signup-screen">
         <VenueSignupHero />
 
-        <form className="livey-venue-signup-form" onSubmit={handleSubmit}>
+        <form
+          className="livey-venue-signup-form"
+          onSubmit={handleSubmit}
+        >
           <VenueProfileSection
             form={form}
             logoFile={logoFile}
@@ -312,16 +409,23 @@ export function VenueSignupScreen() {
 
           <VenueLocationSection
             form={form}
-            locationPreviewState={locationPreviewState}
+            locationPreviewState={
+              locationPreviewState
+            }
             updateField={updateField}
           />
 
-          <VenueContactSection form={form} updateField={updateField} />
+          <VenueContactSection
+            form={form}
+            updateField={updateField}
+          />
 
           <VenueOpeningInfoSection
             form={form}
             updateField={updateField}
-            onToggleClosedDay={toggleClosedDay}
+            onUpdateOpeningHoursDay={
+              updateOpeningHoursDay
+            }
           />
 
           <VenueSubmissionSection
@@ -330,11 +434,15 @@ export function VenueSignupScreen() {
           />
 
           {submitError ? (
-            <p className="livey-venue-signup-alert error">{submitError}</p>
+            <p className="livey-venue-signup-alert error">
+              {submitError}
+            </p>
           ) : null}
 
           {submitMessage ? (
-            <p className="livey-venue-signup-alert success">{submitMessage}</p>
+            <p className="livey-venue-signup-alert success">
+              {submitMessage}
+            </p>
           ) : null}
 
           <button
@@ -342,12 +450,15 @@ export function VenueSignupScreen() {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Submit for approval"}
+            {isSubmitting
+              ? "Submitting..."
+              : "Submit for approval"}
           </button>
 
           <p className="livey-venue-signup-disclaimer">
-            Submitting this form does not publish your venue immediately. Livey
-            reviews every venue before it appears on the map.
+            Submitting this form does not publish your
+            venue immediately. Livey reviews every venue
+            before it appears on the map.
           </p>
         </form>
 

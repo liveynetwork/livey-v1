@@ -20,6 +20,12 @@ export function VenueLocationSection({
 }: VenueLocationSectionProps) {
   const hasGoogleMapsLink = form.googleMapsUrl.trim().length > 0;
 
+  const isLocationConfirmed =
+    locationPreviewState === "detected" ||
+    locationPreviewState === "resolved";
+
+  const isCheckingLocation = locationPreviewState === "checking";
+
   function handleAddressSelected(
     suggestion: VenueAddressSuggestion
   ) {
@@ -34,6 +40,30 @@ export function VenueLocationSection({
     }
   }
 
+  function getLocationStatusTitle() {
+    if (isLocationConfirmed) {
+      return "Location confirmed";
+    }
+
+    if (isCheckingLocation) {
+      return "Finding your location";
+    }
+
+    return "We’ll verify the location";
+  }
+
+  function getLocationStatusDescription() {
+    if (isLocationConfirmed) {
+      return "We found the venue pin and will verify it before approval.";
+    }
+
+    if (isCheckingLocation) {
+      return "Livey is checking the Google Maps link.";
+    }
+
+    return "The exact pin could not be detected, but your request can still be submitted.";
+  }
+
   return (
     <section className="livey-venue-signup-section livey-venue-location-section">
       <div className="livey-venue-signup-section-heading">
@@ -42,8 +72,7 @@ export function VenueLocationSection({
         <h2>Location</h2>
 
         <p className="livey-venue-signup-section-note">
-          Search for your address, check the detected area, then add a
-          Google Maps link for the most precise venue pin.
+          Help people find your venue and place it accurately on the Livey map.
         </p>
       </div>
 
@@ -53,6 +82,21 @@ export function VenueLocationSection({
         <VenueCityDropdown
           value={form.city}
           onChange={(city) => updateField("city", city)}
+        />
+      </div>
+
+      <div className="livey-venue-address-field">
+        <span className="livey-venue-address-label">
+          Full address
+        </span>
+
+        <VenueAddressSearch
+          value={form.address}
+          city={form.city}
+          onValueChange={(address) =>
+            updateField("address", address)
+          }
+          onSelect={handleAddressSelected}
         />
       </div>
 
@@ -68,26 +112,6 @@ export function VenueLocationSection({
           autoComplete="address-level2"
         />
       </label>
-
-      <div className="livey-venue-address-field">
-        <span className="livey-venue-address-label">
-          Full address
-        </span>
-
-        <VenueAddressSearch
-          value={form.address}
-          city={form.city}
-          onValueChange={(address) =>
-            updateField("address", address)
-          }
-          onSelect={handleAddressSelected}
-        />
-
-        <p className="livey-venue-address-help">
-          Select a result to automatically fill the full address and
-          detected area.
-        </p>
-      </div>
 
       <label>
         Google Maps link
@@ -105,25 +129,28 @@ export function VenueLocationSection({
       {hasGoogleMapsLink ? (
         <div
           className={`livey-location-detection-card ${locationPreviewState}`}
+          role="status"
+          aria-live="polite"
         >
-          <p>
-            {locationPreviewState === "detected"
-              ? "Location detected from Google Maps link."
-              : locationPreviewState === "resolved"
-                ? "Location detected from Google Maps share link."
-                : locationPreviewState === "checking"
-                  ? "Checking Google Maps share link..."
-                  : "We could not read the exact pin from this link."}
-          </p>
+          <div className="livey-location-detection-icon" aria-hidden="true">
+            {isLocationConfirmed ? (
+              <svg viewBox="0 0 24 24">
+                <path d="m6.5 12.5 3.4 3.4 7.6-7.8" />
+              </svg>
+            ) : isCheckingLocation ? (
+              <span className="livey-location-detection-spinner" />
+            ) : (
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z" />
+                <circle cx="12" cy="10" r="2" />
+              </svg>
+            )}
+          </div>
 
-          <span>
-            {locationPreviewState === "detected" ||
-            locationPreviewState === "resolved"
-              ? "Livey found the coordinates, but we’ll still verify them before approval."
-              : locationPreviewState === "checking"
-                ? "This usually takes a moment. You can continue filling the form."
-                : "No problem — Livey will manually verify the location before approval."}
-          </span>
+          <div className="livey-location-detection-copy">
+            <p>{getLocationStatusTitle()}</p>
+            <span>{getLocationStatusDescription()}</span>
+          </div>
         </div>
       ) : null}
     </section>

@@ -1,5 +1,4 @@
-import type { VenueRequestContactMethod } from "../../services/venueRequests";
-import { contactMethods } from "../venueSignupConfig";
+import { VenueContactMethodDropdown } from "./VenueContactMethodDropdown";
 import type {
   UpdateVenueSignupField,
   VenueSignupFormState,
@@ -15,22 +14,26 @@ export function VenueContactSection({
   updateField,
 }: VenueContactSectionProps) {
   return (
-    <section className="livey-venue-signup-section">
-      <div>
+    <section className="livey-venue-signup-section livey-venue-contact-section">
+      <div className="livey-venue-signup-section-heading">
         <p className="livey-venue-signup-section-kicker">Step 3</p>
+
         <h2>Contact</h2>
 
         <p className="livey-venue-signup-section-note">
-          Use the email of the person who should manage this venue on Livey
-          later.
+          Add the contact details Livey can use to review and confirm your
+          venue.
         </p>
       </div>
 
       <label>
         Contact person
+
         <input
           value={form.contactName}
-          onChange={(event) => updateField("contactName", event.target.value)}
+          onChange={(event) =>
+            updateField("contactName", event.target.value)
+          }
           placeholder="Owner or manager name"
           autoComplete="name"
         />
@@ -38,9 +41,12 @@ export function VenueContactSection({
 
       <label>
         Contact email
+
         <input
           value={form.contactEmail}
-          onChange={(event) => updateField("contactEmail", event.target.value)}
+          onChange={(event) =>
+            updateField("contactEmail", event.target.value)
+          }
           placeholder="name@venue.com"
           type="email"
           autoComplete="email"
@@ -49,9 +55,12 @@ export function VenueContactSection({
 
       <label>
         Phone
+
         <input
           value={form.contactPhone}
-          onChange={(event) => updateField("contactPhone", event.target.value)}
+          onChange={(event) =>
+            updateField("contactPhone", event.target.value)
+          }
           placeholder="+357..."
           type="tel"
           autoComplete="tel"
@@ -60,42 +69,44 @@ export function VenueContactSection({
 
       <label>
         Instagram
+
         <input
           value={form.instagramUrl}
-          onChange={(event) => updateField("instagramUrl", event.target.value)}
+          onChange={(event) =>
+            updateField("instagramUrl", event.target.value)
+          }
           placeholder="https://instagram.com/yourvenue"
           inputMode="url"
+          autoComplete="url"
         />
       </label>
 
       <label>
         Website
+
         <input
           value={form.websiteUrl}
-          onChange={(event) => updateField("websiteUrl", event.target.value)}
+          onChange={(event) =>
+            updateField("websiteUrl", event.target.value)
+          }
           placeholder="https://yourvenue.com"
           inputMode="url"
+          autoComplete="url"
         />
       </label>
 
-      <label>
-        Best way to contact you
-        <select
+      <div className="livey-venue-contact-method-field">
+        <span className="livey-venue-contact-method-label">
+          Best way to contact you
+        </span>
+
+        <VenueContactMethodDropdown
           value={form.bestContactMethod}
-          onChange={(event) =>
-            updateField(
-              "bestContactMethod",
-              event.target.value as VenueRequestContactMethod
-            )
+          onChange={(method) =>
+            updateField("bestContactMethod", method)
           }
-        >
-          {contactMethods.map((method) => (
-            <option key={method} value={method}>
-              {method}
-            </option>
-          ))}
-        </select>
-      </label>
+        />
+      </div>
     </section>
   );
 }
