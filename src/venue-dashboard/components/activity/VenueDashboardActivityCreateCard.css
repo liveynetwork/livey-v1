@@ -44,29 +44,9 @@
   text-align: center;
 }
 
-.venue-dashboard-activity-create-card-eyebrow {
-  width: fit-content;
-  min-height: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 91, 50, 0.19);
-  border-radius: 999px;
-  padding: 0 11px;
-  background: rgba(255, 91, 50, 0.07);
-  color: #ff8e72;
-  font-family: inherit;
-  font-size: 0.64rem;
-  font-weight: 950;
-  line-height: 1;
-  letter-spacing: 0.105em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
 .venue-dashboard-activity-create-card-copy h2 {
   max-width: 760px;
-  margin: 15px 0 0;
+  margin: 0;
   overflow-wrap: anywhere;
   color: #f7f1ea;
   font-family: inherit;

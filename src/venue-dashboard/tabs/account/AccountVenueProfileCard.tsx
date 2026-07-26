@@ -104,14 +104,13 @@ export function AccountVenueProfileCard({
             </strong>
 
             <button
-              className="venue-dashboard-hours-edit-icon-button"
-              type="button"
-              onClick={
-                onOpenOpeningHoursEditor
-              }
-              aria-label="Edit weekly hours"
-              title="Edit weekly hours"
-            >
+  className="venue-dashboard-hours-edit-icon-button"
+  type="button"
+  onClick={
+    onOpenOpeningHoursEditor
+  }
+  aria-label="Edit weekly hours"
+>
               <svg
                 aria-hidden="true"
                 viewBox="0 0 24 24"

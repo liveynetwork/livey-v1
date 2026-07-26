@@ -50,7 +50,7 @@
 }
 
 .venue-dashboard-activity-empty-state-copy h3 {
-  margin: 15px 0 0;
+  margin: 0;
   color: #f7f1ea;
   font-family: inherit;
   font-size: clamp(1.55rem, 2.7vw, 2.25rem);
@@ -60,7 +60,8 @@
   text-align: center;
 }
 
-.venue-dashboard-activity-empty-state-copy p {
+.venue-dashboard-activity-empty-state-copy
+  p:not(.venue-dashboard-eyebrow) {
   max-width: 620px;
   margin: 12px 0 0;
   color: rgba(247, 241, 234, 0.5);
@@ -143,9 +144,10 @@
     font-size: clamp(1.45rem, 8vw, 1.9rem);
   }
 
-  .venue-dashboard-activity-empty-state-copy p {
-    font-size: 0.84rem;
-  }
+  .venue-dashboard-activity-empty-state-copy
+  p:not(.venue-dashboard-eyebrow) {
+  font-size: 0.84rem;
+}
 
   .venue-dashboard-activity-empty-state-details {
     grid-template-columns: minmax(0, 1fr);

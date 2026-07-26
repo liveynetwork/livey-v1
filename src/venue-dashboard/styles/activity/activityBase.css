@@ -37,24 +37,6 @@
    SHARED SECTION TYPOGRAPHY
    ========================================================= */
 
-.venue-dashboard-activity-section-label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  width: fit-content;
-  margin: 0;
-  border: 1px solid rgba(255, 91, 50, 0.16);
-  border-radius: 999px;
-  padding: 0 11px;
-  background: rgba(255, 91, 50, 0.075);
-  color: #ff8b6e;
-  font-size: 0.67rem;
-  font-weight: 950;
-  line-height: 1;
-  letter-spacing: 0.135em;
-  text-transform: uppercase;
-}
-
 .venue-dashboard-activity-section-heading {
   min-width: 0;
   display: flex;
@@ -69,7 +51,7 @@
 
 .venue-dashboard-activity-section-heading h2,
 .venue-dashboard-activity-section-heading h3 {
-  margin: 13px 0 0;
+  margin: 0;
   color: #f7f1ea;
   font-weight: 950;
   line-height: 1.08;
@@ -84,7 +66,8 @@
   font-size: clamp(1.25rem, 1.8vw, 1.65rem);
 }
 
-.venue-dashboard-activity-section-heading p {
+.venue-dashboard-activity-section-heading
+  p:not(.venue-dashboard-eyebrow) {
   max-width: 650px;
   margin: 10px 0 0;
   color: rgba(247, 241, 234, 0.5);

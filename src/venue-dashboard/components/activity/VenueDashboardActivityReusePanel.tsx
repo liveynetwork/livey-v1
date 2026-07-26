@@ -23,9 +23,9 @@ export function VenueDashboardActivityReusePanel({
     <section className="venue-dashboard-activity-reuse-panel">
       <div className="venue-dashboard-activity-reuse-heading">
         <div>
-          <span className="venue-dashboard-activity-section-label">
-            Reuse previous
-          </span>
+          <p className="venue-dashboard-eyebrow">
+  Reuse previous
+</p>
 
           <h2>
             Publish something again

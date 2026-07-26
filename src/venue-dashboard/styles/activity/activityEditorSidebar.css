@@ -11,7 +11,7 @@
 }
 
 .venue-dashboard-activity-sidebar-heading h3 {
-  margin: 12px 0 0;
+  margin: 0;
   text-align: center;
 }
 
@@ -334,7 +334,7 @@
 }
 
 .venue-dashboard-activity-reuse-heading h2 {
-  margin: 8px 0 0;
+  margin: 0;
   color: #f7f1ea;
   font-family: inherit;
   font-size: clamp(1.55rem, 2.7vw, 2.15rem);
@@ -343,7 +343,8 @@
   letter-spacing: -0.045em;
 }
 
-.venue-dashboard-activity-reuse-heading p {
+.venue-dashboard-activity-reuse-heading
+  p:not(.venue-dashboard-eyebrow) {
   max-width: 660px;
   margin: 11px 0 0;
   color: rgba(247, 241, 234, 0.52);

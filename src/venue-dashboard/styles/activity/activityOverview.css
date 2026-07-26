@@ -54,7 +54,7 @@
 
 .venue-dashboard-activity-overview-copy h2 {
   max-width: 760px;
-  margin: 14px auto 0;
+  margin: 0 auto;
   overflow-wrap: anywhere;
   color: #f7f1ea;
   font-family: inherit;
@@ -91,8 +91,8 @@
   color: #ff9a80;
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
-  font-synthesis: weight;
+  font-weight: 850 !important;
+font-synthesis: weight;
   line-height: 1;
   letter-spacing: normal;
   text-align: center;
@@ -188,7 +188,7 @@
 
 .venue-dashboard-activity-overview-counts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 

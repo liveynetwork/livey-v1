@@ -36,7 +36,7 @@ box-shadow: none;
 
 .venue-dashboard-activity-editor-heading h2 {
   max-width: 760px;
-  margin: 14px auto 0;
+  margin: 0 auto;
   color: #f7f1ea;
   font-family: inherit;
   font-size: clamp(1.8rem, 3.2vw, 2.8rem);
@@ -46,7 +46,8 @@ box-shadow: none;
   text-align: center;
 }
 
-.venue-dashboard-activity-editor-heading p {
+.venue-dashboard-activity-editor-heading
+  p:not(.venue-dashboard-eyebrow) {
   max-width: 660px;
   margin: 13px auto 0;
   color: rgba(247, 241, 234, 0.5);

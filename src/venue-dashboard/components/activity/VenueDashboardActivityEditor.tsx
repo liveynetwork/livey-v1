@@ -74,11 +74,11 @@ const descriptionLength =
     <section className="venue-dashboard-activity-editor">
       <div className="venue-dashboard-activity-editor-heading">
         <div>
-          <span className="venue-dashboard-activity-section-label">
+          <p className="venue-dashboard-eyebrow">
             {isCreateMode
               ? "Create activity"
               : "Edit activity"}
-          </span>
+          </p>
 
           <h2>
             {isCreateMode
@@ -305,9 +305,9 @@ const descriptionLength =
         <aside className="venue-dashboard-activity-editor-sidebar">
           <section className="venue-dashboard-activity-readiness">
             <div className="venue-dashboard-activity-sidebar-heading">
-              <span className="venue-dashboard-activity-section-label">
+              <p className="venue-dashboard-eyebrow">
                 Publishing readiness
-              </span>
+              </p>
 
               <h3>
                 {readiness.isReady
@@ -350,9 +350,9 @@ const descriptionLength =
 
           <section className="venue-dashboard-activity-preview">
             <div className="venue-dashboard-activity-sidebar-heading">
-              <span className="venue-dashboard-activity-section-label">
+              <p className="venue-dashboard-eyebrow">
                 Preview on Livey
-              </span>
+              </p>
 
               <h3>Consumer activity card</h3>
             </div>
@@ -391,9 +391,9 @@ const descriptionLength =
           {warnings.length > 0 ? (
             <section className="venue-dashboard-activity-warnings">
               <div className="venue-dashboard-activity-sidebar-heading">
-                <span className="venue-dashboard-activity-section-label">
+                <p className="venue-dashboard-eyebrow">
                   Schedule checks
-                </span>
+                </p>
 
                 <h3>Review before saving</h3>
               </div>

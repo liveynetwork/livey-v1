@@ -65,7 +65,7 @@
 .venue-dashboard-analytics-chart {
   position: relative;
   height: 300px;
-  overflow: hidden;
+  overflow: visible;
   display: grid;
   align-items: end;
   gap: 16px;
@@ -118,6 +118,47 @@
   gap: 10px;
   border-radius: 18px;
   outline: none;
+}
+
+.venue-dashboard-analytics-chart-column::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 30;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  width: max-content;
+  max-width: 210px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  padding: 8px 10px;
+  background: #111316;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+  color: rgba(247, 241, 234, 0.82);
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 850;
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transform:
+    translateX(-50%)
+    translateY(4px);
+  transition:
+    opacity 160ms ease 600ms,
+    transform 160ms ease 600ms;
+}
+
+.venue-dashboard-analytics-chart-column:not(:hover):not(:focus-visible)::after {
+  transition-delay: 0ms;
+}
+
+.venue-dashboard-analytics-chart-column:focus-visible::after {
+  opacity: 1;
+  transform:
+    translateX(-50%)
+    translateY(0);
 }
 
 .venue-dashboard-analytics-chart-value {
@@ -550,10 +591,18 @@
 
 
 .venue-dashboard-analytics-publishing-modal-heading {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 24px;
+  justify-items: center;
+  text-align: center;
+  padding: 0 64px;
+}
+
+.venue-dashboard-analytics-publishing-modal-heading > div:first-child {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  text-align: center;
 }
 
 .venue-dashboard-analytics-publishing-modal-heading
@@ -572,7 +621,8 @@
 .venue-dashboard-analytics-publishing-modal-heading
   p:not(.venue-dashboard-eyebrow) {
   max-width: 650px;
-  margin: 13px 0 0;
+  margin: 13px auto 0;
+  text-align: center;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.9rem;
   font-weight: 750;
@@ -591,6 +641,9 @@
   background: rgba(7, 8, 10, 0.48);
   color: rgba(247, 241, 234, 0.68);
   cursor: pointer;
+  position: absolute;
+top: 0;
+right: 0;
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -700,6 +753,13 @@
   .venue-dashboard-analytics-trend-summary:hover {
     border-color: rgba(255, 91, 50, 0.55);
   }
+
+  .venue-dashboard-analytics-chart-column:hover::after {
+  opacity: 1;
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
 
   .venue-dashboard-analytics-chart-column:hover
   .venue-dashboard-analytics-chart-track
@@ -854,6 +914,10 @@
     padding-left: 16px;
   }
 
+  .venue-dashboard-analytics-chart-column::after {
+  display: none;
+}
+
   .venue-dashboard-analytics-chart-week {
     grid-template-columns:
       repeat(
@@ -887,10 +951,7 @@
 }
 
   .venue-dashboard-analytics-publishing-modal-heading {
-  grid-template-columns:
-    minmax(0, 1fr)
-    auto;
-  gap: 14px;
+  padding: 0 54px;
 }
 
 .venue-dashboard-analytics-publishing-modal-close {
@@ -931,4 +992,8 @@
   .venue-dashboard-analytics-publishing-modal {
     animation-duration: 1ms;
   }
+
+  .venue-dashboard-analytics-chart-column::after {
+  transition: none;
+}
 }

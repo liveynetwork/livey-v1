@@ -137,9 +137,9 @@ export function VenueDashboardActivity({
             <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
               <div className="venue-dashboard-activity-section-heading venue-dashboard-activity-saved-heading">
                 <div>
-                  <span className="venue-dashboard-activity-section-label">
-                    Publishing timeline
-                  </span>
+                  <p className="venue-dashboard-eyebrow">
+  Publishing timeline
+</p>
 
                   <h2>
                     Your upcoming schedule

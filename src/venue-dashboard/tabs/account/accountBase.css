@@ -117,50 +117,114 @@
 .venue-dashboard-custom-dropdown-chevron {
   width: 30px;
   height: 30px;
-  border-radius: 999px;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
-  color: rgba(247, 241, 234, 0.54);
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.045);
+  color: rgba(247, 241, 234, 0.54);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
 }
 
 .venue-dashboard-custom-dropdown-chevron svg {
   display: block;
 }
 
+.venue-dashboard-custom-dropdown.is-open
+  .venue-dashboard-custom-dropdown-chevron {
+  color: #ff805f;
+  background: rgba(255, 91, 50, 0.13);
+  transform: rotate(180deg);
+}
+
 .venue-dashboard-custom-dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
+  z-index: 200;
+  top: calc(100% + 7px);
   right: 0;
-  z-index: 30;
-  max-height: 210px;
-  overflow: auto;
-  border-radius: 18px;
-  padding: 8px;
-  background: rgba(13, 14, 17, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+  left: 0;
+  max-height: 230px;
+  display: grid;
+  gap: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 17px;
+  padding: 7px;
+  background: rgba(12, 13, 16, 0.99);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
+  animation:
+    venue-dashboard-custom-dropdown-open
+    160ms ease both;
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(247, 241, 234, 0.2)
+    transparent;
 }
 
 .venue-dashboard-custom-dropdown-menu button {
   width: 100%;
-  min-height: 38px;
-  border: 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  border: 1px solid transparent;
   border-radius: 12px;
   padding: 0 10px;
   background: transparent;
-  color: #f7f1ea;
+  box-shadow: none;
+  color: rgba(247, 241, 234, 0.64);
   font: inherit;
-  font-size: 0.84rem;
-  font-weight: 850;
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1;
   text-align: left;
   cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
 }
 
 .venue-dashboard-custom-dropdown-menu button.selected {
-  background: rgba(255, 91, 50, 0.16);
+  border-color: rgba(255, 91, 50, 0.18);
+  background: rgba(255, 91, 50, 0.1);
   color: #ffd8cd;
+}
+
+.venue-dashboard-custom-dropdown-menu button:focus-visible {
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+  outline: none;
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar {
+  width: 7px;
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar-track {
+  margin-block: 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border-radius: 999px;
+  background: rgba(247, 241, 234, 0.2);
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .venue-dashboard-premium-card-heading {
@@ -618,8 +682,29 @@
   }
 
   .venue-dashboard-custom-dropdown-menu button:hover {
-    background: rgba(255, 91, 50, 0.16);
-    color: #ffd8cd;
+  border-color: rgba(255, 91, 50, 0.42);
+  background: rgba(255, 91, 50, 0.08);
+  color: #f7f1ea;
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 91, 50, 0.55);
+}
+
+.venue-dashboard-custom-dropdown-menu::-webkit-scrollbar-thumb:active {
+  background: #ff5b32;
+}
+}
+
+@keyframes venue-dashboard-custom-dropdown-open {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -749,5 +834,17 @@
   to {
     opacity: 0;
     transform: translateY(10px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-custom-dropdown > button,
+  .venue-dashboard-custom-dropdown-chevron,
+  .venue-dashboard-custom-dropdown-menu button {
+    transition: none;
+  }
+
+  .venue-dashboard-custom-dropdown-menu {
+    animation: none;
   }
 }

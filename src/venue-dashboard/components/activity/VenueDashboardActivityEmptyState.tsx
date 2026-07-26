@@ -9,9 +9,9 @@ export function VenueDashboardActivityEmptyState() {
       </div>
 
       <div className="venue-dashboard-activity-empty-state-copy">
-        <span className="venue-dashboard-activity-section-label">
-          No current activity
-        </span>
+        <p className="venue-dashboard-eyebrow">
+  No current activity
+</p>
 
         <h3>Nothing is live right now</h3>
 

@@ -20,6 +20,22 @@ export function VenueDashboardActivityOverview({
     (event) => event.is_active === false
   ).length;
 
+  const now = Date.now();
+
+const scheduledActivityCount = events.filter(
+  (event) => {
+    const startsAt = getTimestamp(
+      event.starts_at
+    );
+
+    return (
+      startsAt !==
+        Number.MAX_SAFE_INTEGER &&
+      startsAt > now
+    );
+  }
+).length;
+
   /*
    * The dedicated Activity Empty State handles the no-activity experience.
    * Avoid rendering a second card that communicates the same information.
@@ -41,9 +57,9 @@ export function VenueDashboardActivityOverview({
     >
       <div className="venue-dashboard-activity-overview-main">
         <div className="venue-dashboard-activity-overview-copy">
-          <span className="venue-dashboard-activity-section-label">
-            Current Livey activity
-          </span>
+          <p className="venue-dashboard-eyebrow">
+  Current Livey activity
+</p>
 
           <h2>{overviewEvent.title || "Untitled activity"}</h2>
 
@@ -75,16 +91,30 @@ export function VenueDashboardActivityOverview({
 
       <div className="venue-dashboard-activity-overview-side">
         <div className="venue-dashboard-activity-overview-counts">
-          <div className="venue-dashboard-activity-overview-metric">
-            <span>Visible</span>
-            <strong>{visibleActivityCount}</strong>
-          </div>
+  <div className="venue-dashboard-activity-overview-metric">
+    <span>Visible</span>
 
-          <div className="venue-dashboard-activity-overview-metric">
-            <span>Hidden</span>
-            <strong>{hiddenActivityCount}</strong>
-          </div>
-        </div>
+    <strong>
+      {visibleActivityCount}
+    </strong>
+  </div>
+
+  <div className="venue-dashboard-activity-overview-metric">
+    <span>Hidden</span>
+
+    <strong>
+      {hiddenActivityCount}
+    </strong>
+  </div>
+
+  <div className="venue-dashboard-activity-overview-metric">
+    <span>Scheduled</span>
+
+    <strong>
+      {scheduledActivityCount}
+    </strong>
+  </div>
+</div>
       </div>
     </section>
   );

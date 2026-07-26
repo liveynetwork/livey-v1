@@ -210,6 +210,7 @@
 }
 
 .venue-dashboard-hours-edit-icon-button {
+  position: relative;
   justify-self: end;
   width: 38px;
   height: 38px;
@@ -222,11 +223,55 @@
   color: rgba(247, 241, 234, 0.72);
   cursor: pointer;
   pointer-events: auto;
+  outline: none;
   transition:
     background 180ms ease,
     color 180ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease;
+}
+
+.venue-dashboard-hours-edit-icon-button::after {
+  content: attr(aria-label);
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  right: calc(100% + 10px);
+  width: max-content;
+  max-width: 190px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  padding: 8px 10px;
+  background: #111316;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+  color: rgba(247, 241, 234, 0.82);
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 850;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) translateX(4px);
+  transition:
+    opacity 160ms ease 600ms,
+    transform 160ms ease 600ms;
+}
+
+.venue-dashboard-hours-edit-icon-button:not(:hover):not(:focus-visible)::after {
+  transition-delay: 0ms;
+}
+
+.venue-dashboard-hours-edit-icon-button:focus-visible {
+  border-color: rgba(255, 91, 50, 0.75);
+  outline: 2px solid rgba(255, 91, 50, 0.72);
+  outline-offset: 3px;
+}
+
+.venue-dashboard-hours-edit-icon-button:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 .venue-dashboard-today-hours-card:hover {
@@ -368,6 +413,11 @@
   border-color: rgba(255, 91, 50, 0.55);
 }
 
+.venue-dashboard-hours-edit-icon-button:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
   .venue-dashboard-hours-edit-icon-button:hover {
     border-color: rgba(255, 91, 50, 0.55);
     background: rgba(255, 91, 50, 0.08);
@@ -401,6 +451,10 @@
     gap: 9px;
     padding: 9px;
   }
+
+  .venue-dashboard-hours-edit-icon-button::after {
+  display: none;
+}
 
   .venue-dashboard-profile-control-tile,
   .venue-dashboard-description-field {
@@ -459,3 +513,9 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-hours-edit-icon-button,
+  .venue-dashboard-hours-edit-icon-button::after {
+    transition: none;
+  }
+}

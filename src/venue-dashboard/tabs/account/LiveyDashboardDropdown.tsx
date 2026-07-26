@@ -19,19 +19,29 @@ export function LiveyDashboardDropdown({
   onChange,
 }: LiveyDashboardDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const selectedOption = options.find((option) => option.value === value);
 
-  const selectedLabel = selectedOption?.label ?? value;
+  const selectedOption = options.find(
+    (option) => option.value === value
+  );
+
+  const selectedLabel =
+    selectedOption?.label ?? value;
 
   function closeDropdownAfterBlur() {
-    window.setTimeout(() => setIsOpen(false), 120);
+    window.setTimeout(() => {
+      setIsOpen(false);
+    }, 120);
   }
 
   return (
     <div
       className={`venue-dashboard-custom-dropdown ${
-        disabled ? "disabled" : ""
-      } ${triggerMode === "arrow" ? "arrow-only" : ""}`}
+        isOpen ? "is-open" : ""
+      } ${disabled ? "disabled" : ""} ${
+        triggerMode === "arrow"
+          ? "arrow-only"
+          : ""
+      }`}
     >
       {label ? <span>{label}</span> : null}
 
@@ -45,10 +55,16 @@ export function LiveyDashboardDropdown({
             className="venue-dashboard-custom-dropdown-arrow-button"
             type="button"
             disabled={disabled}
-            aria-label={isOpen ? "Close status options" : "Open status options"}
+            aria-label={
+              isOpen
+                ? "Close status options"
+                : "Open status options"
+            }
             aria-expanded={isOpen}
             onBlur={closeDropdownAfterBlur}
-            onClick={() => setIsOpen((current) => !current)}
+            onClick={() =>
+              setIsOpen((current) => !current)
+            }
           >
             <span className="venue-dashboard-custom-dropdown-chevron">
               <svg
@@ -75,7 +91,9 @@ export function LiveyDashboardDropdown({
           disabled={disabled}
           aria-expanded={isOpen}
           onBlur={closeDropdownAfterBlur}
-          onClick={() => setIsOpen((current) => !current)}
+          onClick={() =>
+            setIsOpen((current) => !current)
+          }
         >
           <span className="venue-dashboard-custom-dropdown-value">
             {selectedLabel}
@@ -107,7 +125,11 @@ export function LiveyDashboardDropdown({
             <button
               key={option.value}
               type="button"
-              className={option.value === value ? "selected" : ""}
+              className={
+                option.value === value
+                  ? "selected"
+                  : ""
+              }
               onMouseDown={() => {
                 onChange(option.value);
                 setIsOpen(false);

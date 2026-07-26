@@ -10,9 +10,9 @@ export function VenueDashboardActivityCreateCard({
   return (
     <section className="venue-dashboard-activity-create-card">
       <div className="venue-dashboard-activity-create-card-copy">
-        <span className="venue-dashboard-activity-create-card-eyebrow">
-          Create activity
-        </span>
+        <p className="venue-dashboard-eyebrow">
+  Create activity
+</p>
 
         <h2>Create a Livey activity</h2>
 

@@ -58,6 +58,9 @@
   border-radius: 26px;
   background: rgba(255, 255, 255, 0.012);
   box-shadow: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-active-item {
@@ -68,6 +71,7 @@
   grid-template-columns: 24px minmax(0, 1fr);
   align-items: center;
   gap: 16px;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 21px;
   padding: 20px;
@@ -90,12 +94,20 @@
   background: rgba(255, 255, 255, 0.01);
 }
 
+/* =========================================================
+   TIMELINE MARKER
+   ========================================================= */
+
 .venue-dashboard-active-item-marker {
-  position: relative;
-  align-self: stretch;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 20px;
   width: 24px;
   display: grid;
   place-items: center;
+  pointer-events: none;
 }
 
 .venue-dashboard-active-item-marker::before,
@@ -109,13 +121,13 @@
 }
 
 .venue-dashboard-active-item-marker::before {
-  top: -20px;
+  top: 0;
   bottom: 50%;
 }
 
 .venue-dashboard-active-item-marker::after {
   top: 50%;
-  bottom: -20px;
+  bottom: 0;
 }
 
 .venue-dashboard-active-item:first-child
@@ -130,7 +142,7 @@
 
 .venue-dashboard-active-item-marker > span {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 11px;
   height: 11px;
   border: 2px solid #15171a;
@@ -152,47 +164,60 @@
   background: rgba(247, 241, 234, 0.18);
 }
 
+/* =========================================================
+   ACTIVITY CONTENT
+   ========================================================= */
+
 .venue-dashboard-active-content {
   min-width: 0;
   width: 100%;
+  min-height: 150px;
+  grid-column: 1 / -1;
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   justify-items: center;
-  gap: 10px;
+  align-items: center;
+  gap: 0;
+  padding: 8px 70px 12px;
   text-align: center;
 }
 
 .venue-dashboard-active-timing {
   min-width: 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-self: start;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
   text-align: center;
 }
 
 .venue-dashboard-active-timing > strong {
-  color: rgba(247, 241, 234, 0.72);
+  color: rgba(247, 241, 234, 0.84);
   font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 900;
-  line-height: 1.35;
-  letter-spacing: 0.015em;
+  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+  font-weight: 950;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  text-align: center;
 }
 
 .venue-dashboard-active-timing > span {
   color: #ff7958;
   font-family: inherit;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 900;
-  line-height: 1.35;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-align: center;
 }
 
 .venue-dashboard-active-title-row {
   min-width: 0;
   width: 100%;
+  align-self: center;
   display: grid;
   justify-items: center;
+  margin: 8px 0 0;
   text-align: center;
 }
 
@@ -211,7 +236,8 @@
 
 .venue-dashboard-active-description {
   width: min(100%, 680px);
-  margin: 0 auto;
+  align-self: end;
+  margin: 8px auto 0;
   display: -webkit-box;
   overflow: hidden;
   color: rgba(247, 241, 234, 0.46);
@@ -269,41 +295,88 @@
    ========================================================= */
 
 .venue-dashboard-active-controls {
-  min-width: 0;
-  width: 100%;
-  grid-column: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-top: 4px;
+  display: contents;
 }
 
+/* Top-right visibility switch */
+
 .venue-dashboard-active-visibility-switch {
-  min-width: 0;
+  position: absolute;
+  z-index: 3;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
   min-height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+  display: grid;
+  place-items: center;
   border: 0;
   padding: 0;
   background: transparent;
   color: rgba(247, 241, 234, 0.62);
   font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 900;
-  line-height: 1;
   cursor: pointer;
   outline: none;
 }
 
+/* Tooltip */
+
+.venue-dashboard-active-visibility-switch::after {
+  content: attr(aria-label);
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  right: calc(100% + 10px);
+  width: max-content;
+  max-width: 190px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  padding: 8px 10px;
+  background: #111316;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+  color: rgba(247, 241, 234, 0.82);
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 850;
+  line-height: 1.3;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) translateX(4px);
+  transition:
+  opacity 160ms ease 600ms,
+  transform 160ms ease 600ms;
+}
+
+.venue-dashboard-active-visibility-switch:not(:hover):not(:focus-visible)::after {
+  transition-delay: 0ms;
+}
+
+.venue-dashboard-active-visibility-switch:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Hide the permanent Visible / Hidden copy */
+
+.venue-dashboard-active-visibility-switch-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Switch */
+
 .venue-dashboard-active-visibility-switch-track {
   position: relative;
-  width: 46px;
+  width: 42px;
   height: 26px;
   display: block;
-  flex: 0 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
@@ -334,18 +407,8 @@
 
 .venue-dashboard-active-visibility-switch.is-on
   .venue-dashboard-active-visibility-switch-thumb {
-  left: 23px;
+  left: 19px;
   background: #ff5b32;
-}
-
-.venue-dashboard-active-visibility-switch.is-on
-  .venue-dashboard-active-visibility-switch-label {
-  color: #ff9478;
-}
-
-.venue-dashboard-active-visibility-switch.is-off
-  .venue-dashboard-active-visibility-switch-label {
-  color: rgba(247, 241, 234, 0.42);
 }
 
 .venue-dashboard-active-visibility-switch:disabled {
@@ -359,12 +422,17 @@
   outline-offset: 4px;
 }
 
+/* Bottom-right edit button */
+
 .venue-dashboard-active-edit-button {
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  bottom: 20px;
   width: 42px;
   height: 42px;
   display: grid;
   place-items: center;
-  flex: 0 0 auto;
   border: 1px solid rgba(255, 91, 50, 0.2);
   border-radius: 14px;
   padding: 0;
@@ -377,6 +445,43 @@
     border-color 180ms ease,
     background 180ms ease,
     color 180ms ease;
+}
+
+.venue-dashboard-active-edit-button::after {
+  content: "Edit activity";
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  right: calc(100% + 10px);
+  width: max-content;
+  max-width: 190px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  padding: 8px 10px;
+  background: #111316;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+  color: rgba(247, 241, 234, 0.82);
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 850;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) translateX(4px);
+  transition:
+    opacity 160ms ease 600ms,
+    transform 160ms ease 600ms;
+}
+
+.venue-dashboard-active-edit-button:not(:hover):not(:focus-visible)::after {
+  transition-delay: 0ms;
+}
+
+.venue-dashboard-active-edit-button:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 .venue-dashboard-active-edit-button svg {
@@ -439,14 +544,28 @@
    ========================================================= */
 
 @media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-active-list:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .venue-dashboard-active-edit-button:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
   .venue-dashboard-active-item:hover {
-    border-color: rgba(255, 91, 50, 0.5);
+    border-color: rgba(255, 91, 50, 0.42);
     background: rgba(255, 255, 255, 0.022);
   }
 
   .venue-dashboard-active-visibility-switch:hover:not(:disabled)
     .venue-dashboard-active-visibility-switch-track {
     border-color: rgba(255, 91, 50, 0.48);
+  }
+
+  .venue-dashboard-active-visibility-switch:hover:not(:disabled)::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
   }
 
   .venue-dashboard-active-edit-button:hover {
@@ -466,22 +585,29 @@
     border-radius: 23px;
   }
 
+  .venue-dashboard-active-edit-button::after {
+  display: none;
+}
+
   .venue-dashboard-active-item {
-    min-height: 0;
+    min-height: 190px;
     grid-template-columns: 18px minmax(0, 1fr);
     gap: 11px;
     padding: 18px 14px;
   }
 
   .venue-dashboard-active-item-marker {
+    left: 14px;
     width: 18px;
   }
 
-  .venue-dashboard-active-timing {
-    align-items: center;
-    flex-direction: column;
-    gap: 4px;
+  .venue-dashboard-active-content {
+    padding: 58px 8px 52px;
   }
+
+  .venue-dashboard-active-timing {
+  gap: 4px;
+}
 
   .venue-dashboard-active-meta {
     width: 100%;
@@ -493,16 +619,18 @@
     width: 100%;
   }
 
-  .venue-dashboard-active-controls {
-    grid-column: 2;
-    width: 100%;
+  .venue-dashboard-active-visibility-switch {
+    top: 14px;
+    right: 14px;
   }
 
-  .venue-dashboard-active-visibility-switch {
-    min-height: 44px;
+  .venue-dashboard-active-visibility-switch::after {
+    display: none;
   }
 
   .venue-dashboard-active-edit-button {
+    right: 14px;
+    bottom: 14px;
     width: 44px;
     height: 44px;
   }
@@ -513,9 +641,12 @@
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-active-list,
   .venue-dashboard-active-item,
+  .venue-dashboard-active-visibility-switch::after,
   .venue-dashboard-active-visibility-switch-track,
   .venue-dashboard-active-visibility-switch-thumb,
+  .venue-dashboard-active-edit-button::after,
   .venue-dashboard-active-edit-button {
     transition: none;
   }

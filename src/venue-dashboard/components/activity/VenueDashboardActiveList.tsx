@@ -180,7 +180,6 @@ export function VenueDashboardActiveList({
                       aria-label={`Edit ${
                         event.title || "this activity"
                       }`}
-                      title="Edit activity"
                       onClick={() => onSelectEvent(event)}
                     >
                       <PencilIcon />
@@ -337,10 +336,14 @@ function getRelativeTiming(
   }
 
   if (startsAt <= now) {
-    return "Already started";
+  if (endsAt !== Number.MAX_SAFE_INTEGER && endsAt > now) {
+    return `Ends ${formatRelativeDuration(endsAt - now)}`;
   }
 
-  return `Starts ${formatRelativeDuration(startsAt - now)}`;
+  return "Ended just now";
+}
+
+return `Starts ${formatRelativeDuration(startsAt - now)}`;
 }
 
 function formatRelativeDuration(durationMs: number) {

@@ -33,7 +33,8 @@
   text-align: center;
 }
 
-.venue-dashboard-activity-saved-heading p {
+.venue-dashboard-activity-saved-heading
+  p:not(.venue-dashboard-eyebrow) {
   margin-right: auto;
   margin-left: auto;
 }

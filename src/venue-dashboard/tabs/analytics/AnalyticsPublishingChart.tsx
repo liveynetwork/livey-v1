@@ -135,9 +135,9 @@ export function AnalyticsPublishingChart({
               .filter(Boolean)
               .join(" ")}
             key={point.key}
-            title={tooltipText}
-            aria-label={tooltipText}
-            tabIndex={0}
+aria-label={tooltipText}
+data-tooltip={tooltipText}
+tabIndex={0}
           >
             <div className="venue-dashboard-analytics-chart-value">
               {point.count > 0

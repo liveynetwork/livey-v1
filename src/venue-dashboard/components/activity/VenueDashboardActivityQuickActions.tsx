@@ -13,9 +13,9 @@ export function VenueDashboardActivityQuickActions({
     <section className="venue-dashboard-activity-quick-actions">
       <div className="venue-dashboard-activity-section-heading">
         <div>
-          <span className="venue-dashboard-activity-section-label">
-            Quick actions
-          </span>
+          <p className="venue-dashboard-eyebrow">
+  Quick actions
+</p>
 
           <h3>Choose how you want to publish</h3>
 

@@ -65,10 +65,13 @@
 .venue-dashboard-eyebrow {
   margin: 0 0 10px !important;
   color: #ff6b45 !important;
+  font-family: inherit !important;
   font-size: 0.72rem !important;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-weight: 950 !important;
+  font-synthesis: weight;
+  line-height: 1 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
 }
 
 .venue-dashboard-primary-action {
