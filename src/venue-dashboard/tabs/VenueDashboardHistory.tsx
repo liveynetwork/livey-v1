@@ -161,14 +161,15 @@ export function VenueDashboardHistory({
           ) : (
             <>
               <VenueDashboardHistoryList
-                events={
-                  recentHistoryEvents
-                }
-                onOpenEvent={
-                  setSelectedHistoryEvent
-                }
-                variant="preview"
-              />
+  events={recentHistoryEvents}
+  onOpenEvent={
+    setSelectedHistoryEvent
+  }
+  onReuseEvent={
+    handleReuseEvent
+  }
+  variant="preview"
+/>
 
               {shouldShowViewAll ? (
                 <footer className="venue-dashboard-history-preview-footer">
@@ -192,16 +193,19 @@ export function VenueDashboardHistory({
 
       {isArchiveOpen ? (
         <VenueDashboardHistoryArchiveModal
-          historyEvents={
-            sortedHistoryEvents
-          }
-          onClose={() =>
-            setIsArchiveOpen(false)
-          }
-          onOpenEvent={
-            setSelectedHistoryEvent
-          }
-        />
+  historyEvents={
+    sortedHistoryEvents
+  }
+  onClose={() =>
+    setIsArchiveOpen(false)
+  }
+  onOpenEvent={
+    setSelectedHistoryEvent
+  }
+  onReuseEvent={
+    handleReuseEvent
+  }
+/>
       ) : null}
 
       {selectedHistoryEvent ? (

@@ -16,12 +16,19 @@ import {
 } from "./historyUtils";
 import "../../tabs/account/accountBase.css";
 import "./VenueDashboardHistoryArchiveModal.css";
+import type {
+  HistoryReuseMode,
+} from "./VenueDashboardHistoryReuseAction";
 
 type VenueDashboardHistoryArchiveModalProps = {
   historyEvents: VenueDashboardEvent[];
   onClose: () => void;
   onOpenEvent: (
     event: VenueDashboardEvent
+  ) => void;
+  onReuseEvent: (
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
   ) => void;
 };
 
@@ -60,6 +67,7 @@ export function VenueDashboardHistoryArchiveModal({
   historyEvents,
   onClose,
   onOpenEvent,
+  onReuseEvent,
 }: VenueDashboardHistoryArchiveModalProps) {
   useModalBehaviour(onClose);
 
@@ -344,14 +352,17 @@ export function VenueDashboardHistoryArchiveModal({
                     </header>
 
                     <VenueDashboardHistoryList
-                      events={
-                        group.events
-                      }
-                      onOpenEvent={
-                        onOpenEvent
-                      }
-                      variant="archive"
-                    />
+  events={
+    group.events
+  }
+  onOpenEvent={
+    onOpenEvent
+  }
+  onReuseEvent={
+    onReuseEvent
+  }
+  variant="archive"
+/>
                   </section>
                 )
               )}

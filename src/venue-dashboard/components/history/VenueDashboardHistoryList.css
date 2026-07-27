@@ -17,10 +17,12 @@
       rgba(255, 255, 255, 0.025),
     0 18px 42px
       rgba(0, 0, 0, 0.14);
-      transition: border-color 180ms ease;
+  transition:
+    border-color 180ms ease;
 }
 
 .venue-dashboard-history-item {
+  position: relative;
   min-width: 0;
   min-height: 92px;
   display: grid;
@@ -46,10 +48,14 @@
       rgba(255, 255, 255, 0.02),
     0 10px 24px
       rgba(0, 0, 0, 0.07);
-  cursor: pointer;
   outline: none;
   transition:
     border-color 180ms ease;
+}
+
+.venue-dashboard-history-item.is-archive,
+.venue-dashboard-history-item.is-preview {
+  cursor: default;
 }
 
 /* =========================================================
@@ -57,6 +63,8 @@
    ========================================================= */
 
 .venue-dashboard-history-item-icon {
+  position: relative;
+  z-index: 2;
   width: 48px;
   height: 48px;
   display: grid;
@@ -68,6 +76,7 @@
     rgba(255, 91, 50, 0.07);
   box-shadow: none;
   color: #ff805f;
+  pointer-events: none;
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -84,7 +93,10 @@
    ========================================================= */
 
 .venue-dashboard-history-main {
+  position: relative;
+  z-index: 2;
   min-width: 0;
+  pointer-events: none;
 }
 
 .venue-dashboard-history-main
@@ -111,20 +123,26 @@
 }
 
 /* =========================================================
-   STATUS
+   STATUS AND ACTIONS
    ========================================================= */
 
 .venue-dashboard-history-actions {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .venue-dashboard-history-status {
+  position: relative;
+  z-index: 2;
   min-height: 34px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  flex: 0 0 auto;
   border: 1px solid transparent;
   border-radius: 999px;
   padding: 0 12px;
@@ -147,8 +165,6 @@
   background: currentColor;
 }
 
-/* Expired — Livey orange */
-
 .venue-dashboard-history-status.is-expired {
   border-color:
     rgba(255, 91, 50, 0.18);
@@ -156,8 +172,6 @@
     rgba(255, 91, 50, 0.07);
   color: #ff9478;
 }
-
-/* Removed — restrained red */
 
 .venue-dashboard-history-status.is-removed {
   border-color:
@@ -171,13 +185,9 @@
    ACCESSIBILITY
    ========================================================= */
 
-.venue-dashboard-history-item:focus-visible {
+.venue-dashboard-history-item:focus-within {
   border-color:
     rgba(255, 91, 50, 0.68);
-  outline: 2px solid
-    rgba(255, 91, 50, 0.62);
-  outline-offset: 3px;
-  box-shadow: none;
 }
 
 /* =========================================================
@@ -186,15 +196,18 @@
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-history-list:hover {
-  border-color: rgba(255, 91, 50, 0.55);
-}
-
-  .venue-dashboard-history-item:hover {
     border-color:
       rgba(255, 91, 50, 0.55);
   }
 
-  .venue-dashboard-history-item-icon:hover {
+  .venue-dashboard-history-item:hover,
+  .venue-dashboard-history-item:focus-within {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+
+  .venue-dashboard-history-item:hover
+    .venue-dashboard-history-item-icon {
     border-color:
       rgba(255, 91, 50, 0.55);
     background:

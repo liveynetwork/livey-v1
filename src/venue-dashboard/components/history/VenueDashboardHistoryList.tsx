@@ -1,5 +1,10 @@
-import type { KeyboardEvent } from "react";
-import type { VenueDashboardEvent } from "../../venueDashboardService";
+import type {
+  VenueDashboardEvent,
+} from "../../venueDashboardService";
+import type {
+  HistoryReuseMode,
+} from "./VenueDashboardHistoryReuseAction";
+import { VenueDashboardHistoryRowActions } from "./VenueDashboardHistoryRowActions";
 import {
   getHistoryEventTiming,
   wasHistoryEventRemoved,
@@ -11,12 +16,17 @@ type VenueDashboardHistoryListProps = {
   onOpenEvent: (
     event: VenueDashboardEvent
   ) => void;
+  onReuseEvent?: (
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
+  ) => void;
   variant?: "preview" | "archive";
 };
 
 export function VenueDashboardHistoryList({
   events,
   onOpenEvent,
+  onReuseEvent,
   variant = "preview",
 }: VenueDashboardHistoryListProps) {
   return (
@@ -27,26 +37,23 @@ export function VenueDashboardHistoryList({
         const wasRemoved =
           wasHistoryEventRemoved(event);
 
+        const reuseMode: HistoryReuseMode =
+          wasRemoved
+            ? "restore"
+            : "reuse";
+
+        const shouldShowQuickActions =
+          Boolean(onReuseEvent);
+
         return (
           <article
-            className="venue-dashboard-history-item"
+            className={[
+              "venue-dashboard-history-item",
+              variant === "archive"
+                ? "is-archive"
+                : "is-preview",
+            ].join(" ")}
             key={event.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`Open archived activity details for ${
-              event.title ||
-              "Untitled activity"
-            }`}
-            onClick={() =>
-              onOpenEvent(event)
-            }
-            onKeyDown={(keyboardEvent) =>
-              handleHistoryItemKeyDown(
-                keyboardEvent,
-                event,
-                onOpenEvent
-              )
-            }
           >
             <div
               className="venue-dashboard-history-item-icon"
@@ -69,6 +76,20 @@ export function VenueDashboardHistoryList({
             </div>
 
             <div className="venue-dashboard-history-actions">
+              {shouldShowQuickActions &&
+              onReuseEvent ? (
+                <VenueDashboardHistoryRowActions
+                  event={event}
+                  mode={reuseMode}
+                  onOpenEvent={
+                    onOpenEvent
+                  }
+                  onReuseEvent={
+                    onReuseEvent
+                  }
+                />
+              ) : null}
+
               <small
                 className={[
                   "venue-dashboard-history-status",
@@ -91,24 +112,6 @@ export function VenueDashboardHistoryList({
   );
 }
 
-function handleHistoryItemKeyDown(
-  keyboardEvent: KeyboardEvent<HTMLElement>,
-  event: VenueDashboardEvent,
-  onOpenEvent: (
-    event: VenueDashboardEvent
-  ) => void
-) {
-  if (
-    keyboardEvent.key !== "Enter" &&
-    keyboardEvent.key !== " "
-  ) {
-    return;
-  }
-
-  keyboardEvent.preventDefault();
-  onOpenEvent(event);
-}
-
 function ArchivedIcon() {
   return (
     <svg
@@ -116,6 +119,7 @@ function ArchivedIcon() {
       width="20"
       height="20"
       fill="none"
+      aria-hidden="true"
     >
       <circle
         cx="12"
