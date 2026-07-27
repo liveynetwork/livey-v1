@@ -502,6 +502,8 @@ box-shadow: none;
   min-height: 56px;
   border-radius: 17px;
   font-family: inherit;
+  font-weight: 950;
+  font-synthesis: weight;
 }
 
 .venue-dashboard-activity-cancel-button {

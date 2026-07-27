@@ -13,6 +13,10 @@
     180ms ease both;
 }
 
+/* =========================================================
+   MODAL
+   ========================================================= */
+
 .venue-dashboard-history-details-modal {
   position: relative;
   width: min(820px, 100%);
@@ -22,16 +26,10 @@
     rgba(255, 255, 255, 0.09);
   border-radius: 36px;
   padding: 8px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.018),
-      rgba(255, 255, 255, 0.004)
-    ),
-    #15171b;
+  background: #15171b;
   box-shadow:
-    0 40px 120px
-    rgba(0, 0, 0, 0.62);
+    0 34px 90px
+    rgba(0, 0, 0, 0.48);
   animation:
     venue-dashboard-history-details-modal-enter
     210ms ease both;
@@ -45,6 +43,10 @@
   overscroll-behavior: contain;
   padding: 24px 29px 24px 24px;
 }
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
 
 .venue-dashboard-history-details-scroll::-webkit-scrollbar {
   width: 7px;
@@ -61,11 +63,13 @@
   min-height: 48px;
   border: 0;
   border-radius: 999px;
-  background: rgba(247, 241, 234, 0.2);
+  background:
+    rgba(247, 241, 234, 0.2);
 }
 
 .venue-dashboard-history-details-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 91, 50, 0.55);
+  background:
+    rgba(255, 91, 50, 0.55);
 }
 
 .venue-dashboard-history-details-scroll::-webkit-scrollbar-thumb:active {
@@ -96,6 +100,10 @@
   }
 }
 
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
 .venue-dashboard-history-details-close {
   position: absolute;
   top: 24px;
@@ -109,14 +117,17 @@
   display: grid;
   place-items: center;
   padding: 0;
-  background: rgba(7, 8, 10, 0.48);
-  color: rgba(247, 241, 234, 0.68);
+  background:
+    rgba(7, 8, 10, 0.48);
+  box-shadow: none;
+  color:
+    rgba(247, 241, 234, 0.68);
   cursor: pointer;
+  outline: none;
   transition:
     border-color 180ms ease,
     background 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
+    color 180ms ease;
 }
 
 .venue-dashboard-history-details-close
@@ -130,29 +141,46 @@
 }
 
 .venue-dashboard-history-details-close:focus-visible {
+  border-color:
+    rgba(255, 91, 50, 0.72);
   outline: 2px solid
     rgba(255, 91, 50, 0.72);
   outline-offset: 3px;
 }
 
+/* =========================================================
+   HEADING
+   ========================================================= */
+
 .venue-dashboard-history-details-heading {
   display: grid;
   justify-items: center;
-  text-align: center;
   padding: 0 68px;
+  text-align: center;
 }
 
 .venue-dashboard-history-lock-icon {
   width: 66px;
   height: 66px;
-  border: 1px solid
-    rgba(255, 91, 50, 0.16);
-  border-radius: 22px;
   display: grid;
   place-items: center;
+  border: 1px solid
+    rgba(255, 91, 50, 0.2);
+  border-radius: 22px;
   margin-bottom: 18px;
-  background: rgba(255, 91, 50, 0.1);
-  color: #ff805f;
+  background:
+    rgba(255, 91, 50, 0.08);
+  box-shadow: none;
+  color: #ff7654;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-history-lock-icon
+  svg {
+  display: block;
 }
 
 .venue-dashboard-history-details-heading
@@ -169,8 +197,13 @@
     clamp(2rem, 4vw, 3.15rem);
   line-height: 1;
   letter-spacing: -0.065em;
+  text-align: center;
   word-break: break-word;
 }
+
+/* =========================================================
+   STATE PILLS
+   ========================================================= */
 
 .venue-dashboard-history-details-state-row {
   display: flex;
@@ -180,21 +213,25 @@
   margin-top: 22px;
 }
 
-.venue-dashboard-history-readonly-pill,
 .venue-dashboard-history-details-state-row
-  .venue-dashboard-history-status {
-  min-height: 32px;
-  border: 1px solid
-    rgba(255, 255, 255, 0.06);
-  border-radius: 999px;
+  .venue-dashboard-history-status,
+.venue-dashboard-history-readonly-pill {
+  min-height: 34px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 11px;
-  background: rgba(255, 255, 255, 0.055);
-  color: rgba(247, 241, 234, 0.58);
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0 12px;
+  box-shadow: none;
   font-size: 0.73rem;
   font-weight: 950;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .venue-dashboard-history-details-state-row
@@ -202,9 +239,52 @@
   > span {
   width: 6px;
   height: 6px;
+  flex: 0 0 auto;
   border-radius: 999px;
   background: currentColor;
 }
+
+/* Expired — Livey orange */
+
+.venue-dashboard-history-details-state-row
+  .venue-dashboard-history-status.is-expired {
+  border-color:
+    rgba(255, 91, 50, 0.2);
+  background:
+    rgba(255, 91, 50, 0.08);
+  color: #ff9478;
+}
+
+/* Removed — restrained red */
+
+.venue-dashboard-history-details-state-row
+  .venue-dashboard-history-status.is-removed {
+  border-color:
+    rgba(232, 79, 79, 0.22);
+  background:
+    rgba(232, 79, 79, 0.09);
+  color: #ff9999;
+}
+
+/* Read-only — neutral matte */
+
+.venue-dashboard-history-readonly-pill {
+  border-color:
+    rgba(255, 255, 255, 0.07);
+  background:
+    rgba(255, 255, 255, 0.045);
+  color:
+    rgba(247, 241, 234, 0.6);
+}
+
+.venue-dashboard-history-readonly-pill
+  svg {
+  display: block;
+}
+
+/* =========================================================
+   DETAILS GRID
+   ========================================================= */
 
 .venue-dashboard-history-details-grid {
   display: grid;
@@ -217,35 +297,29 @@
     rgba(255, 255, 255, 0.06);
   border-radius: 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.018),
-      rgba(255, 255, 255, 0.004)
-    ),
     rgba(7, 8, 10, 0.52);
+  box-shadow: none;
+  transition:
+    border-color 180ms ease;
 }
 
 .venue-dashboard-history-detail-item {
   min-width: 0;
-  min-height: 104px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  padding: 18px;
+  min-height: 112px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 11px;
   border: 1px solid
     rgba(255, 255, 255, 0.055);
   border-radius: 20px;
+  padding: 20px 18px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.022),
-      rgba(255, 255, 255, 0.005)
-    ),
-    rgba(255, 255, 255, 0.008);
+    rgba(255, 255, 255, 0.012);
+  box-shadow: none;
+  text-align: center;
   transition:
-    border-color 180ms ease,
-    background 180ms ease;
+    border-color 180ms ease;
 }
 
 .venue-dashboard-history-detail-item.is-wide {
@@ -254,46 +328,106 @@
 
 .venue-dashboard-history-detail-item
   > span {
-  color: rgba(247, 241, 234, 0.42);
+  color:
+    rgba(247, 241, 234, 0.46);
   font-size: 0.69rem;
   font-weight: 950;
-  text-transform: uppercase;
+  line-height: 1;
   letter-spacing: 0.11em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .venue-dashboard-history-detail-item
   > strong {
+  max-width: 100%;
   color: #f7f1ea;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 900;
-  line-height: 1.5;
-  word-break: break-word;
+  line-height: 1.55;
+  text-align: center;
   white-space: pre-wrap;
+  word-break: break-word;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .venue-dashboard-history-details-modal:hover {
-    border-color: rgba(255, 91, 50, 0.55);
-  }
+/* =========================================================
+   HOVER
+   ========================================================= */
 
-  .venue-dashboard-history-detail-item:hover {
-    border-color: rgba(255, 91, 50, 0.55);
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.026),
-        rgba(255, 255, 255, 0.006)
-      ),
-      rgba(255, 255, 255, 0.009);
+@media (hover: hover) and (pointer: fine) {
+  /*
+   * The modal outline appears only when directly hovering
+   * the modal surface, not while hovering its child controls,
+   * state pills, grid or detail tiles.
+   */
+  .venue-dashboard-history-details-modal:hover:not(
+      :has(
+        .venue-dashboard-history-details-close:hover,
+        .venue-dashboard-history-lock-icon:hover,
+        .venue-dashboard-history-details-state-row:hover,
+        .venue-dashboard-history-details-grid:hover
+      )
+    ) {
+    border-color:
+      rgba(255, 91, 50, 0.55);
   }
 
   .venue-dashboard-history-details-close:hover {
-    border-color: rgba(255, 91, 50, 0.32);
-    background: rgba(255, 91, 50, 0.1);
+    border-color:
+      rgba(255, 91, 50, 0.42);
+    background:
+      rgba(255, 91, 50, 0.08);
     color: #ffd5ca;
-    transform: translateY(-1px);
+  }
+
+  .venue-dashboard-history-lock-icon:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+    background:
+      rgba(255, 91, 50, 0.12);
+    color: #ff6b45;
+  }
+
+  .venue-dashboard-history-details-state-row
+    .venue-dashboard-history-status.is-expired:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+    background:
+      rgba(255, 91, 50, 0.13);
+    color: #ff7654;
+  }
+
+  .venue-dashboard-history-details-state-row
+    .venue-dashboard-history-status.is-removed:hover {
+    border-color:
+      rgba(232, 79, 79, 0.58);
+    background:
+      rgba(232, 79, 79, 0.15);
+    color: #ff7f7f;
+  }
+
+  .venue-dashboard-history-readonly-pill:hover {
+    border-color:
+      rgba(255, 91, 50, 0.35);
+    background:
+      rgba(255, 255, 255, 0.045);
+    color: #f7f1ea;
+  }
+
+  .venue-dashboard-history-details-grid:hover {
+  border-color:
+    rgba(255, 91, 50, 0.55);
+}
+
+  .venue-dashboard-history-detail-item:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
   }
 }
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
 
 @keyframes
   venue-dashboard-history-details-backdrop-enter {
@@ -322,6 +456,10 @@
       scale(1);
   }
 }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 720px) {
   .venue-dashboard-history-details-backdrop {
@@ -361,7 +499,6 @@
   .venue-dashboard-history-detail-item,
   .venue-dashboard-history-detail-item.is-wide {
     grid-column: auto;
-    text-align: center;
   }
 }
 
@@ -369,12 +506,34 @@
   .venue-dashboard-history-details-heading {
     padding: 56px 0 0;
   }
+
+  .venue-dashboard-history-details-state-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .venue-dashboard-history-details-state-row
+    .venue-dashboard-history-status,
+  .venue-dashboard-history-readonly-pill {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .venue-dashboard-history-details-backdrop,
   .venue-dashboard-history-details-modal,
-  .venue-dashboard-history-details-close {
+  .venue-dashboard-history-details-close,
+  .venue-dashboard-history-lock-icon,
+  .venue-dashboard-history-details-state-row
+    .venue-dashboard-history-status,
+  .venue-dashboard-history-readonly-pill,
+  .venue-dashboard-history-details-grid,
+  .venue-dashboard-history-detail-item {
     animation-duration: 1ms;
     transition-duration: 1ms;
   }

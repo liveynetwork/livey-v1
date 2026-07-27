@@ -2,7 +2,8 @@
   display: grid;
   gap: 11px;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
   border-radius: 28px;
   background:
     linear-gradient(
@@ -12,19 +13,26 @@
     ),
     rgba(7, 8, 10, 0.52);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 18px 42px rgba(0, 0, 0, 0.14);
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.025),
+    0 18px 42px
+      rgba(0, 0, 0, 0.14);
+      transition: border-color 180ms ease;
 }
 
 .venue-dashboard-history-item {
   min-width: 0;
   min-height: 92px;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 22px;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    auto;
   align-items: center;
   gap: 16px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+  border-radius: 22px;
   padding: 16px 18px;
   background:
     linear-gradient(
@@ -34,33 +42,53 @@
     ),
     rgba(7, 8, 10, 0.58);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.02),
-    0 10px 24px rgba(0, 0, 0, 0.07);
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.02),
+    0 10px 24px
+      rgba(0, 0, 0, 0.07);
   cursor: pointer;
   outline: none;
-  transition: border-color 180ms ease;
+  transition:
+    border-color 180ms ease;
 }
+
+/* =========================================================
+   ARCHIVE ICON
+   ========================================================= */
 
 .venue-dashboard-history-item-icon {
   width: 48px;
   height: 48px;
-  border-radius: 17px;
   display: grid;
   place-items: center;
-  color: rgba(247, 241, 234, 0.58);
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  border: 1px solid
+    rgba(255, 91, 50, 0.18);
+  border-radius: 17px;
+  background:
+    rgba(255, 91, 50, 0.07);
+  box-shadow: none;
+  color: #ff805f;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
 }
 
-.venue-dashboard-history-item-icon svg {
+.venue-dashboard-history-item-icon
+  svg {
   display: block;
 }
+
+/* =========================================================
+   ACTIVITY COPY
+   ========================================================= */
 
 .venue-dashboard-history-main {
   min-width: 0;
 }
 
-.venue-dashboard-history-main strong {
+.venue-dashboard-history-main
+  strong {
   display: block;
   overflow: hidden;
   color: #f7f1ea;
@@ -71,14 +99,20 @@
   white-space: nowrap;
 }
 
-.venue-dashboard-history-main span {
+.venue-dashboard-history-main
+  span {
   display: block;
   margin-top: 6px;
-  color: rgba(247, 241, 234, 0.48);
+  color:
+    rgba(247, 241, 234, 0.48);
   font-size: 0.82rem;
   font-weight: 800;
   line-height: 1.4;
 }
+
+/* =========================================================
+   STATUS
+   ========================================================= */
 
 .venue-dashboard-history-actions {
   display: flex;
@@ -87,40 +121,113 @@
 }
 
 .venue-dashboard-history-status {
-  min-height: 32px;
-  border-radius: 999px;
+  min-height: 34px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 11px;
-  color: rgba(247, 241, 234, 0.55);
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0 12px;
+  box-shadow: none;
   font-size: 0.73rem;
   font-weight: 950;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
 }
 
-.venue-dashboard-history-status > span {
+.venue-dashboard-history-status
+  > span {
   width: 6px;
   height: 6px;
+  flex: 0 0 auto;
   border-radius: 999px;
   background: currentColor;
 }
 
-.venue-dashboard-history-item:focus-visible {
-  border-color: rgba(255, 91, 50, 0.65);
-  box-shadow: 0 0 0 3px rgba(255, 91, 50, 0.12);
+/* Expired — Livey orange */
+
+.venue-dashboard-history-status.is-expired {
+  border-color:
+    rgba(255, 91, 50, 0.18);
+  background:
+    rgba(255, 91, 50, 0.07);
+  color: #ff9478;
 }
 
+/* Removed — restrained red */
+
+.venue-dashboard-history-status.is-removed {
+  border-color:
+    rgba(232, 79, 79, 0.2);
+  background:
+    rgba(232, 79, 79, 0.08);
+  color: #ff9999;
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.venue-dashboard-history-item:focus-visible {
+  border-color:
+    rgba(255, 91, 50, 0.68);
+  outline: 2px solid
+    rgba(255, 91, 50, 0.62);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
 @media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-history-list:hover {
+  border-color: rgba(255, 91, 50, 0.55);
+}
+
   .venue-dashboard-history-item:hover {
-    border-color: rgba(255, 91, 50, 0.55);
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+
+  .venue-dashboard-history-item-icon:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+    background:
+      rgba(255, 91, 50, 0.12);
+    color: #ff6b45;
+  }
+
+  .venue-dashboard-history-status.is-expired:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+    background:
+      rgba(255, 91, 50, 0.12);
+    color: #ff7654;
+  }
+
+  .venue-dashboard-history-status.is-removed:hover {
+    border-color:
+      rgba(232, 79, 79, 0.55);
+    background:
+      rgba(232, 79, 79, 0.14);
+    color: #ff7f7f;
   }
 }
 
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
 @media (max-width: 820px) {
   .venue-dashboard-history-item {
-    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-columns:
+      44px
+      minmax(0, 1fr);
   }
 
   .venue-dashboard-history-item-icon {
@@ -149,7 +256,8 @@
     text-align: center;
   }
 
-  .venue-dashboard-history-main strong {
+  .venue-dashboard-history-main
+    strong {
     white-space: normal;
   }
 
@@ -161,6 +269,20 @@
 
   .venue-dashboard-history-status {
     width: 100%;
+    box-sizing: border-box;
     justify-content: center;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-history-list,
+  .venue-dashboard-history-item,
+  .venue-dashboard-history-item-icon,
+  .venue-dashboard-history-status {
+    transition: none;
   }
 }

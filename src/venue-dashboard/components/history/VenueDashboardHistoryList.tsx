@@ -8,7 +8,9 @@ import "./VenueDashboardHistoryList.css";
 
 type VenueDashboardHistoryListProps = {
   events: VenueDashboardEvent[];
-  onOpenEvent: (event: VenueDashboardEvent) => void;
+  onOpenEvent: (
+    event: VenueDashboardEvent
+  ) => void;
   variant?: "preview" | "archive";
 };
 
@@ -22,7 +24,8 @@ export function VenueDashboardHistoryList({
       className={`venue-dashboard-history-list venue-dashboard-history-list-${variant}`}
     >
       {events.map((event) => {
-        const wasRemoved = wasHistoryEventRemoved(event);
+        const wasRemoved =
+          wasHistoryEventRemoved(event);
 
         return (
           <article
@@ -31,11 +34,18 @@ export function VenueDashboardHistoryList({
             role="button"
             tabIndex={0}
             aria-label={`Open archived activity details for ${
-              event.title || "Untitled activity"
+              event.title ||
+              "Untitled activity"
             }`}
-            onClick={() => onOpenEvent(event)}
+            onClick={() =>
+              onOpenEvent(event)
+            }
             onKeyDown={(keyboardEvent) =>
-              handleHistoryItemKeyDown(keyboardEvent, event, onOpenEvent)
+              handleHistoryItemKeyDown(
+                keyboardEvent,
+                event,
+                onOpenEvent
+              )
             }
           >
             <div
@@ -46,15 +56,32 @@ export function VenueDashboardHistoryList({
             </div>
 
             <div className="venue-dashboard-history-main">
-              <strong>{event.title || "Untitled activity"}</strong>
+              <strong>
+                {event.title ||
+                  "Untitled activity"}
+              </strong>
 
-              <span>{getHistoryEventTiming(event)}</span>
+              <span>
+                {getHistoryEventTiming(
+                  event
+                )}
+              </span>
             </div>
 
             <div className="venue-dashboard-history-actions">
-              <small className="venue-dashboard-history-status">
+              <small
+                className={[
+                  "venue-dashboard-history-status",
+                  wasRemoved
+                    ? "is-removed"
+                    : "is-expired",
+                ].join(" ")}
+              >
                 <span aria-hidden="true" />
-                {wasRemoved ? "Removed" : "Expired"}
+
+                {wasRemoved
+                  ? "Removed"
+                  : "Expired"}
               </small>
             </div>
           </article>
@@ -67,9 +94,14 @@ export function VenueDashboardHistoryList({
 function handleHistoryItemKeyDown(
   keyboardEvent: KeyboardEvent<HTMLElement>,
   event: VenueDashboardEvent,
-  onOpenEvent: (event: VenueDashboardEvent) => void
+  onOpenEvent: (
+    event: VenueDashboardEvent
+  ) => void
 ) {
-  if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") {
+  if (
+    keyboardEvent.key !== "Enter" &&
+    keyboardEvent.key !== " "
+  ) {
     return;
   }
 

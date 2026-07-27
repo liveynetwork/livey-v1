@@ -19,7 +19,11 @@ export function VenueDashboardHistoryDetailsModal({
   event,
   onClose,
 }: VenueDashboardHistoryDetailsModalProps) {
-  const wasRemoved = wasHistoryEventRemoved(event);
+  const wasRemoved =
+    wasHistoryEventRemoved(event);
+
+  const historyState =
+    getHistoryEventState(event);
 
   useModalBehaviour(onClose);
 
@@ -28,7 +32,10 @@ export function VenueDashboardHistoryDetailsModal({
       className="venue-dashboard-history-details-backdrop"
       role="presentation"
       onMouseDown={(mouseEvent) =>
-        handleBackdropClick(mouseEvent, onClose)
+        handleBackdropClick(
+          mouseEvent,
+          onClose
+        )
       }
     >
       <section
@@ -60,18 +67,28 @@ export function VenueDashboardHistoryDetailsModal({
             </p>
 
             <h2 id="venue-dashboard-history-details-title">
-              {event.title || "Untitled activity"}
+              {event.title ||
+                "Untitled activity"}
             </h2>
           </header>
 
           <div className="venue-dashboard-history-details-state-row">
-            <span className="venue-dashboard-history-status">
+            <span
+              className={[
+                "venue-dashboard-history-status",
+                wasRemoved
+                  ? "is-removed"
+                  : "is-expired",
+              ].join(" ")}
+            >
               <span aria-hidden="true" />
-              {getHistoryEventState(event)}
+
+              {historyState}
             </span>
 
             <span className="venue-dashboard-history-readonly-pill">
               <LockSmallIcon />
+
               Read only
             </span>
           </div>
@@ -160,11 +177,15 @@ function DetailItem({
 }: DetailItemProps) {
   return (
     <article
-      className={`venue-dashboard-history-detail-item ${
-        wide ? "is-wide" : ""
-      }`}
+      className={[
+        "venue-dashboard-history-detail-item",
+        wide ? "is-wide" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <span>{label}</span>
+
       <strong>{value}</strong>
     </article>
   );
@@ -174,11 +195,25 @@ function useModalBehaviour(
   onClose: () => void
 ) {
   useEffect(() => {
-    const previousOverflow =
-      document.body.style.overflow;
+    const body = document.body;
 
-    document.body.style.overflow =
-      "hidden";
+    const currentLockCount = Number(
+      body.dataset
+        .liveyModalScrollLockCount ?? "0"
+    );
+
+    if (currentLockCount === 0) {
+      body.dataset
+        .liveyPreviousBodyOverflow =
+        body.style.overflow;
+
+      body.style.overflow = "hidden";
+    }
+
+    body.dataset
+      .liveyModalScrollLockCount = String(
+      currentLockCount + 1
+    );
 
     function handleKeyDown(
       event: globalThis.KeyboardEvent
@@ -194,13 +229,38 @@ function useModalBehaviour(
     );
 
     return () => {
-      document.body.style.overflow =
-        previousOverflow;
-
       window.removeEventListener(
         "keydown",
         handleKeyDown
       );
+
+      const activeLockCount = Number(
+        body.dataset
+          .liveyModalScrollLockCount ?? "1"
+      );
+
+      const remainingLockCount = Math.max(
+        0,
+        activeLockCount - 1
+      );
+
+      if (remainingLockCount > 0) {
+        body.dataset
+          .liveyModalScrollLockCount =
+          String(remainingLockCount);
+
+        return;
+      }
+
+      body.style.overflow =
+        body.dataset
+          .liveyPreviousBodyOverflow ?? "";
+
+      delete body.dataset
+        .liveyModalScrollLockCount;
+
+      delete body.dataset
+        .liveyPreviousBodyOverflow;
     };
   }, [onClose]);
 }
@@ -236,6 +296,7 @@ function LockIcon() {
       width="28"
       height="28"
       fill="none"
+      aria-hidden="true"
     >
       <rect
         x="5"

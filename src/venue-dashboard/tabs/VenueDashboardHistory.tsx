@@ -74,16 +74,16 @@ export function VenueDashboardHistory({
 
         <section className="venue-dashboard-card venue-dashboard-history-card">
           <div className="venue-dashboard-history-heading">
-            <div>
-              <p className="venue-dashboard-eyebrow">Archive</p>
-              <h2>Expired and removed</h2>
-            </div>
+  <div>
+    <p className="venue-dashboard-eyebrow">
+      Archive
+    </p>
 
-            <span className="venue-dashboard-history-count">
-              {historyEvents.length}{" "}
-              {historyEvents.length === 1 ? "activity" : "activities"}
-            </span>
-          </div>
+    <h2>
+      Expired and removed
+    </h2>
+  </div>
+</div>
 
           {historyEvents.length === 0 ? (
             <HistoryEmptyState />

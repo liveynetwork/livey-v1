@@ -468,20 +468,18 @@ function TimelineIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="21"
-      height="21"
+      width="24"
+      height="24"
       fill="none"
+      aria-hidden="true"
     >
       <path
-        d="M7 5.5h10M7 12h10M7 18.5h10"
+        d="M3.6 12h4.05l2.85-6.4 3.25 12.8L16.65 12h3.75"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
+        strokeLinejoin="round"
       />
-
-      <circle cx="4" cy="5.5" r="1.25" fill="currentColor" />
-      <circle cx="4" cy="12" r="1.25" fill="currentColor" />
-      <circle cx="4" cy="18.5" r="1.25" fill="currentColor" />
     </svg>
   );
 }

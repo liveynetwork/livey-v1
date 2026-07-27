@@ -133,47 +133,46 @@ export function VenueDashboardActivity({
             }
           />
 
-          {hasSavedActivities ? (
-            <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
-              <div className="venue-dashboard-activity-section-heading venue-dashboard-activity-saved-heading">
-                <div>
-                  <p className="venue-dashboard-eyebrow">
-  Publishing timeline
-</p>
-
-                  <h2>
-                    Your upcoming schedule
-                  </h2>
-
-                  <p>
-                    Review what is live,
-                    starting next, scheduled
-                    later, or hidden from people
-                    on Livey.
-                  </p>
-                </div>
-
-              </div>
-
-              <VenueDashboardActiveList
-                events={activeEvents}
-                isUpdatingVisibility={
-                  isUpdatingVisibility
-                }
-                updatingVisibilityEventId={
-                  updatingVisibilityEventId
-                }
-                onSelectEvent={
-                  onSelectEvent
-                }
-                onToggleVisibility={
-                  onToggleVisibility
-                }
-              />
-            </section>
-          ) : (
+          {!hasSavedActivities ? (
             <VenueDashboardActivityEmptyState />
-          )}
+          ) : null}
+
+          <section className="venue-dashboard-card venue-dashboard-activity-saved-card">
+            <div className="venue-dashboard-activity-section-heading venue-dashboard-activity-saved-heading">
+              <div>
+                <p className="venue-dashboard-eyebrow">
+                  Publishing timeline
+                </p>
+
+                <h2>
+                  Your upcoming schedule
+                </h2>
+
+                <p>
+                  Review what is live,
+                  starting next, scheduled
+                  later, or hidden from people
+                  on Livey.
+                </p>
+              </div>
+            </div>
+
+            <VenueDashboardActiveList
+              events={activeEvents}
+              isUpdatingVisibility={
+                isUpdatingVisibility
+              }
+              updatingVisibilityEventId={
+                updatingVisibilityEventId
+              }
+              onSelectEvent={
+                onSelectEvent
+              }
+              onToggleVisibility={
+                onToggleVisibility
+              }
+            />
+          </section>
         </>
       )}
     </section>
