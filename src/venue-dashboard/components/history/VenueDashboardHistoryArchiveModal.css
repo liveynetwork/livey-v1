@@ -499,6 +499,90 @@
 }
 
 /* =========================================================
+   ARCHIVE DATE GROUPS
+   ========================================================= */
+
+.venue-dashboard-history-groups {
+  display: grid;
+  gap: 24px;
+}
+
+.venue-dashboard-history-group {
+  min-width: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.venue-dashboard-history-group-heading {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.venue-dashboard-history-group-heading::after {
+  content: "";
+  min-width: 24px;
+  height: 1px;
+  flex: 1 1 auto;
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+.venue-dashboard-history-group-heading
+  > div {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.venue-dashboard-history-group-heading
+  h3 {
+  margin: 0;
+  color:
+    rgba(247, 241, 234, 0.78);
+  font-size: 0.73rem;
+  font-weight: 950;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-history-group-heading
+  span {
+  color:
+    rgba(247, 241, 234, 0.4);
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-history-groups {
+    gap: 20px;
+  }
+
+  .venue-dashboard-history-group {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .venue-dashboard-history-group-heading {
+    gap: 10px;
+  }
+
+  .venue-dashboard-history-group-heading
+    > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* =========================================================
    NO FILTER RESULTS
    ========================================================= */
 

@@ -7,6 +7,13 @@ import type { MouseEvent } from "react";
 import type { VenueDashboardEvent } from "../../venueDashboardService";
 import { LiveyDashboardDropdown } from "../../tabs/account/LiveyDashboardDropdown";
 import { VenueDashboardHistoryList } from "./VenueDashboardHistoryList";
+import {
+  groupHistoryEventsByDate,
+  type HistorySortOrder,
+} from "./historyGroupingUtils";
+import {
+  getHistoryEventTimestamp,
+} from "./historyUtils";
 import "../../tabs/account/accountBase.css";
 import "./VenueDashboardHistoryArchiveModal.css";
 
@@ -22,10 +29,6 @@ type ArchiveStatusFilter =
   | "all"
   | "removed"
   | "expired";
-
-type ArchiveSortOrder =
-  | "newest"
-  | "oldest";
 
 const STATUS_OPTIONS = [
   {
@@ -67,7 +70,7 @@ export function VenueDashboardHistoryArchiveModal({
     useState<ArchiveStatusFilter>("all");
 
   const [sortOrder, setSortOrder] =
-    useState<ArchiveSortOrder>("newest");
+    useState<HistorySortOrder>("newest");
 
   const removedEvents = useMemo(
     () =>
@@ -114,14 +117,20 @@ export function VenueDashboardHistoryArchiveModal({
       .slice()
       .sort((firstEvent, secondEvent) => {
         const firstTimestamp =
-          getArchiveTimestamp(firstEvent);
+          getHistoryEventTimestamp(
+            firstEvent
+          );
 
         const secondTimestamp =
-          getArchiveTimestamp(secondEvent);
+          getHistoryEventTimestamp(
+            secondEvent
+          );
 
         return sortOrder === "newest"
-          ? secondTimestamp - firstTimestamp
-          : firstTimestamp - secondTimestamp;
+          ? secondTimestamp -
+              firstTimestamp
+          : firstTimestamp -
+              secondTimestamp;
       });
   }, [
     historyEvents,
@@ -129,6 +138,17 @@ export function VenueDashboardHistoryArchiveModal({
     statusFilter,
     sortOrder,
   ]);
+
+  const groupedHistoryEvents =
+    useMemo(() => {
+      return groupHistoryEventsByDate(
+        filteredEvents,
+        sortOrder
+      );
+    }, [
+      filteredEvents,
+      sortOrder,
+    ]);
 
   const hasActiveFilters =
     searchQuery.trim().length > 0 ||
@@ -206,28 +226,28 @@ export function VenueDashboardHistoryArchiveModal({
 
           <div className="venue-dashboard-history-archive-filter">
             <LiveyDashboardDropdown
-  value={statusFilter}
-  options={STATUS_OPTIONS}
-  triggerMode="arrow"
-  onChange={(value) =>
-    setStatusFilter(
-      value as ArchiveStatusFilter
-    )
-  }
-/>
+              value={statusFilter}
+              options={STATUS_OPTIONS}
+              triggerMode="arrow"
+              onChange={(value) =>
+                setStatusFilter(
+                  value as ArchiveStatusFilter
+                )
+              }
+            />
           </div>
 
           <div className="venue-dashboard-history-archive-filter">
             <LiveyDashboardDropdown
-  value={sortOrder}
-  options={SORT_OPTIONS}
-  triggerMode="arrow"
-  onChange={(value) =>
-    setSortOrder(
-      value as ArchiveSortOrder
-    )
-  }
-/>
+              value={sortOrder}
+              options={SORT_OPTIONS}
+              triggerMode="arrow"
+              onChange={(value) =>
+                setSortOrder(
+                  value as HistorySortOrder
+                )
+              }
+            />
           </div>
 
           {hasActiveFilters ? (
@@ -244,7 +264,9 @@ export function VenueDashboardHistoryArchiveModal({
 
         <div className="venue-dashboard-history-summary venue-dashboard-history-archive-summary">
           <article className="venue-dashboard-history-summary-item">
-            <span>Total activity</span>
+            <span>
+              Total activity
+            </span>
 
             <strong>
               {historyEvents.length}
@@ -282,11 +304,48 @@ export function VenueDashboardHistoryArchiveModal({
 
         <div className="venue-dashboard-history-archive-scroll">
           {filteredEvents.length > 0 ? (
-            <VenueDashboardHistoryList
-              events={filteredEvents}
-              onOpenEvent={onOpenEvent}
-              variant="archive"
-            />
+            <div className="venue-dashboard-history-groups">
+              {groupedHistoryEvents.map(
+                (group) => (
+                  <section
+                    className="venue-dashboard-history-group"
+                    key={group.key}
+                    aria-labelledby={`venue-dashboard-history-group-${group.key}`}
+                  >
+                    <header className="venue-dashboard-history-group-heading">
+                      <div>
+                        <h3
+                          id={`venue-dashboard-history-group-${group.key}`}
+                        >
+                          {group.label}
+                        </h3>
+
+                        <span>
+                          {
+                            group.events
+                              .length
+                          }
+                          {group.events
+                            .length === 1
+                            ? " activity"
+                            : " activities"}
+                        </span>
+                      </div>
+                    </header>
+
+                    <VenueDashboardHistoryList
+                      events={
+                        group.events
+                      }
+                      onOpenEvent={
+                        onOpenEvent
+                      }
+                      variant="archive"
+                    />
+                  </section>
+                )
+              )}
+            </div>
           ) : (
             <div className="venue-dashboard-history-archive-no-results">
               <div aria-hidden="true">
@@ -397,30 +456,11 @@ function handleBackdropClick(
   onClose: () => void
 ) {
   if (
-    event.target === event.currentTarget
+    event.target ===
+    event.currentTarget
   ) {
     onClose();
   }
-}
-
-function getArchiveTimestamp(
-  event: VenueDashboardEvent
-) {
-  const timestampSource =
-    event.deleted_at ||
-    event.ends_at ||
-    event.starts_at;
-
-  if (!timestampSource) {
-    return 0;
-  }
-
-  const timestamp =
-    new Date(timestampSource).getTime();
-
-  return Number.isNaN(timestamp)
-    ? 0
-    : timestamp;
 }
 
 function CloseIcon() {
