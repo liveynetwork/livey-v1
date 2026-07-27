@@ -1,0 +1,129 @@
+.venue-dashboard-history-removal-details {
+  display: grid;
+  gap: 20px;
+  margin-top: 14px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  padding: 24px;
+  background:
+    rgba(7, 8, 10, 0.52);
+  box-shadow: none;
+  transition:
+    border-color 180ms ease;
+}
+
+.venue-dashboard-history-removal-details-heading {
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  text-align: center;
+}
+
+.venue-dashboard-history-removal-details-heading
+  .venue-dashboard-eyebrow {
+  margin: 0;
+}
+
+.venue-dashboard-history-removal-details-heading
+  h3 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size:
+    clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.venue-dashboard-history-removal-details-heading
+  > p:last-child {
+  max-width: 580px;
+  margin: 0;
+  color:
+    rgba(247, 241, 234, 0.54);
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.venue-dashboard-history-removal-details-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.venue-dashboard-history-removal-detail-item {
+  min-width: 0;
+  min-height: 110px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 11px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+  border-radius: 20px;
+  padding: 20px 18px;
+  background:
+    rgba(255, 255, 255, 0.012);
+  box-shadow: none;
+  text-align: center;
+  transition:
+    border-color 180ms ease;
+}
+
+.venue-dashboard-history-removal-detail-item
+  > span {
+  color:
+    rgba(247, 241, 234, 0.46);
+  font-size: 0.69rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.venue-dashboard-history-removal-detail-item
+  > strong {
+  max-width: 100%;
+  color: #f7f1ea;
+  font-size: 0.94rem;
+  font-weight: 900;
+  line-height: 1.55;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-history-removal-details:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+
+  .venue-dashboard-history-removal-detail-item:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-history-removal-details {
+    padding: 20px 18px;
+  }
+
+  .venue-dashboard-history-removal-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-history-removal-details,
+  .venue-dashboard-history-removal-detail-item {
+    transition-duration: 1ms;
+  }
+}

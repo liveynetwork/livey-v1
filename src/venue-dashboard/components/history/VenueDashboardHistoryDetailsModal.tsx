@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { MouseEvent } from "react";
 import type { VenueDashboardEvent } from "../../venueDashboardService";
+import { VenueDashboardHistoryRemovalDetails } from "./VenueDashboardHistoryRemovalDetails";
 import {
   VenueDashboardHistoryReuseAction,
   type HistoryReuseMode,
@@ -159,26 +160,13 @@ export function VenueDashboardHistoryDetailsModal({
                 event.ends_at
               )}
             />
-
-            {wasRemoved ? (
-              <>
-                <DetailItem
-                  label="Removed"
-                  value={formatHistoryDate(
-                    event.deleted_at
-                  )}
-                />
-
-                <DetailItem
-                  label="Removal reason"
-                  value={
-                    event.deleted_reason ||
-                    "No reason was saved"
-                  }
-                />
-              </>
-            ) : null}
           </div>
+
+          {wasRemoved ? (
+            <VenueDashboardHistoryRemovalDetails
+              event={event}
+            />
+          ) : null}
 
           <VenueDashboardHistoryReuseAction
             mode={reuseMode}
