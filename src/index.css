@@ -1,3 +1,5 @@
+@import "./styles/liveyTypography.css";
+
 :root {
   --livey-cream: #e8e2da;
   --livey-grey: #626262;
@@ -5,8 +7,7 @@
   --livey-dark: #2b2926;
 
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", "Segoe UI", sans-serif;
+    var(--livey-font-family);
 
   color: var(--livey-dark);
   background: var(--livey-cream);
@@ -33,18 +34,21 @@ body,
 
 html {
   overflow-x: hidden;
-  background: var(--livey-cream);
+  background:
+    var(--livey-cream);
 }
 
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background: var(--livey-cream);
+  background:
+    var(--livey-cream);
 }
 
 #root {
   min-height: 100vh;
-  background: var(--livey-cream);
+  background:
+    var(--livey-cream);
 }
 
 button,
@@ -55,7 +59,8 @@ select {
 }
 
 button {
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color:
+    transparent;
 }
 
 img,
