@@ -72,7 +72,10 @@
   font-size:
     clamp(2rem, 4vw, 3.2rem);
   line-height: 1;
-  letter-spacing: -0.065em;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-hero);
   text-align: center;
   word-break: break-word;
 }
@@ -84,7 +87,10 @@
   color:
     rgba(247, 241, 234, 0.54);
   font-size: 0.9rem;
-  font-weight: 750;
+  font-weight:
+  var(--livey-font-weight-regular);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   line-height: 1.6;
   text-align: center;
 }
@@ -199,7 +205,10 @@
   caret-color: #ff5b32;
   font: inherit;
   font-size: 0.84rem;
-  font-weight: 800;
+  font-weight:
+  var(--livey-font-weight-medium);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   outline: none;
   transition:
     border-color 180ms ease;
@@ -244,9 +253,11 @@
   color:
     rgba(247, 241, 234, 0.4);
   font-size: 0.65rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.1em;
+  letter-spacing:
+  var(--livey-letter-spacing-label);
   text-align: center;
   text-transform: uppercase;
 }
@@ -269,7 +280,10 @@
   color:
     rgba(247, 241, 234, 0.78);
   font-size: 0.8rem;
-  font-weight: 900;
+  font-weight:
+  var(--livey-font-weight-semibold);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   transition:
     border-color 180ms ease;
 }
@@ -399,7 +413,10 @@
   color: #ff9a80;
   font: inherit;
   font-size: 0.75rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-control);
   cursor: pointer;
   outline: none;
   transition:
@@ -544,9 +561,11 @@
   color:
     rgba(247, 241, 234, 0.78);
   font-size: 0.73rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
   line-height: 1.2;
-  letter-spacing: 0.1em;
+  letter-spacing:
+  var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -555,7 +574,10 @@
   color:
     rgba(247, 241, 234, 0.4);
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight:
+  var(--livey-font-weight-medium);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   line-height: 1.2;
 }
 
@@ -626,7 +648,10 @@
   strong {
   color: #f7f1ea;
   font-size: 1.08rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-card-title);
   line-height: 1.3;
 }
 
@@ -637,7 +662,10 @@
   color:
     rgba(247, 241, 234, 0.48);
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight:
+  var(--livey-font-weight-regular);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   line-height: 1.6;
 }
 

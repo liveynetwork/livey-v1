@@ -33,7 +33,10 @@
     rgba(247, 241, 234, 0.68);
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-control);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;

@@ -31,9 +31,13 @@
   color: #f7f1ea;
   font-size:
     clamp(1.2rem, 2vw, 1.55rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1.1;
-  letter-spacing: -0.04em;
+  letter-spacing:
+    var(
+      --livey-letter-spacing-section-title
+    );
   text-align: center;
 }
 
@@ -44,8 +48,11 @@
   color:
     rgba(247, 241, 234, 0.54);
   font-size: 0.84rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.65;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -80,9 +87,11 @@
   color:
     rgba(247, 241, 234, 0.46);
   font-size: 0.69rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.11em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-align: center;
   text-transform: uppercase;
 }
@@ -92,8 +101,11 @@
   max-width: 100%;
   color: #f7f1ea;
   font-size: 0.94rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
   white-space: pre-wrap;
   word-break: break-word;

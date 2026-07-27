@@ -196,7 +196,10 @@
   font-size:
     clamp(2rem, 4vw, 3.15rem);
   line-height: 1;
-  letter-spacing: -0.065em;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-hero);
   text-align: center;
   word-break: break-word;
 }
@@ -226,7 +229,10 @@
   padding: 0 12px;
   box-shadow: none;
   font-size: 0.73rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   line-height: 1;
   transition:
     border-color 180ms ease,
@@ -331,9 +337,11 @@
   color:
     rgba(247, 241, 234, 0.46);
   font-size: 0.69rem;
-  font-weight: 950;
+  font-weight:
+  var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.11em;
+  letter-spacing:
+  var(--livey-letter-spacing-label);
   text-align: center;
   text-transform: uppercase;
 }
@@ -343,7 +351,10 @@
   max-width: 100%;
   color: #f7f1ea;
   font-size: 0.94rem;
-  font-weight: 900;
+  font-weight:
+  var(--livey-font-weight-semibold);
+letter-spacing:
+  var(--livey-letter-spacing-body);
   line-height: 1.55;
   text-align: center;
   white-space: pre-wrap;
