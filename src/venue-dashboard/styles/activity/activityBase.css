@@ -53,9 +53,11 @@
 .venue-dashboard-activity-section-heading h3 {
   margin: 0;
   color: #f7f1ea;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1.08;
-  letter-spacing: -0.05em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-activity-section-heading h2 {
@@ -72,6 +74,9 @@
   margin: 10px 0 0;
   color: rgba(247, 241, 234, 0.5);
   font-size: 0.88rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.62;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
