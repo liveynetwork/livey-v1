@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import type { MouseEvent } from "react";
 import type { VenueDashboardEvent } from "../../venueDashboardService";
 import {
+  VenueDashboardHistoryReuseAction,
+  type HistoryReuseMode,
+} from "./VenueDashboardHistoryReuseAction";
+import {
   formatHistoryDate,
   getHistoryEventState,
   wasHistoryEventRemoved,
@@ -12,12 +16,17 @@ type VenueDashboardHistoryDetailsModalProps = {
   venueName: string;
   event: VenueDashboardEvent;
   onClose: () => void;
+  onReuseEvent: (
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
+  ) => void;
 };
 
 export function VenueDashboardHistoryDetailsModal({
   venueName,
   event,
   onClose,
+  onReuseEvent,
 }: VenueDashboardHistoryDetailsModalProps) {
   const wasRemoved =
     wasHistoryEventRemoved(event);
@@ -25,7 +34,19 @@ export function VenueDashboardHistoryDetailsModal({
   const historyState =
     getHistoryEventState(event);
 
+  const reuseMode: HistoryReuseMode =
+    wasRemoved
+      ? "restore"
+      : "reuse";
+
   useModalBehaviour(onClose);
+
+  function handleReuseActivity() {
+    onReuseEvent(
+      event,
+      reuseMode
+    );
+  }
 
   return (
     <div
@@ -158,6 +179,13 @@ export function VenueDashboardHistoryDetailsModal({
               </>
             ) : null}
           </div>
+
+          <VenueDashboardHistoryReuseAction
+            mode={reuseMode}
+            onUseActivity={
+              handleReuseActivity
+            }
+          />
         </div>
       </section>
     </div>

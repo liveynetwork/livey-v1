@@ -1,47 +1,98 @@
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
 import type { VenueDashboardEvent } from "../venueDashboardService";
 import { VenueDashboardHistoryList } from "../components/history/VenueDashboardHistoryList";
 import { VenueDashboardHistoryArchiveModal } from "../components/history/VenueDashboardHistoryArchiveModal";
 import { VenueDashboardHistoryDetailsModal } from "../components/history/VenueDashboardHistoryDetailsModal";
+import type {
+  HistoryReuseMode,
+} from "../components/history/VenueDashboardHistoryReuseAction";
 import { sortHistoryEventsNewestFirst } from "../components/history/historyUtils";
 
 type VenueDashboardHistoryProps = {
   venueName: string;
   historyEvents: VenueDashboardEvent[];
-  isRestoringEvent: boolean;
-  onRestoreEvent: (event: VenueDashboardEvent) => void;
+  onReuseEvent: (
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
+  ) => void;
 };
 
 export function VenueDashboardHistory({
   venueName,
   historyEvents,
+  onReuseEvent,
 }: VenueDashboardHistoryProps) {
-  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
-  const [selectedHistoryEvent, setSelectedHistoryEvent] =
-    useState<VenueDashboardEvent | null>(null);
+  const [
+    isArchiveOpen,
+    setIsArchiveOpen,
+  ] = useState(false);
 
-  const sortedHistoryEvents = useMemo(() => {
-    return sortHistoryEventsNewestFirst(historyEvents);
-  }, [historyEvents]);
+  const [
+    selectedHistoryEvent,
+    setSelectedHistoryEvent,
+  ] =
+    useState<VenueDashboardEvent | null>(
+      null
+    );
 
-  const recentHistoryEvents = useMemo(() => {
-    return sortedHistoryEvents.slice(0, 3);
-  }, [sortedHistoryEvents]);
+  const sortedHistoryEvents =
+    useMemo(() => {
+      return sortHistoryEventsNewestFirst(
+        historyEvents
+      );
+    }, [historyEvents]);
 
-  const removedEvents = historyEvents.filter((event) =>
-    Boolean(event.deleted_at)
-  );
+  const recentHistoryEvents =
+    useMemo(() => {
+      return sortedHistoryEvents.slice(
+        0,
+        3
+      );
+    }, [sortedHistoryEvents]);
 
-  const expiredEvents = historyEvents.filter((event) => !event.deleted_at);
+  const removedEvents =
+    historyEvents.filter((event) =>
+      Boolean(event.deleted_at)
+    );
 
-  const shouldShowViewAll = sortedHistoryEvents.length > 3;
+  const expiredEvents =
+    historyEvents.filter(
+      (event) => !event.deleted_at
+    );
+
+  const shouldShowViewAll =
+    sortedHistoryEvents.length > 3;
+
+  function handleReuseEvent(
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
+  ) {
+    /*
+     * Clear both modal states before changing
+     * sections. Their unmount cleanup will
+     * correctly release the shared body-scroll
+     * locks.
+     */
+    setSelectedHistoryEvent(null);
+    setIsArchiveOpen(false);
+
+    onReuseEvent(
+      event,
+      mode
+    );
+  }
 
   return (
     <>
       <section className="venue-dashboard-history-page">
         <section className="venue-dashboard-card venue-dashboard-history-hero">
           <div className="venue-dashboard-history-hero-copy">
-            <p className="venue-dashboard-eyebrow">History</p>
+            <p className="venue-dashboard-eyebrow">
+              History
+            </p>
 
             <h2>Past activity</h2>
 
@@ -53,45 +104,69 @@ export function VenueDashboardHistory({
 
           <div className="venue-dashboard-history-summary">
             <article className="venue-dashboard-history-summary-item">
-              <span>Total activity</span>
-              <strong>{historyEvents.length}</strong>
-              <small>All archived activity</small>
+              <span>
+                Total activity
+              </span>
+
+              <strong>
+                {historyEvents.length}
+              </strong>
+
+              <small>
+                All archived activity
+              </small>
             </article>
 
             <article className="venue-dashboard-history-summary-item is-removed">
               <span>Removed</span>
-              <strong>{removedEvents.length}</strong>
-              <small>Manually removed</small>
+
+              <strong>
+                {removedEvents.length}
+              </strong>
+
+              <small>
+                Manually removed
+              </small>
             </article>
 
             <article className="venue-dashboard-history-summary-item is-expired">
               <span>Expired</span>
-              <strong>{expiredEvents.length}</strong>
-              <small>Ended automatically</small>
+
+              <strong>
+                {expiredEvents.length}
+              </strong>
+
+              <small>
+                Ended automatically
+              </small>
             </article>
           </div>
         </section>
 
         <section className="venue-dashboard-card venue-dashboard-history-card">
           <div className="venue-dashboard-history-heading">
-  <div>
-    <p className="venue-dashboard-eyebrow">
-      Archive
-    </p>
+            <div>
+              <p className="venue-dashboard-eyebrow">
+                Archive
+              </p>
 
-    <h2>
-      Expired and removed
-    </h2>
-  </div>
-</div>
+              <h2>
+                Expired and removed
+              </h2>
+            </div>
+          </div>
 
           {historyEvents.length === 0 ? (
             <HistoryEmptyState />
           ) : (
             <>
               <VenueDashboardHistoryList
-                events={recentHistoryEvents}
-                onOpenEvent={setSelectedHistoryEvent}
+                events={
+                  recentHistoryEvents
+                }
+                onOpenEvent={
+                  setSelectedHistoryEvent
+                }
                 variant="preview"
               />
 
@@ -100,7 +175,11 @@ export function VenueDashboardHistory({
                   <button
                     className="venue-dashboard-history-view-all-button"
                     type="button"
-                    onClick={() => setIsArchiveOpen(true)}
+                    onClick={() =>
+                      setIsArchiveOpen(
+                        true
+                      )
+                    }
                   >
                     View all
                   </button>
@@ -113,17 +192,32 @@ export function VenueDashboardHistory({
 
       {isArchiveOpen ? (
         <VenueDashboardHistoryArchiveModal
-          historyEvents={sortedHistoryEvents}
-          onClose={() => setIsArchiveOpen(false)}
-          onOpenEvent={setSelectedHistoryEvent}
+          historyEvents={
+            sortedHistoryEvents
+          }
+          onClose={() =>
+            setIsArchiveOpen(false)
+          }
+          onOpenEvent={
+            setSelectedHistoryEvent
+          }
         />
       ) : null}
 
       {selectedHistoryEvent ? (
         <VenueDashboardHistoryDetailsModal
           venueName={venueName}
-          event={selectedHistoryEvent}
-          onClose={() => setSelectedHistoryEvent(null)}
+          event={
+            selectedHistoryEvent
+          }
+          onClose={() =>
+            setSelectedHistoryEvent(
+              null
+            )
+          }
+          onReuseEvent={
+            handleReuseEvent
+          }
         />
       ) : null}
     </>

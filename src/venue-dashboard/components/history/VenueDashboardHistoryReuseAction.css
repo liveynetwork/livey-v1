@@ -1,0 +1,125 @@
+.venue-dashboard-history-reuse-action {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  margin-top: 14px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  padding: 28px;
+  background:
+    rgba(7, 8, 10, 0.52);
+  box-shadow: none;
+  text-align: center;
+  transition:
+    border-color 180ms ease;
+}
+
+.venue-dashboard-history-reuse-action-copy {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  max-width: 600px;
+}
+
+.venue-dashboard-history-reuse-action-copy
+  .venue-dashboard-eyebrow {
+  margin: 0;
+}
+
+.venue-dashboard-history-reuse-action-copy
+  h3 {
+  margin: 0;
+  color: #f7f1ea;
+  font-size:
+    clamp(1.25rem, 2.2vw, 1.65rem);
+  font-weight: 950;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  text-align: center;
+}
+
+.venue-dashboard-history-reuse-action-copy
+  > p:last-child {
+  max-width: 560px;
+  margin: 0;
+  color:
+    rgba(247, 241, 234, 0.58);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.venue-dashboard-history-reuse-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid
+    rgba(255, 91, 50, 0.46);
+  border-radius: 16px;
+  padding: 0 22px;
+  background:
+    rgba(255, 91, 50, 0.1);
+  box-shadow: none;
+  color: #ffd5ca;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.venue-dashboard-history-reuse-button
+  svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.venue-dashboard-history-reuse-button:focus-visible {
+  border-color:
+    rgba(255, 91, 50, 0.9);
+  outline: 2px solid
+    rgba(255, 91, 50, 0.72);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-history-reuse-action:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+
+  .venue-dashboard-history-reuse-button:hover {
+    border-color: #ff5b32;
+    background:
+      rgba(255, 91, 50, 0.15);
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 480px) {
+  .venue-dashboard-history-reuse-action {
+    gap: 20px;
+    padding: 24px 18px;
+  }
+
+  .venue-dashboard-history-reuse-button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-history-reuse-action,
+  .venue-dashboard-history-reuse-button {
+    transition-duration: 1ms;
+  }
+}

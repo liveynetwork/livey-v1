@@ -11,7 +11,6 @@ import {
   deleteVenueEvent,
   getVenueDashboardData,
   getVenueFollowerAnalytics,
-  restoreVenueEvent,
   updateVenueEvent,
   updateVenueProfile,
   type VenueActivityStatus,
@@ -28,6 +27,12 @@ import {
   VenueDashboardActivity,
   type EditingEventState,
 } from "./tabs/VenueDashboardActivity";
+import {
+  createActivityDraftFromHistory,
+} from "./tabs/activity/activityDraftUtils";
+import type {
+  HistoryReuseMode,
+} from "./components/history/VenueDashboardHistoryReuseAction";
 import { VenueDashboardAccount } from "./tabs/VenueDashboardAccount";
 import { VenueDashboardAnalytics } from "./tabs/VenueDashboardAnalytics";
 import { VenueDashboardHistory } from "./tabs/VenueDashboardHistory";
@@ -61,9 +66,10 @@ type PendingActivityAction =
   | {
       type: "refresh";
     }
-  | {
-      type: "restore";
+    | {
+      type: "history-reuse";
       event: VenueDashboardEvent;
+      mode: HistoryReuseMode;
     };
     
 type VenueDashboardScreenProps = {
@@ -121,9 +127,6 @@ const [
     useState(false);
 
   const [isDeletingEvent, setIsDeletingEvent] =
-    useState(false);
-
-  const [isRestoringEvent, setIsRestoringEvent] =
     useState(false);
 
   const [
@@ -1083,10 +1086,15 @@ function handleConfirmDiscardActivityChanges() {
     return;
   }
 
-  if (pendingAction.type === "restore") {
-    void handleRestoreEvent(
-      pendingAction.event
+    if (
+    pendingAction.type ===
+    "history-reuse"
+  ) {
+    handleHistoryReuse(
+      pendingAction.event,
+      pendingAction.mode
     );
+
     return;
   }
 
@@ -1147,63 +1155,59 @@ function handleConfirmDiscardActivityChanges() {
     }
   }
 
-  function requestRestoreEvent(
-  event: VenueDashboardEvent
-) {
-  if (hasUnsavedActivityChanges) {
-    setPendingActivityAction({
-      type: "restore",
-      event,
-    });
+    function requestHistoryReuse(
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
+  ) {
+    if (hasUnsavedActivityChanges) {
+      setPendingActivityAction({
+        type: "history-reuse",
+        event,
+        mode,
+      });
 
-    setIsDiscardChangesModalOpen(true);
-    return;
+      setIsDiscardChangesModalOpen(
+        true
+      );
+
+      return;
+    }
+
+    handleHistoryReuse(
+      event,
+      mode
+    );
   }
 
-  void handleRestoreEvent(event);
-}
-
-  async function handleRestoreEvent(
-    event: VenueDashboardEvent
+  function handleHistoryReuse(
+    event: VenueDashboardEvent,
+    mode: HistoryReuseMode
   ) {
-    try {
-      setIsRestoringEvent(true);
-      setStatusMessage("");
-      setErrorMessage("");
+    setStatusMessage("");
+    setErrorMessage("");
+    setIsActivityReusePanelOpen(false);
 
-      const restoredEvent =
-        await restoreVenueEvent({
-          eventId: event.id,
-        });
-
-      await refreshDashboard();
-
-      const nextEditingEvent =
-  mapEventToEditingState(
-    restoredEvent
-  );
-
-originalEditingEventRef.current =
-  nextEditingEvent;
-
-setEditingEvent(nextEditingEvent);
-setActiveSection("activity");
-
-      setStatusMessage(
-        "Activity restored successfully."
-      );
-    } catch (error) {
-      console.error(
-        "Failed to restore venue activity:",
-        error
+    const nextEditingEvent =
+      createActivityDraftFromHistory(
+        event
       );
 
-      setErrorMessage(
-        "We could not restore this activity. Please try again."
-      );
-    } finally {
-      setIsRestoringEvent(false);
-    }
+    originalEditingEventRef.current =
+      nextEditingEvent;
+
+    setEditingEvent(
+      nextEditingEvent
+    );
+
+    setActiveSection(
+      "activity"
+    );
+
+    setStatusMessage(
+      mode === "restore"
+        ? "Removed activity opened as a new draft."
+        : "Previous activity opened as a new draft."
+    );
   }
 
   async function handleUpdateVenueProfile(
@@ -1452,20 +1456,17 @@ onToggleVisibility={
             {activeSection ===
             "history" ? (
               <VenueDashboardHistory
-                venueName={
-                  activeVenue?.name ||
-                  "Your venue"
-                }
-                historyEvents={
-                  historyEvents
-                }
-                isRestoringEvent={
-                  isRestoringEvent
-                }
-                onRestoreEvent={
-  requestRestoreEvent
-}
-              />
+  venueName={
+    activeVenue?.name ||
+    "Your venue"
+  }
+  historyEvents={
+    historyEvents
+  }
+  onReuseEvent={
+    requestHistoryReuse
+  }
+/>
             ) : null}
 
             {activeSection ===
@@ -1656,16 +1657,30 @@ function getDiscardChangesConfirmation(
     };
   }
 
-  if (pendingAction.type === "restore") {
-    const restoredActivityTitle =
+    if (
+    pendingAction.type ===
+    "history-reuse"
+  ) {
+    const activityTitle =
       pendingAction.event.title?.trim() ||
       "this activity";
 
+    const isRestoreMode =
+      pendingAction.mode ===
+      "restore";
+
     return {
-      title: "Restore this activity?",
-      description:
-        `Your current unsaved changes will be lost. Continue editing to keep them, or discard them and restore “${restoredActivityTitle}”.`,
-      confirmLabel: "Discard and restore",
+      title: isRestoreMode
+        ? "Open this removed activity as a new draft?"
+        : "Use this activity again?",
+
+      description: isRestoreMode
+        ? `Your current unsaved changes will be lost. Continue editing to keep them, or discard them and create a new draft from “${activityTitle}”. The archived activity will remain unchanged.`
+        : `Your current unsaved changes will be lost. Continue editing to keep them, or discard them and create a new draft from “${activityTitle}”.`,
+
+      confirmLabel: isRestoreMode
+        ? "Discard and restore"
+        : "Discard and use again",
     };
   }
 
