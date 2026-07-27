@@ -72,22 +72,6 @@ export function VenueDashboardHistoryArchiveModal({
   const [sortOrder, setSortOrder] =
     useState<HistorySortOrder>("newest");
 
-  const removedEvents = useMemo(
-    () =>
-      historyEvents.filter((event) =>
-        Boolean(event.deleted_at)
-      ),
-    [historyEvents]
-  );
-
-  const expiredEvents = useMemo(
-    () =>
-      historyEvents.filter(
-        (event) => !event.deleted_at
-      ),
-    [historyEvents]
-  );
-
   const filteredEvents = useMemo(() => {
     const normalizedSearch =
       searchQuery.trim().toLowerCase();
@@ -150,10 +134,30 @@ export function VenueDashboardHistoryArchiveModal({
       sortOrder,
     ]);
 
-  const hasActiveFilters =
+  const hasResultFilters =
     searchQuery.trim().length > 0 ||
-    statusFilter !== "all" ||
+    statusFilter !== "all";
+
+  const hasActiveFilters =
+    hasResultFilters ||
     sortOrder !== "newest";
+
+  const summaryEvents =
+    hasResultFilters
+      ? filteredEvents
+      : historyEvents;
+
+  const summaryRemovedCount =
+    useMemo(() => {
+      return summaryEvents.filter(
+        (event) =>
+          Boolean(event.deleted_at)
+      ).length;
+    }, [summaryEvents]);
+
+  const summaryExpiredCount =
+    summaryEvents.length -
+    summaryRemovedCount;
 
   function clearFilters() {
     setSearchQuery("");
@@ -269,11 +273,13 @@ export function VenueDashboardHistoryArchiveModal({
             </span>
 
             <strong>
-              {historyEvents.length}
+              {summaryEvents.length}
             </strong>
 
             <small>
-              All archived activity
+              {hasResultFilters
+                ? "Filtered activity"
+                : "All archived activity"}
             </small>
           </article>
 
@@ -281,11 +287,13 @@ export function VenueDashboardHistoryArchiveModal({
             <span>Removed</span>
 
             <strong>
-              {removedEvents.length}
+              {summaryRemovedCount}
             </strong>
 
             <small>
-              Manually removed
+              {hasResultFilters
+                ? "Filtered removed"
+                : "Manually removed"}
             </small>
           </article>
 
@@ -293,11 +301,13 @@ export function VenueDashboardHistoryArchiveModal({
             <span>Expired</span>
 
             <strong>
-              {expiredEvents.length}
+              {summaryExpiredCount}
             </strong>
 
             <small>
-              Ended automatically
+              {hasResultFilters
+                ? "Filtered expired"
+                : "Ended automatically"}
             </small>
           </article>
         </div>
