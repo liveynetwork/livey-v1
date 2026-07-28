@@ -110,15 +110,19 @@
 .venue-dashboard-hours-editor-heading .venue-dashboard-eyebrow {
   margin: 0;
   font-size: 0.82rem;
-  letter-spacing: 0.14em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .venue-dashboard-hours-editor-heading h2 {
   margin: 10px 0 0;
   color: #f7f1ea;
   font-size: clamp(2rem, 3vw, 3.1rem);
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.98;
-  letter-spacing: -0.07em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
   text-align: center;
 }
 
@@ -127,8 +131,11 @@
   margin: 16px auto 0;
   color: rgba(247, 241, 234, 0.58);
   font-size: 0.94rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -199,9 +206,11 @@
 .venue-dashboard-hours-editor-table-header span {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.7rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-align: center;
 }
 
@@ -242,8 +251,10 @@
 .venue-dashboard-hours-day-name {
   color: #f7f1ea;
   font-size: 1rem;
-  font-weight: 950;
-  letter-spacing: -0.015em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-hours-controls {
@@ -330,8 +341,11 @@
   margin: 0;
   font: inherit;
   font-size: 0.92rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: center;
   white-space: nowrap;
 }

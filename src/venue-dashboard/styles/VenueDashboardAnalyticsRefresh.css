@@ -19,8 +19,10 @@
     rgba(7, 8, 10, 0.54);
   font: inherit;
   font-size: 0.7rem;
-  font-weight: 950;
-  letter-spacing: 0.035em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
     transition:
     color 180ms ease,

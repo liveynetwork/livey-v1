@@ -42,23 +42,28 @@
 .venue-dashboard-analytics-trend-summary span {
   color: rgba(247, 241, 234, 0.44);
   font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
 .venue-dashboard-analytics-trend-summary strong {
   color: #f7f1ea;
   font-size: 2.25rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.075em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
 }
 
 .venue-dashboard-analytics-trend-summary small {
   color: rgba(247, 241, 234, 0.4);
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.45;
 }
 
@@ -136,7 +141,8 @@
   color: rgba(247, 241, 234, 0.82);
   font-family: inherit;
   font-size: 0.69rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.35;
   text-align: center;
   white-space: normal;
@@ -167,7 +173,8 @@
   place-items: center;
   color: rgba(247, 241, 234, 0.66);
   font-size: 0.68rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
 }
 
 .venue-dashboard-analytics-chart-track {
@@ -230,9 +237,11 @@
   align-self: end;
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.68rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.06em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-align: center;
   text-transform: uppercase;
   transition: color 180ms ease;
@@ -283,13 +292,15 @@
 .venue-dashboard-analytics-trend-empty strong {
   color: #f7f1ea;
   font-size: 0.84rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
 }
 
 .venue-dashboard-analytics-trend-empty span {
   color: rgba(247, 241, 234, 0.43);
   font-size: 0.74rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
 }
 
 .venue-dashboard-analytics-trend-actions {
@@ -307,7 +318,8 @@
   color: #f7f1ea;
   font: inherit;
   font-size: 0.8rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -389,8 +401,10 @@
 .venue-dashboard-analytics-month-change > span {
   color: rgba(247, 241, 234, 0.46);
   font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.12em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -401,15 +415,18 @@
     4vw,
     3.15rem
   );
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.95;
-  letter-spacing: -0.08em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
 }
 
 .venue-dashboard-analytics-month-grid small {
   color: rgba(247, 241, 234, 0.44);
   font-size: 0.73rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
 }
 
 .venue-dashboard-analytics-month-change {
@@ -465,9 +482,11 @@
     4vw,
     2.75rem
   );
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.95;
-  letter-spacing: -0.075em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
 }
 
 .venue-dashboard-analytics-month-change.is-up
@@ -483,7 +502,8 @@
 .venue-dashboard-analytics-month-change small {
   color: rgba(247, 241, 234, 0.46);
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
 }
 
 /* Publishing history modal */
@@ -615,7 +635,8 @@
   color: #f7f1ea;
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1;
-  letter-spacing: -0.065em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-analytics-publishing-modal-heading
@@ -625,7 +646,8 @@
   text-align: center;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.9rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
 }
 
@@ -680,7 +702,8 @@ right: 0;
   color: rgba(247, 241, 234, 0.5);
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -728,8 +751,10 @@ right: 0;
   span {
   color: rgba(247, 241, 234, 0.44);
   font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -737,7 +762,8 @@ right: 0;
   strong {
   color: #f7f1ea;
   font-size: 2.2rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
 }
 
@@ -745,7 +771,8 @@ right: 0;
   small {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.45;
 }
 

@@ -32,8 +32,10 @@
   color:
     rgba(247, 241, 234, 0.4);
   font-size: 0.58rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -41,8 +43,10 @@
   strong {
   color: #ff9b80;
   font-size: 0.9rem;
-  font-weight: 950;
-  letter-spacing: -0.025em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-follower-state {
@@ -57,7 +61,10 @@
   background:
     rgba(7, 8, 10, 0.34);
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -165,8 +172,10 @@
   color:
     rgba(247, 241, 234, 0.46);
   font-size: 0.64rem;
-  font-weight: 950;
-  letter-spacing: 0.13em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -175,9 +184,11 @@
   color: #ff8b6e;
   font-size:
     clamp(3rem, 6vw, 4.8rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.95;
-  letter-spacing: -0.075em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
 }
 
 .venue-dashboard-analytics-follower-compact-metric
@@ -185,7 +196,10 @@
   color:
     rgba(247, 241, 234, 0.42);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-follower-today-label {
@@ -201,7 +215,10 @@
   span {
   color: #f7f1ea;
   font-size: 0.78rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 /* Range selector */
@@ -239,7 +256,10 @@
     rgba(247, 241, 234, 0.5);
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -349,8 +369,10 @@
   color:
     rgba(247, 241, 234, 0.42);
   font-size: 0.6rem;
-  font-weight: 950;
-  letter-spacing: 0.115em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -359,9 +381,11 @@
   margin-top: 2px;
   color: #f7f1ea;
   font-size: 1.85rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-analytics-follower-chart-meta
@@ -377,8 +401,11 @@
   color:
     rgba(247, 241, 234, 0.42);
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.45;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 /* Chart */
@@ -497,7 +524,10 @@
   color:
     rgba(247, 241, 234, 0.34);
   font-size: 0.59rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   white-space: nowrap;
   transform: translateX(-50%);
 }
@@ -525,8 +555,10 @@
   color: #ffd6cb;
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 950;
-  letter-spacing: 0.01em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -566,7 +598,10 @@
     ),
     rgba(7, 8, 10, 0.52);
   font-size: 0.8rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
 }
 
@@ -611,8 +646,10 @@
   strong {
   color: #f7f1ea;
   font-size: 1rem;
-  font-weight: 950;
-  letter-spacing: -0.025em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-follower-chart-state
@@ -622,8 +659,11 @@
   color:
     rgba(247, 241, 234, 0.44);
   font-size: 0.76rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 /* Compact footer */
@@ -641,7 +681,10 @@
   color:
     rgba(247, 241, 234, 0.42);
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-follower-live-status {
@@ -800,8 +843,10 @@
   span {
   color: #ff8b6e;
   font-size: 0.65rem;
-  font-weight: 950;
-  letter-spacing: 0.13em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -811,9 +856,11 @@
   color: #f7f1ea;
   font-size:
     clamp(1.9rem, 4vw, 3.15rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.055em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-analytics-follower-modal-header
@@ -823,8 +870,11 @@
   color:
     rgba(247, 241, 234, 0.45);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-follower-modal-close {
@@ -880,7 +930,10 @@
   color:
     rgba(247, 241, 234, 0.4);
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-follower-modal-footer

@@ -61,8 +61,10 @@
     rgba(255, 91, 50, 0.045)
   );
   font-size: 0.75rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .venue-dashboard-analytics-recommendations-list article > div {
@@ -74,8 +76,10 @@
 .venue-dashboard-analytics-recommendations-list strong {
   color: #f7f1ea;
   font-size: 0.95rem;
-  font-weight: 950;
-  letter-spacing: -0.025em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-recommendations-list p {
@@ -83,8 +87,11 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.47);
   font-size: 0.79rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-recommendations-complete {
@@ -162,16 +169,20 @@
 .venue-dashboard-analytics-recommendations-complete-label {
   color: #ff8b6e;
   font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
 .venue-dashboard-analytics-recommendations-complete strong {
   color: #f7f1ea;
   font-size: 1rem;
-  font-weight: 950;
-  letter-spacing: -0.025em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-recommendations-complete p {
@@ -179,8 +190,11 @@
   margin: 7px 0 0;
   color: rgba(247, 241, 234, 0.48);
   font-size: 0.8rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-recommendations-complete svg {

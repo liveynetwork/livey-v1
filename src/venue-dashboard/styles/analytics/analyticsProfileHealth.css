@@ -110,9 +110,11 @@
 .venue-dashboard-analytics-profile-ring strong {
   color: #f7f1ea;
   font-size: 2.55rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.08em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
 }
 
 .venue-dashboard-analytics-profile-ring.is-large
@@ -123,8 +125,10 @@
 .venue-dashboard-analytics-profile-ring span {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.67rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -138,8 +142,10 @@
 .venue-dashboard-analytics-missing-fields > span {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -159,7 +165,10 @@
   background:
     rgba(255, 91, 50, 0.075);
   font-size: 0.72rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
 }
 
 .venue-dashboard-analytics-profile-complete {
@@ -202,8 +211,10 @@
   strong {
   color: #f7f1ea;
   font-size: 0.94rem;
-  font-weight: 950;
-  letter-spacing: -0.02em;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-profile-complete
@@ -211,7 +222,11 @@
   max-width: 280px;
   color: rgba(247, 241, 234, 0.48);
   font-size: 0.76rem;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -236,8 +251,10 @@
   color: rgba(247, 241, 234, 0.82);
   font-family: inherit;
   font-size: 0.82rem;
-  font-weight: 950;
-  letter-spacing: 0.015em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -384,8 +401,11 @@ overflow: hidden;
     4vw,
     3.2rem
   );
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.065em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-analytics-profile-modal-heading
@@ -394,8 +414,11 @@ overflow: hidden;
   margin: 13px 0 0;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.9rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.6;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-profile-modal-close {
@@ -463,8 +486,10 @@ overflow: hidden;
   > span {
   color: #ff805f;
   font-size: 0.66rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -476,9 +501,11 @@ overflow: hidden;
     4vw,
     2.8rem
   );
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.065em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-analytics-profile-modal-overview-copy
@@ -487,8 +514,11 @@ overflow: hidden;
   margin: 0;
   color: rgba(247, 241, 234, 0.5);
   font-size: 0.84rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.65;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-profile-fields-card {
@@ -524,8 +554,10 @@ overflow: hidden;
   span {
   color: rgba(247, 241, 234, 0.48);
   font-size: 0.67rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -534,7 +566,10 @@ overflow: hidden;
   margin: 0;
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-profile-fields-heading
@@ -550,7 +585,10 @@ overflow: hidden;
   background:
     rgba(255, 255, 255, 0.045);
   font-size: 0.75rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
 }
 
 .venue-dashboard-analytics-profile-fields-list {
@@ -629,14 +667,20 @@ overflow: hidden;
   strong {
   color: #f7f1ea;
   font-size: 0.82rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-profile-field-copy
   span {
   color: rgba(247, 241, 234, 0.42);
   font-size: 0.71rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-analytics-profile-field-fix {
@@ -655,7 +699,10 @@ overflow: hidden;
   color: #ffd8cd;
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -695,8 +742,10 @@ overflow: hidden;
   background:
     rgba(255, 91, 50, 0.055);
   font-size: 0.66rem;
-  font-weight: 950;
-  letter-spacing: 0.04em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -726,12 +775,20 @@ overflow: hidden;
   strong {
   color: #f7f1ea;
   font-size: 0.9rem;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .venue-dashboard-analytics-profile-modal-complete
   span {
   color: rgba(247, 241, 234, 0.46);
   font-size: 0.76rem;
+  font-weight:
+    var(--livey-font-weight-regular);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 @media (hover: hover) and (pointer: fine) {

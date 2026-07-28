@@ -98,17 +98,22 @@
   display: block;
   color: #f7f1ea;
   font-size: 0.88rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-semibold);
   line-height: 1.25;
-  letter-spacing: -0.015em;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .livey-toast-copy p {
   margin: 5px 0 0;
   color: rgba(247, 241, 234, 0.58);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-regular);
   line-height: 1.45;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .livey-toast-close {
