@@ -11,18 +11,23 @@
   overflow: hidden;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(circle at top left, rgba(255, 91, 50, 0.18), transparent 18rem),
-    rgba(8, 9, 11, 0.96);
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0.004)
+    ),
+    rgba(8, 9, 11, 0.98);
   backdrop-filter: blur(22px);
   padding: 18px 14px;
   transition:
     width 180ms ease,
-    box-shadow 180ms ease;
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-sidebar:hover {
   width: 292px;
-  box-shadow: 28px 0 70px rgba(0, 0, 0, 0.34);
+  border-right-color: rgba(255, 91, 50, 0.34);
 }
 
 .venue-dashboard-brand {
@@ -42,12 +47,18 @@
   overflow: hidden;
   border-radius: 18px;
   background:
-    linear-gradient(145deg, rgba(255, 91, 50, 0.22), rgba(255, 255, 255, 0.06)),
-    rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 91, 50, 0.22);
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.052),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(21, 23, 26, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.085);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
-    0 14px 32px rgba(255, 91, 50, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-brand-icon img {
@@ -122,13 +133,13 @@
   min-width: 58px;
   height: 58px;
   min-height: 58px;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 14px;
-  padding: 0 10px;
+  padding: 0 9px;
   color: rgba(247, 241, 234, 0.68);
   background: transparent;
   text-align: left;
@@ -136,9 +147,9 @@
   transition:
     width 180ms ease,
     min-width 180ms ease,
+    border-color 150ms ease,
     background 150ms ease,
-    color 150ms ease,
-    box-shadow 150ms ease;
+    color 150ms ease;
 }
 
 .venue-dashboard-sidebar:hover .venue-dashboard-nav-item {
@@ -146,22 +157,36 @@
   min-width: 260px;
   height: 58px;
   min-height: 58px;
-  padding: 0 10px;
+  padding: 0 9px;
 }
 
-.venue-dashboard-nav-item:hover,
-.venue-dashboard-nav-item.is-active {
+.venue-dashboard-nav-item:hover {
+  border-color: rgba(255, 91, 50, 0.55);
   color: #f7f1ea;
-  background: rgba(255, 255, 255, 0.075);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.014)
+    ),
+    rgba(255, 255, 255, 0.025);
 }
 
 .venue-dashboard-nav-item.is-active {
+  border-color: rgba(255, 91, 50, 0.55);
   color: #ff6b45;
   background:
-    linear-gradient(135deg, rgba(255, 91, 50, 0.16), rgba(255, 255, 255, 0.055));
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 91, 50, 0.28),
-    0 16px 34px rgba(255, 91, 50, 0.08);
+    linear-gradient(
+      145deg,
+      rgba(255, 91, 50, 0.11),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(255, 255, 255, 0.025);
+}
+
+.venue-dashboard-nav-item.is-active:hover {
+  border-color: #ff5b32;
+  color: #ff805f;
 }
 
 .venue-dashboard-nav-icon {
@@ -223,14 +248,23 @@
   min-width: 250px;
   display: grid;
   gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 20px;
   padding: 14px;
-  background: rgba(255, 255, 255, 0.06);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.042),
+      rgba(255, 255, 255, 0.014)
+    ),
+    rgba(255, 255, 255, 0.018);
   opacity: 0;
   transform: translateY(8px);
   transition:
     opacity 150ms ease,
-    transform 150ms ease;
+    transform 150ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-sidebar:hover .venue-dashboard-sidebar-footer {
@@ -262,6 +296,13 @@
   white-space: nowrap;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-brand-icon:hover,
+  .venue-dashboard-sidebar-footer:hover {
+    border-color: rgba(255, 91, 50, 0.55);
+  }
+}
+
 @media (max-width: 980px) {
   .venue-dashboard-sidebar {
     position: relative;
@@ -274,7 +315,8 @@
 
   .venue-dashboard-sidebar:hover {
     width: auto;
-    box-shadow: none;
+    border-right-color: transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.08);
   }
 
   .venue-dashboard-brand {
@@ -313,7 +355,7 @@
     min-width: 154px;
     min-height: 58px;
     height: 58px;
-    padding: 0 10px;
+    padding: 0 9px;
   }
 
   .venue-dashboard-sidebar-footer {
