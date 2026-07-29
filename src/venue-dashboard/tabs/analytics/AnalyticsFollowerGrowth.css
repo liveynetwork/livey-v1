@@ -82,17 +82,7 @@
   overflow: hidden;
   padding: 40px 34px 26px;
   background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(255, 255, 255, 0.045),
-      transparent 34%
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.032),
-      rgba(255, 255, 255, 0.008)
-    ),
-    #15171a;
+    var(--livey-card-background);
 }
 
 .venue-dashboard-analytics-follower-chart-card::before {
