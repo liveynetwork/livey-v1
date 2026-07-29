@@ -61,7 +61,8 @@
   padding: 11px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.012);
+  background:
+    var(--livey-card-group-background);
   box-shadow: none;
   transition:
     border-color 180ms ease,
@@ -80,7 +81,8 @@
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 21px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.018);
+  background:
+    var(--livey-inner-card-background);
   box-shadow: none;
   color: inherit;
   font-family: inherit;
@@ -96,7 +98,8 @@
 }
 
 .venue-dashboard-active-item.is-hidden {
-  background: rgba(255, 255, 255, 0.01);
+  background:
+    var(--livey-inner-card-background);
 }
 
 /* =========================================================
@@ -529,7 +532,8 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 24px;
   padding: 28px;
-  background: rgba(255, 255, 255, 0.012);
+  background:
+    var(--livey-inner-card-background);
   box-shadow: none;
   text-align: center;
   transition: border-color 180ms ease;
@@ -590,9 +594,8 @@
   }
 }
   .venue-dashboard-active-item:hover {
-    border-color: rgba(255, 91, 50, 0.42);
-    background: rgba(255, 255, 255, 0.022);
-  }
+  border-color: rgba(255, 91, 50, 0.42);
+}
 
   .venue-dashboard-active-visibility-switch:hover:not(:disabled)
     .venue-dashboard-active-visibility-switch-track {

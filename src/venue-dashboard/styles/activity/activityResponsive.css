@@ -20,8 +20,9 @@
   }
 
   .venue-dashboard-activity-reuse-item:hover {
-    background: rgba(255, 255, 255, 0.025);
-  }
+  background:
+    var(--livey-inner-card-background);
+}
 
   .venue-dashboard-activity-reuse-close:hover {
     border-color: rgba(255, 91, 50, 0.34);
@@ -54,9 +55,8 @@
   }
 
   button.venue-dashboard-activity-quick-action:hover {
-    border-color: rgba(255, 91, 50, 0.52);
-    background: rgba(255, 91, 50, 0.04);
-  }
+  border-color: rgba(255, 91, 50, 0.52);
+}
 
   button.venue-dashboard-activity-quick-action:hover
     .venue-dashboard-activity-quick-action-arrow {
