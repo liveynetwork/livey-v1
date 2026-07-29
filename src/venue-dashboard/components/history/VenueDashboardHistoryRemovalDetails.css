@@ -7,7 +7,7 @@
   border-radius: 28px;
   padding: 24px;
   background:
-    rgba(7, 8, 10, 0.52);
+    var(--livey-card-group-background);
   box-shadow: none;
   transition:
     border-color 180ms ease;
@@ -75,7 +75,7 @@
   border-radius: 20px;
   padding: 20px 18px;
   background:
-    rgba(255, 255, 255, 0.012);
+    var(--livey-inner-card-background);
   box-shadow: none;
   text-align: center;
   transition:

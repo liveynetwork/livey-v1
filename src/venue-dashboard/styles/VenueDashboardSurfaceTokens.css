@@ -1,4 +1,5 @@
 :root {
+  /* Standard page-level dashboard card */
   --livey-card-background:
     linear-gradient(
       145deg,
@@ -6,4 +7,22 @@
       rgba(255, 255, 255, 0.006)
     ),
     #121317;
+
+  /* Parent container holding multiple inner cards */
+  --livey-card-group-background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(7, 8, 10, 0.52);
+
+  /* Individual card inside a grouped container */
+  --livey-inner-card-background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.032),
+      rgba(255, 255, 255, 0.009)
+    ),
+    rgba(7, 8, 10, 0.58);
 }

@@ -555,12 +555,7 @@
   border-radius: 32px;
   padding: 38px 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.074),
-      rgba(255, 255, 255, 0.038)
-    ),
-    #17191d;
+    var(--livey-card-background);
 }
 
 .venue-dashboard-support-content {

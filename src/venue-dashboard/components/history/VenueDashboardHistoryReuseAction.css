@@ -8,7 +8,7 @@
   border-radius: 28px;
   padding: 28px;
   background:
-    rgba(7, 8, 10, 0.52);
+    var(--livey-card-group-background);
   box-shadow: none;
   text-align: center;
   transition:
