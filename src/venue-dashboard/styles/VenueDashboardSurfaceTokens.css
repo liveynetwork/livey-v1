@@ -1,0 +1,9 @@
+:root {
+  --livey-card-background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.022),
+      rgba(255, 255, 255, 0.006)
+    ),
+    #121317;
+}

@@ -14,19 +14,13 @@
   border-radius: 32px;
   padding: 48px 38px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.035),
-      rgba(255, 255, 255, 0.009)
-    ),
-    #15171a;
+  var(--livey-card-background);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025);
   font-family: inherit;
   text-align: center;
   transition:
-    border-color 180ms ease,
-    background 180ms ease;
+  border-color 180ms ease;
 }
 
 .venue-dashboard-activity-empty-state-icon {

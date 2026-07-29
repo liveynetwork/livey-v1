@@ -177,12 +177,7 @@
     rgba(255, 255, 255, 0.085);
   border-radius: 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.045)
-    ),
-    #15171b;
+    var(--livey-card-background);
   box-shadow:
     0 22px 80px
     rgba(0, 0, 0, 0.22);
