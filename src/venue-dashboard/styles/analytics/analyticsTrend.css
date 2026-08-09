@@ -22,13 +22,7 @@
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 23px;
   padding: 18px 22px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.008)
-    ),
-    rgba(7, 8, 10, 0.5);
+  background: var(--livey-inner-card-background);
   text-align: center;
   transition: border-color 180ms ease;
 }
@@ -285,7 +279,7 @@
   border: 1px dashed rgba(255, 255, 255, 0.065);
   border-radius: 21px;
   padding: 20px;
-  background: rgba(7, 8, 10, 0.32);
+  background: var(--livey-inner-card-background);
   text-align: center;
 }
 
@@ -364,13 +358,7 @@
     rgba(255, 255, 255, 0.065);
   border-radius: 24px;
   padding: 22px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.022),
-      rgba(255, 255, 255, 0.005)
-    ),
-    rgba(7, 8, 10, 0.56);
+  background: var(--livey-inner-card-background);
   box-shadow:
     0 14px 34px
       rgba(0, 0, 0, 0.08);
@@ -443,13 +431,7 @@
     rgba(255, 255, 255, 0.065);
   border-radius: 24px;
   padding: 22px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.022),
-      rgba(255, 255, 255, 0.005)
-    ),
-    rgba(7, 8, 10, 0.56);
+  background: var(--livey-inner-card-background);
   box-shadow:
     0 14px 34px
       rgba(0, 0, 0, 0.08);
@@ -736,7 +718,7 @@ right: 0;
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 23px;
   padding: 18px 22px;
-  background: rgba(7, 8, 10, 0.46);
+  background: var(--livey-inner-card-background);
   text-align: center;
 }
 
@@ -855,27 +837,6 @@ right: 0;
 .venue-dashboard-analytics-month-change:hover {
   border-color:
     rgba(255, 91, 50, 0.55);
-}
-
-.venue-dashboard-analytics-month-grid
-  > div:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.006)
-    ),
-    rgba(7, 8, 10, 0.58);
-}
-
-.venue-dashboard-analytics-month-change:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.006)
-    ),
-    rgba(7, 8, 10, 0.58);
 }
 
   .venue-dashboard-analytics-trend-actions

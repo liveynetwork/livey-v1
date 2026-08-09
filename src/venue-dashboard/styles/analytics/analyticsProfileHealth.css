@@ -184,12 +184,7 @@
   padding: 24px;
   color: #ff805f;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.008)
-    ),
-    rgba(7, 8, 10, 0.42);
+    var(--livey-inner-card-background);
   text-align: center;
 }
 
@@ -465,15 +460,10 @@ overflow: hidden;
   border-radius: 30px;
   padding: 28px;
   background:
-  linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.018),
-    rgba(255, 255, 255, 0.004)
-  ),
-  rgba(7, 8, 10, 0.52);
+    var(--livey-inner-card-background);
   transition:
-  border-color 180ms ease,
-  background 180ms ease;
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .venue-dashboard-analytics-profile-modal-overview-copy {
@@ -527,12 +517,7 @@ overflow: hidden;
   border-radius: 26px;
   padding: 20px;
   background:
-  linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.018),
-    rgba(255, 255, 255, 0.004)
-  ),
-  rgba(7, 8, 10, 0.52);
+    var(--livey-card-group-background);
   transition: border-color 180ms ease;
 }
 
@@ -611,7 +596,7 @@ overflow: hidden;
   gap: 13px;
   padding: 12px 15px;
   background:
-  rgba(7, 8, 10, 0.48);
+    var(--livey-inner-card-background);
   transition:
     border-color 180ms ease,
     background 180ms ease;
@@ -767,7 +752,7 @@ overflow: hidden;
   gap: 7px;
   padding: 20px;
   background:
-    rgba(7, 8, 10, 0.4);
+    var(--livey-inner-card-background);
   text-align: center;
 }
 

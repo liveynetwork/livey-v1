@@ -20,12 +20,7 @@
   border-radius: 22px;
   padding: 20px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.038),
-      rgba(255, 255, 255, 0.012)
-    ),
-    rgba(7, 8, 10, 0.44);
+    var(--livey-inner-card-background);
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -209,20 +204,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-analytics-recommendations-list article:hover {
-    border-color: rgba(255, 91, 50, 0.15);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.07),
-        transparent 14rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.042),
-        rgba(255, 255, 255, 0.014)
-      ),
-      rgba(7, 8, 10, 0.46);
-    transform: translateY(-2px);
+    border-color: rgba(255, 91, 50, 0.55);
+    transform: none;
   }
 }
 

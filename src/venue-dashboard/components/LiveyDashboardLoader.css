@@ -12,13 +12,7 @@
     max(24px, env(safe-area-inset-bottom));
   box-sizing: border-box;
   overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      rgba(255, 91, 50, 0.055),
-      transparent 30rem
-    ),
-    #11100f;
+  background: #0b0c0f;
   opacity: 1;
   visibility: visible;
   transition:
@@ -76,15 +70,16 @@
   width: 0;
   border-radius: inherit;
   background: #ff5b32;
-  box-shadow:
-    0 0 9px rgba(255, 91, 50, 0.2),
-    0 0 20px rgba(255, 91, 50, 0.08);
-  transition: width 240ms cubic-bezier(0.22, 0.8, 0.24, 1);
+  box-shadow: none;
+  transition:
+    width 240ms
+    cubic-bezier(0.22, 0.8, 0.24, 1);
 }
 
 .livey-dashboard-loader-progress-completing {
   transition-duration: 520ms;
-  transition-timing-function: cubic-bezier(0.2, 0.82, 0.24, 1);
+  transition-timing-function:
+    cubic-bezier(0.2, 0.82, 0.24, 1);
 }
 
 @media (max-width: 560px) {

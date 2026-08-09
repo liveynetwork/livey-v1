@@ -24,10 +24,10 @@
   letter-spacing:
     var(--livey-letter-spacing-control);
   cursor: pointer;
-    transition:
+  transition:
     color 180ms ease,
     border-color 180ms ease,
-    background-color 180ms ease;
+    background 180ms ease;
 }
 
 .venue-dashboard-analytics-refresh-button

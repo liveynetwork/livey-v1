@@ -49,12 +49,7 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.01)
-    ),
-    rgba(7, 8, 10, 0.52);
+    var(--livey-card-group-background);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 18px 42px rgba(0, 0, 0, 0.14);
@@ -71,12 +66,7 @@
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 21px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(255, 255, 255, 0.01);
+    var(--livey-inner-card-background);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 12px 28px rgba(0, 0, 0, 0.08);
@@ -185,12 +175,7 @@
   padding: 10px 10px 10px 14px;
   cursor: default;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.046),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(6, 7, 9, 0.72);
+    var(--livey-inner-card-background);
   border: 1px solid rgba(255, 255, 255, 0.055);
   transition: border-color 180ms ease;
 }
@@ -371,12 +356,7 @@
   border: 1px solid rgba(255, 91, 50, 0.13);
   border-radius: 21px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.016)
-    ),
-    rgba(12, 13, 16, 0.72);
+    var(--livey-inner-card-background);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 12px 28px rgba(0, 0, 0, 0.08);
@@ -428,15 +408,15 @@
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-profile-control-tile:hover,
-.venue-dashboard-today-hours-card:hover,
-.venue-dashboard-custom-dropdown-arrow-trigger:hover {
-  border-color: rgba(255, 91, 50, 0.55);
-}
+  .venue-dashboard-today-hours-card:hover,
+  .venue-dashboard-custom-dropdown-arrow-trigger:hover {
+    border-color: rgba(255, 91, 50, 0.55);
+  }
 
-.venue-dashboard-hours-edit-icon-button:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
+  .venue-dashboard-hours-edit-icon-button:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 
   .venue-dashboard-hours-edit-icon-button:hover {
     border-color: rgba(255, 91, 50, 0.55);
@@ -452,16 +432,6 @@
 
   .venue-dashboard-status-advisory:hover {
     border-color: rgba(255, 91, 50, 0.28);
-    background:
-      radial-gradient(
-        circle at left center,
-        rgba(255, 91, 50, 0.055),
-        transparent 12rem
-      ),
-      rgba(12, 13, 16, 0.74);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.025),
-      0 0 24px rgba(255, 91, 50, 0.045);
   }
 }
 
@@ -473,8 +443,8 @@
   }
 
   .venue-dashboard-hours-edit-icon-button::after {
-  display: none;
-}
+    display: none;
+  }
 
   .venue-dashboard-profile-control-tile,
   .venue-dashboard-description-field {

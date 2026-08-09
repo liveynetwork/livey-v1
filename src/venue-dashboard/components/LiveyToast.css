@@ -15,48 +15,17 @@
   padding: 16px 14px 16px 16px;
   overflow: hidden;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.082),
-      rgba(255, 255, 255, 0.038)
-    ),
-    rgba(20, 22, 26, 0.98);
+    var(--livey-card-background);
   box-shadow:
-    0 28px 70px rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 20px 48px rgba(0, 0, 0, 0.24);
   animation: livey-toast-enter 240ms ease;
 }
 
-.livey-toast-success {
-  background:
-    radial-gradient(
-      circle at left center,
-      rgba(71, 210, 139, 0.13),
-      transparent 16rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.082),
-      rgba(255, 255, 255, 0.038)
-    ),
-    rgba(20, 22, 26, 0.98);
-}
-
+.livey-toast-success,
 .livey-toast-error {
   background:
-    radial-gradient(
-      circle at left center,
-      rgba(255, 80, 80, 0.14),
-      transparent 16rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.082),
-      rgba(255, 255, 255, 0.038)
-    ),
-    rgba(20, 22, 26, 0.98);
+    var(--livey-card-background);
 }
 
 .livey-toast.is-closing {
@@ -76,14 +45,14 @@
   border: 1px solid rgba(71, 210, 139, 0.2);
   color: #85e9b6;
   background: rgba(71, 210, 139, 0.11);
-  box-shadow: 0 12px 28px rgba(71, 210, 139, 0.07);
+  box-shadow: none;
 }
 
 .livey-toast-error .livey-toast-icon {
   border: 1px solid rgba(255, 98, 98, 0.2);
   color: #ff9f9f;
   background: rgba(255, 80, 80, 0.11);
-  box-shadow: 0 12px 28px rgba(255, 80, 80, 0.07);
+  box-shadow: none;
 }
 
 .livey-toast-icon svg {

@@ -254,12 +254,7 @@
   gap: 16px;
   padding: 20px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.014)
-    ),
-    rgba(7, 8, 10, 0.48);
+    var(--livey-inner-card-background);
   box-shadow:
     inset 0 1px 0
       rgba(255, 255, 255, 0.025);
@@ -369,12 +364,7 @@
   gap: 9px;
   padding: 16px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.036),
-      rgba(255, 255, 255, 0.012)
-    ),
-    rgba(7, 8, 10, 0.44);
+    var(--livey-inner-card-background);
   box-shadow:
     inset 0 1px 0
       rgba(255, 255, 255, 0.02);
@@ -446,12 +436,7 @@
   gap: 18px;
   padding: 22px;
   background:
-    radial-gradient(
-      circle at right,
-      rgba(255, 91, 50, 0.1),
-      transparent 15rem
-    ),
-    rgba(7, 8, 10, 0.44);
+    var(--livey-inner-card-background);
 }
 
 .venue-dashboard-analytics-activity-content > div {
@@ -488,7 +473,8 @@
   gap: 16px;
   padding: 22px;
   color: #ff805f;
-  background: rgba(7, 8, 10, 0.4);
+  background:
+    var(--livey-inner-card-background);
 }
 
 .venue-dashboard-analytics-activity-empty > div {
@@ -682,13 +668,6 @@
   .venue-dashboard-analytics-progress-row:hover {
   border-color:
     rgba(255, 91, 50, 0.55);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 91, 50, 0.055),
-      rgba(255, 255, 255, 0.014)
-    ),
-    rgba(7, 8, 10, 0.5);
 }
 
 .venue-dashboard-analytics-progress-row:hover
@@ -709,13 +688,6 @@
   div:hover {
   border-color:
     rgba(255, 91, 50, 0.55);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 91, 50, 0.05),
-      rgba(255, 255, 255, 0.012)
-    ),
-    rgba(7, 8, 10, 0.46);
 }
 }
 

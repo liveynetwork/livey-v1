@@ -72,11 +72,9 @@
   color: #ffd8cd !important;
   font-size: 0.8rem !important;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    ) !important;
-  letter-spacing: -0.01em;
+    var(--livey-font-weight-bold) !important;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
 }
 
@@ -101,12 +99,10 @@
     rgba(247, 241, 234, 0.5);
   font-size: 0.7rem;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.08em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -135,11 +131,9 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight:
-    var(
-      --livey-font-weight-semibold,
-      700
-    );
-  letter-spacing: -0.01em;
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   box-shadow:
     inset 0 1px 0
@@ -239,12 +233,10 @@
   font: inherit;
   font-size: 0.8rem;
   font-weight:
-    var(
-      --livey-font-weight-semibold,
-      700
-    );
+    var(--livey-font-weight-semibold);
   line-height: 1;
-  letter-spacing: -0.005em;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -325,11 +317,9 @@
   color: #ffd8cd;
   font-size: 0.76rem;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
-  letter-spacing: -0.005em;
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
 }
 
 /* =========================================================
@@ -351,7 +341,8 @@
 .venue-dashboard-locked-details-heading
   .venue-dashboard-eyebrow {
   font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .venue-dashboard-locked-details-heading
@@ -364,11 +355,9 @@
       2.15rem
     );
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
-  letter-spacing: -0.035em;
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-locked-details-list {
@@ -383,12 +372,7 @@
     rgba(255, 255, 255, 0.06);
   border-radius: 28px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.01)
-    ),
-    rgba(7, 8, 10, 0.52);
+    var(--livey-card-group-background);
   box-shadow:
     inset 0 1px 0
       rgba(255, 255, 255, 0.025),
@@ -408,12 +392,7 @@
   border-radius: 21px;
   padding: 20px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(255, 255, 255, 0.01);
+    var(--livey-inner-card-background);
   box-shadow:
     inset 0 1px 0
       rgba(255, 255, 255, 0.025),
@@ -435,12 +414,10 @@
     rgba(247, 241, 234, 0.43);
   font-size: 0.69rem;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: 0.1em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -450,12 +427,10 @@
   color: #f7f1ea;
   font-size: 1rem;
   font-weight:
-    var(
-      --livey-font-weight-semibold,
-      700
-    );
+    var(--livey-font-weight-semibold);
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
   word-break: break-word;
 }
 
@@ -487,13 +462,6 @@
     auto;
   align-items: center;
   gap: 18px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.02)
-    ),
-    rgba(255, 255, 255, 0.01);
 }
 
 .venue-dashboard-locked-detail-verification
@@ -536,12 +504,10 @@
     rgba(247, 241, 234, 0.46);
   font-size: 0.7rem;
   font-weight:
-    var(
-      --livey-font-weight-medium,
-      600
-    );
+    var(--livey-font-weight-medium);
   line-height: 1.65;
-  letter-spacing: 0.035em;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -570,7 +536,8 @@
   .venue-dashboard-eyebrow {
   margin: 0;
   font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .venue-dashboard-support-session-card
@@ -583,11 +550,9 @@
       2.15rem
     );
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
-  letter-spacing: -0.035em;
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-support-description {
@@ -597,12 +562,10 @@
     rgba(247, 241, 234, 0.58);
   font-size: 0.94rem;
   font-weight:
-    var(
-      --livey-font-weight-regular,
-      500
-    );
+    var(--livey-font-weight-regular);
   line-height: 1.65;
-  letter-spacing: -0.005em;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -635,12 +598,10 @@
   font: inherit;
   font-size: 0.9rem;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: center;
   white-space: nowrap;
 }
@@ -693,26 +654,18 @@
   justify-items: center;
   padding: 34px;
   background:
-    radial-gradient(
-      circle at top center,
-      rgba(255, 91, 50, 0.16),
-      transparent 18rem
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.035)
-    ),
-    #14161a;
+    var(--livey-card-background);
   box-shadow:
-    0 36px 100px
-      rgba(0, 0, 0, 0.55),
     inset 0 1px 0
-      rgba(255, 255, 255, 0.04);
+      rgba(255, 255, 255, 0.025),
+    0 24px 60px
+      rgba(0, 0, 0, 0.28);
   text-align: center;
   animation:
     venue-dashboard-modal-rise
     180ms ease;
+  transition:
+    border-color 180ms ease;
 }
 
 .venue-dashboard-signout-modal-logo-shell {
@@ -746,11 +699,9 @@
       1.9rem
     );
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
-  letter-spacing: -0.03em;
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .venue-dashboard-signout-modal
@@ -763,12 +714,10 @@
     rgba(247, 241, 234, 0.58);
   font-size: 0.9rem;
   font-weight:
-    var(
-      --livey-font-weight-regular,
-      500
-    );
+    var(--livey-font-weight-regular);
   line-height: 1.65;
-  letter-spacing: -0.005em;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .venue-dashboard-signout-modal-actions {
@@ -798,12 +747,10 @@
   font: inherit;
   font-size: 0.9rem;
   font-weight:
-    var(
-      --livey-font-weight-bold,
-      800
-    );
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: center;
   white-space: nowrap;
 }
@@ -820,41 +767,19 @@
       rgba(255, 91, 50, 0.55);
   }
 
+  .venue-dashboard-signout-modal:hover {
+    border-color:
+      rgba(255, 91, 50, 0.55);
+  }
+
   .venue-dashboard-locked-detail-tile:hover {
     border-color:
-      rgba(255, 91, 50, 0.14);
-    background:
-      radial-gradient(
-        circle at top right,
-        rgba(255, 91, 50, 0.085),
-        transparent 12rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.058),
-        rgba(255, 255, 255, 0.024)
-      ),
-      rgba(255, 255, 255, 0.012);
+      rgba(255, 91, 50, 0.55);
     box-shadow:
       inset 0 1px 0
         rgba(255, 255, 255, 0.03),
       0 14px 32px
         rgba(0, 0, 0, 0.11);
-  }
-
-  .venue-dashboard-locked-detail-verification:hover {
-    background:
-      radial-gradient(
-        circle at right center,
-        rgba(255, 91, 50, 0.08),
-        transparent 14rem
-      ),
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.058),
-        rgba(255, 255, 255, 0.024)
-      ),
-      rgba(255, 255, 255, 0.012);
   }
 
   .venue-dashboard-account-settings
@@ -1055,7 +980,8 @@
 
   .venue-dashboard-locked-details-note {
     font-size: 0.66rem;
-    letter-spacing: 0.03em;
+    letter-spacing:
+      var(--livey-letter-spacing-body);
   }
 
   .venue-dashboard-support-session-card {

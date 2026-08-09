@@ -135,12 +135,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 18px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.017)
-    ),
-    rgba(255, 255, 255, 0.01);
+    var(--livey-inner-card-background);
   transition: border-color 180ms ease;
 }
 
@@ -164,16 +159,6 @@
   letter-spacing:
     var(--livey-letter-spacing-card-title);
   word-break: break-word;
-}
-
-.venue-dashboard-identity-verification {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.048),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(255, 255, 255, 0.01);
 }
 
 .venue-dashboard-identity-verification > strong {
@@ -214,11 +199,12 @@
   padding: 14px 18px;
   border: 1px solid rgba(255, 91, 50, 0.1);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.025);
+  background:
+    var(--livey-inner-card-background);
   transition:
-  border-color 180ms ease,
-  background 180ms ease,
-  box-shadow 180ms ease;
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .venue-dashboard-identity-note::after {
@@ -264,18 +250,8 @@
   }
 
   .venue-dashboard-identity-note:hover {
-  border-color: rgba(255, 91, 50, 0.28);
-  background:
-    radial-gradient(
-      circle at left center,
-      rgba(255, 91, 50, 0.055),
-      transparent 12rem
-    ),
-    rgba(255, 255, 255, 0.03);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 0 24px rgba(255, 91, 50, 0.045);
-}
+    border-color: rgba(255, 91, 50, 0.28);
+  }
 }
 
 @media (max-width: 980px) {

@@ -21,7 +21,7 @@
   border-radius: 16px;
   padding: 10px;
   background:
-    rgba(7, 8, 10, 0.46);
+    var(--livey-inner-card-background);
   text-align: center;
   transition:
     border-color 180ms ease;
@@ -59,7 +59,7 @@
   color:
     rgba(247, 241, 234, 0.42);
   background:
-    rgba(7, 8, 10, 0.34);
+    var(--livey-inner-card-background);
   font-size: 0.68rem;
   font-weight:
     var(--livey-font-weight-medium);
@@ -129,12 +129,7 @@
   border-radius: 28px;
   padding: 24px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.026),
-      rgba(255, 255, 255, 0.006)
-    ),
-    rgba(7, 8, 10, 0.62);
+    var(--livey-inner-card-background);
   text-align: center;
   transition:
     border-color 180ms ease,
@@ -300,13 +295,8 @@
     rgba(255, 255, 255, 0.055);
   border-radius: 22px;
   padding: 20px 18px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.032),
-      rgba(255, 255, 255, 0.009)
-    ),
-    rgba(8, 9, 11, 0.62);
+    background:
+    var(--livey-inner-card-background);
   text-align: center;
   transition:
     border-color 180ms ease,
@@ -334,13 +324,6 @@
   > div.is-primary {
   border-color:
     rgba(255, 255, 255, 0.065);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.038),
-      rgba(255, 255, 255, 0.01)
-    ),
-    rgba(8, 9, 11, 0.64);
 }
 
 .venue-dashboard-analytics-follower-chart-meta
@@ -580,13 +563,8 @@
   padding: 34px;
   color:
     rgba(247, 241, 234, 0.44);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.024),
-      rgba(255, 255, 255, 0.006)
-    ),
-    rgba(7, 8, 10, 0.52);
+    background:
+    var(--livey-inner-card-background);
   font-size: 0.8rem;
   font-weight:
     var(--livey-font-weight-medium);
@@ -986,18 +964,6 @@
     > div:hover {
     border-color:
       rgba(255, 91, 50, 0.55);
-  }
-
-  .venue-dashboard-analytics-follower-compact-metric:hover,
-  .venue-dashboard-analytics-follower-chart-meta
-    > div:hover {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.007)
-      ),
-      rgba(7, 8, 10, 0.64);
   }
 
   .venue-dashboard-analytics-follower-chart-shell:hover {
