@@ -12,9 +12,11 @@
 .livey-venue-signup-section-heading h2 {
   margin: 0;
   font-size: clamp(1.65rem, 4vw, 2rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing:
+    var(--livey-letter-spacing-section-title);
 }
 
 .livey-venue-signup-section {
@@ -47,7 +49,10 @@
   gap: 11px;
   color: rgba(247, 241, 234, 0.78);
   font-size: 0.85rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .livey-venue-signup-section input,
@@ -62,7 +67,10 @@
   background: rgba(8, 9, 11, 0.8);
   color: #f7f1ea;
   font: inherit;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   outline: none;
   transition:
     border-color 180ms ease,
@@ -90,8 +98,11 @@
   z-index: 1;
   color: rgba(247, 241, 234, 0.38);
   font-size: 0.7rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
   line-height: 1;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   pointer-events: none;
   transition: color 180ms ease;
 }

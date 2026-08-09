@@ -8,12 +8,7 @@
   justify-items: center;
   gap: 18px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.045)
-    ),
-    #15171b;
+    var(--livey-card-background);
   box-shadow: 0 22px 80px rgba(0, 0, 0, 0.22);
   color: #f7f1ea;
   text-align: center;
@@ -32,15 +27,21 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.56);
   font-size: 0.92rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 .livey-venue-signup-footer-email {
   margin: 0;
   color: #ff805f;
   font-size: 0.9rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -59,7 +60,10 @@
 .livey-venue-signup-footer-links a {
   color: rgba(247, 241, 234, 0.62);
   font-size: 0.84rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -67,7 +71,10 @@
 .livey-venue-signup-footer small {
   color: rgba(247, 241, 234, 0.4);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 @media (hover: hover) and (pointer: fine) {

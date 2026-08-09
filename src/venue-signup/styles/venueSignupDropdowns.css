@@ -24,7 +24,10 @@
 .livey-venue-category-label {
   color: rgba(247, 241, 234, 0.78);
   font-size: 0.85rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .livey-venue-category-dropdown {
@@ -51,9 +54,11 @@
   color: #f7f1ea;
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -126,9 +131,11 @@
   color: rgba(247, 241, 234, 0.64);
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -175,7 +182,10 @@
 .livey-venue-city-label {
   color: rgba(247, 241, 234, 0.78);
   font-size: 0.85rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .livey-venue-city-dropdown {
@@ -202,9 +212,11 @@
   color: #f7f1ea;
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -277,9 +289,11 @@
   color: rgba(247, 241, 234, 0.64);
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -326,7 +340,10 @@
 .livey-venue-contact-method-label {
   color: rgba(247, 241, 234, 0.78);
   font-size: 0.85rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .livey-venue-contact-method-dropdown {
@@ -353,9 +370,11 @@
   color: #f7f1ea;
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -430,9 +449,11 @@
   color: rgba(247, 241, 234, 0.64);
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: normal;
-  letter-spacing: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
   cursor: pointer;
   outline: none;

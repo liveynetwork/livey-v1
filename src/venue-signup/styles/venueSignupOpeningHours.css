@@ -13,7 +13,8 @@
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 25px;
-  background: rgba(7, 8, 10, 0.44);
+  background:
+    var(--livey-card-group-background);
 }
 
 .livey-venue-opening-table-heading {
@@ -30,8 +31,10 @@
 .livey-venue-opening-table-heading span {
   color: rgba(247, 241, 234, 0.38);
   font-size: 0.66rem;
-  font-weight: 950;
-  letter-spacing: 0.12em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-align: center;
   text-transform: uppercase;
 }
@@ -57,12 +60,7 @@
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 19px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.018)
-    ),
-    rgba(255, 255, 255, 0.008);
+    var(--livey-inner-card-background);
   transition:
     border-color 180ms ease,
     background 180ms ease;
@@ -72,8 +70,11 @@
   min-width: 0;
   color: #f7f1ea;
   font-size: 0.85rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1.2;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
 }
 
 .livey-venue-opening-controls {
@@ -115,8 +116,11 @@
   color: #f7f1ea;
   font-family: inherit;
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight:
+    var(--livey-font-weight-semibold);
   line-height: normal;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -217,7 +221,10 @@
   color: rgba(247, 241, 234, 0.64);
   font-family: inherit;
   font-size: 0.8rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -270,7 +277,10 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.78);
   font-size: 0.85rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
 }
 
 .livey-venue-closed-day-grid {
@@ -289,7 +299,10 @@
   color: rgba(247, 241, 234, 0.68);
   font: inherit;
   font-size: 0.82rem;
-  font-weight: 900;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -371,8 +384,10 @@
     display: block;
     color: rgba(247, 241, 234, 0.42);
     font-size: 0.66rem;
-    font-weight: 950;
-    letter-spacing: 0.1em;
+    font-weight:
+      var(--livey-font-weight-bold);
+    letter-spacing:
+      var(--livey-letter-spacing-label);
     text-align: center;
     text-transform: uppercase;
   }

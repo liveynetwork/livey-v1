@@ -3,8 +3,11 @@
   border-radius: 16px;
   padding: 13px 15px;
   font-size: 0.9rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-semibold);
   line-height: 1.5;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -30,7 +33,8 @@
   padding: 22px 18px;
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 22px;
-  background: rgba(7, 8, 10, 0.44);
+  background:
+    var(--livey-inner-card-background);
   text-align: center;
   transition:
     border-color 180ms ease,
@@ -107,17 +111,22 @@
   margin: 0;
   color: #f7f1ea;
   font-size: 0.95rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1.2;
-  letter-spacing: -0.025em;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
   text-align: center;
 }
 
 .livey-location-detection-card span {
   color: rgba(247, 241, 234, 0.5);
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
   text-wrap: balance;
 }
@@ -132,12 +141,7 @@
 
 .livey-venue-next-card {
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.045)
-    ),
-    #15171b;
+    var(--livey-card-background);
 }
 
 /* Submission success */
@@ -154,12 +158,7 @@
   align-content: center;
   gap: 24px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.045)
-    ),
-    #15171b;
+    var(--livey-card-background);
   box-shadow: 0 22px 80px rgba(0, 0, 0, 0.22);
   color: #f7f1ea;
   text-align: center;
@@ -188,9 +187,11 @@
   margin: 0;
   color: #f7f1ea;
   font-size: clamp(2.2rem, 10vw, 4rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.94;
-  letter-spacing: -0.07em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
   text-wrap: balance;
 }
 
@@ -199,8 +200,11 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.94rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.7;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-wrap: balance;
 }
 
@@ -209,8 +213,11 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.46);
   font-size: 0.86rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-wrap: balance;
 }
 

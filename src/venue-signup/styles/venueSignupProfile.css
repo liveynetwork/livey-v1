@@ -6,7 +6,8 @@
   padding: 24px 20px;
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 22px;
-  background: rgba(7, 8, 10, 0.44);
+  background:
+    var(--livey-inner-card-background);
   text-align: center;
   transition:
     border-color 180ms ease,
@@ -25,9 +26,11 @@
   margin: 0;
   color: #f7f1ea;
   font-size: 1.08rem;
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 1.15;
-  letter-spacing: -0.04em;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
   text-align: center;
 }
 
@@ -35,8 +38,11 @@
   margin: 0;
   color: rgba(247, 241, 234, 0.5);
   font-size: 0.84rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.55;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
 }
 
@@ -51,8 +57,10 @@
   background: rgba(255, 91, 50, 0.1);
   color: #ff805f;
   font-size: 0.82rem;
-  font-weight: 950;
-  letter-spacing: -0.02em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
 }
 
 .livey-venue-logo-preview img {
@@ -74,7 +82,10 @@
   background: rgba(255, 91, 50, 0.1);
   color: #ff805f !important;
   font-size: 0.82rem !important;
-  font-weight: 950 !important;
+  font-weight:
+    var(--livey-font-weight-bold) !important;
+  letter-spacing:
+    var(--livey-letter-spacing-control);
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -89,7 +100,10 @@
 .livey-venue-logo-selected-note {
   color: rgba(247, 241, 234, 0.48);
   font-size: 0.75rem;
-  font-weight: 850;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-body);
 }
 
 @media (hover: hover) and (pointer: fine) {

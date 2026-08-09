@@ -22,9 +22,11 @@
   margin: 0 0 20px;
   color: #f7f1ea;
   font-size: clamp(2.1rem, 12vw, 4.2rem);
-  font-weight: 950;
+  font-weight:
+    var(--livey-font-weight-bold);
   line-height: 0.92;
-  letter-spacing: -0.07em;
+  letter-spacing:
+    var(--livey-letter-spacing-hero);
   text-align: center;
   text-wrap: balance;
 }
@@ -33,8 +35,10 @@
   margin: 0 0 20px;
   color: #ff6b45;
   font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.16em;
+  font-weight:
+    var(--livey-font-weight-bold);
+  letter-spacing:
+    var(--livey-letter-spacing-label);
   text-transform: uppercase;
 }
 
@@ -43,8 +47,11 @@
   margin: 0 auto;
   color: rgba(247, 241, 234, 0.54);
   font-size: 0.94rem;
-  font-weight: 750;
+  font-weight:
+    var(--livey-font-weight-medium);
   line-height: 1.7;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
   text-align: center;
   text-wrap: balance;
 }
