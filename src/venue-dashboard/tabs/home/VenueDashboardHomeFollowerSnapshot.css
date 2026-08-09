@@ -1,0 +1,152 @@
+.venue-dashboard-home-followers-card {
+  min-height: 330px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 22px;
+  padding: 28px;
+  text-align: center;
+}
+
+.venue-dashboard-home-followers-card
+  .venue-dashboard-home-card-heading {
+  justify-items: center;
+  text-align: center;
+}
+
+.venue-dashboard-home-followers-card
+  .venue-dashboard-home-card-heading > div {
+  justify-items: center;
+  text-align: center;
+}
+
+.venue-dashboard-home-followers-card
+  .venue-dashboard-home-card-heading h3 {
+  text-align: center;
+}
+
+.venue-dashboard-home-follower-summary {
+  min-width: 0;
+  min-height: 184px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 24px;
+  background:
+    var(--livey-inner-card-background);
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.venue-dashboard-home-follower-label {
+  color: rgba(247, 241, 234, 0.44);
+  font-size: 0.68rem;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  line-height: 1.2;
+  letter-spacing:
+    var(--livey-letter-spacing-label);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.venue-dashboard-home-follower-summary strong {
+  color: #f7f1ea;
+  font-size: clamp(2.7rem, 4.8vw, 4.2rem);
+  font-weight:
+    var(--livey-font-weight-bold);
+  line-height: 0.92;
+  letter-spacing:
+    var(--livey-letter-spacing-card-title);
+  text-align: center;
+}
+
+.venue-dashboard-home-follower-summary p {
+  margin: 0;
+  color: rgba(247, 241, 234, 0.5);
+  font-size: 0.82rem;
+  font-weight:
+    var(--livey-font-weight-medium);
+  line-height: 1.5;
+  letter-spacing:
+    var(--livey-letter-spacing-body);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.venue-dashboard-home-follower-summary.is-loading strong,
+.venue-dashboard-home-follower-summary.is-error strong {
+  color: rgba(247, 241, 234, 0.4);
+}
+
+.venue-dashboard-home-follower-summary.is-error p {
+  color: rgba(255, 184, 184, 0.72);
+}
+
+.venue-dashboard-home-secondary-action {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 16px;
+  padding: 0 16px;
+  background: transparent;
+  color: rgba(247, 241, 234, 0.62);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight:
+    var(--livey-font-weight-semibold);
+  letter-spacing:
+    var(--livey-letter-spacing-control);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .venue-dashboard-home-follower-summary:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+  }
+
+  .venue-dashboard-home-secondary-action:hover {
+    border-color: rgba(255, 91, 50, 0.42);
+    color: #f7f1ea;
+  }
+}
+
+@media (max-width: 720px) {
+  .venue-dashboard-home-followers-card {
+    min-height: unset;
+    padding: 24px;
+    border-radius: 26px;
+  }
+
+  .venue-dashboard-home-follower-summary {
+    min-height: 168px;
+  }
+}
+
+@media (max-width: 520px) {
+  .venue-dashboard-home-followers-card {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .venue-dashboard-home-follower-summary {
+    min-height: 154px;
+    padding: 22px;
+    border-radius: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venue-dashboard-home-follower-summary,
+  .venue-dashboard-home-secondary-action {
+    transition: none;
+  }
+}
