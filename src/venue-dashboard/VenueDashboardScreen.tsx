@@ -38,6 +38,9 @@ import {
   VenueDashboardModals,
 } from "./components/dashboard/VenueDashboardModals";
 import {
+  VenueDashboardMobileNav,
+} from "./components/dashboard/VenueDashboardMobileNav";
+import {
   LiveyToast,
 } from "./components/LiveyToast";
 import type {
@@ -619,7 +622,14 @@ export function VenueDashboardScreen({
             handleSignOut
           }
         />
-      </section>
+            </section>
+
+      <VenueDashboardMobileNav
+        activeSection={activeSection}
+        onSectionChange={
+          navigation.requestSectionChange
+        }
+      />
 
       {errorMessage ? (
         <LiveyToast

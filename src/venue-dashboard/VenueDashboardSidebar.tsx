@@ -150,7 +150,7 @@ function DashboardNavButton({
   );
 }
 
-function ControlCenterIcon() {
+export function ControlCenterIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
       <rect x="4.5" y="4.5" width="5.6" height="5.6" rx="1.8" />
@@ -161,7 +161,7 @@ function ControlCenterIcon() {
   );
 }
 
-function ActivityIcon() {
+export function ActivityIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
       <path d="M3.6 12h4.05l2.85-6.4 3.25 12.8L16.65 12h3.75" />
@@ -169,8 +169,8 @@ function ActivityIcon() {
   );
 }
 
-function AnalyticsIcon() {
-  return (
+export function AnalyticsIcon() {
+    return (
     <svg viewBox="0 0 24 24" role="img">
       <path d="M5.2 18.7V12.8" />
       <path d="M9.75 18.7V9.9" />
@@ -180,7 +180,7 @@ function AnalyticsIcon() {
   );
 }
 
-function HistoryIcon() {
+export function HistoryIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
       <circle cx="12" cy="12" r="8.2" />
@@ -189,7 +189,7 @@ function HistoryIcon() {
   );
 }
 
-function AccountSettingsIcon() {
+export function AccountSettingsIcon() {
   return (
     <svg viewBox="0 0 24 24" role="img">
       <circle cx="12" cy="8.25" r="3.55" />

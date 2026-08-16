@@ -1,264 +1,415 @@
 .venue-dashboard-home-card {
   min-width: 0;
+
   border: 1px solid rgba(255, 255, 255, 0.07);
+
   border-radius: 30px;
+
   background:
     var(--livey-card-background);
+
   transition:
     border-color 180ms ease,
     background 180ms ease;
 }
 
+
 .venue-dashboard-home-current-card {
   min-height: 330px;
+
   display: grid;
+
   grid-template-rows: auto 1fr;
+
   gap: 22px;
+
   padding: 28px;
 }
 
+
 .venue-dashboard-home-card-heading {
   min-width: 0;
+
   display: grid;
+
   justify-items: center;
+
   gap: 14px;
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-card-heading > div {
   min-width: 0;
+
   display: grid;
+
   justify-items: center;
+
   gap: 8px;
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-card-heading h3 {
   margin: 0;
+
   color: #f7f1ea;
-  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+
+  font-size:
+    clamp(1.35rem, 2.2vw, 1.9rem);
+
   font-weight:
     var(--livey-font-weight-bold);
+
   line-height: 1.08;
+
   letter-spacing:
     var(--livey-letter-spacing-card-title);
+
   text-align: center;
+
   text-wrap: balance;
 }
 
+
 .venue-dashboard-home-text-action {
   flex: 0 0 auto;
+
   min-height: 38px;
+
   border: 1px solid rgba(255, 255, 255, 0.075);
+
   border-radius: 14px;
+
   padding: 0 13px;
+
   background: transparent;
+
   color: rgba(247, 241, 234, 0.58);
+
   font: inherit;
+
   font-size: 0.72rem;
+
   font-weight:
     var(--livey-font-weight-semibold);
+
   letter-spacing:
     var(--livey-letter-spacing-control);
+
   cursor: pointer;
+
   transition:
     border-color 180ms ease,
     color 180ms ease;
 }
 
+
 .venue-dashboard-home-current-activity {
   width: 100%;
+
   min-height: 210px;
+
   border: 1px solid rgba(255, 255, 255, 0.055);
+
   border-radius: 24px;
+
   display: grid;
+
   align-content: center;
+
   justify-items: center;
+
   gap: 18px;
+
   padding: 24px;
+
   background:
     var(--livey-inner-card-background);
+
   color: #f7f1ea;
+
   text-align: center;
+
   cursor: pointer;
+
   transition:
     border-color 180ms ease,
     background 180ms ease;
 }
 
+
 .venue-dashboard-home-current-activity-copy {
   min-width: 0;
+
   display: grid;
+
   justify-items: center;
+
   gap: 10px;
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-current-label {
   color: rgba(247, 241, 234, 0.42);
+
   font-size: 0.68rem;
+
   font-weight:
     var(--livey-font-weight-semibold);
+
   line-height: 1.2;
+
   letter-spacing:
     var(--livey-letter-spacing-label);
+
   text-transform: uppercase;
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-current-activity h4 {
   max-width: 720px;
+
   margin: 0;
+
   color: #f7f1ea;
-  font-size: clamp(1.65rem, 3vw, 2.55rem);
+
+  font-size:
+    clamp(1.65rem, 3vw, 2.55rem);
+
   font-weight:
     var(--livey-font-weight-bold);
+
   line-height: 1.02;
+
   letter-spacing:
     var(--livey-letter-spacing-card-title);
+
   text-align: center;
+
   text-wrap: balance;
 }
 
+
 .venue-dashboard-home-current-activity p {
   margin: 0;
+
   color: rgba(247, 241, 234, 0.5);
+
   font-size: 0.84rem;
+
   font-weight:
     var(--livey-font-weight-medium);
+
   line-height: 1.5;
+
   letter-spacing:
     var(--livey-letter-spacing-body);
+
   text-align: center;
 }
 
+
 .venue-dashboard-home-activity-status {
   flex: 0 0 auto;
+
   min-height: 34px;
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   padding: 0 12px;
+
   border: 1px solid rgba(255, 91, 50, 0.18);
+
   border-radius: 999px;
+
   background: rgba(255, 91, 50, 0.1);
+
   color: #ffd8cd;
+
   font-size: 0.7rem;
+
   font-weight:
     var(--livey-font-weight-semibold);
+
   letter-spacing:
     var(--livey-letter-spacing-control);
 }
 
+
 .venue-dashboard-home-activity-status.is-hidden {
   border-color: rgba(255, 255, 255, 0.085);
+
   background: rgba(255, 255, 255, 0.045);
+
   color: rgba(247, 241, 234, 0.5);
 }
+
 
 .venue-dashboard-home-current-empty {
   min-height: 210px;
+
   display: grid;
+
   align-content: center;
+
   justify-items: center;
+
   gap: 22px;
+
   padding: 28px;
+
   border: 1px solid rgba(255, 255, 255, 0.055);
+
   border-radius: 24px;
+
   background:
     var(--livey-inner-card-background);
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-current-empty > div {
   min-width: 0;
+
   display: grid;
+
   justify-items: center;
+
   gap: 10px;
+
   text-align: center;
 }
+
 
 .venue-dashboard-home-current-empty h4 {
   margin: 0;
+
   color: #f7f1ea;
-  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+
+  font-size:
+    clamp(1.5rem, 2.8vw, 2.2rem);
+
   font-weight:
     var(--livey-font-weight-bold);
+
   line-height: 1.06;
+
   letter-spacing:
     var(--livey-letter-spacing-card-title);
+
   text-align: center;
+
   text-wrap: balance;
 }
 
+
 .venue-dashboard-home-current-empty p {
   width: min(100%, 520px);
+
   margin: 0;
+
   color: rgba(247, 241, 234, 0.5);
+
   font-size: 0.86rem;
+
   font-weight:
     var(--livey-font-weight-medium);
+
   line-height: 1.6;
+
   letter-spacing:
     var(--livey-letter-spacing-body);
+
   text-align: center;
 }
+
 
 @media (hover: hover) and (pointer: fine) {
   .venue-dashboard-home-card:hover {
     border-color: rgba(255, 91, 50, 0.55);
   }
 
+
   .venue-dashboard-home-current-activity:hover {
     border-color: rgba(255, 91, 50, 0.42);
   }
 
+
   .venue-dashboard-home-text-action:hover {
     border-color: rgba(255, 91, 50, 0.42);
+
     color: #f7f1ea;
   }
 }
 
+
 @media (max-width: 720px) {
   .venue-dashboard-home-current-card {
     min-height: unset;
+
     padding: 24px;
+
     border-radius: 26px;
   }
 
+
   .venue-dashboard-home-card-heading {
     justify-items: center;
+
     gap: 14px;
   }
+
 
   .venue-dashboard-home-text-action {
     width: fit-content;
   }
 
+
   .venue-dashboard-home-current-activity {
     min-height: 190px;
+
     align-content: center;
+
     justify-items: center;
   }
 }
 
+
 @media (max-width: 520px) {
   .venue-dashboard-home-current-card {
     padding: 20px;
+
     border-radius: 24px;
   }
+
 
   .venue-dashboard-home-current-activity,
   .venue-dashboard-home-current-empty {
     padding: 22px;
+
     border-radius: 21px;
   }
+
 
   .venue-dashboard-home-current-empty
     .venue-dashboard-primary-action {
     width: 100%;
   }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .venue-dashboard-home-card,

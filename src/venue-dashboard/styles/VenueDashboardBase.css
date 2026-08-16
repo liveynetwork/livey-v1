@@ -27,21 +27,23 @@
 
 .venue-dashboard-topbar {
   position: relative;
-  min-height: 164px;
+  min-height: 184px;
   display: grid;
-  place-items: center;
-  margin-bottom: 46px;
-  padding: 18px 0;
+  margin-bottom: 22px;
+  padding: 14px 0 0;
   text-align: center;
 }
 
 .venue-dashboard-topbar > div {
   position: relative;
-  width: min(100%, 900px);
+  width: min(100%, 1100px);
+  height: 100%;
+  min-height: 166px;
+  margin: 0 auto;
   display: grid;
+  grid-template-rows: auto 1fr;
   justify-items: center;
-  gap: 14px;
-  padding-bottom: 24px;
+  align-items: start;
 }
 
 .venue-dashboard-topbar-logo {
@@ -54,30 +56,21 @@
 }
 
 .venue-dashboard-topbar h1 {
-  max-width: 100%;
+  align-self: center;
+  max-width: 1100px;
   margin: 0;
   color: #f7f1ea;
   font-size:
-    clamp(2.65rem, 4.5vw, 4rem);
+    clamp(2.65rem, 4.2vw, 3.9rem);
   font-weight:
     var(--livey-font-weight-bold);
-  line-height: 0.98;
+  line-height: 0.96;
   letter-spacing:
     var(--livey-letter-spacing-section-title);
   text-align: center;
   text-transform: uppercase;
   text-wrap: balance;
   word-break: break-word;
-
-  -webkit-text-stroke:
-    1.15px #ff5b32;
-  paint-order: stroke fill;
-
-  text-shadow:
-    1.4px 0 0 #ff5b32,
-    -1.4px 0 0 #ff5b32,
-    0 1.4px 0 #ff5b32,
-    0 -1.4px 0 #ff5b32;
 }
 
 .venue-dashboard-eyebrow {
@@ -360,19 +353,24 @@
   }
 
   .venue-dashboard-main {
-    padding: 24px 20px 20px;
-  }
+  padding:
+    24px
+    20px
+    calc(
+      96px +
+      env(safe-area-inset-bottom)
+    );
+}
 
   .venue-dashboard-topbar {
-    min-height: 146px;
-    margin-bottom: 38px;
-    padding: 14px 0 16px;
+    min-height: 164px;
+    margin-bottom: 20px;
+    padding: 12px 0 0;
   }
 
   .venue-dashboard-topbar > div {
-    justify-items: center;
-    gap: 12px;
-    padding-bottom: 20px;
+    min-height: 150px;
+    grid-template-rows: auto 1fr;
   }
 
   .venue-dashboard-topbar-logo {
@@ -383,8 +381,8 @@
   .venue-dashboard-topbar h1 {
     font-size:
       clamp(
-        2.4rem,
-        7vw,
+        2.45rem,
+        6.5vw,
         3.45rem
       );
   }
@@ -396,18 +394,24 @@
 
 @media (max-width: 560px) {
   .venue-dashboard-main {
-    padding: 18px 16px 16px;
-  }
+  padding:
+    18px
+    16px
+    calc(
+      94px +
+      env(safe-area-inset-bottom)
+    );
+}
 
   .venue-dashboard-topbar {
-    min-height: 128px;
-    margin-bottom: 30px;
-    padding: 10px 0 14px;
+    min-height: 146px;
+    margin-bottom: 18px;
+    padding: 8px 0 0;
   }
 
   .venue-dashboard-topbar > div {
-    gap: 10px;
-    padding-bottom: 18px;
+    min-height: 136px;
+    grid-template-rows: auto 1fr;
   }
 
   .venue-dashboard-topbar-logo {
@@ -418,11 +422,11 @@
   .venue-dashboard-topbar h1 {
     font-size:
       clamp(
-        2.2rem,
-        11vw,
-        2.9rem
+        2.1rem,
+        9vw,
+        2.75rem
       );
-    line-height: 0.98;
+    line-height: 0.96;
     letter-spacing:
       var(--livey-letter-spacing-section-title);
   }
