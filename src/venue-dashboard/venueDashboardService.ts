@@ -427,21 +427,37 @@ export async function updateVenueProfile(
       })
     : undefined;
 
+  const body: {
+    app_venue_id: string;
+    description?: string | null;
+    open_status?: string | null;
+    opening_hours?: string | null;
+    logo_url?: string | null;
+  } = {
+    app_venue_id: input.venueId,
+  };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.openStatus !== undefined) {
+    body.open_status = input.openStatus;
+  }
+
+  if (input.openingHours !== undefined) {
+    body.opening_hours = input.openingHours;
+  }
+
+  if (logoUrl !== undefined) {
+    body.logo_url = logoUrl;
+  }
+
   const { data, error } =
     await dashboardSupabase.functions.invoke<UpdateVenueProfileResponse>(
       "dashboard-update-venue-profile",
       {
-        body: {
-          app_venue_id: input.venueId,
-          name: input.name,
-          category: input.category,
-          area: input.area,
-          address: input.address,
-          description: input.description,
-          open_status: input.openStatus,
-          opening_hours: input.openingHours,
-          logo_url: logoUrl,
-        },
+        body,
       }
     );
 

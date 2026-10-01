@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:security": "node --env-file=.env.security.local ./scripts/security/run-security-tests.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",

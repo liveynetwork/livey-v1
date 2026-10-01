@@ -41,6 +41,9 @@ import {
   VenueDashboardMobileNav,
 } from "./components/dashboard/VenueDashboardMobileNav";
 import {
+  VenueDashboardNoVenueState,
+} from "./components/empty/VenueDashboardNoVenueState";
+import {
   LiveyToast,
 } from "./components/LiveyToast";
 import type {
@@ -92,25 +95,26 @@ export function VenueDashboardScreen({
   const recoverVenueClaim =
     useCallback(
       async (user: User) => {
+        /*
+         * SECURITY RULE:
+         *
+         * Venue recovery must only use the pending claim code
+         * belonging to THIS authenticated Supabase user.
+         *
+         * Never recover a venue claim from localStorage,
+         * sessionStorage, query parameters, or another
+         * browser-global value.
+         */
         const metadataClaimCode =
           typeof user.user_metadata
             ?.pending_venue_claim_code ===
           "string"
             ? user.user_metadata
                 .pending_venue_claim_code
+                .trim()
             : "";
 
-        const pendingClaimCode =
-          window.localStorage.getItem(
-            "livey:pendingVenueClaimCode"
-          ) || "";
-
-        const codeToClaim =
-          pendingClaimCode ||
-          metadataClaimCode ||
-          "";
-
-        if (!codeToClaim.trim()) {
+        if (!metadataClaimCode) {
           return false;
         }
 
@@ -120,7 +124,7 @@ export function VenueDashboardScreen({
             {
               body: {
                 claim_code:
-                  codeToClaim.trim(),
+                  metadataClaimCode,
               },
             }
           );
@@ -137,10 +141,6 @@ export function VenueDashboardScreen({
               "already has an owner"
             )
           ) {
-            window.localStorage.removeItem(
-              "livey:pendingVenueClaimCode"
-            );
-
             return true;
           }
 
@@ -156,9 +156,27 @@ export function VenueDashboardScreen({
           return false;
         }
 
-        window.localStorage.removeItem(
-          "livey:pendingVenueClaimCode"
-        );
+        /*
+         * Recovery completed successfully.
+         *
+         * Clear the claim marker from THIS authenticated user so
+         * future dashboard loads do not retry the same claim.
+         */
+        const {
+          error: metadataUpdateError,
+        } =
+          await dashboardSupabase.auth.updateUser({
+            data: {
+              pending_venue_claim_code: null,
+            },
+          });
+
+        if (metadataUpdateError) {
+          console.warn(
+            "Venue was recovered, but pending claim metadata could not be cleared:",
+            metadataUpdateError
+          );
+        }
 
         setStatusMessage(
           "Venue connected successfully."
@@ -462,6 +480,49 @@ export function VenueDashboardScreen({
     }
   }
 
+  /*
+   * Once dashboard loading is complete, an authenticated account
+   * without a venue receives its own intentional account state.
+   *
+   * We do not render the sidebar, Control Center, analytics,
+   * activity, history, or mobile navigation because those controls
+   * imply a venue connection that does not exist.
+   */
+  if (
+    !dashboard.isLoading &&
+    !dashboard.hasVenues
+  ) {
+    return (
+      <>
+        <VenueDashboardNoVenueState
+          onSignOut={() => {
+            void handleSignOut();
+          }}
+        />
+
+        {errorMessage ? (
+          <LiveyToast
+            key={`error-${errorMessage}`}
+            tone="error"
+            message={errorMessage}
+            onDismiss={
+              handleDismissToast
+            }
+          />
+        ) : statusMessage ? (
+          <LiveyToast
+            key={`success-${statusMessage}`}
+            tone="success"
+            message={statusMessage}
+            onDismiss={
+              handleDismissToast
+            }
+          />
+        ) : null}
+      </>
+    );
+  }
+
   return (
     <main className="venue-dashboard-page">
       <VenueDashboardSidebar
@@ -622,7 +683,7 @@ export function VenueDashboardScreen({
             handleSignOut
           }
         />
-            </section>
+      </section>
 
       <VenueDashboardMobileNav
         activeSection={activeSection}
