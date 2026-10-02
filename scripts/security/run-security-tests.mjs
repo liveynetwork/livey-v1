@@ -21,6 +21,7 @@ const requiredEnv = [
   "SECURITY_ACTIVE_FOREIGN_EVENT_ID",
   "SECURITY_OWNED_APP_VENUE_ID",
   "SECURITY_FOREIGN_APP_VENUE_ID",
+  "SECURITY_CROWD_TEST_VENUE_ID",
 ];
 
 const missingEnv = requiredEnv.filter(
@@ -91,6 +92,9 @@ const ownedAppVenueId =
 const foreignAppVenueId =
   process.env.SECURITY_FOREIGN_APP_VENUE_ID;
 
+const crowdTestVenueId =
+  process.env.SECURITY_CROWD_TEST_VENUE_ID;
+
 /* -------------------------------------------------------------------------- */
 /* Supabase clients                                                           */
 /* -------------------------------------------------------------------------- */
@@ -151,7 +155,7 @@ function recordResult({
   const status = passed ? "PASS" : "FAIL";
 
   console.log(
-    `${status.padEnd(6)} ${name}${detail ? ` — ${detail}` : ""}`,
+    `${status.padEnd(6)} ${name}${detail ? ` Ã¢â‚¬â€ ${detail}` : ""}`,
   );
 }
 
@@ -472,6 +476,51 @@ async function callDashboardFunction({
   };
 }
 
+
+async function callConsumerFunction({
+  functionName,
+  accessToken,
+  body,
+  includeAuthorization = true,
+}) {
+  const headers = {
+    "Content-Type":
+      "application/json",
+    apikey: consumerAnonKey,
+  };
+
+  if (
+    includeAuthorization &&
+    accessToken
+  ) {
+    headers.Authorization =
+      `Bearer ${accessToken}`;
+  }
+
+  const response = await fetch(
+    `${consumerSupabaseUrl}/functions/v1/${functionName}`,
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    },
+  );
+
+  let responseBody = null;
+
+  try {
+    responseBody =
+      await response.json();
+  } catch {
+    responseBody = null;
+  }
+
+  return {
+    status: response.status,
+    body: responseBody,
+  };
+}
+
 /* -------------------------------------------------------------------------- */
 /* Consumer RLS tests                                                         */
 /* -------------------------------------------------------------------------- */
@@ -649,6 +698,654 @@ async function testUnauthorizedVenueUpdate() {
       rows.length === 0
         ? "Zero venue rows were writable under RLS."
         : "Foreign venue was unexpectedly modified.",
+  };
+}
+
+/* -------------------------------------------------------------------------- */
+/* Crowd Status database protections                                          */
+/* -------------------------------------------------------------------------- */
+
+function looksLikePermissionBlock(error) {
+  return (
+    error?.code === "42501" ||
+    error?.message
+      ?.toLowerCase()
+      .includes("permission denied") ||
+    error?.message
+      ?.toLowerCase()
+      .includes("row-level security")
+  );
+}
+
+async function testDirectCrowdRpcBlocked(
+  userId,
+) {
+  const {
+    data,
+    error,
+  } = await consumerSupabase.rpc(
+    "submit_crowd_status_atomic",
+    {
+      p_user_id: userId,
+      p_venue_id: crowdTestVenueId,
+      p_crowd: "busy",
+      p_queue: null,
+    },
+  );
+
+  if (!error) {
+    return {
+      passed: false,
+      detail:
+        `Authenticated client unexpectedly executed atomic Crowd Status RPC: ${JSON.stringify(data)}`,
+    };
+  }
+
+  const passed =
+    looksLikePermissionBlock(error);
+
+  return {
+    passed,
+    detail: passed
+      ? "Authenticated client cannot execute the service-role Crowd Status RPC."
+      : `Expected permission rejection, received ${error.code ?? "unknown"}: ${error.message}`,
+  };
+}
+
+async function testDirectWalletWriteBlocked(
+  userId,
+) {
+  const {
+    data,
+    error,
+  } = await consumerSupabase
+    .from("livey_wallets")
+    .upsert(
+      {
+        user_id: userId,
+        points_balance: 999999,
+        updated_at:
+          new Date().toISOString(),
+      },
+      {
+        onConflict: "user_id",
+      },
+    )
+    .select("user_id, points_balance");
+
+  const rows = data ?? [];
+
+  if (rows.length > 0) {
+    return {
+      passed: false,
+      detail:
+        "Authenticated client unexpectedly wrote directly to livey_wallets.",
+    };
+  }
+
+  const passed =
+    Boolean(error) &&
+    looksLikePermissionBlock(error);
+
+  return {
+    passed,
+    detail: passed
+      ? "RLS rejected direct wallet mutation."
+      : error
+        ? `Expected RLS rejection, received ${error.code ?? "unknown"}: ${error.message}`
+        : "Wallet mutation returned no rows but was not explicitly rejected.",
+  };
+}
+
+async function testDirectPointTransactionWriteBlocked(
+  userId,
+) {
+  const {
+    data,
+    error,
+  } = await consumerSupabase
+    .from("livey_point_transactions")
+    .insert({
+      user_id: userId,
+      amount: 999999,
+      transaction_type: "earn",
+      source_type: "security_direct_write",
+      source_id: crypto.randomUUID(),
+      venue_id: crowdTestVenueId,
+      description:
+        "SECURITY TEST - DIRECT POINT MINT",
+    })
+    .select("id, amount");
+
+  const rows = data ?? [];
+
+  if (rows.length > 0) {
+    return {
+      passed: false,
+      detail:
+        "Authenticated client unexpectedly minted a point transaction directly.",
+    };
+  }
+
+  const passed =
+    Boolean(error) &&
+    looksLikePermissionBlock(error);
+
+  return {
+    passed,
+    detail: passed
+      ? "RLS rejected direct point-transaction creation."
+      : error
+        ? `Expected RLS rejection, received ${error.code ?? "unknown"}: ${error.message}`
+        : "Point transaction returned no rows but was not explicitly rejected.",
+  };
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Crowd Status live Edge Function tests                                      */
+/* -------------------------------------------------------------------------- */
+
+const crowdEdgeState = {
+  venue: null,
+  baselineBalance: null,
+  baselineRewardCount: null,
+  submissionMode: null,
+  afterSubmissionBalance: null,
+  afterSubmissionRewardCount: null,
+};
+
+async function loadCrowdTestVenue() {
+  const {
+    data,
+    error,
+  } = await consumerSupabase
+    .from("venues")
+    .select(
+      "id, latitude, longitude, is_active, approval_status",
+    )
+    .eq(
+      "id",
+      crowdTestVenueId,
+    )
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(
+      `Could not load Crowd Status test venue: ${error.message}`,
+    );
+  }
+
+  if (!data) {
+    throw new Error(
+      "Crowd Status test venue does not exist or is not readable.",
+    );
+  }
+
+  if (
+    data.is_active !== true ||
+    data.approval_status !== "approved"
+  ) {
+    throw new Error(
+      "Crowd Status test venue must be active and approved.",
+    );
+  }
+
+  if (
+    typeof data.latitude !== "number" ||
+    typeof data.longitude !== "number"
+  ) {
+    throw new Error(
+      "Crowd Status test venue is missing valid coordinates.",
+    );
+  }
+
+  return data;
+}
+
+async function getLiveyWalletBalance(
+  userId,
+) {
+  const {
+    data,
+    error,
+  } = await consumerSupabase
+    .from("livey_wallets")
+    .select("points_balance")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(
+      `Could not read Livey Wallet balance: ${error.message}`,
+    );
+  }
+
+  return data?.points_balance ?? 0;
+}
+
+async function getCrowdRewardTransactions(
+  userId,
+) {
+  const {
+    data,
+    error,
+  } = await consumerSupabase
+    .from("livey_point_transactions")
+    .select(
+      "id, amount, source_type, source_id, venue_id, created_at",
+    )
+    .eq("user_id", userId)
+    .eq("source_type", "crowd_status")
+    .eq("venue_id", crowdTestVenueId)
+    .order(
+      "created_at",
+      {
+        ascending: false,
+      },
+    );
+
+  if (error) {
+    throw new Error(
+      `Could not read Crowd Status reward transactions: ${error.message}`,
+    );
+  }
+
+  return data ?? [];
+}
+
+async function testCrowdStatusNoAuth(
+  venue,
+) {
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken: null,
+      includeAuthorization:
+        false,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "busy",
+        queue:
+          "short",
+        latitude:
+          venue.latitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          10,
+      },
+    });
+
+  const passed =
+    result.status === 401;
+
+  return {
+    passed,
+    detail: passed
+      ? "Unauthenticated Crowd Status submission rejected with 401."
+      : `Expected 401 without authentication, received ${result.status}: ${result.body?.error ?? "no error message"}`,
+  };
+}
+
+async function testCrowdStatusInvalidCrowd(
+  accessToken,
+  venue,
+) {
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "impossibly_busy",
+        latitude:
+          venue.latitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          10,
+      },
+    });
+
+  const passed =
+    result.status === 400;
+
+  return {
+    passed,
+    detail: passed
+      ? "Invalid crowd value rejected with 400."
+      : `Expected 400 for invalid crowd value, received ${result.status}: ${result.body?.error ?? "no error message"}`,
+  };
+}
+
+async function testCrowdStatusPoorAccuracy(
+  accessToken,
+  venue,
+) {
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "busy",
+        latitude:
+          venue.latitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          101,
+      },
+    });
+
+  const passed =
+    result.status === 400;
+
+  return {
+    passed,
+    detail: passed
+      ? "GPS accuracy worse than 100 m rejected with 400."
+      : `Expected 400 for poor GPS accuracy, received ${result.status}: ${result.body?.error ?? "no error message"}`,
+  };
+}
+
+async function testCrowdStatusFarAway(
+  accessToken,
+  venue,
+) {
+  const farLatitude =
+    venue.latitude >= 0
+      ? venue.latitude - 1
+      : venue.latitude + 1;
+
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "busy",
+        latitude:
+          farLatitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          10,
+      },
+    });
+
+  const passed =
+    result.status === 403;
+
+  return {
+    passed,
+    detail: passed
+      ? "Coordinates far outside the 150 m venue radius rejected with 403."
+      : `Expected 403 for far-away coordinates, received ${result.status}: ${result.body?.error ?? "no error message"}`,
+  };
+}
+
+async function verifyNegativeCrowdTestsDidNotReward(
+  userId,
+) {
+  const balance =
+    await getLiveyWalletBalance(
+      userId,
+    );
+
+  const rewards =
+    await getCrowdRewardTransactions(
+      userId,
+    );
+
+  const passed =
+    balance ===
+      crowdEdgeState.baselineBalance &&
+    rewards.length ===
+      crowdEdgeState.baselineRewardCount;
+
+  return {
+    passed,
+    detail: passed
+      ? "Rejected Crowd Status requests created no wallet reward."
+      : `Rejected requests changed reward state. Balance ${crowdEdgeState.baselineBalance} -> ${balance}; reward count ${crowdEdgeState.baselineRewardCount} -> ${rewards.length}.`,
+  };
+}
+
+async function testNearbyCrowdStatusSubmission(
+  accessToken,
+  userId,
+  venue,
+) {
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "busy",
+        queue:
+          "short",
+        latitude:
+          venue.latitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          10,
+      },
+    });
+
+  if (result.status === 200) {
+    const passed =
+      result.body?.success === true &&
+      result.body?.reward?.awarded ===
+        true &&
+      result.body?.reward
+        ?.points_awarded === 1 &&
+      result.body?.contribution
+        ?.crowd === "busy" &&
+      result.body?.contribution
+        ?.queue === "short";
+
+    if (passed) {
+      crowdEdgeState.submissionMode =
+        "accepted";
+    }
+
+    return {
+      passed,
+      detail: passed
+        ? "Nearby crowd + queue submission accepted with exactly +1 point."
+        : `Nearby submission returned 200 but the response contract was unexpected: ${JSON.stringify(result.body)}`,
+    };
+  }
+
+  if (result.status === 429) {
+    const rewards =
+      await getCrowdRewardTransactions(
+        userId,
+      );
+
+    const twentyMinutesAgo =
+      Date.now() -
+      20 * 60 * 1000;
+
+    const recentReward =
+      rewards.find(
+        (reward) =>
+          reward.amount === 1 &&
+          new Date(
+            reward.created_at,
+          ).getTime() >=
+            twentyMinutesAgo,
+      );
+
+    const passed =
+      Boolean(recentReward);
+
+    if (passed) {
+      crowdEdgeState.submissionMode =
+        "existing-cooldown";
+    }
+
+    return {
+      passed,
+      detail: passed
+        ? "Fixture is already inside the 20-minute cooldown; a recent +1 Crowd Status reward confirms the prior accepted submission."
+        : "Received 429 but no recent +1 Crowd Status reward exists for this test fixture.",
+    };
+  }
+
+  return {
+    passed: false,
+    detail:
+      `Expected 200 accepted submission or a verified existing 429 cooldown, received ${result.status}: ${result.body?.error ?? "no error message"}`,
+  };
+}
+
+async function verifyCrowdStatusRewardAccounting(
+  userId,
+) {
+  const balance =
+    await getLiveyWalletBalance(
+      userId,
+    );
+
+  const rewards =
+    await getCrowdRewardTransactions(
+      userId,
+    );
+
+  crowdEdgeState.afterSubmissionBalance =
+    balance;
+
+  crowdEdgeState.afterSubmissionRewardCount =
+    rewards.length;
+
+  if (
+    crowdEdgeState.submissionMode ===
+    "accepted"
+  ) {
+    const passed =
+      balance ===
+        crowdEdgeState.baselineBalance +
+          1 &&
+      rewards.length ===
+        crowdEdgeState.baselineRewardCount +
+          1 &&
+      rewards[0]?.amount === 1;
+
+    return {
+      passed,
+      detail: passed
+        ? "Crowd + queue created exactly one +1 ledger transaction and increased the wallet by exactly one point."
+        : `Expected exactly one +1 reward. Balance ${crowdEdgeState.baselineBalance} -> ${balance}; reward count ${crowdEdgeState.baselineRewardCount} -> ${rewards.length}.`,
+    };
+  }
+
+  if (
+    crowdEdgeState.submissionMode ===
+    "existing-cooldown"
+  ) {
+    const passed =
+      balance ===
+        crowdEdgeState.baselineBalance &&
+      rewards.length ===
+        crowdEdgeState.baselineRewardCount;
+
+    return {
+      passed,
+      detail: passed
+        ? "Cooldown replay created no duplicate reward."
+        : `Cooldown replay changed reward state. Balance ${crowdEdgeState.baselineBalance} -> ${balance}; reward count ${crowdEdgeState.baselineRewardCount} -> ${rewards.length}.`,
+    };
+  }
+
+  return {
+    passed: false,
+    detail:
+      "Nearby Crowd Status submission did not establish a valid test mode.",
+  };
+}
+
+async function testImmediateCrowdStatusRepeat(
+  accessToken,
+  userId,
+  venue,
+) {
+  const beforeBalance =
+    await getLiveyWalletBalance(
+      userId,
+    );
+
+  const beforeRewards =
+    await getCrowdRewardTransactions(
+      userId,
+    );
+
+  const result =
+    await callConsumerFunction({
+      functionName:
+        "submit-live-report",
+      accessToken,
+      body: {
+        venue_id:
+          venue.id,
+        crowd:
+          "packed",
+        queue:
+          "long",
+        latitude:
+          venue.latitude,
+        longitude:
+          venue.longitude,
+        accuracy_meters:
+          10,
+      },
+    });
+
+  const afterBalance =
+    await getLiveyWalletBalance(
+      userId,
+    );
+
+  const afterRewards =
+    await getCrowdRewardTransactions(
+      userId,
+    );
+
+  const passed =
+    result.status === 429 &&
+    Boolean(
+      result.body
+        ?.next_allowed_at,
+    ) &&
+    afterBalance ===
+      beforeBalance &&
+    afterRewards.length ===
+      beforeRewards.length;
+
+  return {
+    passed,
+    detail: passed
+      ? "Immediate repeat rejected with 429 and created no additional point."
+      : `Expected 429 with unchanged wallet/reward count. Status ${result.status}; balance ${beforeBalance} -> ${afterBalance}; rewards ${beforeRewards.length} -> ${afterRewards.length}.`,
   };
 }
 
@@ -928,6 +1625,167 @@ async function main() {
     "Unauthorized venues UPDATE",
     testUnauthorizedVenueUpdate,
   );
+
+  /* ---------------------------------------------------------------------- */
+  /* Crowd Status database protections                                      */
+  /* ---------------------------------------------------------------------- */
+
+  await runTest(
+    "Direct Crowd Status atomic RPC",
+    () =>
+      testDirectCrowdRpcBlocked(
+        consumerAuth.user.id,
+      ),
+  );
+
+  await runTest(
+    "Direct Livey Wallet mutation",
+    () =>
+      testDirectWalletWriteBlocked(
+        consumerAuth.user.id,
+      ),
+  );
+
+  await runTest(
+    "Direct Livey point mint",
+    () =>
+      testDirectPointTransactionWriteBlocked(
+        consumerAuth.user.id,
+      ),
+  );
+
+
+  /* ---------------------------------------------------------------------- */
+  /* Crowd Status live Edge Function                                       */
+  /* ---------------------------------------------------------------------- */
+
+  await runTest(
+    "Crowd Status live fixture",
+    async () => {
+      const venue =
+        await loadCrowdTestVenue();
+
+      const baselineBalance =
+        await getLiveyWalletBalance(
+          consumerAuth.user.id,
+        );
+
+      const baselineRewards =
+        await getCrowdRewardTransactions(
+          consumerAuth.user.id,
+        );
+
+      crowdEdgeState.venue =
+        venue;
+
+      crowdEdgeState.baselineBalance =
+        baselineBalance;
+
+      crowdEdgeState.baselineRewardCount =
+        baselineRewards.length;
+
+      return {
+        passed: true,
+        detail:
+          `Active approved test venue loaded. Starting balance ${baselineBalance}; ${baselineRewards.length} prior Crowd Status reward(s) for this fixture.`,
+      };
+    },
+  );
+
+  const crowdLiveFixtureSafe =
+    results.find(
+      (result) =>
+        result.name ===
+        "Crowd Status live fixture",
+    )?.passed;
+
+  if (crowdLiveFixtureSafe) {
+    const crowdVenue =
+      crowdEdgeState.venue;
+
+    const consumerAccessToken =
+      consumerAuth.session.access_token;
+
+    await runTest(
+      "Crowd Status no authentication",
+      () =>
+        testCrowdStatusNoAuth(
+          crowdVenue,
+        ),
+    );
+
+    await runTest(
+      "Crowd Status invalid crowd value",
+      () =>
+        testCrowdStatusInvalidCrowd(
+          consumerAccessToken,
+          crowdVenue,
+        ),
+    );
+
+    await runTest(
+      "Crowd Status poor GPS accuracy",
+      () =>
+        testCrowdStatusPoorAccuracy(
+          consumerAccessToken,
+          crowdVenue,
+        ),
+    );
+
+    await runTest(
+      "Crowd Status far-away coordinates",
+      () =>
+        testCrowdStatusFarAway(
+          consumerAccessToken,
+          crowdVenue,
+        ),
+    );
+
+    await runTest(
+      "Rejected Crowd Status requests do not reward",
+      () =>
+        verifyNegativeCrowdTestsDidNotReward(
+          consumerAuth.user.id,
+        ),
+    );
+
+    await runTest(
+      "Nearby Crowd Status crowd + queue",
+      () =>
+        testNearbyCrowdStatusSubmission(
+          consumerAccessToken,
+          consumerAuth.user.id,
+          crowdVenue,
+        ),
+    );
+
+    const nearbySubmissionSafe =
+      results.find(
+        (result) =>
+          result.name ===
+          "Nearby Crowd Status crowd + queue",
+      )?.passed;
+
+    if (nearbySubmissionSafe) {
+      await runTest(
+        "Crowd Status reward accounting",
+        () =>
+          verifyCrowdStatusRewardAccounting(
+            consumerAuth.user.id,
+          ),
+      );
+
+      await runTest(
+        "Crowd Status immediate repeat cooldown",
+        () =>
+          testImmediateCrowdStatusRepeat(
+            consumerAccessToken,
+            consumerAuth.user.id,
+            crowdVenue,
+          ),
+      );
+    }
+  }
 
   /* ---------------------------------------------------------------------- */
   /* Dashboard authentication                                               */
