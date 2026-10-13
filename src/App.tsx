@@ -31,11 +31,11 @@ function App() {
   const [dashboardAuthLoading, setDashboardAuthLoading] = useState(true);
 
   const [dashboardReady, setDashboardReady] =
-  useState(false);
+    useState(false);
 
   const handleDashboardReady = useCallback(() => {
-  setDashboardReady(true);
-}, []);
+    setDashboardReady(true);
+  }, []);
 
   const [profileLoading, setProfileLoading] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState<
@@ -130,25 +130,25 @@ function App() {
     const {
       data: { subscription },
     } = dashboardSupabase.auth.onAuthStateChange(
-  (event, session) => {
-    const nextDashboardUser =
-      session?.user ?? null;
+      (event, session) => {
+        const nextDashboardUser =
+          session?.user ?? null;
 
-    setDashboardUser(nextDashboardUser);
-    setDashboardAuthLoading(false);
+        setDashboardUser(nextDashboardUser);
+        setDashboardAuthLoading(false);
 
-    if (
-      event === "SIGNED_IN" ||
-      !nextDashboardUser
-    ) {
-      setDashboardReady(false);
-    }
-  }
-);
+        if (
+          event === "SIGNED_IN" ||
+          !nextDashboardUser
+        ) {
+          setDashboardReady(false);
+        }
+      }
+    );
 
     function handleDashboardAuthChanged() {
-  loadDashboardUser();
-}
+      loadDashboardUser();
+    }
 
     window.addEventListener("livey:auth-changed", handleDashboardAuthChanged);
 
@@ -227,7 +227,10 @@ function App() {
             aria-label="Loading Livey venue dashboard"
           >
             <div className="venue-dashboard-auth-logo-wrap">
-              <img src="/Livey-Logo.png" alt="Livey" />
+              <img
+                src="/branding/livey/livey-horizontal-orange.svg"
+                alt="Livey"
+              />
             </div>
 
             <div className="venue-dashboard-auth-copy">
@@ -244,23 +247,27 @@ function App() {
     }
 
     return (
-  <>
-    <VenueDashboardScreen
-      onReady={handleDashboardReady}
-    />
+      <>
+        <VenueDashboardScreen
+          onReady={handleDashboardReady}
+        />
 
-    <LiveyDashboardLoader
-      isReady={dashboardReady}
-    />
-  </>
-);
+        <LiveyDashboardLoader
+          isReady={dashboardReady}
+        />
+      </>
+    );
   }
 
   if (authLoading || (user && (profileLoading || onboardingCompleted === null))) {
     return (
       <main className="livey-auth-screen">
         <section className="livey-auth-card" aria-label="Loading Livey">
-          <img className="livey-auth-logo" src="/Livey-Logo.png" alt="Livey" />
+          <img
+            className="livey-auth-logo"
+            src="/branding/livey/livey-horizontal-orange.svg"
+            alt="Livey"
+          />
 
           <div className="livey-auth-copy">
             <h1>Loading your Livey.</h1>

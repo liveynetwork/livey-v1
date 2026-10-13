@@ -84,7 +84,9 @@ function mapVenueFromSupabase(row: SupabaseVenueRow): LiveyVenue {
     description: event?.description ?? row.description ?? "",
     verified: row.verified,
     coordinates: [row.longitude, row.latitude],
-    logoUrl: row.logo_url ?? "/Livey-Logo.png",
+    logoUrl:
+  row.logo_url ??
+  "/branding/livey/livey-logo-orange.svg",
     driveTime: "8 min",
     walkTime: "24 min",
     openStatus: row.open_status,

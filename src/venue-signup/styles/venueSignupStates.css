@@ -175,9 +175,9 @@
 }
 
 .livey-venue-thank-you-logo {
-  width: clamp(175px, 32vw, 210px);
-  height: clamp(175px, 32vw, 210px);
-  margin: -48px 0 -48px;
+  width: clamp(180px, 34vw, 220px);
+  height: auto;
+  margin: 0;
   display: block;
   object-fit: contain;
 }

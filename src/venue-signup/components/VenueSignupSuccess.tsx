@@ -6,7 +6,7 @@ export function VenueSignupSuccess() {
       <section className="livey-venue-thank-you-card">
         <img
           className="livey-venue-thank-you-logo"
-          src="/Livey-Logo.png"
+          src="/branding/livey/livey-horizontal-orange.svg"
           alt="Livey"
         />
 

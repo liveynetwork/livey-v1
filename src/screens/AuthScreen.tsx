@@ -152,8 +152,11 @@ export function AuthScreen() {
   return (
     <main className="livey-auth-screen">
       <section className="livey-auth-card" aria-label="Livey authentication">
-        <img className="livey-auth-logo" src="/Livey-Logo.png" alt="Livey" />
-
+<img
+  className="livey-auth-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
         <div className="livey-auth-copy">
           <h1>
             {isCreateAccount

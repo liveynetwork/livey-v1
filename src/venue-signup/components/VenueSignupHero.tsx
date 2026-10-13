@@ -3,7 +3,7 @@ export function VenueSignupHero() {
     <section className="livey-venue-signup-hero">
       <img
         className="livey-venue-signup-logo"
-        src="/Livey-Logo.png"
+        src="/branding/livey/livey-horizontal-orange.svg"
         alt="Livey"
       />
 

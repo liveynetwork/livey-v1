@@ -58,10 +58,10 @@ export function LiveyTopControls({
         </div>
 
         <img
-          src="/Livey-Logo.png"
-          alt="Livey"
-          className="livey-search-logo"
-        />
+  src="/branding/livey/livey-logo-orange.svg"
+  alt="Livey"
+  className="livey-search-logo"
+/>
       </div>
 
       <nav className="livey-category-row" aria-label="Venue categories">

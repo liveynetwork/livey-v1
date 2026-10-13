@@ -16,9 +16,9 @@
 }
 
 .livey-venue-signup-footer-logo {
-  width: 132px;
-  height: 132px;
-  margin: -46px 0 -46px;
+  width: 156px;
+  height: auto;
+  margin: 0 0 2px;
   display: block;
   object-fit: contain;
 }

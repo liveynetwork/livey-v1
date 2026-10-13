@@ -3,7 +3,7 @@ export function VenueSignupFooter() {
     <footer className="livey-venue-signup-footer">
       <img
         className="livey-venue-signup-footer-logo"
-        src="/Livey-Logo.png"
+        src="/branding/livey/livey-horizontal-orange.svg"
         alt="Livey"
       />
 

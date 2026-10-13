@@ -81,10 +81,10 @@ export function ProfileScreen({ onOpenVenue }: ProfileScreenProps) {
         <header className="livey-profile-header">
           <div className="livey-profile-brand">
             <img
-              className="livey-profile-header-logo"
-              src="/Livey-Logo.png"
-              alt="Livey"
-            />
+  className="livey-profile-header-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
           </div>
 
           <button

@@ -122,10 +122,10 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
         </div>
 
         <img
-          className="livey-onboarding-logo"
-          src="/Livey-Logo.png"
-          alt="Livey"
-        />
+  className="livey-onboarding-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
 
         {setupStep === 0 && (
           <div className="livey-onboarding-step">

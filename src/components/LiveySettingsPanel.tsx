@@ -474,10 +474,10 @@ export function LiveySettingsPanel({
         <header className="livey-settings-header">
           <div>
             <img
-              className="livey-settings-logo"
-              src="/Livey-Logo.png"
-              alt="Livey"
-            />
+  className="livey-settings-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
             <p className="livey-settings-kicker">Account controls</p>
             <h2>Settings</h2>
           </div>
