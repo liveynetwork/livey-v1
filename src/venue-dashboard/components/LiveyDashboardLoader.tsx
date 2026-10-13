@@ -84,7 +84,7 @@ export function LiveyDashboardLoader({
       <div className="livey-dashboard-loader-content">
         <img
           className="livey-dashboard-loader-logo"
-          src="/Livey-Logo.png"
+          src="/branding/livey/livey-horizontal-orange.svg"
           alt="Livey"
         />
 

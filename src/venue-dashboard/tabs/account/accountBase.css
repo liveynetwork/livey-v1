@@ -615,9 +615,9 @@
   display: block;
   width:
     clamp(
-      96px,
-      8vw,
-      130px
+      140px,
+      10vw,
+      176px
     );
   height: auto;
   margin-top: 30px;
@@ -678,7 +678,7 @@
 .venue-dashboard-signout-modal-logo-shell
   img {
   display: block;
-  width: 108px;
+  width: 64px;
   height: auto;
   object-fit: contain;
 }

@@ -44,7 +44,7 @@
 }
 
 .livey-dashboard-loader-logo {
-  width: min(42vw, 142px);
+  width: min(58vw, 190px);
   height: auto;
   display: block;
   object-fit: contain;
@@ -89,7 +89,7 @@
   }
 
   .livey-dashboard-loader-logo {
-    width: min(40vw, 128px);
+    width: min(56vw, 172px);
   }
 }
 

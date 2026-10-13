@@ -27,7 +27,7 @@
 }
 
 .venue-dashboard-no-venue-brand img {
-  width: 78px;
+  width: 154px;
   height: auto;
   display: block;
   object-fit: contain;
@@ -395,7 +395,7 @@
   }
 
   .venue-dashboard-no-venue-brand img {
-    width: 70px;
+    width: 140px;
   }
 
   .venue-dashboard-no-venue-card {
@@ -463,7 +463,7 @@
   }
 
   .venue-dashboard-no-venue-brand img {
-    width: 66px;
+    width: 132px;
   }
 
   .venue-dashboard-no-venue-card {

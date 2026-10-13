@@ -11,7 +11,7 @@ export function VenueDashboardNoVenueState({
     <main className="venue-dashboard-no-venue-page">
       <div className="venue-dashboard-no-venue-brand">
         <img
-          src="/Livey-Logo.png"
+          src="/branding/livey/livey-horizontal-orange.svg"
           alt="Livey"
         />
       </div>

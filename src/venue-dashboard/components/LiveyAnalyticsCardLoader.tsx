@@ -113,7 +113,7 @@ export function LiveyAnalyticsCardLoader({
       <div className="livey-analytics-card-loader-content">
         <img
           className="livey-analytics-card-loader-logo"
-          src="/Livey-Logo.png"
+          src="/branding/livey/livey-horizontal-orange.svg"
           alt="Livey"
         />
 

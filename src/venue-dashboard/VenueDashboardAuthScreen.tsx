@@ -538,10 +538,10 @@ export function VenueDashboardAuthScreen() {
       <section className="venue-dashboard-auth-card">
         <div className="venue-dashboard-auth-card-scroll">
           <img
-            className="venue-dashboard-auth-logo"
-            src="/Livey-Logo.png"
-            alt="Livey"
-          />
+  className="venue-dashboard-auth-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
 
           <div className="venue-dashboard-auth-copy">
             <h1 key={verifiedVenue?.venue_id || mode}>

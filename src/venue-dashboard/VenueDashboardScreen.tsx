@@ -545,10 +545,10 @@ export function VenueDashboardScreen({
         <header className="venue-dashboard-topbar">
           <div>
             <img
-              className="venue-dashboard-topbar-logo"
-              src="/Livey-Logo.png"
-              alt="Livey"
-            />
+  className="venue-dashboard-topbar-logo"
+  src="/branding/livey/livey-horizontal-orange.svg"
+  alt="Livey"
+/>
 
             <h1>
               {getSectionTitle(

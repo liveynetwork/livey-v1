@@ -1,0 +1,49 @@
+LIVEY — BRAND REFERENCE
+Version: 1.0
+Date: 2026-10-12
+
+1. OFFICIAL COLORS
+Livey Orange
+  HEX: #FF5B32
+  RGB: 255, 91, 50
+  CSS: rgb(255, 91, 50)
+
+Livey White
+  HEX: #FFFFFF
+  RGB: 255, 255, 255
+  CSS: rgb(255, 255, 255)
+
+2. APPROVED SYMBOL
+The Livey symbol consists of two separate GPS navigation-arrow forms arranged to read together as a lightning bolt.
+Preserve the approved original vector geometry and the visible separation between the arrows.
+Do not stretch, rotate individual arrows, redraw, add gradients, shadows, outlines, or alter the official colors in production assets.
+
+3. LOGO COLOR APPLICATIONS
+Orange symbol: transparent background; suitable for light surfaces.
+White symbol: transparent background; suitable for dark and orange surfaces.
+App icon: white symbol on solid Livey Orange (#FF5B32).
+Browser favicon: orange symbol on transparent background.
+Apple touch / Android home-screen icons: white symbol on solid Livey Orange.
+
+4. MASTER AND EXPORT RULES
+SVG master: scalable; artwork's natural proportions; transparent background.
+Square PNG export canvases: centered symbol with consistent margins, no stretching.
+App icon exports: 1024 x 1024 px, 512 x 512 px, 192 x 192 px.
+Browser favicon PNGs: 16 x 16 px, 32 x 32 px, 48 x 48 px.
+Multi-resolution ICO: 16 x 16 px, 32 x 32 px, 48 x 48 px.
+Apple touch icon: 180 x 180 px.
+Android Chrome icons: 192 x 192 px, 512 x 512 px.
+Transparent logo PNGs: 512 x 512 px, 1024 x 1024 px in orange and white.
+
+5. FILE LOCATIONS
+01-Master: original SVG vector exports.
+02-App-Icons: mobile icon PNGs.
+03-Favicons: browser and home-screen assets.
+04-Transparent-Logos: transparent PNG exports.
+05-Brand-Guidelines: this reference file.
+06-Backups/Figma-Source: original editable Figma source backup.
+06-Backups/Previous-Logo: archived previous branding, if retained.
+
+6. NOT YET FINALIZED
+Wordmark typography, spacing, lockups, and extended brand palette are pending design approval.
+Do not treat these as established brand standards until approved.

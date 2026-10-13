@@ -95,7 +95,7 @@ export function AccountSupportSessionCard({
 
           <img
             className="venue-dashboard-support-logo"
-            src="/Livey-Logo.png"
+            src="/branding/livey/livey-horizontal-orange.svg"
             alt="Livey"
           />
         </div>
@@ -122,7 +122,10 @@ export function AccountSupportSessionCard({
             aria-labelledby="venue-dashboard-signout-title"
           >
             <div className="venue-dashboard-signout-modal-logo-shell">
-              <img src="/Livey-Logo.png" alt="" />
+              <img
+                src="/branding/livey/livey-logo-orange.svg"
+                alt=""
+              />
             </div>
 
             <p className="venue-dashboard-eyebrow">End session</p>

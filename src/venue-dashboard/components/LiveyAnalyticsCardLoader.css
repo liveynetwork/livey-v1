@@ -31,7 +31,7 @@
 }
 
 .livey-analytics-card-loader-logo {
-  width: min(48%, 118px);
+  width: min(68%, 156px);
   height: auto;
   display: block;
   object-fit: contain;
@@ -108,7 +108,7 @@
   }
 
   .livey-analytics-card-loader-logo {
-    width: min(48%, 108px);
+    width: min(66%, 144px);
   }
 }
 
