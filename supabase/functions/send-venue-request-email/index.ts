@@ -45,6 +45,10 @@ const LIVEY_SUPPORT_EMAIL =
 const LIVEY_FROM_EMAIL =
   Deno.env.get("LIVEY_FROM_EMAIL") ?? "venues@livey.network";
 
+  const LIVEY_LOGO_URL =
+  Deno.env.get("LIVEY_LOGO_URL")?.trim() ||
+  "https://zocjbpddqeyzausehffs.supabase.co/storage/v1/object/public/public-assets/livey-logo-orange-512.png";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -105,8 +109,7 @@ function buildVenueConfirmationHtml(payload: VenueRequestEmailPayload) {
     <div style="margin:0;padding:0;background:#2b2926;color:#e8e2da;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
       <div style="max-width:620px;margin:0 auto;padding:40px 22px;">
         <div style="border:1px solid rgba(232,226,218,0.14);border-radius:28px;background:rgba(232,226,218,0.07);padding:32px 28px;text-align:center;">
-          <img src="https://zocjbpddqeyzausehffs.supabase.co/storage/v1/object/public/public-assets/livey-logo.png" alt="Livey" style="width:96px;height:96px;object-fit:contain;margin:0 auto 12px;display:block;" />
-
+<img src="${LIVEY_LOGO_URL}" alt="Livey" style="width:96px;height:96px;object-fit:contain;margin:0 auto 12px;display:block;" />
           <p style="margin:0 0 18px;color:#ff5b32;font-size:12px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;text-align:center;">
             Livey for venues
           </p>

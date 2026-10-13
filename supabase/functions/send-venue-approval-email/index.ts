@@ -118,7 +118,7 @@ Deno.serve(async (req) => {
 
     const logoUrl =
       Deno.env.get("LIVEY_LOGO_URL") ||
-      "https://zocjbpddqeyzausehffs.supabase.co/storage/v1/object/public/public-assets/livey-logo.png";
+      "https://zocjbpddqeyzausehffs.supabase.co/storage/v1/object/public/public-assets/livey-logo-orange-512.png";
 
     if (!supabaseUrl || !serviceRoleKey) {
       throw new Error("Missing Supabase service configuration.");
